@@ -32,6 +32,10 @@
   padding: 1em 0;
 }
 
+#projects ul {
+  list-style-type: none ;
+}
+
 .timeline li:after {
   content: "";
   display: block;
@@ -49,7 +53,7 @@
 
 .direction-r {
   position: relative;
-  width: 370px;
+  width: 380px;
   float: right;
 }
 
@@ -100,7 +104,7 @@
 }
 
 .direction-r .flag:before {
-  left: -40px;
+  left: -30px;
 }
 
 .direction-l .flag:after {

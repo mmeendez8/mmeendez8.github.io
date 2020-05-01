@@ -1,7 +1,7 @@
-source:      .
+source: .
 destination: ./_site
-includes:    ./_includes
-baseurl: /~msaveski
+includes: ./_includes
+baseurl: null
 
 collections:
   projects:

@@ -6,17 +6,18 @@ title: Personal Webpage
 <div class="docs-section" id="bio">
   <h4>Bio</h4>
   <p>
-  I am a Ph.D. student in the <a href="http://socialmachines.media.mit.edu/">Laboratory for Social Machines</a> at the <a href="https://www.media.mit.edu/">MIT Media Lab</a> advised by Deb Roy.
-  I love studying data and people.
-  My research interests lie at the intersection of Causal Inference, Machine Learning, and Social Network Analysis.
-  I am passionate about (i) drawing insights from data, (ii) designing interventions, and (iii) running randomized experiments.
-  I spent the summer of 2019 at <a href="https://research.fb.com/teams/core-data-science/">Facebook's Core Data Science</a> team studying users who bring people together.
-</p>
+    I am a Machine Learning Research Engineer at <a href="https://www.gradiant.org/en//">Gradiant</a> . I love creating
+    systems based on data that can interact with the real word.
+    My research interests lie in the general area of machine learning, particularly in deep learning and its
+    applications in object detection,
+    image generation and instance segmentation.
+  </p>
 
   <p>
-  Prior to coming to MIT, I interned at Yahoo! Labs in Barcelona and the Amazon Machine Learning team in Berlin.
-  I spent one year in Paris and one year in Barcelona to do a M.Sc. in Data mining and Knowledge Management.
-  I got my B.Sc. from Staffordshire University with a First Class honors in Computer Science.
+    Prior to coming to Gradiant, I worked at Desigual Headquarters in Barcelona as a Data Science consultant.
+    I spent one year in Barcelona and one year in the United States (Purdue University) to do a M.Sc. in Artificial
+    Intelligence.
+    I got my B.Sc. from University of A Coruña after an exchange year in Norway.
   </p>
 </div>
 
@@ -25,76 +26,81 @@ title: Personal Webpage
 <div class="docs-section" id="publications">
   <h4>Publications</h4>
 
-  <p>Most recent publications on <a href="{{ site.data.main_info.google_scholar }}" target="_blank">Google Scholar</a>.<br/>
-  <sup>‡</sup> indicates equal contribution.
+  <p>Most recent publications on <a href="{{ site.data.main_info.google_scholar }}" target="_blank">Google
+      Scholar</a>.<br />
+    <sup>‡</sup> indicates equal contribution.
   </p>
 
   <ul class="tab-nav">
-    <li><div class="button active" data-ref="#papers-selected">Selected</div></li>
-    <li><div class="button" data-ref="#papers-all">All</div></li>
+    <li>
+      <div class="button active" data-ref="#papers-selected">Selected</div>
+    </li>
+    <li>
+      <div class="button" data-ref="#papers-all">All</div>
+    </li>
   </ul>
 
   <div class="tab-content">
     <div class="tab-pane active" id="papers-selected">
       {% assign selected_papers = site.data.publications.papers | where: "selected", "y" %}
       {% for paper in selected_papers %}
-        <div class="paper">
-          <p class="title"><b>{{ paper.title }}</b></p>
-          <p>{{ paper.authors }}</p>
-          <p><i>{{ paper.venue }}</i></p>
-           <div class="paper-buttons">
-            {% if paper.paper_pdf %}
-              <a class="button" href="{{ paper.paper_pdf | prepend: site.baseurl }}" target="_blank">Paper</a>
-            {% endif %}
+      <div class="paper">
+        <p class="title"><b>{{ paper.title }}</b></p>
+        <p>{{ paper.authors }}</p>
+        <p><i>{{ paper.venue }}</i></p>
+        <div class="paper-buttons">
+          {% if paper.paper_pdf %}
+          <a class="button" href="{{ paper.paper_pdf | prepend: site.baseurl }}" target="_blank">Paper</a>
+          {% endif %}
 
-            {% if paper.slides %}
-              <a class="button" href="{{ paper.slides | prepend: site.baseurl }}" target="_blank">Slides</a>
-            {% endif %}
+          {% if paper.slides %}
+          <a class="button" href="{{ paper.slides | prepend: site.baseurl }}" target="_blank">Slides</a>
+          {% endif %}
 
-            {% if paper.poster %}
-              <a class="button" href="{{ paper.poster | prepend: site.baseurl }}" target="_blank">Poster</a>
-            {% endif %}
+          {% if paper.poster %}
+          <a class="button" href="{{ paper.poster | prepend: site.baseurl }}" target="_blank">Poster</a>
+          {% endif %}
 
-            {% if paper.video %}
-              <a class="button" href="{{ paper.video }}" target="_blank">Video</a>
-            {% endif %}
+          {% if paper.video %}
+          <a class="button" href="{{ paper.video }}" target="_blank">Video</a>
+          {% endif %}
 
-            {% if paper.code %}
-              <a class="button" href="{{ paper.code }}" target="_blank">Code</a>
-            {% endif %}
-          </div>
+          {% if paper.code %}
+          <a class="button" href="{{ paper.code }}" target="_blank">Code</a>
+          {% endif %}
         </div>
+      </div>
       {% endfor %}
     </div>
 
     <div class="tab-pane" id="papers-all">
       {% for paper in site.data.publications.papers %}
-        <div class="paper">
-          <p class="title"><b>{{ paper.title }}</b></p>
-          <p>{{ paper.authors }}</p>
-          <p><i>{{ paper.venue }}</i></p>
-           <div class="paper-buttons">
-            {% if paper.paper_pdf %}
-              <a class="button" href="{{ paper.paper_pdf | prepend: site.baseurl }}" target="_blank">Paper</a>
-            {% endif %}
+      <div class="paper">
+        <p class="title"><b>{{ paper.title }}</b></p>
+        <p>{{ paper.authors }}</p>
+        <p><i>{{ paper.venue }}</i></p>
+        <div class="paper-buttons">
+          {% if paper.paper_pdf %}
+          <a class="button" href="{{ paper.paper_pdf | prepend: site.baseurl }}" target="_blank">Paper</a>
+          {% endif %}
 
-            {% if paper.slides %}
-              <a class="button" href="{{ paper.slides | prepend: site.baseurl }}" target="_blank">Slides</a>
-            {% endif %}
+          {% if paper.slides %}
+          <a class="button" href="{{ paper.slides | prepend: site.baseurl }}" target="_blank">Slides</a>
+          {% endif %}
 
-            {% if paper.poster %}
-              <a class="button" href="{{ paper.poster | prepend: site.baseurl }}" target="_blank">Poster</a>
-            {% endif %}
+          {% if paper.poster %}
+          <a class="button" href="{{ paper.poster | prepend: site.baseurl }}" target="_blank">Poster</a>
+          {% endif %}
 
-            {% if paper.video %}
-              <a class="button" href="{{ paper.video }}" target="_blank">Video</a>
-            {% endif %}
+          {% if paper.video %}
+          <a class="button" href="{{ paper.video }}" target="_blank">Video</a>
+          {% endif %}
 
-            {% if paper.code %}
-              <a class="button" href="{{ paper.code }}" target="_blank">Code</a>
-            {% endif %}
-          </div>
+          {% if paper.code %}
+          <a class="button" href="{{ paper.code }}" target="_blank">Code</a>
+          {% endif %}
         </div>
+      </div>
       {% endfor %}
     </div>
   </div>
@@ -105,69 +111,73 @@ title: Personal Webpage
   <h4>Projects</h4>
 
   <ul class="tab-nav">
-    <li><div class="button active" data-ref="#projects-selected">Selected</div></li>
-    <li><div class="button" data-ref="#projects-all">All</div></li>
+    <li>
+      <div class="button active" data-ref="#projects-selected">Selected</div>
+    </li>
+    <li>
+      <div class="button" data-ref="#projects-all">All</div>
+    </li>
   </ul>
 
   <div class="tab-content">
     <div class="tab-pane active" id="projects-selected">
       {% assign selected_projects = site.data.projects.projects | where: "selected", "y" %}
       {% for project in selected_projects %}
-        {% assign index_modulo = forloop.index0 | modulo:3 %}
-        {% if index_modulo == 0 %}
-          <div class="row">
+      {% assign index_modulo = forloop.index0 | modulo:3 %}
+      {% if index_modulo == 0 %}
+      <div class="row">
         {% endif %}
 
-          <div class="four columns">
-            <div class="project-container">
+        <div class="four columns">
+          <div class="project-container">
 
-                <div class="project-image-container">
-                  <a href="{{ project.url }}">
-                    <img src="{{ project.thumbnail }}" class="u-max-full-width" />
-                  </a>
-                </div>
-
-                <div class="project-caption">
-                  <b>{{ project.title }}</b> <br/>
-                  {{ project.subtitle }}
-                </div>
-
+            <div class="project-image-container">
+              <a href="{{ project.url }}">
+                <img src="{{ project.thumbnail }}" class="u-max-full-width" />
+              </a>
             </div>
+
+            <div class="project-caption">
+              <b>{{ project.title }}</b> <br />
+              {{ project.subtitle }}
+            </div>
+
           </div>
+        </div>
 
         {% if index_modulo == 2 %}
-          </div>
-        {% endif %}
+      </div>
+      {% endif %}
       {% endfor %}
     </div>
 
     <div class="tab-pane" id="projects-all">
       {% for project in site.data.projects.projects %}
-        {% assign index_modulo = forloop.index0 | modulo:3 %}
-        {% if index_modulo == 0 %}
-          <div class="row">
+      {% assign index_modulo = forloop.index0 | modulo:3 %}
+      {% if index_modulo == 0 %}
+      <div class="row">
         {% endif %}
 
-          <div class="four columns">
-            <div class="project-container">
+        <div class="four columns">
+          <div class="project-container">
 
-                <div class="project-image-container">
-                  <a href="{{ project.url }}">
-                    <img src="{{ project.thumbnail }}" class="u-max-full-width" />
-                  </a>
-                </div>
-
-                <div class="project-caption">
-                  <b>{{ project.title }}</b> <br/>
-                  {{ project.subtitle }}
-                </div>
-
+            <div class="project-image-container">
+              <a href="{{ project.url }}">
+                <img src="{{ project.thumbnail }}" class="u-max-full-width" />
+              </a>
             </div>
+
+            <div class="project-caption">
+              <b>{{ project.title }}</b> <br />
+              {{ project.subtitle }}
+            </div>
+
           </div>
+        </div>
 
         {% if index_modulo == 2 %}
-          </div>
-        {% endif %}
+      </div>
+      {% endif %}
       {% endfor %}
     </div>
   </div>
@@ -186,15 +196,15 @@ title: Personal Webpage
     <li>
       {% if exp.category == "work" %}
       <div class="direction-l">
-      {% else %}
-      <div class="direction-r">
-      {% endif %}
-        <div class="flag-wrapper">
-          <span class="flag">{{ exp.place }}</span>
-          <span class="time-wrapper"><span class="time">{{ exp.time }}</span></span>
+        {% else %}
+        <div class="direction-r">
+          {% endif %}
+          <div class="flag-wrapper">
+            <span class="flag">{{ exp.place }}</span>
+            <span class="time-wrapper"><span class="time">{{ exp.time }}</span></span>
+          </div>
+          <div class="desc"><b>{{ exp.title }}</b> <br /> {{ exp.subtitle }}</div>
         </div>
-        <div class="desc"><b>{{ exp.title }}</b> <br/> {{ exp.subtitle }}</div>
-      </div>
     </li>
     {% endfor %}
   </ul>
@@ -202,20 +212,21 @@ title: Personal Webpage
 
 
 <div class="docs-section" id="template">
-    <h4>Website Design</h4>
-    Since I made this website many people have found this Jekyll template useful
-    <a href="https://people.csail.mit.edu/davidam/" target="_blank">[1]</a>
-    <a href="https://thashim.github.io/" target="_blank">[2]</a>
-    <a href="https://pauljwright.github.io/" target="_blank">[3]</a>
-    <a href="https://bayesianbrad.github.io/" target="_blank">[4]</a>
-    <a href="https://ahxt.github.io/" target="_blank">[5]</a>
-    <a href="https://people.csail.mit.edu/chang87/" target="_blank">[6]</a>
-    <a href="https://jiayuzhou.github.io/" target="_blank">[7]</a>.
-    <br/>
+  <h4>Website Design</h4>
+  Since I made this website many people have found this Jekyll template useful
+  <a href="https://people.csail.mit.edu/davidam/" target="_blank">[1]</a>
+  <a href="https://thashim.github.io/" target="_blank">[2]</a>
+  <a href="https://pauljwright.github.io/" target="_blank">[3]</a>
+  <a href="https://bayesianbrad.github.io/" target="_blank">[4]</a>
+  <a href="https://ahxt.github.io/" target="_blank">[5]</a>
+  <a href="https://people.csail.mit.edu/chang87/" target="_blank">[6]</a>
+  <a href="https://jiayuzhou.github.io/" target="_blank">[7]</a>.
+  <br />
 
-    You can find all the code you need to build your own website in this <a href="https://github.com/msaveski/www_personal" target="_blank">GitHub repo</a>.
-    Feel free to use it. <br/>
+  You can find all the code you need to build your own website in this <a
+    href="https://github.com/msaveski/www_personal" target="_blank">GitHub repo</a>.
+  Feel free to use it. <br />
 
-    If you end up using it, please link to here and drop me an email.
-    I'm always happy to see people using it.
+  If you end up using it, please link to here and drop me an email.
+  I'm always happy to see people using it.
 </div>
