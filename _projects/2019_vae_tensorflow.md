@@ -37,7 +37,7 @@ The **mean** and **standard deviation** of our Gaussian will be computed through
 *Tip: we can see how our network looks using TensorBoard! ([full code on Github](https://github.com/mmeendez8/Autoencoder))*
 
 {:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*MX_QFCU-sL03uXt_zMaw6Q.png){max-width: 200px;}
+![](https://cdn-images-1.medium.com/max/2000/1*MX_QFCU-sL03uXt_zMaw6Q.png)
 {: refdef}
 
 ### Decoder
