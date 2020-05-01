@@ -1,6 +1,11 @@
 projects:
   - title: "VAEs! Generating images with Tensorflow"
-    subtitle: "Variational Autoencoder with Tensorflow"
+    subtitle: Learn how to code a Variational Autoencoder
     thumbnail: "assets/projects/2019_vae_tensorflow/thumbnail.jpg"
     url: "projects/2019_vae_tensorflow.html"
+    selected: y
+  - title: "The theory behind Autoencoders"
+    subtitle: "Variational Autoencoder with Tensorflow"
+    thumbnail: "assets/projects/2019_vae_theory/thumbnail.jpg"
+    url: "projects/2019_vae_theory.html"
     selected: y
