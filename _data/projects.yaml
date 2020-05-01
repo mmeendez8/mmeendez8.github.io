@@ -5,7 +5,12 @@ projects:
     url: "projects/2019_vae_tensorflow.html"
     selected: y
   - title: "The theory behind Autoencoders"
-    subtitle: "Variational Autoencoder with Tensorflow"
+    subtitle: "Learn the math behind them"
     thumbnail: "assets/projects/2019_vae_theory/thumbnail.jpg"
     url: "projects/2019_vae_theory.html"
+    selected: y
+  - title: "Automatic Classification of an online Fashion Catalogue"
+    subtitle: "Scrap data and train a model"
+    thumbnail: "assets/projects/2019_fashion/thumbnail.png"
+    url: "projects/2019_fashion.html"
     selected: y

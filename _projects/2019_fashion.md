@@ -1,0 +1,71 @@
+---
+layout: project
+title:  "Automatic Classification of an online Fashion Catalogue"
+subtitle: "Scrap data and train a model"
+---
+
+
+I have been working with Tensorflow during last months and I realized that, although there is a large number of Github repositories with many different and complex models, is hard to find a simple example that shows you how to obtain your own dataset from the web and apply some Deep Learning on it.
+
+In this post I pretended to provide an example of this task but being keeping it as simple as possible. I will show you how to **obtain online unlabeled data**, how to create a **simple convolutional network**, train it with some supervised data and use it later to **classify the data** we have gathered from the web.
+You can also find this post in [Medium](https://towardsdatascience.com/automatic-classification-of-an-online-fashion-catalogue-the-simple-way-2a4b13a2af0a)
+
+All code can be found on my [Github account](https://github.com/mmeendez8/garment-classifier)
+
+### 1. Data Scraping
+
+If you are close to Data Science world you probably have heard about the [Fashion MNIST dataset](https://github.com/zalandoresearch/fashion-mnist). It’s a super simple collection of 28x28 images consisting of a training set of 60,000 examples and a test set of 10,000 examples. The data is associated with a label from 10 classes as Trouser, Pullover, Dress, Coat…
+
+{:refdef: style="text-align: center;"}
+![Fashion MNIST](https://cdn-images-1.medium.com/max/2000/1*_aBUDsjs9le9_8BaYfLRSQ.png)
+{: refdef}
+{:refdef: style="text-align: center;"}
+*Fashion MNIST*
+{: refdef}
+
+
+So the idea is simple, we train our network with the MNIST data and we use then to classify the data obtained from the actual Zalando’s catalogue.
+
+Data scraping is a very important task if you are a Data Scientist. Most of the time you will not have available the data you are looking for, so you will need to obtain it from the web. The procedure is pretty simple if you know a little bit of HTML and CSS.
+
+### 2. Neural Network
+
+We are going to classify small grey scaled images so we will not need a super complex architecture. I basically stacked two convolutional layers with their correspondent pooling layer ([check what Hinton thinks about Pool Layers](https://mirror2image.wordpress.com/2014/11/11/geoffrey-hinton-on-max-pooling-reddit-ama/)). After this a dense layer followed by a dropout operation and a final dense layer with a softmax function. Classic and simple stuff!
+
+<script src="https://gist.github.com/mmeendez8/8b2589a1cf0d336fba2de804ee8a57a2.js"></script>
+
+If you have problems understanding what that decorator is doing you can check my previous post: [Generating fake FIFA 19 football players with Variational Autoencoders and Tensorflow](https://towardsdatascience.com/generating-fake-fifa-19-football-players-with-variational-autoencoders-and-tensorflow-aff6c10016ae) or [this amazing post](https://danijar.com/structuring-your-tensorflow-models/) from [Danijar Hafner](https://danijar.com/).
+
+### 3. Training the network
+
+For the training task I have used Adam Optimizer and let algorithm run for just 100 epochs. You can apply longer and better training to improve the accuracy as much as you want and I would also recommend you to change the network structure adding some extra layers.
+
+The training file allows you to observe how you accuracy and loss evolve with the number of epochs. These were my results:
+
+{:refdef: style="text-align: center;"}
+![](https://cdn-images-1.medium.com/max/2000/1*l14w5wEq_5qZyF22LP91jQ.png)
+{: refdef}
+
+{:refdef: style="text-align: center;"}
+![](https://cdn-images-1.medium.com/max/2000/1*pLKuC-qg-wm0GpzG26P5Iw.png)
+{: refdef}
+
+Remember that when we train our model we must validate our data with a different dataset to avoid overfitting issues (between others). In this case we can use Fashion MNIST test set!
+
+### 4. Evaluate results
+
+Once the network has been trained and saved, we can proceed to evaluate its performance with the scraped dataset. Look at this code snippet:
+
+<script src="https://gist.github.com/mmeendez8/60f0d75a0c6a7d3ae2b26a93bcef92ec.js"></script>
+
+It’s pretty simple. What I do in here is recovering the network and loading the unlabeled data. I recover two important tensors which are the ones that I use to feed new data and to output the predictions of the network. Finally I pass 5 different images to the network and this is what I get:
+
+{:refdef: style="text-align: center;"}
+![](https://cdn-images-1.medium.com/max/3454/1*XvEIhBKhWFCGvNhRtCWkcw.png){: width="750px"}
+{: refdef}
+
+Note that I did not show the whole process here, since the images we obtained from the web must be converted to 28x28 gray scale images before being inserted to the network, once more I encourage you to check the whole code on [Github](https://github.com/mmeendez8/garment-classifier).
+
+Well, that’s all we need to classify the unlabeled images we obtain from Zalando’s website. You could use this to create a labeled dataset of images to train another different model or anything that you can think on!
+
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
