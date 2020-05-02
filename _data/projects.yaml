@@ -14,3 +14,8 @@ projects:
     thumbnail: "assets/projects/2019_fashion/thumbnail.png"
     url: "projects/2019_fashion.html"
     selected: y
+  - title: "Generating FIFA 19 players with VAEs and Tensorflow"
+    subtitle: "Learn to generate your own footbal players"
+    thumbnail: "assets/projects/2019_vae_fifa/thumbnail.jpg"
+    url: "projects/2019_vae_fifa.html"
+    selected: y
