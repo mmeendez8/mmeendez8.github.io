@@ -123,12 +123,12 @@ title: Personal Webpage
     <div class="tab-pane active" id="projects-selected">
       {% assign selected_projects = site.data.projects.projects | where: "selected", "y" %}
       {% for project in selected_projects %}
-      {% assign index_modulo = forloop.index0 | modulo:3 %}
+      {% assign index_modulo = forloop.index0 | modulo:2 %}
       {% if index_modulo == 0 %}
-      <div class="row">
+      <div class="row project-row">
         {% endif %}
 
-        <div class="four columns">
+        <div class="six columns">
           <div class="project-container">
 
             <div class="project-image-container">
@@ -152,13 +152,14 @@ title: Personal Webpage
     </div>
 
     <div class="tab-pane" id="projects-all">
-      {% for project in site.data.projects.projects %}
-      {% assign index_modulo = forloop.index0 | modulo:3 %}
+      {% assign selected_projects = site.data.projects.projects | where: "selected", "n" %}
+      {% for project in selected_projects %}
+      {% assign index_modulo = forloop.index0 | modulo:2 %}
       {% if index_modulo == 0 %}
-      <div class="row">
+      <div class="row project-row">
         {% endif %}
 
-        <div class="four columns">
+        <div class="six columns">
           <div class="project-container">
 
             <div class="project-image-container">
