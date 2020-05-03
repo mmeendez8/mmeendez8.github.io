@@ -1,0 +1,28 @@
+other_projects:
+  - title: "Feature construction and classification on Time Series"
+    authors: "Master Thesis - Prof. Bruno Ribero - Purdue University"
+    description:
+      "Collaborated with Federal Aviation Administration (FAA) in PEGASAS project with the aim of enhance general aviation safety.
+      Developed a model which could classify flights in different categories using data obtained from airborne sensors through an
+      unsupervised learning stage and an active learning procedure. Tools: Python, Scikit-Learn, Pandas, C, OpenMPI, Java
+      <br />Presented in PEGASAS 2017 meeting at Texas A&M University"
+    code: "https://github.com/mmeendez8/Pegasas"
+
+  - title: "Instrument recognition using Neural Networks"
+    description:
+      "System for musical instruments recognition using NNs with over 10000 audio samples using Fourier Transform and its harmonics
+      to create the input features. Created our own NN library in Python from scratch."
+    code: "https://github.com/mmeendez8/InstrumentRecognition"
+
+  - title: "Corruption simulation in Social Netowrks (Twitter)"
+    description:
+      "Analysis using Twitter publics API where we focus in the relations between politicians in the social network. We performed a
+      Monte Carlo simulation of corruption behavior spreading with the aim of observing how corruption flows starting from some seed
+      users that were imprisoned or involved in some case."
+    code: "https://github.com/mmeendez8/CorruptionSimulationTwitter"
+
+  - title: "Flight Safe Android App"
+    description:
+      "Guide and developed android app for collecting AHRS data during flights to facilitate the creation of a dataset for future
+      experiments. This app is used by all pilots and students at that flight from Purdue’s airport."
+    code: "https://github.com/mmeendez8/SafeFlight"
