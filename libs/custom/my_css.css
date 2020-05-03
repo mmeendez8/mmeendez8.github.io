@@ -1,5 +1,14 @@
 h4 {
   letter-spacing: .1rem; }
+
+a {
+  color: #006CB8 ;
+  text-decoration: none;
+
+}
+a:hover {
+  color: #005692;
+}
 .container {
   max-width: 800px;
   text-align: justify; }
@@ -27,17 +36,21 @@ h4 {
   text-decoration: none;
 }
 .social a:hover{
-  color:#1EAEDB;
+  color:#006CB8;
 }
-.paper {
+.other-projects {
   margin-bottom: 20px }
-.paper .title {
+.other-projects .title {
+  font-size: 16px;
   /*text-transform: uppercase; */}
-.paper p {
+.other-projects .description{
+  font-size:13px;
+}
+.other-projects p {
   margin-bottom: 2px }
-.paper-buttons {
+.other-projects-buttons {
   margin-top: 5px }
-.paper .button {
+.other-projects .button {
   display: inline-block;
   height: 25px;
   padding: 0 25px;
@@ -59,12 +72,12 @@ h4 {
   border-top: 1px solid #eee;
   padding: 15px 0 40px 0;
   margin-bottom: 0;}
-.footer a {
+.footer .icons a {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.4);
 }
-.footer a:hover{
-  color:#1EAEDB;
+.footer .icons a:hover{
+  color:#006CB8;
 }
 .navbar {
   display: none; }
