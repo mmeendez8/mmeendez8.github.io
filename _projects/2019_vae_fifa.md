@@ -11,7 +11,7 @@ I must admit that I would like to dedicate this post…
 
 {:refdef: style="text-align: center;"}
 ![](https://cdn-images-1.medium.com/max/2000/0*4xBerr9GTrKG0k75.jpg)
-    {: refdef}
+{: refdef}
 
 *Note: All code in here can be found on my [Github](https://github.com/mmeendez8) account*
 

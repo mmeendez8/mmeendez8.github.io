@@ -118,10 +118,15 @@ a:hover {
   list-style: inherit;
   margin-left: 2%;
 }
+#resume ul{
+  list-style: none;
+}
 .docs-section img{
   object-fit: cover;
 }
-
+.project-image img{
+  max-width: 100% !important;
+}
 .tab-content .margin{
   margin-left: 4%;
 }
