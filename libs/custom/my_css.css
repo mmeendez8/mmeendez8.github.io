@@ -108,7 +108,7 @@ a:hover {
 .project-caption {
   padding: 3px;
 }
-.project-image {
+.project-container img {
   width: 100%;
   height: 160px;
   vertical-align: bottom;
