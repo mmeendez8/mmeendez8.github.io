@@ -89,9 +89,7 @@ a:hover {
   text-align: center; }
 
 /*  ================ Project styling  ================ */
-.project-row{
-  margin-left: 2%;
-}
+
 .project-container {
   margin-bottom: 30px;
   text-align:center;
@@ -122,6 +120,10 @@ a:hover {
 }
 .docs-section img{
   object-fit: cover;
+}
+
+.tab-content .margin{
+  margin-left: 4%;
 }
 /* Larger than phone */
 @media (min-width: 550px) {

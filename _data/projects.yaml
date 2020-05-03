@@ -1,6 +1,11 @@
 projects:
+  - title: "Generating FIFA 19 players with VAEs and Tensorflow"
+    subtitle: "Learn to generate your own footbal players"
+    thumbnail: "assets/projects/2019_vae_fifa/thumbnail.jpg"
+    url: "projects/2019_vae_fifa.html"
+    selected: y
   - title: "VAEs! Generating images with Tensorflow"
-    subtitle: Learn how to code a Variational Autoencoder
+    subtitle: Learn to code a Variational Autoencoder
     thumbnail: "assets/projects/2019_vae_tensorflow/thumbnail.jpg"
     url: "projects/2019_vae_tensorflow.html"
     selected: y
@@ -13,9 +18,4 @@ projects:
     subtitle: "Scrap data and train a model"
     thumbnail: "assets/projects/2019_fashion/thumbnail.png"
     url: "projects/2019_fashion.html"
-    selected: y
-  - title: "Generating FIFA 19 players with VAEs and Tensorflow"
-    subtitle: "Learn to generate your own footbal players"
-    thumbnail: "assets/projects/2019_vae_fifa/thumbnail.jpg"
-    url: "projects/2019_vae_fifa.html"
     selected: y

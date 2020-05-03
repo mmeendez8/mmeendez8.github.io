@@ -37,7 +37,7 @@ title: Personal Webpage
   </ul>
 
   <div class="tab-content">
-    <div class="tab-pane active" id="projects-selected">
+    <div class="tab-pane active margin" id="projects-selected">
       {% assign selected_projects = site.data.projects.projects | where: "selected", "y" %}
       {% for project in selected_projects %}
       {% assign index_modulo = forloop.index0 | modulo:2 %}
@@ -62,13 +62,13 @@ title: Personal Webpage
           </div>
         </div>
 
-        {% if index_modulo == 2 %}
+        {% if index_modulo == 1 %}
       </div>
       {% endif %}
       {% endfor %}
     </div>
 
-    <div class="tab-pane" id="projects-all">
+    <div class="tab-pane margin" id="projects-all">
       {% assign selected_projects = site.data.projects.projects | where: "selected", "n" %}
       {% for project in selected_projects %}
       {% assign index_modulo = forloop.index0 | modulo:2 %}

@@ -1,7 +1,7 @@
 ---
 layout: project
 title:  "VAEs! Generating images with Tensorflow"
-subtitle: Learn how to code a Variational Autoencoder
+subtitle: Learn to code a Variational Autoencoder
 ---
 
 In my previous post I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!
