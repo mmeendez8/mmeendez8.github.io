@@ -1,4 +1,6 @@
-# Martin Saveski's Website
+# Personal website
+
+___
 
 ## Updates guide
 Change one of the files in `_data`, unless you are changing the look of the website.
@@ -7,18 +9,7 @@ Test changes with:
 ```
 jekyll serve
 ```
-
-Push to the ML web directory:
-```
-rm -rf public_html
-mkdir public_html
-```
-```
-./__deploy.sh
-```
-
-More info on the [Media Lab wiki](http://wiki.media.mit.edu/view/Necsys/WebPagePersonal).
-
+___
 
 ## External Libraries
 - Framework: [Jekyll](http://jekyllrb.com/)
@@ -29,3 +20,6 @@ More info on the [Media Lab wiki](http://wiki.media.mit.edu/view/Necsys/WebPageP
   - Icons: [Font Awesome](http://fontawesome.io/)
 - JS
   - [Jquery (3.1.1)](https://jquery.com/)
+
+___
+Based on [msavenski website](http://web.media.mit.edu/~msaveski/)
