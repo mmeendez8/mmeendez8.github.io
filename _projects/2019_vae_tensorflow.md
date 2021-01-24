@@ -21,7 +21,7 @@ In here we download the dataset using Keras. After this we create tensors that w
 
 If this is the first time you use this API I recommend you to test how is this working with this simple example that shows the first image of each batch.
 
-<script src="https://gist.github.com/mmeendez8/6d6adddf91922f7613cfcbb2e7479b4a.js"></script>
+<script src="https://gist.github.com/mmeendez8/3643d657ae490dfc762c66d11331ab0e.js"></script>
 
 Easy isn’t it? Alright, let’s keep moving.
 
