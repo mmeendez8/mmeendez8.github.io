@@ -6,7 +6,8 @@ title: Personal Webpage
 <div class="docs-section" id="bio">
   <h4>Bio</h4>
   <p>
-    I am a Machine Learning Research Engineer at <a href="https://www.gradiant.org/en//">Gradiant</a>. I love creating
+    I am a Machine Learning Research Engineer at <a href="https://www.gradiant.org/en//" target="_blank">Gradiant</a>. I
+    love creating
     systems based on data that can interact with the real word.
     My research interests lie in the general area of machine learning, particularly in deep learning and its
     applications in object detection,
@@ -14,7 +15,8 @@ title: Personal Webpage
   </p>
 
   <p>
-    Prior to coming to Gradiant, I worked at <a href="https://www.desigual.com">Desigual Headquarters</a> in Barcelona
+    Prior to coming to Gradiant, I worked at <a href="https://www.desigual.com" target="_blank">Desigual
+      Headquarters</a> in Barcelona
     as a Data Science consultant.
     I spent one year in Barcelona and one year in the United States (Purdue University) to do a M.Sc. in Artificial
     Intelligence.
@@ -99,6 +101,20 @@ title: Personal Webpage
       {% endfor %}
     </div>
   </div>
+
+</div>
+
+<!-- ========== NEWS ========== -->
+<div class="docs-section" id="news">
+  <h4>News</h4>
+
+  <ul>
+    {% for new in site.data.news.news %}
+    <li>
+      <p>{{new.month}} {{new.year}}. {{new.text}}</p>
+    </li>
+    {% endfor %}
+  </ul>
 
 </div>
 

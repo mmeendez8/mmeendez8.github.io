@@ -1,0 +1,4 @@
+news:
+  - month: "September"
+    year: "2020"
+    text: "We have won Drone vs Bird Detection Challenge. More info <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank'>here</a>"
