@@ -68,4 +68,4 @@ Note that I did not show the whole process here, since the images we obtained fr
 
 Well, that’s all we need to classify the unlabeled images we obtain from Zalando’s website. You could use this to create a labeled dataset of images to train another different model or anything that you can think on!
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*
