@@ -1,0 +1,17 @@
+publications:
+  - title: "Drone vs. Bird Detection: Deep Learning Algorithms and Results from a Grand Challenge"
+    authors: "Coluccia, Angelo and Fascista, Alessio and Schumann, Arne and Sommer, Lars and Dimou, 
+      Anastasios and Zarpalas, Dimitrios and <b>Méndez, Miguel</b> and de la Iglesia, David and González, 
+      Iago and Mercier, Jean-Philippe and Gagné, Guillaume and Mitra, Arka and Rajashekar, Shobha"
+    paper: "https://www.mdpi.com/1424-8220/21/8/2824"
+    code: "https://github.com/Gradiant/pyodi/"
+    venue: "Sensors: Special Issue Deep Learning Based UAV Detection, Classification, and Tracking"
+
+  - title: "Drone-vs-Bird Detection Challenge at IEEE AVSS2019"
+    authors: "A. Coluccia and A. Fascista and A. Schumann and L. Sommer and M. Ghenescu 
+      and T. Piatrik and G. De Cubber and M. Nalamati and A. Kapoor and M. Saqib and N. 
+      Sharma and M. Blumenstein and V. Magoulianitis and D. Ataloglou and A. Dimou and 
+      D. Zarpalas and P. Daras and C. Craye and S. Ardjoune and D. De la Iglesia and 
+      <b>M. Méndez</b> and R. Dosil and I. González"
+    paper: "https://ieeexplore.ieee.org/abstract/document/8909876"
+    venue: 2019 16th IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS)

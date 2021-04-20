@@ -143,10 +143,36 @@ title: Personal Webpage
 </div>
 
 
+<!-- ========== Publications ========== -->
+<div class="docs-section" id="other">
+  <h4>Publications</h4>
+
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="project-selected">
+      {% for paper in site.data.publications.publications %}
+      <div class="other-projects">
+        <p class="title"><b>{{ paper.title }}</b></p>
+        <p>{{ paper.authors }}</p>
+        <p><i>{{ paper.venue }}</i></p>
+        <p class="description">{{ paper.description }}</p>
+        <div class="other-projects-buttons">
+          {% if paper.paper %}
+          <a class="button" href="{{ paper.paper }}" target="_blank">Paper</a>
+          {% endif %}
+          {% if paper.code %}
+          <a class="button" href="{{ paper.code }}" target="_blank">Code</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
 <!-- ========== Other Projects ========== -->
 <div class="docs-section" id="other">
-  <h4>Other Projects</h4>
-
+  <h4>Other projects</h4>
 
   <div class="tab-content">
     <div class="tab-pane active" id="project-selected">
