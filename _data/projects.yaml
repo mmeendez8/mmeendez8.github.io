@@ -1,7 +1,7 @@
 projects:
   - title: "Cache a docker image in Github Actions"
     subtitle: "Use Github Actions Cache for build and run docker container with Anaconda in Actions"
-    thumbnail: "assets/projects/2019_fashion/thumbnail.png"
+    thumbnail: "assets/projects/2021_cache_docker/thumbnail.jpg"
     url: "projects/2021_cache_docker.html"
     selected: y
   - title: "Generating FIFA 19 players with VAEs and Tensorflow"

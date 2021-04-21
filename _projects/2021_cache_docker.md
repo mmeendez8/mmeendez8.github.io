@@ -1,11 +1,12 @@
 ---
 layout: project
-title:  "Improve your actions build time with Docker and Github Cache"
+title:  "Reduce Actions time with Docker and Github Cache"
 subtitle: "Use Github Actions cache and Docker to reduce time installing Conda dependencies"
 ---
 
-
-### 1. Background
+{:refdef: style="text-align: center;"}
+![](/assets/projects/2021_cache_docker/thumbnail.jpg)
+{: refdef}
 
 I've been bumping my head around Github Actions recently, as most of our Continuos Integration (CI) builds time was spent installing third party libraries. In most of our projects we have to deal with large dependencies like Pytorch or CUDA, which are needed to run our test suite and some others like [pre-commit](https://pre-commit.com/) that help us to lint our code. This is very annoying since you need to run all setup steps on every build even though your environment does not change. 
 
@@ -13,9 +14,9 @@ A classic CI workflow can be split into 2 two different blocks. The first one in
 
 In this post I pretend to provide some intuition of how have I optimized some of these pipelines for building Pytorch and Cuda using a Conda environment in a pretty efficient way.
 
-### 2. The classic approach
+### 1. The classic approach
 
-A common way to automate tasks such as Python package code formatting is to use pre-commit hooks. Also, I am used to working with pytest because I consider it a very flexible and intuitive framework to run all my tests. So these dependencies and others like Pytorch need to be installed in our environment before we can use them properly. I use [Conda] (https://www.anaconda.com/) environments for Python package management as it is a very powerful tool.
+A common way to automate tasks such as Python package code formatting is to use pre-commit hooks. Also, I am used to working with pytest because I consider it a very flexible and intuitive framework to run all my tests. So these dependencies and others like Pytorch need to be installed in our environment before we can use them properly. I use [Conda](https://www.anaconda.com/) environments for Python package management as it is a very powerful tool.
 
 I've set up a very simple and straightforward [Github repository](https://github.com/mmeendez8/cache_docker) that follows this approach so that we can easily visualize the different pipelines that we're going to use. So a simple CI pipeline that uses Anaconda Action for Python package management might look like this:
 
@@ -47,7 +48,7 @@ jobs:
 ```
 
 This workflow needs to configure the conda environment each time it runs, although `conda.yaml` has not changed. This is far from efficient as we spend time doing the same. There must be a better way to speed this up ... and as usual these days, Docker is involved!
-### 3. Adding Docker into the equation
+### 2. Adding Docker into the equation
 
 Docker is great and we should take advantage of it. I don't intend to cover the basics of Docker in this post, so I assume the reader is used to struggling with it. Anyway, if there is anything in this post that is not clear to you, feel free to reach out to me via [Twitter](https://twitter.com/mmeendez8).
 
@@ -83,6 +84,7 @@ $ docker push ghcr.io/USERNAME/REPO/IMAGE_NAME:VERSION
 
 So now we can update our CI workflow to use our Docker images using the container tag. I will keep the old Anaconda based job to easily compare running times of each one. Our pipeline would look like this now:
 
+{% raw %}
 ```yaml
 name: Continuous Integration
 
@@ -132,6 +134,8 @@ jobs:
       - name: Run tests
         run: pytest tests
 ```
+{% endraw %}
+
 
 If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda's job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But ... **we need to manually build and load our docker image * when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let's see how we can avoid it.
 
@@ -139,7 +143,7 @@ If we check the execution times of these two jobs, we see that the Docker action
 ![](/assets/projects/2021_cache_docker/time_comparison.png)
 {: refdef}
 
-### 4. Building and pushing Docker images on Github Actions
+### 3. Building and pushing Docker images on Github Actions
 
 What we want to do is automate the build and insert steps. There are many ways to solve this problem, the simplest would be to add a Docker build and push step to our pipeline so that the image is always compiled with the latest changes and ready to go. However ... this would be even worse than going back to where we started. We'd be building our Docker image, pushing it to the Github registry, and then running it for our test and lint steps, and this is clearly slower than installing Conda dependencies every time.
 
@@ -147,6 +151,7 @@ There is (as usually) a better way. I found this wonderful [evilmartians post](h
 
 The new pipeline would look a little bit more complicated. It has been adapted from the example on [evilmartians post](https://evilmartians.com/chroniclesuild-images-on-github-actions-with-docker-layer-caching) so refer to there in case you have any doubt.
 
+{% raw %}
 ```yaml
 name: Continuous Integration with layer caching
 
@@ -212,6 +217,7 @@ jobs:
       - name: Run tests
         run: pytest tests
 ```
+{% endraw %}
 
 The first time we run this job, our cache is empty, so it will create the docker image from scratch, and that takes about 15 minutes!
 
@@ -231,11 +237,103 @@ So now **we've incorporated the Docker build step into our pipeline**, so we don
 
 As we have seen before, our Docker image is built whether our Dockerfile or Conda environment file is modified. So what if we just **skip the build step** when this has not occurred? We can do this in a very simple manner using taking advantage once again from Github Actions! We can track both files, calculating a hash from their content, so the build step only triggers when this hash changes. We just need to add a few lines to our pipeline.
 
+{% raw %}
+```yaml
+name: Continuous Integration full caching
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Cached environment
+        uses: actions/cache@v2
+        id: cache
+        env:
+          # Increase this value to force docker build
+          CACHE_NUMBER: 0
+        with:
+          path: env.yml
+          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}
+            -${{hashFiles('Dockerfile')}}-${{hashFiles('conda.yaml')}}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        if: steps.cache.outputs.cache-hit != 'true' # Condition to skip step when cache hit
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
+
+      - name: Cache Docker layers
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-multi-buildx
+      - name: Login to GitHub Container Registry
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: mmeendez8
+          password: ${{ secrets.MY_TOKEN }}
+
+      - name: Build production image
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          file: Dockerfile
+          push: true
+          tags: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+
+      - name: Move cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  lint_and_test:
+    needs: build_docker
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+      credentials:
+        username: mmeendez8
+        password: ${{ secrets.MY_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint code
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
+```
+{% endraw %}
+
+Note how I have also added some if conditionals `if: steps.cache.outputs.cache-hit != 'true'` to those steps that come after the cache step to skip them when necessary. I have also added a `CACHE_NUMBER` variable that we can modify when we need to force the docker build.
 
 We can now push our changes and Github will compute that hash and save it in the cache.. If we later commit some changes to our repository, like adding a new test function or some new feature to our source code, the compile time will look like this:
 
-That's cool! We have fully automated our pipeline minimizing the time we need to install all our dependencies!
+{:refdef: style="text-align: center;"}
+![](/assets/projects/2021_cache_docker/full_cache.png)
+{: refdef}
 
+That's only 2 minutes and 29 seconds! We have fully automated our pipeline minimizing the time we need to install all our dependencies!
 
 ### Conclusion
 
@@ -248,7 +346,5 @@ We've learned how to improve our CI pipelines by leveraging the power of Github,
 * The use of Docker Layer Caching allows us to reduce building time and we have seen how to setup this in our pipeline.
 
 * Finally, the use of an extra caching combined with the power of conditional syntax allowed us to skip the build step when possible.
-
-
 
 *Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
