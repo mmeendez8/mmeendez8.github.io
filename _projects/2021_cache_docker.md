@@ -347,4 +347,4 @@ We've learned how to improve our CI pipelines by leveraging the power of Github,
 
 * Finally, the use of an extra caching combined with the power of conditional syntax allowed us to skip the build step when possible.
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*
