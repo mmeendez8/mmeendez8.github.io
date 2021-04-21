@@ -115,4 +115,4 @@ In this video you can find a good visual explanation of the whole network!
 
 In this post I have covered the basic intuition we must have in order to implement a Deep Variational Autoencoder. In next posts we will go through the implementation of this network using tensorflow, we will evaluate some of the obtained results playing with different dimensions of our latent space and observe how our data distributes on it. I must once again thank to the amazing article written by [Doersch](https://arxiv.org/pdf/1606.05908.pdf) who has helped me to properly understand the theory behind VAEs.
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*

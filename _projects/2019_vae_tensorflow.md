@@ -194,4 +194,4 @@ We have learnt about Variational Autoencoders. We started with the theory and ma
 It could be interesting to adapt our network to work with larger and colored images (3 channels) and observe how our network does with a dataset like that. I might implement some of these features but this is all for now!
 
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*

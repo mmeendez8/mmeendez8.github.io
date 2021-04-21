@@ -206,4 +206,4 @@ In this post we have learnt how to apply VAEs to a real dataset of colored image
 
 I would like to encourage you to try the code, create new experiments, use different dimensional spaces or longer trainings!
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out on [Github](https://github.com/mmeendez8) , [Linkedin](https://www.linkedin.com/in/miguel-mendez/) or [my personal web](https://mmeendez8.github.io/).*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*
