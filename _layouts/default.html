@@ -5,12 +5,24 @@
 
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
   <meta charset="utf-8">
   <title>{{ site.data.main_info.name }} | {{ page.title }}</title>
-  <meta name="description" content="Homepage of Miguel Mendez">
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
-  <meta name="image" property="og:image" content="/assets/profile-pics/main_rectangle.jpg">
+  
+  {% if page.subtitle %}
+  <meta name="description" property="og:description" content="{{ page.subtitle }}">
+  {% else %}
+  <meta name="description" property="og:description" content="{{ site.data.main_info.description }}">
+  {% endif %}
+
+  {% if page.image %}
+  <meta name="image" property="og:image" content="{{ site.baseurl }}{{ page.image }}">
+  {% else %}
+  <meta name="image" property="og:image" content="{{ site.baseurl }}{{ site.data.main_info.default_pic }}">
+  {% endif %}
+
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -157,6 +169,8 @@
 
   <!-- Google Analytics -->
   {% include google_analytics.html %}
+
+  {% include twitter_card.html %}
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

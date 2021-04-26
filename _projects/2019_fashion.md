@@ -2,6 +2,7 @@
 layout: project
 title:  "Automatic Classification of an online Fashion Catalogue"
 subtitle: "Scrap data and train a model"
+image: "/assets/projects/2019_fashion/thumbnail.png"
 ---
 
 

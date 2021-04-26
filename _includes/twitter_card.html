@@ -1,0 +1,21 @@
+  <!-- Twitter cards -->
+  <meta name="twitter:site" content="@{{site.data.main_info.twitter}}">
+  <meta name="twitter:title" content="{{ page.title }}">
+  
+  {% if page.subtitle %}
+  <meta name="twitter:description" content="{{ page.subtitle }}">
+  {% else %}
+  <meta name="twitter:description" content="{{ site.data.main_info.description }}">
+  {% endif %}
+  
+
+  {% if page.image %}
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="{{ page.image | prepend: site.relative_url }}">
+  {% else %}
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="{{ site.data.main_info.default_pic | prepend: site.relative_url }}">
+  {% endif %}
+
+  <!-- end of Twitter cards -->
+  

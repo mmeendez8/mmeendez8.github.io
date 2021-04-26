@@ -2,6 +2,7 @@
 layout: project
 title:  "Generating FIFA 19 players with VAEs and Tensorflow"
 subtitle: "Learn to generate your own footbal players"
+image: "/assets/projects/2019_vae_fifa/thumbnail.jpg"
 ---
 
 
