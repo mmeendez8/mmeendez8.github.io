@@ -3,7 +3,9 @@ layout: project
 title:  "VAEs! Generating images with Tensorflow"
 subtitle: Learn to code a Variational Autoencoder
 image: "/assets/projects/2019_vae_tensorflow/thumbnail.jpg"
+description: "This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there "
 ---
+
 
 In my previous post I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!
 You can also find this post in [Medium](https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f)

@@ -11,6 +11,11 @@ layout: default
     <h5>{{ page.subtitle }}</h5>
   </div>
   {% endif %}
+  {% if page.image %}
+  <div>
+    <img src="{{ page.image| prepend: site.relative_url }}" alt="{{ include.description }}"/>
+  </div>
+  {% endif %}
 
   {{ content }}
 

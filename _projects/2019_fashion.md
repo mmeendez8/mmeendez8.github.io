@@ -3,6 +3,7 @@ layout: project
 title:  "Automatic Classification of an online Fashion Catalogue"
 subtitle: "Scrap data and train a model"
 image: "/assets/projects/2019_fashion/thumbnail.png"
+description: "Learn to find a public fashion dataset, download it and process it for training a classification model on Tensorflow"
 ---
 
 

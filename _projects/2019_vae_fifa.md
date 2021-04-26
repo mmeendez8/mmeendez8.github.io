@@ -3,8 +3,8 @@ layout: project
 title:  "Generating FIFA 19 players with VAEs and Tensorflow"
 subtitle: "Learn to generate your own footbal players"
 image: "/assets/projects/2019_vae_fifa/thumbnail.jpg"
+description: "Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country"
 ---
-
 
 This is my third post dealing with Variational Autoencoders. If you want to catch up with the math I recommend you to check my first post. If you prefer to skip that part and go directly to some simple experiments with VAEs then move to my second post, where I showed how useful these networks can be. If you just want to see how a neural network can create fake faces of football players then you are in the right place! Just keep reading!
 
