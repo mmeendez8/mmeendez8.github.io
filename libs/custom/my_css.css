@@ -90,25 +90,25 @@ a:hover {
 
 /*  ================ Project styling  ================ */
 
-.project-container {
+.post-container {
   margin-bottom: 30px;
   text-align:center;
 }
-.project-image-container {
+.post-image-container {
   border: 1px solid rgba(0,0,0,0.2);
   padding: 3px;
   transition: 0.3s;
 }
-.project-image-container:hover {
+.post-image-container:hover {
   transition: 0.3s;
 }
-.project-image-container:hover img {
+.post-image-container:hover img {
   opacity: 0.4;
 }
-.project-caption {
+.post-caption {
   padding: 3px;
 }
-.project-container img {
+.post-container img {
   width: 100%;
   height: 160px;
   vertical-align: bottom;
@@ -124,7 +124,7 @@ a:hover {
 .docs-section img{
   object-fit: cover;
 }
-.project-image img{
+.post-image img{
   max-width: 100% !important;
 }
 .tab-content .margin{
