@@ -4,9 +4,9 @@ includes: ./_includes
 baseurl: null
 relative_url: "https://mmeendez8.github.io"
 
-collections:
-  projects:
-    output: true
+# collections:
+#   holas:
+#     output: true
 
 markdown: kramdown
 highlighter: rouge
