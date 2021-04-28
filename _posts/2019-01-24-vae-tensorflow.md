@@ -1,9 +1,10 @@
 ---
-layout: project
+layout: post
 title:  "VAEs! Generating images with Tensorflow"
-subtitle: Learn to code a Variational Autoencoder
-image: "/assets/projects/2019_vae_tensorflow/thumbnail.jpg"
+subtitle: "Learn how to code a Variational Autoencoder"
+image: "/assets/posts/2019-01-24-vae-tensorflow/thumbnail.jpg"
 description: "This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there "
+selected: y
 ---
 
 

@@ -24,41 +24,54 @@ title: Personal Webpage
   </p>
 </div>
 
+<!-- ========== NEWS ========== -->
+<div class="docs-section" id="news">
+  <h4>News</h4>
 
-<!-- ========== PROJECTS ========== -->
-<div class="docs-section" id="projects">
-  <h4>Projects</h4>
+  <ul>
+    {% for new in site.data.news.news %}
+    <li>
+      <p><b>{{new.month}} {{new.year}}</b>. {{new.text}}</p>
+    </li>
+    {% endfor %}
+  </ul>
+
+</div>
+
+<!-- ========== POSTS ========== -->
+<div class="docs-section" id="posts">
+  <h4>Posts</h4>
 
   <ul class="tab-nav">
     <li>
-      <div class="button active" data-ref="#projects-selected">Selected</div>
+      <div class="button active" data-ref="#posts-selected">Selected</div>
     </li>
     <li>
-      <div class="button" data-ref="#projects-all">All</div>
+      <div class="button" data-ref="#posts-all">All</div>
     </li>
   </ul>
 
   <div class="tab-content">
-    <div class="tab-pane active margin" id="projects-selected">
-      {% assign selected_projects = site.data.projects.projects | where: "selected", "y" %}
-      {% for project in selected_projects %}
+    <div class="tab-pane active margin" id="posts-selected">
+      {% assign selected_posts = site.posts | where: "selected", "y" %}
+      {% for post in selected_posts %}
       {% assign index_modulo = forloop.index0 | modulo:2 %}
       {% if index_modulo == 0 %}
-      <div class="row project-row">
+      <div class="row post-row">
         {% endif %}
 
         <div class="six columns">
-          <div class="project-container">
+          <div class="post-container">
 
-            <div class="project-image-container">
-              <a href="{{ project.url }}">
-                <img src="{{ project.thumbnail }}" class="u-max-full-width project-image" />
+            <div class="post-image-container">
+              <a href="{{ post.url }}">
+                <img src="{{ post.image }}" class="u-max-full-width post-image" />
               </a>
             </div>
 
-            <div class="project-caption">
-              <b>{{ project.title }}</b> <br />
-              {{ project.subtitle }}
+            <div class="post-caption">
+              <b>{{ post.title }}</b> <br />
+              {{ post.subtitle }}
             </div>
 
           </div>
@@ -70,26 +83,26 @@ title: Personal Webpage
       {% endfor %}
     </div>
 
-    <div class="tab-pane margin" id="projects-all">
-      {% assign selected_projects = site.data.projects.projects | where: "selected", "n" %}
-      {% for project in selected_projects %}
+    <div class="tab-pane margin" id="posts-all">
+      {% assign selected_posts = site.posts | where: "selected", "n" %}
+      {% for post in selected_posts %}
       {% assign index_modulo = forloop.index0 | modulo:2 %}
       {% if index_modulo == 0 %}
-      <div class="row project-row">
+      <div class="row post-row">
         {% endif %}
 
         <div class="six columns">
-          <div class="project-container">
+          <div class="post-container">
 
-            <div class="project-image-container">
-              <a href="{{ project.url }}">
-                <img src="{{ project.thumbnail }}" class="u-max-full-width" />
+            <div class="post-image-container">
+              <a href="{{ post.url }}">
+                <img src="{{ post.image }}" class="u-max-full-width" />
               </a>
             </div>
 
-            <div class="project-caption">
-              <b>{{ project.title }}</b> <br />
-              {{ project.subtitle }}
+            <div class="post-caption">
+              <b>{{ post.title }}</b> <br />
+              {{ post.subtitle }}
             </div>
 
           </div>
@@ -104,19 +117,6 @@ title: Personal Webpage
 
 </div>
 
-<!-- ========== NEWS ========== -->
-<div class="docs-section" id="news">
-  <h4>News</h4>
-
-  <ul>
-    {% for new in site.data.news.news %}
-    <li>
-      <p>{{new.month}} {{new.year}}. {{new.text}}</p>
-    </li>
-    {% endfor %}
-  </ul>
-
-</div>
 
 <!-- ========== RESUME ========== -->
 <div class="docs-section" id="resume">
@@ -144,7 +144,7 @@ title: Personal Webpage
 
 
 <!-- ========== Publications ========== -->
-<div class="docs-section" id="other">
+<div class="docs-section" id="publications">
   <h4>Publications</h4>
 
 
