@@ -70,6 +70,10 @@
   <link rel="icon" type="image/png" href={{ "/libs/icon.png" | prepend: site.baseurl }}>
   <link rel="shortcut icon" type="image/png" href={{ "/libs/icon.png" | prepend: site.baseurl }}>
 
+  <!-- Google Analytics -->
+  {% include google_analytics.html %}
+  {% include twitter_card.html %}
+
 </head>
 
 <body>
@@ -170,11 +174,6 @@
     </div>
 
   </div>
-
-  <!-- Google Analytics -->
-  {% include google_analytics.html %}
-
-  {% include twitter_card.html %}
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
