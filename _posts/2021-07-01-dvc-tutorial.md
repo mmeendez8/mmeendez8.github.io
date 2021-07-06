@@ -33,6 +33,8 @@ If you paid attention, you will probably have a general idea of how this large f
 
 ### Setting up the environment
 
+I have pushed all changes to a [Github repository](https://github.com/mmeendez8/coco_sample/) that you can consult in case you need.
+
 #### Install DVC
 
 Let's setup DVC for our experiment. If you check their [installation guide](https://dvc.org/doc/install/linux#installation-on-linux), you will realize that depending on the type of remote storage you plan to use, it might be necessary to install additional deps. For this tutorial we are going to use Google Drive because it is probably the most accesible to everyone. I always use Conda environment for Python package management, do the following for creating a new environment and installing dvc on it:
