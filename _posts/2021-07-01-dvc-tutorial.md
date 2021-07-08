@@ -3,7 +3,7 @@ layout: post
 title:  "Version control your dataset with DVC"
 subtitle: "Use DVC and Git for tracking changes on your machine learning dataset"
 image: "/assets/posts/2021-07-01-dvc-tutorial/thumbnail.png"
-description: "Learn how to use DVC and Git for tracking changes on your machine learning dataset as you do with code"
+description: "Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code."
 selected: y
 ---
 
