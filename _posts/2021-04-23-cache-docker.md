@@ -136,7 +136,7 @@ jobs:
 {% endraw %}
 
 
-If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda's job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But ... **we need to manually build and load our docker image * when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let's see how we can avoid it.
+If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda's job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But ... we need to **manually build and load** our docker image when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let's see how we can avoid it.
 
 {:refdef: style="text-align: center;"}
 ![](/assets/posts/2021-04-23-cache-docker/time_comparison.png)
@@ -144,7 +144,7 @@ If we check the execution times of these two jobs, we see that the Docker action
 
 ### 3. Building and pushing Docker images on Github Actions
 
-What we want to do is automate the build and insert steps. There are many ways to solve this problem, the simplest would be to add a Docker build and push step to our pipeline so that the image is always compiled with the latest changes and ready to go. However ... this would be even worse than going back to where we started. We'd be building our Docker image, pushing it to the Github registry, and then running it for our test and lint steps, and this is clearly slower than installing Conda dependencies every time.
+What we want to do is automate the build and push steps. There are many ways to solve this problem, the simplest would be to add a Docker build and push step to our pipeline so that the image is always compiled with the latest changes and ready to go. However ... this would be even worse than going back to where we started. We'd be building our Docker image, pushing it to the Github registry, and then running it for our test and lint steps, and this is clearly slower than installing Conda dependencies every time.
 
 There is (as usually) a better way. I found this wonderful [evilmartians post](https://evilmartians.com/chronicles/build-images-on-github-actions-with-docker-layer-caching) that explains why you should use Docker Layer Caching (DLC). If you are unfamiliar with DLC, I recommend that you stop here now and read that post in its entirety. The DLC will save the image layers created within your jobs, so we can reuse those layers when the docker build step is executed, reducing its duration. In other words, we're going to take advantage of the Github cache to store Docker layers, so those layers are there ready to use for us next time the action is triggered.
 
