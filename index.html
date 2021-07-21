@@ -84,8 +84,7 @@ title: Personal Webpage
     </div>
 
     <div class="tab-pane margin" id="posts-all">
-      {% assign selected_posts = site.posts | where: "selected", "n" %}
-      {% for post in selected_posts %}
+      {% for post in site.posts %}
       {% assign index_modulo = forloop.index0 | modulo:2 %}
       {% if index_modulo == 0 %}
       <div class="row post-row">
@@ -108,7 +107,7 @@ title: Personal Webpage
           </div>
         </div>
 
-        {% if index_modulo == 2 %}
+        {% if index_modulo == 1 %}
       </div>
       {% endif %}
       {% endfor %}
