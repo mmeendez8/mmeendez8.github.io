@@ -14,7 +14,7 @@ jobs:
     - name: Install and run css-html-js-minify
       run: |
         pip install css-html-js-minify
-        css-html-js-minify .
+        css-html-js-minify --overwrite libs
 
     - uses: actions/cache@v2
       with:
