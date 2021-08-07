@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Version control your dataset with DVC</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code.">
+  
+
+  
+  <meta name="image" property="og:image" content="/assets/posts/2021-07-01-dvc-tutorial/thumbnail.webp">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
+  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/custom/syntax.css>
+
+  <!-- JQuery
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src=/libs/external/jquery-3.1.1.min.js></script>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
+  
+  <!-- Skeleton tabs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
+  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
+
+  <!-- Timeline
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/external/timeline.css>
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
+  <script src=/libs/custom/my_js.js></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-133014227-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Version control your dataset with DVC">
+  
+  
+  <meta name="twitter:description" content="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2021-07-01-dvc-tutorial/thumbnail.webp">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+
+    <section class="header">
+      <div class="row">
+        <div class="three columns">
+          <a href="/"><img class="u-max-full-width"
+              src='/assets/profile-pics/main_circle.webp'></a>
+        </div>
+        <div class="nine columns main-description">
+          <h1>Miguel Méndez</h1>
+          <div class="subtitle">
+            <p>Machine Learning Research Engineer, Gradiant</p>
+            <p>miguelmndez [AT] gmail.com</p>
+            <p class="social">
+              <a href='https://github.com/mmeendez8' target="_blank">
+                <i class="icon-github-circled" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
+                <i class="icon-linkedin-squared" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://twitter.com/mmeendez8' target="_blank">
+                <i class="icon-twitter-squared2" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://medium.com/@miguelmendez_' target="_blank">
+                <i class="icon-medium" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
+                <i class="icon-stackoverflow" aria-hidden="true"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="navbar-spacer"></div>
+    <nav class="navbar">
+      <div class="container">
+        <ul class="navbar-list">
+          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
+          </li>
+          <li class="navbar-item"><a class="navbar-link"
+            href=/index.html#news>News</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#posts>Posts</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#resume>Vita</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#publications>Publications</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#other>Other</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="docs-section post-image">
+
+  
+  <div class="title-subtitle">
+    <h3>Version control your dataset with DVC</h3>
+    <h5>Use DVC and Git for tracking changes on your machine learning dataset</h5>
+  </div>
+  
+  
+  <div>
+    <img src="/assets/posts/2021-07-01-dvc-tutorial/thumbnail.webp" alt=""/>
+  </div>
+  
+
+  <p><a href="https://dvc.org/">Data Version Control (DVC)</a> is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.</p>
+
+<p>In this post I will try to show how to configure DVC and how it can help us to maintain version of our datasets that can be easily integrated with Github.</p>
+
+<h3 id="why-dvc">Why DVC?</h3>
+
+<p>The first thing we should do is understanding how DVC works, we can check its <a href="https://dvc.org/">landing page</a> which contains some intuitive explanations:</p>
+
+<ul>
+  <li>Machine Learning projects are defined by code and data</li>
+  <li>We know how to track code using git</li>
+  <li>DVC main target is to built something similar to git for tracking data and models. It must be:
+    <ul>
+      <li>Flexible</li>
+      <li>Easy to learn</li>
+      <li>Work with any ML framework</li>
+    </ul>
+  </li>
+</ul>
+
+<p>I always recommend to watch this introduction video that greatly summarizes the main idea behind this tool.</p>
+
+<center>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/UbL7VUpv1Bs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+    </iframe>
+</center>
+
+<p>If you paid attention, you will probably have a general idea of how this large files are tracked. Light-weight files (.dvc files) are used as “pointers” to large files, so we can use git to track those pointers and then retrieve the associated large files in our local filesystem with dvc. In other words, you do not need to worry anymore about uploading large files to git (forget about LFS), DVC will handle everything for you once it is properly configured. That’s pretty cool isn’t it?</p>
+
+<h3 id="setting-up-the-environment">Setting up the environment</h3>
+
+<p>I have pushed all changes to a <a href="https://github.com/mmeendez8/coco_sample/">Github repository</a> that you can consult in case you need.</p>
+
+<h4 id="install-dvc">Install DVC</h4>
+
+<p>Let’s setup DVC for our experiment. If you check their <a href="https://dvc.org/doc/install/linux#installation-on-linux">installation guide</a>, you will realize that depending on the type of remote storage you plan to use, it might be necessary to install additional deps. For this tutorial we are going to use Google Drive because it is probably the most accesible to everyone. I always use Conda environment for Python package management, do the following for creating a new environment and installing dvc on it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda  create <span class="nt">-n</span> coco_sample <span class="nv">python</span><span class="o">=</span>3.8 <span class="nt">-y</span>
+conda activate coco_sample
+pip <span class="nb">install </span>dvc[gdrive]
+</code></pre></div></div>
+
+<h4 id="get-the-data">Get the data</h4>
+
+<p>We are going to use a <a href="https://course.fast.ai/datasets#coco">subset of the COCO dataset created by fast.ai</a>. The fast.ai subset contains all images that contain one of five selected categories, restricting objects to just those five categories; the categories are: chair couch tv remote book vase. You can download and extract it using the following commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://s3.amazonaws.com/fast-ai-coco/coco_sample.tgz <span class="nt">-P</span> data
+<span class="nb">tar </span>zxvf data/coco_sample.tgz <span class="nt">-C</span> data
+<span class="nb">rm  </span>data/coco_sample.tgz
+</code></pre></div></div>
+
+<p>You should now have all images in <code class="language-plaintext highlighter-rouge">data/coco_sample/train_sample</code> and their corresponding annotations in <code class="language-plaintext highlighter-rouge">data/coco_sample/annotations/train_sample.json</code></p>
+
+<h4 id="visualize-our-data">Visualize our data</h4>
+
+<p>It is always good to take a look at the data to get an idea of what kind of images we are dealing with. We are going to use our tool <a href="https://github.com/Gradiant/pyodi">pyodi</a>, which allows us to retrieve annotations from a COCO formatted file and paint then over the corresponding image. We can install it using pip and run the paint-annotations script pointing to our data and annotations folder:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>pyodi
+pyodi paint-annotations data/coco_sample/annotations/train_sample.json data/coco_sample/train_sample output/painted_images <span class="nt">--first_n</span> 10
+</code></pre></div></div>
+
+<p>This will paint the first 10 images of the dataset and save them into <code class="language-plaintext highlighter-rouge">output/painted_images</code> folder.</p>
+
+<p style="text-align: center;"><img src="/assets/posts/2021-07-01-dvc-tutorial/painted_coco_sample.webp" alt="" /></p>
+
+<h3 id="version-the-data">Version the data</h3>
+
+<p>If we follow <a href="https://dvc.org/doc/start">DVC get started page</a>, we need to initialize the project running <code class="language-plaintext highlighter-rouge">dvc init</code> so let’s run that first and commit those internal files to github.com</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
+dvc init
+git commit <span class="nt">-m</span> <span class="s2">"Initialize DVC"</span>
+</code></pre></div></div>
+
+<p>Let’s now add our data and annotations to DVC.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc add data
+</code></pre></div></div>
+
+<p>This may take a while since it needs to compute hashes for all files in our data directory. Two files are generated, the <code class="language-plaintext highlighter-rouge">.gitignore</code> that will inform git that it must ignore the <code class="language-plaintext highlighter-rouge">data</code>/ directory and <code class="language-plaintext highlighter-rouge">data.dvc</code>, a small text file in a human-readable format used by dvc to track changes that we can upload to git. Let’s add can add this files and commit the new changes.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .gitignore data.dvc 
+git commit <span class="nt">-m</span> <span class="s2">"Added data to dvc"</span>
+</code></pre></div></div>
+
+<p>Last step will be to configure our Google Drive remote. For this, I created a new folder in my personal gdrive called <code class="language-plaintext highlighter-rouge">dvc_data</code> so you should do the same in your own gdrive. After that I will add that folder as a dvc remote and I will need to grant DVC the necessary permissions to access my gdrive account. This can be easily done after running <code class="language-plaintext highlighter-rouge">dvc push</code> following the link that promts when running the command. Have in mind that the push step may take a while to complete depending on your internet connection.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc remote add <span class="nt">-d</span> gdrive-remote gdrive://root/dvc_data
+git commit .dvc/config <span class="nt">-m</span> <span class="s2">"Configure local remote"</span> <span class="c"># Commit changes to git</span>
+dvc push <span class="c"># Upload data to gdrive</span>
+</code></pre></div></div>
+
+<p>We are now tracking our images and annotations with DVC and have pushed it to our google drive remote storage.</p>
+
+<h3 id="split-the-data">Split the data</h3>
+
+<p>We have a file <code class="language-plaintext highlighter-rouge">train_sample.json</code> that contains all our annotations. We need to split this file in training and validation subsets so we can properly train our model in a near future. We are going to use pyodi’s <a href="https://gradiant.github.io/pyodi/reference/apps/coco-split/">coco random-split</a> app for this task, since it is very easy to execute.
+Let’s reserve a 20% of the total data for validation:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split <span class="nt">--val-percentage</span> 0.2
+</code></pre></div></div>
+
+<p>This creates two new files <code class="language-plaintext highlighter-rouge">split_train.json</code>and <code class="language-plaintext highlighter-rouge">split_val.json</code>. Let’s add them to dvc, that will magically recognize that we have only added two new files, and commit changes to git:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc add data/
+git commit data.dvc <span class="nt">-m</span> <span class="s2">"Add dataset splits"</span>
+dvc push
+</code></pre></div></div>
+
+<h3 id="tag-our-data-with-versions">Tag our data with versions</h3>
+
+<p>You must bear in mind that if we now move through our git history, we can also retrieve the state of our data in that commit or specific moment thanks to DVC. Anyway, I always like to tag the versions of my dataset so that I can easily understand what the state was at all times. Let’s do this now and tag the initial version of our dataset and push our changes to github.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git tag <span class="nt">-a</span> <span class="s2">"v1.0"</span> <span class="nt">-m</span> <span class="s2">"Initial version, fast.ai COCO subset. 0.2 validation split"</span>
+git push <span class="nt">--tags</span>
+</code></pre></div></div>
+
+<p>Let’s imagine that for any reason we need to create a new version of our dataset saving only ten percent of our data as validation. We could simply run pyodi, override our actual annotations and push the new changes without fear to loose any data. Let’s try that:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split <span class="nt">--val-percentage</span> 0.1
+dvc add data/
+git commit data.dvc <span class="nt">-m</span> <span class="s2">"New split with 0.1 validation"</span>
+dvc push
+git tag <span class="nt">-a</span> <span class="s2">"v2.0"</span> <span class="nt">-m</span> <span class="s2">"0.2 Validation split"</span>
+git push <span class="nt">--tags</span>
+</code></pre></div></div>
+
+<p>That’s it we now have two version of our dataset. If we want to move to our previous version we can simply run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v1.0
+dvc checkout
+</code></pre></div></div>
+
+<h3 id="continuous-integration-for-data">Continuous Integration for data</h3>
+
+<p>We have used DVC for track and save data the same way we do with code. So we can also add some test to our data to make sure that we do not commit any error that can harm our training. Since we have used Google Drive as a remote storage for our data, we can configure our CI pipeline to download our data from there and run our tests.</p>
+
+<p>First of all we need to store our gdrive credentials as a Github secret. You can go to you repository settings in Github and create a new secret named <code class="language-plaintext highlighter-rouge">GDRIVE_CREDENTIALS_DATA</code>, and paste there the contents of your <code class="language-plaintext highlighter-rouge">.dvc/tmp/gdrive-user-credentials.json</code>. This file should have been automatically created after you give DVC permissions to your Google Drive account. You can read more about this in <a href="https://dvc.org/doc/user-guide/setup-google-drive-remote#authorization">DVC documentation</a>.</p>
+
+<p>Let’s create an example test in charge of checking that our annotations follow COCO format guidelines. We can use pydantic for data validation defining how annotation should be using python type annotations. We now for example that categories or our dataset can only take six different values and bounding boxes must be a list of four integers. Pydantic allows us to define this rules in a very efficient an flexible manner.</p>
+
+<p>Create a new file <code class="language-plaintext highlighter-rouge">tests/test_annotations.py</code> and paste the following content:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span><span class="p">,</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
+
+<span class="n">CATEGORY_NAMES</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s">"chair"</span><span class="p">,</span> <span class="s">"couch"</span><span class="p">,</span> <span class="s">"tv"</span><span class="p">,</span> <span class="s">"remote"</span><span class="p">,</span> <span class="s">"book"</span><span class="p">,</span> <span class="s">"vase"</span><span class="p">]</span> 
+
+<span class="k">class</span> <span class="nc">COCOCategory</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">CATEGORY_NAMES</span>
+
+
+<span class="k">class</span> <span class="nc">COCOImage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">COCOAnnotation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">image_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">conlist</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">category_id</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="k">class</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOImage</span><span class="p">]</span>
+    <span class="n">annotations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOAnnotation</span><span class="p">]</span>
+    <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOCategory</span><span class="p">]</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"split"</span><span class="p">,</span> <span class="p">[</span><span class="s">"train"</span><span class="p">,</span> <span class="s">"val"</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_coco_format</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
+
+    <span class="n">annotations_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"data/coco_sample/annotations/split_</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s">.json"</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">COCODetectionDataset</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+    <span class="c1"># Check image ids are unique
+</span>    <span class="n">image_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">images</span><span class="p">]</span>
+    <span class="n">image_ids_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_ids_set</span><span class="p">)</span>
+
+    <span class="c1"># Check annotation ids are unique
+</span>    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">categories</span><span class="p">]</span>
+    <span class="n">categories_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories_set</span><span class="p">)</span>
+
+    <span class="c1"># Check each annotation corresponds with existent image
+</span>    <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">annotations</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">annotation</span><span class="p">.</span><span class="n">image_id</span> <span class="ow">in</span> <span class="n">image_ids_set</span>
+</code></pre></div></div>
+
+<p>Note we added a test that will ensure that:</p>
+
+<ul>
+  <li>Loaded data is validated with pydantic</li>
+  <li>Image ids are unique</li>
+  <li>Category ids are unique</li>
+  <li>All annotations are associated with an existent image id</li>
+</ul>
+
+<p>We have the test so we need to define a workflow that automatically runs this when we push some changes to our main branch. Create a new file <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yaml</code> and paste the following code:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">iterative/setup-dvc@v1</span> 
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Get annotations from dvc remote</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">dvc pull data/coco_sample/annotations</span> 
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">GDRIVE_CREDENTIALS_DATA</span><span class="pi">:</span> <span class="s">$</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">pip install pytest pydantic</span>
+          <span class="s">pytest tests</span>
+</code></pre></div></div>
+
+<p>This script is very intuitive. First we checkout our repo and setup DVC. After that we pull just the annotation files using using the command <code class="language-plaintext highlighter-rouge">dvc pull data/coco_sample/annotations</code>. Think that if we run <code class="language-plaintext highlighter-rouge">dvc pull</code> without extra argument we would have to wait before all images are downloaded and we do not need them for this type of test.</p>
+
+<p>If we add, commit and push all this changes to Github we can see how our workflow triggers and runs the associated job:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .github tests
+git commit <span class="nt">-m</span> <span class="s2">"Add tests"</span>
+git push
+</code></pre></div></div>
+
+<p style="text-align: center;"><img src="/assets/posts/2021-07-01-dvc-tutorial/ci.webp" alt="" /></p>
+
+<p>That’s it! Our test completed successfully!</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>DVC help us to keep version of our data and models. In this short post we have learnt a few things:</p>
+
+<ul>
+  <li>
+    <p>We have learned how to setup DVC and add a Google Drive remote</p>
+  </li>
+  <li>
+    <p>We have pushed our data to the DVC remote and tagged different versions of it</p>
+  </li>
+  <li>
+    <p>We have added some simple tests for our data and how to set up a CI worflow that runs on Github servers.</p>
+  </li>
+</ul>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8">Twitter</a> or <a href="https://github.com/mmeendez8">Github</a></em></p>
+
+
+</div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="three columns">
+          Miguel Méndez
+        </div>
+        <div class="six columns">
+          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
+        </div>
+        <div class="three columns icons">
+          <a href='https://github.com/mmeendez8' target="_blank">
+            <i class="icon-github-circled" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
+            <i class="icon-linkedin-squared" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://twitter.com/mmeendez8' target="_blank">
+            <i class="icon-twitter-squared" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://medium.com/@miguelmendez_' target="_blank">
+            <i class="icon-medium" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
+            <i class="icon-stackoverflow" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+</html>

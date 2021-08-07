@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Automatic Classification of an online Fashion Catalogue</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="Learn to find a public fashion dataset, download it and process it for training a classification model on Tensorflow">
+  
+
+  
+  <meta name="image" property="og:image" content="/assets/posts/2019-06-07-fashion/thumbnail.webp">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
+  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/custom/syntax.css>
+
+  <!-- JQuery
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src=/libs/external/jquery-3.1.1.min.js></script>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
+  
+  <!-- Skeleton tabs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
+  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
+
+  <!-- Timeline
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/external/timeline.css>
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
+  <script src=/libs/custom/my_js.js></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-133014227-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Automatic Classification of an online Fashion Catalogue">
+  
+  
+  <meta name="twitter:description" content="Learn to find a public fashion dataset, download it and process it for training a classification model on Tensorflow">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2019-06-07-fashion/thumbnail.webp">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+
+    <section class="header">
+      <div class="row">
+        <div class="three columns">
+          <a href="/"><img class="u-max-full-width"
+              src='/assets/profile-pics/main_circle.webp'></a>
+        </div>
+        <div class="nine columns main-description">
+          <h1>Miguel Méndez</h1>
+          <div class="subtitle">
+            <p>Machine Learning Research Engineer, Gradiant</p>
+            <p>miguelmndez [AT] gmail.com</p>
+            <p class="social">
+              <a href='https://github.com/mmeendez8' target="_blank">
+                <i class="icon-github-circled" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
+                <i class="icon-linkedin-squared" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://twitter.com/mmeendez8' target="_blank">
+                <i class="icon-twitter-squared2" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://medium.com/@miguelmendez_' target="_blank">
+                <i class="icon-medium" aria-hidden="true"></i>
+              </a>
+
+              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
+                <i class="icon-stackoverflow" aria-hidden="true"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="navbar-spacer"></div>
+    <nav class="navbar">
+      <div class="container">
+        <ul class="navbar-list">
+          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
+          </li>
+          <li class="navbar-item"><a class="navbar-link"
+            href=/index.html#news>News</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#posts>Posts</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#resume>Vita</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#publications>Publications</a></li>
+          <li class="navbar-item"><a class="navbar-link"
+              href=/index.html#other>Other</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="docs-section post-image">
+
+  
+  <div class="title-subtitle">
+    <h3>Automatic Classification of an online Fashion Catalogue</h3>
+    <h5>Scrap data and train a model</h5>
+  </div>
+  
+  
+  <div>
+    <img src="/assets/posts/2019-06-07-fashion/thumbnail.webp" alt=""/>
+  </div>
+  
+
+  <p>I have been working with Tensorflow during last months and I realized that, although there is a large number of Github repositories with many different and complex models, is hard to find a simple example that shows you how to obtain your own dataset from the web and apply some Deep Learning on it.</p>
+
+<p>In this post I pretended to provide an example of this task but being keeping it as simple as possible. I will show you how to <strong>obtain online unlabeled data</strong>, how to create a <strong>simple convolutional network</strong>, train it with some supervised data and use it later to <strong>classify the data</strong> we have gathered from the web.
+You can also find this post in <a href="https://towardsdatascience.com/automatic-classification-of-an-online-fashion-catalogue-the-simple-way-2a4b13a2af0a">Medium</a></p>
+
+<p>All code can be found on my <a href="https://github.com/mmeendez8/garment-classifier">Github account</a></p>
+
+<h3 id="1-data-scraping">1. Data Scraping</h3>
+
+<p>If you are close to Data Science world you probably have heard about the <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion MNIST dataset</a>. It’s a super simple collection of 28x28 images consisting of a training set of 60,000 examples and a test set of 10,000 examples. The data is associated with a label from 10 classes as Trouser, Pullover, Dress, Coat…</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*_aBUDsjs9le9_8BaYfLRSQ.png" alt="Fashion MNIST" /></p>
+<p style="text-align: center;"><em>Fashion MNIST</em></p>
+
+<p>So the idea is simple, we train our network with the MNIST data and we use then to classify the data obtained from the actual Zalando’s catalogue.</p>
+
+<p>Data scraping is a very important task if you are a Data Scientist. Most of the time you will not have available the data you are looking for, so you will need to obtain it from the web. The procedure is pretty simple if you know a little bit of HTML and CSS.</p>
+
+<h3 id="2-neural-network">2. Neural Network</h3>
+
+<p>We are going to classify small grey scaled images so we will not need a super complex architecture. I basically stacked two convolutional layers with their correspondent pooling layer (<a href="https://mirror2image.wordpress.com/2014/11/11/geoffrey-hinton-on-max-pooling-reddit-ama/">check what Hinton thinks about Pool Layers</a>). After this a dense layer followed by a dropout operation and a final dense layer with a softmax function. Classic and simple stuff!</p>
+
+<script src="https://gist.github.com/mmeendez8/8b2589a1cf0d336fba2de804ee8a57a2.js"></script>
+
+<p>If you have problems understanding what that decorator is doing you can check my previous post: <a href="https://towardsdatascience.com/generating-fake-fifa-19-football-players-with-variational-autoencoders-and-tensorflow-aff6c10016ae">Generating fake FIFA 19 football players with Variational Autoencoders and Tensorflow</a> or <a href="https://danijar.com/structuring-your-tensorflow-models/">this amazing post</a> from <a href="https://danijar.com/">Danijar Hafner</a>.</p>
+
+<h3 id="3-training-the-network">3. Training the network</h3>
+
+<p>For the training task I have used Adam Optimizer and let algorithm run for just 100 epochs. You can apply longer and better training to improve the accuracy as much as you want and I would also recommend you to change the network structure adding some extra layers.</p>
+
+<p>The training file allows you to observe how you accuracy and loss evolve with the number of epochs. These were my results:</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*l14w5wEq_5qZyF22LP91jQ.png" alt="" /></p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*pLKuC-qg-wm0GpzG26P5Iw.png" alt="" /></p>
+
+<p>Remember that when we train our model we must validate our data with a different dataset to avoid overfitting issues (between others). In this case we can use Fashion MNIST test set!</p>
+
+<h3 id="4-evaluate-results">4. Evaluate results</h3>
+
+<p>Once the network has been trained and saved, we can proceed to evaluate its performance with the scraped dataset. Look at this code snippet:</p>
+
+<script src="https://gist.github.com/mmeendez8/60f0d75a0c6a7d3ae2b26a93bcef92ec.js"></script>
+
+<p>It’s pretty simple. What I do in here is recovering the network and loading the unlabeled data. I recover two important tensors which are the ones that I use to feed new data and to output the predictions of the network. Finally I pass 5 different images to the network and this is what I get:</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3454/1*XvEIhBKhWFCGvNhRtCWkcw.png" alt="" width="750px" /></p>
+
+<p>Note that I did not show the whole process here, since the images we obtained from the web must be converted to 28x28 gray scale images before being inserted to the network, once more I encourage you to check the whole code on <a href="https://github.com/mmeendez8/garment-classifier">Github</a>.</p>
+
+<p>Well, that’s all we need to classify the unlabeled images we obtain from Zalando’s website. You could use this to create a labeled dataset of images to train another different model or anything that you can think on!</p>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8">Twitter</a> or <a href="https://github.com/mmeendez8">Github</a></em></p>
+
+
+</div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="three columns">
+          Miguel Méndez
+        </div>
+        <div class="six columns">
+          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
+        </div>
+        <div class="three columns icons">
+          <a href='https://github.com/mmeendez8' target="_blank">
+            <i class="icon-github-circled" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
+            <i class="icon-linkedin-squared" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://twitter.com/mmeendez8' target="_blank">
+            <i class="icon-twitter-squared" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://medium.com/@miguelmendez_' target="_blank">
+            <i class="icon-medium" aria-hidden="true"></i>
+          </a>
+
+          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
+            <i class="icon-stackoverflow" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+</html>
