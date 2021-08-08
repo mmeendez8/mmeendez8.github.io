@@ -19,6 +19,12 @@ iframe {
   margin-top: 60px;
   margin-bottom: 60px; 
   text-align: left; }
+
+.header img {
+    max-width: 100%;
+    box-sizing: border-box;
+    height: auto;
+}
 .main-description{
   margin-top: 2%;
   margin-left: 3%;
