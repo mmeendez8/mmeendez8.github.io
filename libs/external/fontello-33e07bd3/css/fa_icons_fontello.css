@@ -32,7 +32,7 @@
   margin-right: 0;
   text-align: center;
   /* opacity: .8; */
-
+  padding: 10px;
   /* For safety - reset parent styles, that can break glyph codes*/
   font-variant: normal;
   text-transform: none;
@@ -45,7 +45,7 @@
   margin-left: 0;
 
   /* you can be more comfortable with increased icons size */
-  font-size: 22px;
+  font-size: 24px;
 
   /* Font smoothing. That was taken from TWBS */
   -webkit-font-smoothing: antialiased;
