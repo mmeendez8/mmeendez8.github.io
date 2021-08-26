@@ -3,7 +3,7 @@ layout: post
 title:  "Export to Github Cache with Docker Buildx"
 subtitle: "We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!"
 description: "Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!"
-image: "/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg"
+image: "/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp"
 selected: y
 ---
 
@@ -89,7 +89,7 @@ jobs:
 Note how `cache-from` and `cache-to` type is set now to `gha` (github action). The first time the action is triggered the cache is empty so Docker will need to build all layers from scratch:
 
 {:refdef: style="text-align: center;"}
-![](/assets/posts/2021-07-19-new-docker-cache-is-out/empty_cache.png)
+![](/assets/posts/2021-07-19-new-docker-cache-is-out/empty_cache.webp)
 {: refdef}
 
 But after this cache is full, so we can reuse all our layers in next builds, if the images was not modified, or just some of them when we apply changes to our Dockerfile. Let's trigger a new build with an empty commit and check the time it needs now:
@@ -100,7 +100,7 @@ git push
 ```
 
 {:refdef: style="text-align: center;"}
-![](/assets/posts/2021-07-19-new-docker-cache-is-out/full_cache.png)
+![](/assets/posts/2021-07-19-new-docker-cache-is-out/full_cache.webp)
 {: refdef}
 
 That's it! It only took 22 seconds to build our image.

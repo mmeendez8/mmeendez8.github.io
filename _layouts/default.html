@@ -29,28 +29,27 @@
 
   <!-- FONT
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+  
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href={{ "/libs/external/skeleton/normalize.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/skeleton/skeleton.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
-  <link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}>
+
+  <link rel="preload" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}></noscript>
 
   <!-- JQuery
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script src={{ "/libs/external/jquery-3.1.1.min.js" | prepend: site.baseurl }}></script>
 
-  <!-- Font-Awesome
+  <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
-    href={{ "/libs/external/font-awesome-4.7.0/css/font-awesome.min.css" | prepend: site.baseurl }}>
-
-  <!-- Academicons
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href={{ "/libs/external/academicons-1.8.6/css/academicons.min.css" | prepend: site.baseurl }}>
-
+    href={{ "/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css" | prepend: site.baseurl }}>
+  
   <!-- Skeleton tabs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href={{ "/libs/external/skeleton_tabs/skeleton-tabs.css" | prepend: site.baseurl }}>
@@ -58,11 +57,12 @@
 
   <!-- Timeline
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload"  href={{ "/libs/external/timeline.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href={{ "/libs/external/timeline.css" | prepend: site.baseurl }}></noscript>
   <link rel="stylesheet" href={{ "/libs/external/timeline.css" | prepend: site.baseurl }}>
 
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="stylesheet" href={{ "/libs/external/github-prettify-theme.css" | prepend: site.baseurl }}>-->
   <script src={{ "/libs/custom/my_js.js" | prepend: site.baseurl }}></script>
 
   <!-- Favicon
@@ -85,35 +85,37 @@
     <section class="header">
       <div class="row">
         <div class="three columns">
-          <a href="{{ site.baseurl }}/"><img class="u-max-full-width"
+          <a href="{{ site.baseurl }}/"><img width="691" height="691" alt="Miguel Mendez profile image"
               src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'></a>
         </div>
         <div class="nine columns main-description">
-          <h1>{{ site.data.main_info.name }}</h1>
-          <div class="subtitle">
-            <p>{{ site.data.main_info.title }}</p>
-            <p>{{ site.data.main_info.email }}</p>
-            <p class="social">
-              <a href='{{site.data.main_info.github}}' target="_blank">
-                <i class="fa fa-github" aria-hidden="true"></i>
-              </a>
+          <div class="eight columns">
+            <h1>{{ site.data.main_info.name }}</h1>
+            <div class="subtitle">
+              <p>{{ site.data.main_info.title }}</p>
+              <p>{{ site.data.main_info.email }}</p>
+              <p class="social">
+                <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+                  <i class="icon-github-circled" aria-hidden="true"></i>
+                </a>
 
-              <a href='{{site.data.main_info.linkedin}}' target="_blank">
-                <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-              </a>
+                <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+                  <i class="icon-linkedin-squared" aria-hidden="true"></i>
+                </a>
 
-              <a href='{{site.data.main_info.twitter}}' target="_blank">
-                <i class="fa fa-twitter-square" aria-hidden="true"></i>
-              </a>
+                <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+                  <i class="icon-twitter-squared2" aria-hidden="true"></i>
+                </a>
 
-              <a href='{{site.data.main_info.medium}}' target="_blank">
-                <i class="fa fa-medium" aria-hidden="true"></i>
-              </a>
+                <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
+                  <i class="icon-medium" aria-hidden="true"></i>
+                </a>
 
-              <a href='{{site.data.main_info.stackoverflow}}' target="_blank">
-                <i class="fa fa-stack-overflow" aria-hidden="true"></i>
-              </a>
-            </p>
+                <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
+                  <i class="icon-stackoverflow" aria-hidden="true"></i>
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -150,24 +152,24 @@
           based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
         </div>
         <div class="three columns icons">
-          <a href='{{site.data.main_info.github}}' target="_blank">
-            <i class="fa fa-github" aria-hidden="true"></i>
+          <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+            <i class="icon-github-circled" aria-hidden="true"></i>
           </a>
 
-          <a href='{{site.data.main_info.linkedin}}' target="_blank">
-            <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+          <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+            <i class="icon-linkedin-squared" aria-hidden="true"></i>
           </a>
 
-          <a href='{{site.data.main_info.twitter}}' target="_blank">
-            <i class="fa fa-twitter-square" aria-hidden="true"></i>
+          <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+            <i class="icon-twitter-squared" aria-hidden="true"></i>
           </a>
 
-          <a href='{{site.data.main_info.medium}}' target="_blank">
-            <i class="fa fa-medium" aria-hidden="true"></i>
+          <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
+            <i class="icon-medium" aria-hidden="true"></i>
           </a>
 
-          <a href='{{site.data.main_info.stackoverflow}}' target="_blank">
-            <i class="fa fa-stack-overflow" aria-hidden="true"></i>
+          <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
+            <i class="icon-stackoverflow" aria-hidden="true"></i>
           </a>
         </div>
       </div>

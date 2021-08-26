@@ -18,7 +18,13 @@ iframe {
 .header {
   margin-top: 60px;
   margin-bottom: 60px; 
-  text-align: left; }
+  text-align: center; }
+
+.header img {
+    max-width: 100%;
+    box-sizing: border-box;
+    height: auto;
+}
 .main-description{
   margin-top: 2%;
   margin-left: 3%;
@@ -98,8 +104,6 @@ iframe {
   text-align:center;
 }
 .post-image-container {
-  border: 1px solid rgba(0,0,0,0.2);
-  padding: 3px;
   transition: 0.3s;
 }
 .post-image-container:hover {
