@@ -104,8 +104,6 @@ iframe {
   text-align:center;
 }
 .post-image-container {
-  border: 1px solid rgba(0,0,0,0.2);
-  padding: 3px;
   transition: 0.3s;
 }
 .post-image-container:hover {
