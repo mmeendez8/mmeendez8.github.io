@@ -3,7 +3,7 @@ layout: post
 title:  "DVC + MMdetection"
 subtitle: "A guide to train, monitor, compare and eval your pytorch object detection models"
 description: "Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!"
-image: "/assets/posts/2021-07-22-mmdet-dvc-tutorial/thumbnail.png"
+image: "/assets/posts/2021-07-22-mmdet-dvc-tutorial/thumbnail.webp"
 selected: y
 ---
 
@@ -162,7 +162,7 @@ We can run again DVC repro as many times as we want changing our config files as
 Let's do our first training by running `dvc exp run`! You can monitor training progress by opening `training/metrics.html`:
 
 :-------------------------:|:-------------------------:
-![loss curve](/assets/posts/2021-07-22-mmdet-dvc-tutorial/loss.png)  |  ![vmap curve](/assets/posts/2021-07-22-mmdet-dvc-tutorial/vmap.png)
+![loss curve](/assets/posts/2021-07-22-mmdet-dvc-tutorial/loss.webp)  |  ![vmap curve](/assets/posts/2021-07-22-mmdet-dvc-tutorial/vmap.webp)
 
 Training will be done soon (depening on your GPU and machine) and we can check our results by running:
 
@@ -277,8 +277,8 @@ eval:
 I am going to run `dvc repro` since I have already commit and pushed my changes from last experiment. This is going to create the `eval` folder which contains the painted images, see a few examples below:
 
 :-------------------------:|:-------------------------:
-![dog in couch](/assets/posts/2021-07-22-mmdet-dvc-tutorial/doggy.jpg)  |  ![tv fishbowl](/assets/posts/2021-07-22-mmdet-dvc-tutorial/fish.jpg)
-![abandoned tv](/assets/posts/2021-07-22-mmdet-dvc-tutorial/tv.jpg)  |  ![lonely cat](/assets/posts/2021-07-22-mmdet-dvc-tutorial/cat.jpg)
+![dog in couch](/assets/posts/2021-07-22-mmdet-dvc-tutorial/doggy.webp)  |  ![tv fishbowl](/assets/posts/2021-07-22-mmdet-dvc-tutorial/fish.webp)
+![abandoned tv](/assets/posts/2021-07-22-mmdet-dvc-tutorial/tv.webp)  |  ![lonely cat](/assets/posts/2021-07-22-mmdet-dvc-tutorial/cat.webp)
 
 It seems our model is not perfect... it mistook a fish tank for a TV! Anyway this was expected, the mAP metric is pretty low but even though we can see how it performs pretty well in the other images. You can go and check more results yourself but keep in mind that SOTA models in COCO dataset (80 classes) achieve a mAP ~0.6 and that's a large difference wrt to our simple model. If you want to know more about COCO ranking I recommend you to check [paperswithcode](https://paperswithcode.com/sota/object-detection-on-coco) web.
 
