@@ -1,19 +1,19 @@
 ---
 layout: post
 title:  "DVC + MMdetection"
-subtitle: "A guide to train, monitor, compare and eval your pytorch object detection models"
+subtitle: "A guide to train, monitor, compare and evaluate your pytorch object detection models"
 description: "Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!"
-image: "/assets/posts/2021-07-22-mmdet-dvc-tutorial/thumbnail.webp"
+image: "/assets/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail.webp"
 selected: y
 ---
 
-I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %})  where I show how we use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. So in this new post my intention is to follow with a second part of this tutorial. For this I am going to show how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md) with DVC for designing ML pipelines, versioning our models and monitor training progress.
+I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}) where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md) with DVC for designing ML pipelines, versioning our models and monitor training progress.
 
 It is quite a lot of content to cover, so I will be going through it step by step and trying to keep things as simple as possible. You can find all the code for this tutorial in my [Github](https://github.com/mmeendez8/mmdetection_dvc). So let's start with it!
 
 ### 1. Setup the environment
 
-We are gonna need a few packages to get our up and running. I have created a `conda.yml` that you can find in the root of the repository, this is going to install pytorch and cudatoolkit since we are going to train our models using a GPU. You can create the environment by:
+We are gonna need a few packages to get our project up and running. I have created a `conda.yml` that you can find in the root of the repository, this is going to install pytorch and cudatoolkit since we are going to train our models using a GPU. You can create the environment by:
 
 ```bash
 conda env create -f conda.yaml
@@ -22,7 +22,7 @@ conda activate mmdetection_dvc
 
 ### 2. Import our dataset
 
-In the previous post we used a subset of the COCO dataset created by fast.ai. We push all data to a Google Drive remote storage using DVC and keep all metada files in a Github repository. We need now to import this dataset in our repo and that exactly what [dvc import](https://dvc.org/doc/command-reference/import) can do for us!
+In the previous post we used a subset of the COCO dataset created by fast.ai. We push all data to a Google Drive remote storage using DVC and keep all metada files in a Github repository. We need now to import this dataset in our repo and that's exactly what [dvc import](https://dvc.org/doc/command-reference/import) can do for us!
 
 ```bash
 dvc init
@@ -58,7 +58,7 @@ They have an extense documentation which really helps first time users. In this 
 
 First thing we need to do is to find the config file for our model, so let's explore mmdet model zoo and more specifically [RetinaNet section](https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet). There's a bunch of different RetinaNet models there but let's stick with the base config from the [original paper](https://arxiv.org/pdf/1708.02002.pdf). I have already downloaded this file to my repo and you can find it under `configs/retinanet_r50_fpn.py`. There are three main sections there:
 
-- The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at `init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'))`. I check out [official torchvision documentation](https://pytorch.org/vision/stable/models.html) and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results...
+- The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at `init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'))`. As a curious fact, I checked out [official torchvision documentation](https://pytorch.org/vision/stable/models.html) and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results...
 
 <center>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Just found this checking <a href="https://twitter.com/hashtag/torchvision?src=hash&amp;ref_src=twsrc%5Etfw">#torchvision</a> stable models, it seems they were trained on some volatile dataset 😅<br>cc <a href="https://twitter.com/DVCorg?ref_src=twsrc%5Etfw">@DVCorg</a> <a href="https://t.co/rR8ANSmucI">pic.twitter.com/rR8ANSmucI</a></p>&mdash; Miguel Mendez (@mmeendez8) <a href="https://twitter.com/mmeendez8/status/1418507102465765376?ref_src=twsrc%5Etfw">July 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -155,14 +155,14 @@ train:
       html: true
 ```
 
-Note how I have added the `live` to notify DVC that our script will be saving metrics in the `training/metrics' folder. Also, this will generate a html file that we can use to visualize in real time our train progress. So simple!
+Note how I have added the `live` key to notify DVC that our script will be saving metrics in the `training/metrics` folder. Also, this will generate a html file that we can use to visualize in real time our train progress. So simple!
 
-We can run again DVC repro as many times as we want changing our config files as needed for trying different hyperparameters or model configurations. Nevertheless, DVC guys recommend yo to use [DVC experiments](https://dvc.org/doc/start/experiments) when you are experiment with different configurations. So that's what we are going to do! Note this is a recent feature and I had to open a couple issues since I found a couple "bugs" or unexpected behavior such [[1]](https://github.com/iterative/dvc/issues/6465), [[2]](https://github.com/iterative/dvc/issues/5477?notification_referrer_id=MDE4Ok5vdGlmaWNhdGlvblRocmVhZDE1OTA3ODE1MTM6MTU5Njk2Njc%3D#issuecomment-905234950).
+We can run again DVC repro as many times as we want changing our config files as needed for trying different hyperparameters or model configurations. Nevertheless, DVC guys recommend yo to use [DVC experiments](https://dvc.org/doc/start/experiments) when you are tryining different configurations. So that's what we are going to do! Note this is a recent feature and I had to open a couple issues since I found a couple "bugs" or unexpected behavior such [[1]](https://github.com/iterative/dvc/issues/6465), [[2]](https://github.com/iterative/dvc/issues/5477?notification_referrer_id=MDE4Ok5vdGlmaWNhdGlvblRocmVhZDE1OTA3ODE1MTM6MTU5Njk2Njc%3D#issuecomment-905234950).
 
-Let's do our first training by running `dvc exp run`! You can monitor training progress by opening `training/metrics.html`:
+Let's do our first training by running `dvc exp run`! You can monitor training progress by opening your `training/metrics.html` file:
 
 :-------------------------:|:-------------------------:
-![loss curve](/assets/posts/2021-07-22-mmdet-dvc-tutorial/loss.webp)  |  ![vmap curve](/assets/posts/2021-07-22-mmdet-dvc-tutorial/vmap.webp)
+![loss curve](/assets/posts/2021-08-30-mmdet-dvc-tutorial/loss.webp)  |  ![vmap curve](/assets/posts/2021-08-30-mmdet-dvc-tutorial/vmap.webp)
 
 Training will be done soon (depening on your GPU and machine) and we can check our results by running:
 
@@ -183,7 +183,7 @@ The possibilty of tracking your hyperparameters is what I most like about experi
 2. Specify that our train step depends on this parameter
 3. Run experiment with -S flag updating the parameter value.
 
-These steps are fine when you just change the learning rate or the number of epochs. Nevertheless I consider it does not scales to complex settings where you try a few dozens of different hyperparameters... I [commented on an issue](https://github.com/iterative/dvc/issues/5477#issuecomment-905440724) trying to share my opinion, you can go there and read different thinkings since there is a small discussion going on about this new feature.
+These steps are fine when you just change the learning rate or the number of epochs. Nevertheless I consider it does not scales to complex settings where you try a few dozens of different hyperparameters... There is [an open issue](https://github.com/iterative/dvc/issues/5477#issuecomment-905440724) where I shared my personal opinion, you can go there and read different thinkings since there is a small discussion going on about this new feature.
 
 Let's increase our L2 regularization or weight decay to see how it affects our results:
 
@@ -254,7 +254,7 @@ dvc push
 We have covered most of the step of the official [DVC experiments tutorial](https://dvc.org/doc/start/experiments). You can go there and check more info about how cleaning up your experiments and how to pull specific ones.
 
 
-#### 4.3 See the results
+#### 4.3 Results Visualization
 
 We have trained our model and we have an idea of how it performs thanks to the mAP metrics but we all like to the the bounding boxes over our images so we can get a fully understanding of how the model performs! I have create a simple eval script in `src/eval.py` that will latest model and paint a subset of validation images. We simply need to add a new step to our `dvc.yaml`:
 
@@ -277,8 +277,8 @@ eval:
 I am going to run `dvc repro` since I have already commit and pushed my changes from last experiment. This is going to create the `eval` folder which contains the painted images, see a few examples below:
 
 :-------------------------:|:-------------------------:
-![dog in couch](/assets/posts/2021-07-22-mmdet-dvc-tutorial/doggy.webp)  |  ![tv fishbowl](/assets/posts/2021-07-22-mmdet-dvc-tutorial/fish.webp)
-![abandoned tv](/assets/posts/2021-07-22-mmdet-dvc-tutorial/tv.webp)  |  ![lonely cat](/assets/posts/2021-07-22-mmdet-dvc-tutorial/cat.webp)
+![dog in couch](/assets/posts/2021-08-30-mmdet-dvc-tutorial/doggy.webp)  |  ![tv fishbowl](/assets/posts/2021-08-30-mmdet-dvc-tutorial/fish.webp)
+![abandoned tv](/assets/posts/2021-08-30-mmdet-dvc-tutorial/tv.webp)  |  ![lonely cat](/assets/posts/2021-08-30-mmdet-dvc-tutorial/cat.webp)
 
 It seems our model is not perfect... it mistook a fish tank for a TV! Anyway this was expected, the mAP metric is pretty low but even though we can see how it performs pretty well in the other images. You can go and check more results yourself but keep in mind that SOTA models in COCO dataset (80 classes) achieve a mAP ~0.6 and that's a large difference wrt to our simple model. If you want to know more about COCO ranking I recommend you to check [paperswithcode](https://paperswithcode.com/sota/object-detection-on-coco) web.
 
