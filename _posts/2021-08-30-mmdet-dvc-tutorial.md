@@ -58,7 +58,13 @@ They have an extense documentation which really helps first time users. In this 
 
 First thing we need to do is to find the config file for our model, so let's explore mmdet model zoo and more specifically [RetinaNet section](https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet). There's a bunch of different RetinaNet models there but let's stick with the base config from the [original paper](https://arxiv.org/pdf/1708.02002.pdf). I have already downloaded this file to my repo and you can find it under `configs/retinanet_r50_fpn.py`. There are three main sections there:
 
-- The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at `init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'))`. As a curious fact, I checked out [official torchvision documentation](https://pytorch.org/vision/stable/models.html) and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results...
+- The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at:
+
+```python
+init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'))`
+```
+
+As a curious fact, I checked out [official torchvision documentation](https://pytorch.org/vision/stable/models.html) and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results...
 
 <center>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Just found this checking <a href="https://twitter.com/hashtag/torchvision?src=hash&amp;ref_src=twsrc%5Etfw">#torchvision</a> stable models, it seems they were trained on some volatile dataset 😅<br>cc <a href="https://twitter.com/DVCorg?ref_src=twsrc%5Etfw">@DVCorg</a> <a href="https://t.co/rR8ANSmucI">pic.twitter.com/rR8ANSmucI</a></p>&mdash; Miguel Mendez (@mmeendez8) <a href="https://twitter.com/mmeendez8/status/1418507102465765376?ref_src=twsrc%5Etfw">July 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
