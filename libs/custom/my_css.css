@@ -25,10 +25,14 @@ iframe {
     box-sizing: border-box;
     height: auto;
 }
-.main-description{
-  margin-top: 2%;
-  margin-left: 3%;
+
+/* Larger than phone */
+@media (min-width: 550px) {
+  .main {
+    margin-top: 2%;
+    margin-left: 3%; }
 }
+
 .main-description h1 {
   margin-bottom: 0px;
  }
