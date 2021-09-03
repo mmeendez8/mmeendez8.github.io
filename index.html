@@ -39,19 +39,52 @@ title: Personal Webpage
 </div>
 
 <!-- ========== POSTS ========== -->
-<div class="docs-section" id="posts">
-  <h4>Posts</h4>
+<div id="posts">
+  <h2>Posts</h2>
 
-  <ul class="tab-nav">
+  <!-- <ul class="tab-nav">
     <li>
       <div class="button active" data-ref="#posts-selected">Selected</div>
     </li>
     <li>
       <div class="button" data-ref="#posts-all">All</div>
     </li>
+  </ul> -->
+
+  <ul class="posts" id="posts-selected">
+    {% assign selected_posts = site.posts %}
+    {% for post in selected_posts %}
+    <li class="post">
+      <a href="{{ post.url }}">
+        <div class="post-image-placeholder">
+          <img src="{{ post.image }}" alt="{{ post.description }}"" class="post-image" loading="lazy" width="952" height="509"/>
+        </div>
+        <h3 class="post-title">{{ post.title }}</h3>
+        <p class="post-description"> {{ post.subtitle }} </p> 
+      </a>    
+    </li>
+    {% endfor %}
   </ul>
 
-  <div class="tab-content">
+
+  <!-- <ul class="posts" id="posts-all">
+    {% assign selected_posts = site.posts %}
+    {% for post in selected_posts %}
+    <li class="post">
+      <a href="{{ post.url }}">
+        <div class="post-image-placeholder">
+          <img src="{{ post.image }}" alt="{{ post.description }}"" class="post-image" loading="lazy" width="952" height="509"/>
+        </div>
+        <h3 class="post-title">{{ post.title }}</h3>
+        <p class="post-description"> {{ post.subtitle }} </p> 
+      </a>    
+    </li>
+    {% endfor %}
+  </ul> -->
+
+</div>
+
+  <!-- <div class="tab-content">
     <div class="tab-pane active margin" id="posts-selected">
       {% assign selected_posts = site.posts | where: "selected", "y" %}
       {% for post in selected_posts %}
@@ -62,18 +95,13 @@ title: Personal Webpage
 
         <div class="six columns">
           <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="{{ post.url }}">
-                <img src="{{ post.image }}" alt="{{ post.description }}"" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>{{ post.title }}</b> <br />
+            <a href="{{ post.url }}">
+              <div class="image-placeholder">
+                <img src="{{ post.image }}" alt="{{ post.description }}"" class="u-max-full-width post-image" loading="lazy" width="952" height="509"/>
+              </div>
+              <h3 class="post-title">{{ post.title }}</h3> <br />
               {{ post.subtitle }}
-            </div>
-
+            </a>
           </div>
         </div>
 
@@ -81,9 +109,9 @@ title: Personal Webpage
       </div>
       {% endif %}
       {% endfor %}
-    </div>
+    </div> -->
 
-    <div class="tab-pane margin" id="posts-all">
+    <!-- <div class="tab-pane margin" id="posts-all">
       {% for post in site.posts %}
       {% assign index_modulo = forloop.index0 | modulo:2 %}
       {% if index_modulo == 0 %}
@@ -112,9 +140,9 @@ title: Personal Webpage
       {% endif %}
       {% endfor %}
     </div>
-  </div>
+  </div> --> 
 
-</div>
+<!-- </div>  -->
 
 
 <!-- ========== RESUME ========== -->

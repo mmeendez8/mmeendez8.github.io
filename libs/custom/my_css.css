@@ -1,5 +1,28 @@
+/*  ================ Fonts  ================ */
+
+h2,.h2{
+  font-size: 3rem;;
+  color: #030303;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+@media (min-width: 768px){
+  h2,.h2{
+    padding-bottom: 48px;
+  }
+}
+
+
 h4 {
   letter-spacing: .1rem; }
+
+
+
+/*  ================ More  ================ */
+
 
 a {
   color: #006CB8 ;
@@ -9,12 +32,42 @@ a {
 a:hover {
   color: #005692;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 iframe {
   margin-bottom: 2.5rem
 }
+
+
+/*  ================ Container  ================ */
+
+@media (min-width: 768px){
+  .container {
+    max-width: 990px;
+  }
+}
+
+@media (min-width: 375px){
+  .container {
+    max-width: 768px;
+  }
+}
+
 .container {
-  max-width: 800px;
-  text-align: justify; }
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
+  box-sizing: border-box;
+}
+
+/*  ================   ================ */
+
 .header {
   margin-top: 60px;
   margin-bottom: 60px; 
@@ -27,7 +80,7 @@ iframe {
 }
 
 /* Larger than phone */
-@media (min-width: 550px) {
+@media (min-width: 700px) {
   .main {
     margin-top: 2%;
     margin-left: 3%; }
@@ -101,29 +154,55 @@ iframe {
 .image {
   text-align: center; }
 
-/*  ================ Project styling  ================ */
+/*  ================ Posts grid styling  ================ */
 
-.post-container {
-  margin-bottom: 30px;
-  text-align:center;
+@media (min-width: 768px){
+  .posts {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    display: grid;
+  }
 }
-.post-image-container {
-  transition: 0.3s;
+
+.posts{
+  margin: 0px;
 }
-.post-image-container:hover {
-  transition: 0.3s;
+.post{
+  padding-bottom: 0;
 }
-.post-image-container:hover img {
-  opacity: 0.4;
+
+.post-image-placeholder {
+  overflow: hidden;
+  line-height: 0;
+  max-height: 200px;
 }
-.post-caption {
-  padding: 3px;
+
+.post a:hover h3:hover {
+  color: #5c68ff;
 }
-.post-container img {
-  width: 100%;
-  height: 160px;
-  vertical-align: bottom;
+
+.post-title{
+  font-family: Tiempos Headline,Arial,sans-serif;
+  padding-top: 1rem;
+  font-size: 2.5rem;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+  transition-property: color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  color: #030303
+
 }
+
+.post-description {
+  color: #767676;
+  margin: 0px;
+}
+
+/*  ================ Other ================ */
+
+
 .docs-section ul {
   padding-left: 0;
   list-style: inherit;
@@ -135,14 +214,9 @@ iframe {
 .docs-section img{
   object-fit: cover;
 }
-.post-image img{
-  max-width: 100% !important;
-}
-.tab-content .margin{
-  margin-left: 4%;
-}
+
 /* Larger than phone */
-@media (min-width: 550px) {
+@media (min-width: 700px) {
   .header {
     margin-top: 5rem; }
 }

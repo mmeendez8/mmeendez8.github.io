@@ -25,7 +25,7 @@ The first thing we should do is understanding how DVC works, we can check its [l
 I always recommend to watch this introduction video that greatly summarizes the main idea behind this tool.
 
 <center>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/UbL7VUpv1Bs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <iframe loading="lazy" width="560" height="315" src="https://www.youtube.com/embed/UbL7VUpv1Bs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
 </center>
 
