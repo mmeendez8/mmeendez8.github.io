@@ -21,17 +21,44 @@ h4 {
 
 
 
-/*  ================ More  ================ */
+/*  ================ Common Elements  ================ */
 
+html {
+  scroll-behavior: smooth;
+}
 
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
 a {
-  color: #006CB8 ;
+  color: #5c68ff ;
   text-decoration: none;
+  position: relative;
+}
 
+a::after {
+  border-radius: 1em;
+  border-top: .1em solid #c8c2ff;
+  content: "";
+  position: absolute;
+    right: 100%;
+    bottom: .4px;
+    left: 0;
+  transition: right .4s cubic-bezier(0,.5,0,1),
+              border-color .4s ease-out;
 }
+
 a:hover {
-  color: #005692;
+  color: #c8c2ff;
 }
+
+a:hover::after {
+  border-color: #c8c2ff;
+  right: 0;
+}
+
 
 img {
   max-width: 100%;
@@ -42,6 +69,11 @@ iframe {
   margin-bottom: 2.5rem
 }
 
+ul {
+  padding-left: 0;
+  list-style: inherit;
+  margin-left: 2%;
+}
 
 /*  ================ Container  ================ */
 
@@ -65,6 +97,17 @@ iframe {
   padding-right: 2.4rem;
   box-sizing: border-box;
 }
+
+.section {
+  margin-bottom: 2.4rem;
+}
+
+@media (min-width: 768px){
+  .section {
+    margin-bottom: 7.2rem;
+  }
+}
+
 
 /*  ================   ================ */
 
@@ -203,11 +246,7 @@ iframe {
 /*  ================ Other ================ */
 
 
-.docs-section ul {
-  padding-left: 0;
-  list-style: inherit;
-  margin-left: 2%;
-}
+
 #resume ul{
   list-style: none;
 }
