@@ -1,4 +1,16 @@
 /*  ================ Fonts  ================ */
+h1,.h1{
+  font-size: 3.5rem;
+  color: #030303;
+}
+
+@media (min-width: 768px){
+  h1,.h1{
+    font-size: 6rem;
+    color: #030303;
+  }
+}
+
 
 h2,.h2{
   font-size: 3rem;;
@@ -11,15 +23,20 @@ h2,.h2{
 
 @media (min-width: 768px){
   h2,.h2{
-    padding-bottom: 48px;
+    padding-bottom: 35px;
   }
 }
-
 
 h4 {
   letter-spacing: .1rem; }
 
+h5,.h5{
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: Graphik,Arial,sans-serif;  
 
+}
 
 /*  ================ Common Elements  ================ */
 
@@ -32,33 +49,21 @@ html {
 		scroll-behavior: auto;
 	}
 }
+
+body{
+  color: #767676;
+  margin: 0px;
+}
+
 a {
   color: #5c68ff ;
   text-decoration: none;
   position: relative;
 }
 
-a::after {
-  border-radius: 1em;
-  border-top: .1em solid #c8c2ff;
-  content: "";
-  position: absolute;
-    right: 100%;
-    bottom: .4px;
-    left: 0;
-  transition: right .4s cubic-bezier(0,.5,0,1),
-              border-color .4s ease-out;
-}
-
 a:hover {
   color: #c8c2ff;
 }
-
-a:hover::after {
-  border-color: #c8c2ff;
-  right: 0;
-}
-
 
 img {
   max-width: 100%;
@@ -98,6 +103,61 @@ ul {
   box-sizing: border-box;
 }
 
+/*  ================ Header  ================ */
+
+.header-container{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 768px){
+  .header-container{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+}
+
+@media (min-width: 768px){
+  .header-img{
+    flex-basis: 40%;
+    overflow: hidden;
+    line-height: 0;
+    max-width: 300px;
+  }
+}
+
+.header-img{
+  overflow: hidden;
+  line-height: 0;
+  max-width: 250px;
+  margin-bottom: 30px;
+}
+
+.header-img:hover img {
+  opacity: 0.3;
+  transition-duration: 500ms;
+}
+
+.header-title{
+  flex-basis: 60%;
+}
+
+.header-title p{
+  margin-bottom: .5em;
+}
+
+/*  ================ Sections  ================ */
+
 .section {
   margin-bottom: 2.4rem;
 }
@@ -106,6 +166,29 @@ ul {
   .section {
     margin-bottom: 7.2rem;
   }
+}
+
+.section a::after {
+  border-radius: 1em;
+  border-top: .1em solid #c8c2ff;
+  content: "";
+  position: absolute;
+    right: 100%;
+    bottom: .4px;
+    left: 0;
+  transition: right .4s cubic-bezier(0,.5,0,1),
+              border-color .4s ease-out;
+}
+
+.section a:hover::after {
+  border-color: #c8c2ff;
+  right: 0;
+}
+
+/*  ================ Bio  ================ */
+
+.bio-highlight{
+  color: #030303;
 }
 
 

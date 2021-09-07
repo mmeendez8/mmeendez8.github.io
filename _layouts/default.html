@@ -84,64 +84,42 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
 
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="{{ site.baseurl }}/"><img width="691" height="691" alt="Miguel Mendez profile image"
-              src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'></a>
-        </div>
-        <div class="nine columns main-description">
-          <div class="eight columns">
-            <h1>{{ site.data.main_info.name }}</h1>
-            <div class="subtitle">
-              <p>{{ site.data.main_info.title }}</p>
-              <p>{{ site.data.main_info.email }}</p>
-              <p class="social">
-                <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
-                  <i class="icon-github-circled" aria-hidden="true"></i>
-                </a>
+    <div class="header-container">
 
-                <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
-                  <i class="icon-linkedin-squared" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
-                  <i class="icon-twitter-squared" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
-                  <i class="icon-medium" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
-                  <i class="icon-stackoverflow" aria-hidden="true"></i>
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="header-img">
+        <a href="{{ site.baseurl }}/">
+          <img width="691" height="691" alt="Miguel Mendez profile image" src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'>
+        </a>
       </div>
-    </section>
 
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href={{ "/index.html#bio" | prepend: site.baseurl }}>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href={{ "/index.html#news" | prepend: site.baseurl }}>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#posts" | prepend: site.baseurl }}>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#resume" | prepend: site.baseurl }}>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#publications" | prepend: site.baseurl }}>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#other" | prepend: site.baseurl }}>Other</a></li>
-        </ul>
+      <div class="header-title">
+        <h1>{{ site.data.main_info.name }}</h1>
+        <p>{{ site.data.main_info.title }}</p>
+        <p>{{ site.data.main_info.email }}</p>
+
+        <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
       </div>
-    </nav>
+
+    </div>
+
 
     {{ content}}
 

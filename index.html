@@ -3,10 +3,10 @@ layout: default
 title: Personal Webpage
 ---
 <!-- ========== BIO ========== -->
-<div class="docs-section" id="bio">
-  <h4>Bio</h4>
+<div class="section" id="bio">
+  <h2>Bio</h2>
   <p>
-    I am a Machine Learning Research Engineer at <a href="https://www.gradiant.org/en//" target="_blank" rel="noopener">Gradiant</a>. I
+    I am a <span class="bio-highlight">Machine Learning Research Engineer</span> at <a href="https://www.gradiant.org/en//" target="_blank" rel="noopener">Gradiant</a>. I
     love creating
     systems based on data that can interact with the real word.
     My research interests lie in the general area of machine learning, particularly in deep learning and its
@@ -31,7 +31,7 @@ title: Personal Webpage
   <ul>
     {% for new in site.data.news.news %}
     <li>
-      <p><b>{{new.month}} {{new.year}}</b>. {{new.text}}</p>
+      <p><span class="bio-highlight"><b>{{new.month}} {{new.year}}</b></span>. {{new.text}}</p>
     </li>
     {% endfor %}
   </ul>
