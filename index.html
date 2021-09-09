@@ -8,7 +8,7 @@ title: Personal Webpage
   <p>
     I am a <span class="bio-highlight">Machine Learning Research Engineer</span> at <a href="https://www.gradiant.org/en//" target="_blank" rel="noopener">Gradiant</a>. I
     love creating
-    systems based on data that can interact with the real word.
+    systems based on data that can interact with the real world.
     My research interests lie in the general area of machine learning, particularly in deep learning and its
     applications in object detection,
     image generation and instance segmentation.
@@ -58,6 +58,47 @@ title: Personal Webpage
   </ul>
 </div>
 
+
+<!-- ========== RESUME ========== -->
+<div class="section" id="resume">
+  <h2>Vitæ</h2>
+
+  <ul class="vitae-content">
+    {% for exp in site.data.experience.experiences %}
+    <li class=vitae-item>
+
+      <div class="vitae-time-place">
+        <div class="vitae-place">
+          {{ exp.location }}
+        </div> 
+        <div class="vitae-time">
+          {{ exp.time }}
+        </div>
+      </div>
+
+      {% if forloop.first %}
+      <div class="vitae-actual vitae-image ">
+      {% else %}
+      <div class="vitae-image">
+      {% endif %}
+        <div class="vitae-image-placeholder">
+          <img src="{{ exp.image }}" alt="experience-logo" loading="lazy" width="79" height="79"/>
+        </div>
+      </div>
+
+      <div class="vitae-panel">
+        <div class="vitae-position">
+          <h3 class="vitae-title">{{ exp.title }} - <a target="_blank" rel="noopener" href="{{exp.url}}">{{ exp.company }}</a> </h3>
+        </div>
+        <div class="vitae-description">
+          <p> {{ exp.description }} </p>
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+</div>
 
 <!-- ========== RESUME ========== -->
 <div class="docs-section" id="resume">
