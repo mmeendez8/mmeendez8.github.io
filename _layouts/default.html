@@ -114,38 +114,37 @@
     {{ content}}
 
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          {{ site.data.main_info.name }}
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> {{ site.data.main_info.name }} </p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a> </p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
