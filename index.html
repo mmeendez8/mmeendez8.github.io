@@ -65,7 +65,7 @@ title: Personal Webpage
 
   <ul class="vitae-content">
     {% for exp in site.data.experience.experiences %}
-    <li class=vitae-item>
+    <li class="vitae-item">
 
       <div class="vitae-time-place">
         <div class="vitae-place">
@@ -100,76 +100,37 @@ title: Personal Webpage
 
 </div>
 
-<!-- ========== RESUME ========== -->
-<div class="docs-section" id="resume">
-  <h4>Vitæ</h4>
+<!-- ========== Publications ========== -->
+<div class="section" id="publications">
+  <h2>Publications</h2>
 
-  <!-- The Timeline -->
-  <ul class="timeline">
-    {% for exp in site.data.experience.experiences %}
-    <li>
-      {% if exp.category == "work" %}
-      <div class="direction-l">
-        {% else %}
-        <div class="direction-r">
-          {% endif %}
-          <div class="flag-wrapper">
-            <span class="flag">{{ exp.place }}</span>
-            <span class="time-wrapper"><span class="time">{{ exp.time }}</span></span>
-          </div>
-          <div class="desc"><b>{{ exp.title }}</b> <br /> {{ exp.subtitle }}</div>
-        </div>
+  <ul class="publications-content">
+    {% for paper in site.data.publications.publications %}
+    <li class="publications-item">
+      <h3 class="publication-title">{{ paper.title }}</h3>
+      <a target="_blank" rel="noopener" href="{{paper.paper}}">
+        <p class="publication-venue">{{ paper.venue }}</p>
+      </a>
+      <p class="publication-authors">{{ paper.authors }}</p>
     </li>
     {% endfor %}
-  </ul>
-</div>
-
-
-<!-- ========== Publications ========== -->
-<div class="docs-section" id="publications">
-  <h4>Publications</h4>
-
-
-  <div class="tab-content">
-    <div class="tab-pane active" id="project-selected">
-      {% for paper in site.data.publications.publications %}
-      <div class="other-projects">
-        <p class="title"><b>{{ paper.title }}</b></p>
-        <p>{{ paper.authors }}</p>
-        <p><i>{{ paper.venue }}</i></p>
-        <p class="description">{{ paper.description }}</p>
-        <div class="other-projects-buttons">
-          {% if paper.paper %}
-          <a class="button" href="{{ paper.paper }}" target="_blank" rel="noopener">Paper</a>
-          {% endif %}
-          {% if paper.code %}
-          <a class="button" href="{{ paper.code }}" target="_blank" rel="noopener">Code</a>
-          {% endif %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+    </ul>
 </div>
 
 <!-- ========== Other Projects ========== -->
-<div class="docs-section" id="other">
-  <h4>Other projects</h4>
 
-  <div class="tab-content">
-    <div class="tab-pane active" id="project-selected">
-      {% for project in site.data.other_projects.other_projects %}
-      <div class="other-projects">
-        <p class="title"><b>{{ project.title }}</b></p>
-        <p>{{ project.authors }}</p>
-        <p class="description">{{ project.description }}</p>
-        <div class="other-projects-buttons">
-          {% if project.code %}
-          <a class="button" href="{{ project.code }}" target="_blank" rel="noopener">Code</a>
-          {% endif %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+<div class="section" id="other-projects">
+  <h2>Other Projects</h2>
+
+  <ul class="other-projects-content">
+    {% for project in site.data.other_projects.other_projects %}
+    <li class="other-projects-item">
+      <a target="_blank" rel="noopener" href="{{project.code}}">
+        <h3 class="other-project-title">{{ project.title }}</h3>
+      </a>
+      <p class="other-project-description">{{ project.description }}</p>
+      <p>Tags: <span class="bio-highlight">{{ project.tags }}</span></p>
+    </li>
+    {% endfor %}
+    </ul>
 </div>
