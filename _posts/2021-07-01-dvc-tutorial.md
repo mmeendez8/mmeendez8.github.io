@@ -7,13 +7,13 @@ description: "Learn how to use DVC with a Google Drive remote for tracking chang
 selected: y
 ---
 
-[Data Version Control (DVC)](https://dvc.org/) is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.
+[Data Version Control (DVC)](https://dvc.org/){:target="_blank"}{:rel="noopener noreferrer"} is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.
 
 In this post I will try to show how to configure DVC and how it can help us to maintain version of our datasets that can be easily integrated with Github.
 
 ## Why DVC?
 
-The first thing we should do is understanding how DVC works, we can check its [landing page](https://dvc.org/) which contains some intuitive explanations:
+The first thing we should do is understanding how DVC works, we can check its [landing page](https://dvc.org/){:target="_blank"}{:rel="noopener noreferrer"} which contains some intuitive explanations:
 
 - Machine Learning projects are defined by code and data
 - We know how to track code using git
@@ -33,11 +33,11 @@ If you paid attention, you will probably have a general idea of how this large f
 
 ## Setting up the environment
 
-I have pushed all changes to a [Github repository](https://github.com/mmeendez8/coco_sample/) that you can consult in case you need.
+I have pushed all changes to a [Github repository](https://github.com/mmeendez8/coco_sample/){:target="_blank"}{:rel="noopener noreferrer"} that you can consult in case you need.
 
 ### Install DVC
 
-Let's setup DVC for our experiment. If you check their [installation guide](https://dvc.org/doc/install/linux#installation-on-linux), you will realize that depending on the type of remote storage you plan to use, it might be necessary to install additional deps. For this tutorial we are going to use Google Drive because it is probably the most accesible to everyone. I always use Conda environment for Python package management, do the following for creating a new environment and installing dvc on it:
+Let's setup DVC for our experiment. If you check their [installation guide](https://dvc.org/doc/install/linux#installation-on-linux){:target="_blank"}{:rel="noopener noreferrer"}, you will realize that depending on the type of remote storage you plan to use, it might be necessary to install additional deps. For this tutorial we are going to use Google Drive because it is probably the most accesible to everyone. I always use Conda environment for Python package management, do the following for creating a new environment and installing dvc on it:
 
 ```bash
 conda  create -n coco_sample python=3.8 -y
@@ -47,7 +47,7 @@ pip install dvc[gdrive]
 
 ### Get the data
 
-We are going to use a [subset of the COCO dataset created by fast.ai](https://course.fast.ai/datasets#coco). The fast.ai subset contains all images that contain one of five selected categories, restricting objects to just those five categories; the categories are: chair couch tv remote book vase. You can download and extract it using the following commands:
+We are going to use a [subset of the COCO dataset created by fast.ai](https://course.fast.ai/datasets#coco){:target="_blank"}{:rel="noopener noreferrer"}. The fast.ai subset contains all images that contain one of five selected categories, restricting objects to just those five categories; the categories are: chair couch tv remote book vase. You can download and extract it using the following commands:
 
 ```bash
 wget https://s3.amazonaws.com/fast-ai-coco/coco_sample.tgz -P data
@@ -59,7 +59,7 @@ You should now have all images in `data/coco_sample/train_sample` and their corr
 
 ### Visualize our data
 
-It is always good to take a look at the data to get an idea of what kind of images we are dealing with. We are going to use our tool [pyodi](https://github.com/Gradiant/pyodi), which allows us to retrieve annotations from a COCO formatted file and paint then over the corresponding image. We can install it using pip and run the paint-annotations script pointing to our data and annotations folder:
+It is always good to take a look at the data to get an idea of what kind of images we are dealing with. We are going to use our tool [pyodi](https://github.com/Gradiant/pyodi){:target="_blank"}{:rel="noopener noreferrer"}, which allows us to retrieve annotations from a COCO formatted file and paint then over the corresponding image. We can install it using pip and run the paint-annotations script pointing to our data and annotations folder:
 
 ```bash
 pip install pyodi
@@ -74,7 +74,7 @@ This will paint the first 10 images of the dataset and save them into `output/pa
 
 ## Version the data
 
-If we follow [DVC get started page](https://dvc.org/doc/start), we need to initialize the project running `dvc init` so let's run that first and commit those internal files to github.com
+If we follow [DVC get started page](https://dvc.org/doc/start){:target="_blank"}{:rel="noopener noreferrer"}, we need to initialize the project running `dvc init` so let's run that first and commit those internal files to github.com
 
 ```bash
 git init
@@ -107,7 +107,7 @@ We are now tracking our images and annotations with DVC and have pushed it to ou
 
 ## Split the data
 
-We have a file `train_sample.json` that contains all our annotations. We need to split this file in training and validation subsets so we can properly train our model in a near future. We are going to use pyodi's [coco random-split](https://gradiant.github.io/pyodi/reference/apps/coco-split/) app for this task, since it is very easy to execute.
+We have a file `train_sample.json` that contains all our annotations. We need to split this file in training and validation subsets so we can properly train our model in a near future. We are going to use pyodi's [coco random-split](https://gradiant.github.io/pyodi/reference/apps/coco-split/){:target="_blank"}{:rel="noopener noreferrer"} app for this task, since it is very easy to execute.
 Let's reserve a 20% of the total data for validation:
 
 ```bash
@@ -153,7 +153,7 @@ dvc checkout
 
 We have used DVC for track and save data the same way we do with code. So we can also add some test to our data to make sure that we do not commit any error that can harm our training. Since we have used Google Drive as a remote storage for our data, we can configure our CI pipeline to download our data from there and run our tests.
 
-First of all we need to store our gdrive credentials as a Github secret. You can go to you repository settings in Github and create a new secret named `GDRIVE_CREDENTIALS_DATA`, and paste there the contents of your `.dvc/tmp/gdrive-user-credentials.json`. This file should have been automatically created after you give DVC permissions to your Google Drive account. You can read more about this in [DVC documentation](https://dvc.org/doc/user-guide/setup-google-drive-remote#authorization).
+First of all we need to store our gdrive credentials as a Github secret. You can go to you repository settings in Github and create a new secret named `GDRIVE_CREDENTIALS_DATA`, and paste there the contents of your `.dvc/tmp/gdrive-user-credentials.json`. This file should have been automatically created after you give DVC permissions to your Google Drive account. You can read more about this in [DVC documentation](https://dvc.org/doc/user-guide/setup-google-drive-remote#authorization){:target="_blank"}{:rel="noopener noreferrer"}.
 
 Let's create an example test in charge of checking that our annotations follow COCO format guidelines. We can use pydantic for data validation defining how annotation should be using python type annotations. We now for example that categories or our dataset can only take six different values and bounding boxes must be a list of four integers. Pydantic allows us to define this rules in a very efficient an flexible manner.
 
@@ -274,4 +274,4 @@ DVC help us to keep version of our data and models. In this short post we have l
 
 * We have added some simple tests for our data and how to set up a CI worflow that runs on Github servers.
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}*

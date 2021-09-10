@@ -7,9 +7,9 @@ image: "/assets/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail.webp"
 selected: y
 ---
 
-I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}) where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md) with DVC for designing ML pipelines, versioning our models and monitor training progress.
+I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}){:target="_blank"}{:rel="noopener noreferrer"} where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md){:target="_blank"}{:rel="noopener noreferrer"} with DVC for designing ML pipelines, versioning our models and monitor training progress.
 
-It is quite a lot of content to cover, so I will be going through it step by step and trying to keep things as simple as possible. You can find all the code for this tutorial in my [Github](https://github.com/mmeendez8/mmdetection_dvc). So let's start with it!
+It is quite a lot of content to cover, so I will be going through it step by step and trying to keep things as simple as possible. You can find all the code for this tutorial in my [Github](https://github.com/mmeendez8/mmdetection_dvc){:target="_blank"}{:rel="noopener noreferrer"}. So let's start with it!
 
 ## 1. Setup the environment
 
@@ -22,7 +22,7 @@ conda activate mmdetection_dvc
 
 ## 2. Import our dataset
 
-In the previous post we used a subset of the COCO dataset created by fast.ai. We push all data to a Google Drive remote storage using DVC and keep all metada files in a Github repository. We need now to import this dataset in our repo and that's exactly what [dvc import](https://dvc.org/doc/command-reference/import) can do for us!
+In the previous post we used a subset of the COCO dataset created by fast.ai. We push all data to a Google Drive remote storage using DVC and keep all metada files in a Github repository. We need now to import this dataset in our repo and that's exactly what [dvc import](https://dvc.org/doc/command-reference/import){:target="_blank"}{:rel="noopener noreferrer"} can do for us!
 
 ```bash
 dvc init
@@ -37,7 +37,7 @@ git commit -m "Import coco_sample dataset"
 git push
 ```
 
-Once it is downloaded, we can move between different [versions of the dataset](https://github.com/mmeendez8/coco_sample/releases) with the [dvc update](https://dvc.org/doc/command-reference/update) command. If we would go back to v1.0 of our dataset and push our changes to git:
+Once it is downloaded, we can move between different [versions of the dataset](https://github.com/mmeendez8/coco_sample/releases){:target="_blank"}{:rel="noopener noreferrer"} with the [dvc update](https://dvc.org/doc/command-reference/update){:target="_blank"}{:rel="noopener noreferrer"} command. If we would go back to v1.0 of our dataset and push our changes to git:
 
 ```bash
 dvc update --rev v1.0 data.dvc
@@ -50,13 +50,13 @@ That's it! We have imported our dataset and we know how to move between differen
 
 ## 3. Train our model
 
-[MMDetection](https://github.com/open-mmlab/mmdetection) is an open source object detection toolbox based on PyTorch. It is a part of the OpenMMLab project and it is one of the most popular computer vision frameworks. I love it and I am an active contributor since it became my default framework for object detection last year.
+[MMDetection](https://github.com/open-mmlab/mmdetection){:target="_blank"}{:rel="noopener noreferrer"} is an open source object detection toolbox based on PyTorch. It is a part of the OpenMMLab project and it is one of the most popular computer vision frameworks. I love it and I am an active contributor since it became my default framework for object detection last year.
 
 They have an extense documentation which really helps first time users. In this post I will skip the very basics and focus on showing how easily can we train a RetinaNet object detector on our coco_sample dataset.
 
 ### 3.1. Model config
 
-First thing we need to do is to find the config file for our model, so let's explore mmdet model zoo and more specifically [RetinaNet section](https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet). There's a bunch of different RetinaNet models there but let's stick with the base config from the [original paper](https://arxiv.org/pdf/1708.02002.pdf). I have already downloaded this file to my repo and you can find it under `configs/retinanet_r50_fpn.py`. There are three main sections there:
+First thing we need to do is to find the config file for our model, so let's explore mmdet model zoo and more specifically [RetinaNet section](https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet){:target="_blank"}{:rel="noopener noreferrer"}. There's a bunch of different RetinaNet models there but let's stick with the base config from the [original paper](https://arxiv.org/pdf/1708.02002.pdf){:target="_blank"}{:rel="noopener noreferrer"}. I have already downloaded this file to my repo and you can find it under `configs/retinanet_r50_fpn.py`. There are three main sections there:
 
 - The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at:
 
@@ -64,19 +64,19 @@ First thing we need to do is to find the config file for our model, so let's exp
 init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'))`
 ```
 
-As a curious fact, I checked out [official torchvision documentation](https://pytorch.org/vision/stable/models.html) and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results...
+As a curious fact, I checked out [official torchvision documentation](https://pytorch.org/vision/stable/models.html){:target="_blank"}{:rel="noopener noreferrer"} and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results...
 
 <center>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Just found this checking <a href="https://twitter.com/hashtag/torchvision?src=hash&amp;ref_src=twsrc%5Etfw">#torchvision</a> stable models, it seems they were trained on some volatile dataset 😅<br>cc <a href="https://twitter.com/DVCorg?ref_src=twsrc%5Etfw">@DVCorg</a> <a href="https://t.co/rR8ANSmucI">pic.twitter.com/rR8ANSmucI</a></p>&mdash; Miguel Mendez (@mmeendez8) <a href="https://twitter.com/mmeendez8/status/1418507102465765376?ref_src=twsrc%5Etfw">July 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </center>
 
-- The [Feature Pyramid Network (FPN)](https://arxiv.org/abs/1612.03144) configuration which is useful to find features at different scale levels.
+- The [Feature Pyramid Network (FPN)](https://arxiv.org/abs/1612.03144){:target="_blank"}{:rel="noopener noreferrer"} configuration which is useful to find features at different scale levels.
 
-- The classification head and the regression head. They predict labels and bounding boxes regression parameters for each of the anchors of the model. I cannot really go deep how this model works and what anchors are but you should check our repo [pyodi](https://github.com/Gradiant/pyodi) if you really want to understand all the details.
+- The classification head and the regression head. They predict labels and bounding boxes regression parameters for each of the anchors of the model. I cannot really go deep how this model works and what anchors are but you should check our repo [pyodi](https://github.com/Gradiant/pyodi){:target="_blank"}{:rel="noopener noreferrer"} if you really want to understand all the details.
 
 ### 3.2 Dataset config
 
-Mmdetection framework also uses config files for datasets. There we define our train and validation data and which types of transformation do we want to apply before images are feed into the network. Since our dataset follows COCO format, I just modified original [COCO_detection.py](https://github.com/open-mmlab/mmdetection/blob/master/configs/_base_/datasets/coco_detection.py). Note that:
+Mmdetection framework also uses config files for datasets. There we define our train and validation data and which types of transformation do we want to apply before images are feed into the network. Since our dataset follows COCO format, I just modified original [COCO_detection.py](https://github.com/open-mmlab/mmdetection/blob/master/configs/_base_/datasets/coco_detection.py){:target="_blank"}{:rel="noopener noreferrer"}. Note that:
 
 - I removed the test set since we are not going to use one for this tutorial.
 - I added a `CLASSES` variable with our reduced set of labels.
@@ -94,7 +94,7 @@ Our runtime definition is under `configs/runtime.py` and we are going to specify
 - `custom_hooks`: extra hooks that we can insert or create for retrieving or adding functionalities to our training
 - `workflow`: it defines training workflow, this is, how many training epochs do we want to run before a validation one.
 
-Since we are using DVC, we are also going to use the [DVCLive](https://dvc.org/doc/dvclive) hook. DVCLive is an open-source Python library for monitoring the progress of metrics during training of machine learning models. It is a recent and super cool library with git integration and that's all I need! See how simple is to add this hook:
+Since we are using DVC, we are also going to use the [DVCLive](https://dvc.org/doc/dvclive){:target="_blank"}{:rel="noopener noreferrer"} hook. DVCLive is an open-source Python library for monitoring the progress of metrics during training of machine learning models. It is a recent and super cool library with git integration and that's all I need! See how simple is to add this hook:
 
 ```python
 log_config = dict(
@@ -107,7 +107,7 @@ log_config = dict(
 
 ## 4. Data pipeline
 
-Let's create our first [data pipeline](https://dvc.org/doc/start/data-pipelines)! Ideally (and following DVC docs) we should use dvc run commands so the pipeline gets automatically generated but... I feel more comfortable creating a dvc.yaml and filling it myself.
+Let's create our first [data pipeline](https://dvc.org/doc/start/data-pipelines){:target="_blank"}{:rel="noopener noreferrer"}! Ideally (and following DVC docs) we should use dvc run commands so the pipeline gets automatically generated but... I feel more comfortable creating a dvc.yaml and filling it myself.
 
 ### 4.1 Prepare the data
 
@@ -137,7 +137,7 @@ You can now call run the pipeline with `dvc repro` and the new annotations file 
 
 ### 4.2 Train the model
 
-I have created a simple training script in `src/train.py` that adjusts to our needs. You could also use [mmdetection train tool](https://github.com/open-mmlab/mmdetection/blob/master/tools/train.py) since I just applied some minor modifications to it that will allow us to use dvc params.
+I have created a simple training script in `src/train.py` that adjusts to our needs. You could also use [mmdetection train tool](https://github.com/open-mmlab/mmdetection/blob/master/tools/train.py){:target="_blank"}{:rel="noopener noreferrer"} since I just applied some minor modifications to it that will allow us to use dvc params.
 
 We can add a new step to our data pipeline that executes our training step. For example this would be enough for running an experiment with our actual configs:
 
@@ -163,12 +163,12 @@ train:
 
 Note how I have added the `live` key to notify DVC that our script will be saving metrics in the `training/metrics` folder. Also, this will generate a html file that we can use to visualize in real time our train progress. So simple!
 
-We can run again DVC repro as many times as we want changing our config files as needed for trying different hyperparameters or model configurations. Nevertheless, DVC guys recommend yo to use [DVC experiments](https://dvc.org/doc/start/experiments) when you are tryining different configurations. So that's what we are going to do! Note this is a recent feature and I had to open a couple issues since I found a couple "bugs" or unexpected behavior such [[1]](https://github.com/iterative/dvc/issues/6465), [[2]](https://github.com/iterative/dvc/issues/5477?notification_referrer_id=MDE4Ok5vdGlmaWNhdGlvblRocmVhZDE1OTA3ODE1MTM6MTU5Njk2Njc%3D#issuecomment-905234950).
+We can run again DVC repro as many times as we want changing our config files as needed for trying different hyperparameters or model configurations. Nevertheless, DVC guys recommend yo to use [DVC experiments](https://dvc.org/doc/start/experiments){:target="_blank"}{:rel="noopener noreferrer"} when you are tryining different configurations. So that's what we are going to do! Note this is a recent feature and I had to open a couple issues since I found a couple "bugs" or unexpected behavior such [[1]](https://github.com/iterative/dvc/issues/6465), [[2]](https://github.com/iterative/dvc/issues/5477?notification_referrer_id=MDE4Ok5vdGlmaWNhdGlvblRocmVhZDE1OTA3ODE1MTM6MTU5Njk2Njc%3D#issuecomment-905234950).
 
 Let's do our first training by running `dvc exp run`! You can monitor training progress by opening your `training/metrics.html` file:
 
 :-------------------------:|:-------------------------:
-![loss curve](/assets/posts/2021-08-30-mmdet-dvc-tutorial/loss.webp)  |  ![vmap curve](/assets/posts/2021-08-30-mmdet-dvc-tutorial/vmap.webp)
+![loss curve](/assets/posts/2021-08-30-mmdet-dvc-tutorial/loss.webp){:target="_blank"}{:rel="noopener noreferrer"}  |  ![vmap curve](/assets/posts/2021-08-30-mmdet-dvc-tutorial/vmap.webp){:target="_blank"}{:rel="noopener noreferrer"}
 
 Training will be done soon (depening on your GPU and machine) and we can check our results by running:
 
@@ -189,7 +189,7 @@ The possibilty of tracking your hyperparameters is what I most like about experi
 2. Specify that our train step depends on this parameter
 3. Run experiment with -S flag updating the parameter value.
 
-These steps are fine when you just change the learning rate or the number of epochs. Nevertheless I consider it does not scales to complex settings where you try a few dozens of different hyperparameters... There is [an open issue](https://github.com/iterative/dvc/issues/5477#issuecomment-905440724) where I shared my personal opinion, you can go there and read different thinkings since there is a small discussion going on about this new feature.
+These steps are fine when you just change the learning rate or the number of epochs. Nevertheless I consider it does not scales to complex settings where you try a few dozens of different hyperparameters... There is [an open issue](https://github.com/iterative/dvc/issues/5477#issuecomment-905440724){:target="_blank"}{:rel="noopener noreferrer"} where I shared my personal opinion, you can go there and read different thinkings since there is a small discussion going on about this new feature.
 
 Let's increase our L2 regularization or weight decay to see how it affects our results:
 
@@ -257,7 +257,7 @@ git push
 dvc push
 ```
 
-We have covered most of the step of the official [DVC experiments tutorial](https://dvc.org/doc/start/experiments). You can go there and check more info about how cleaning up your experiments and how to pull specific ones.
+We have covered most of the step of the official [DVC experiments tutorial](https://dvc.org/doc/start/experiments){:target="_blank"}{:rel="noopener noreferrer"}. You can go there and check more info about how cleaning up your experiments and how to pull specific ones.
 
 
 ### 4.3 Results Visualization
@@ -283,10 +283,10 @@ eval:
 I am going to run `dvc repro` since I have already commit and pushed my changes from last experiment. This is going to create the `eval` folder which contains the painted images, see a few examples below:
 
 :-------------------------:|:-------------------------:
-![dog in couch](/assets/posts/2021-08-30-mmdet-dvc-tutorial/doggy.webp)  |  ![tv fishbowl](/assets/posts/2021-08-30-mmdet-dvc-tutorial/fish.webp)
-![abandoned tv](/assets/posts/2021-08-30-mmdet-dvc-tutorial/tv.webp)  |  ![lonely cat](/assets/posts/2021-08-30-mmdet-dvc-tutorial/cat.webp)
+![dog in couch](/assets/posts/2021-08-30-mmdet-dvc-tutorial/doggy.webp){:target="_blank"}{:rel="noopener noreferrer"}  |  ![tv fishbowl](/assets/posts/2021-08-30-mmdet-dvc-tutorial/fish.webp){:target="_blank"}{:rel="noopener noreferrer"}
+![abandoned tv](/assets/posts/2021-08-30-mmdet-dvc-tutorial/tv.webp){:target="_blank"}{:rel="noopener noreferrer"}  |  ![lonely cat](/assets/posts/2021-08-30-mmdet-dvc-tutorial/cat.webp){:target="_blank"}{:rel="noopener noreferrer"}
 
-It seems our model is not perfect... it mistook a fish tank for a TV! Anyway this was expected, the mAP metric is pretty low but even though we can see how it performs pretty well in the other images. You can go and check more results yourself but keep in mind that SOTA models in COCO dataset (80 classes) achieve a mAP ~0.6 and that's a large difference wrt to our simple model. If you want to know more about COCO ranking I recommend you to check [paperswithcode](https://paperswithcode.com/sota/object-detection-on-coco) web.
+It seems our model is not perfect... it mistook a fish tank for a TV! Anyway this was expected, the mAP metric is pretty low but even though we can see how it performs pretty well in the other images. You can go and check more results yourself but keep in mind that SOTA models in COCO dataset (80 classes) achieve a mAP ~0.6 and that's a large difference wrt to our simple model. If you want to know more about COCO ranking I recommend you to check [paperswithcode](https://paperswithcode.com/sota/object-detection-on-coco){:target="_blank"}{:rel="noopener noreferrer"} web.
 
 Once we have evaluated our model we can commit and push these results!
 
@@ -313,4 +313,4 @@ We can use `DVC` combined with `mmdetection` to easily train object detection mo
 - Obtain bbox predictions and paint them over our validation set
 
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8) or [Github](https://github.com/mmeendez8)*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}*
