@@ -13,7 +13,7 @@ You can also find this post in [Medium](https://towardsdatascience.com/vaes-gene
 
 **Note**: All code in here can be found on my [Github](https://github.com/mmeendez8/Autoencoder) account
 
-### Get the data
+## Get the data
 
 Tensorflow (with the recently incorporated Keras API) provides a reasonable amount of [image datasets](https://keras.io/datasets/) that we can use to test the performance of our network. It is super simple to import them without loosing time on data preprocessing.
 
@@ -29,7 +29,7 @@ If this is the first time you use this API I recommend you to test how is this w
 
 Easy isn’t it? Alright, let’s keep moving.
 
-### Encoder
+## Encoder
 
 We must now “code our encoder”. Since we are dealing with images, we are going to use some convolutional layers which will help us to maintain the spatial relations between pixels. I got the some of the ideas of how to structure the network from this [great Felix Mohr’s post](https://towardsdatascience.com/teaching-a-variational-autoencoder-vae-to-draw-mnist-characters-978675c95776)
 
@@ -44,7 +44,7 @@ The **mean** and **standard deviation** of our Gaussian will be computed through
 ![](https://cdn-images-1.medium.com/max/2000/1*MX_QFCU-sL03uXt_zMaw6Q.png)
 {: refdef}
 
-### Decoder
+## Decoder
 
 When we speak about decoding images and neural networks, we must have a word in our mind, **transpose convolutions!** They work as an **upsampling method with learning parameters**, so they will be in charge of recovering the original image dimension from the latent variables one. It’s common to apply some non linear transformations using dense layers before the transposed ones. Below we can observe how the decoder is defined.
 
@@ -56,7 +56,7 @@ Note that *FLAGS.inputs_decoder *references the number of neurons in our dense l
 ![Sigmoid function plot (obtained from Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Logistic-curve.svg/320px-Logistic-curve.svg.png)
 {: refdef}
 
-### Cost function
+## Cost function
 
 We have defined out encoder and decoder network but we still need to go trough a final step which consists on joining them and defining the cost function that will be optimized during the training phase.
 
@@ -66,9 +66,9 @@ I first connected the two networks and then (for simplicity sake) I have reshape
 
 That’s all! We have created a complete network with its corresponding data input pipeline with just a few lines of code. We can move now, test our network and check if it can properly learn and create new amazing images!
 
-### Experiments
+## Experiments
 
-#### 1. Are our networks learning?
+### 1. Are our networks learning?
 
 Let’s start with a simple example and check that the network is working as it should. For this we will use the MNIST and fashion MNIST datasets and see how is the network reconstructing our input images after a few epochs. For this I will set the **number of latent dimensions equal to 5**.
 
@@ -90,7 +90,7 @@ We see how our network keeps improving the quality of the recovered images. It�
 
 It’s also curious, to observe how the images change to get an intuition of what is happening during the learning. But what is going on with the image encodings?
 
-#### 2. How does our latent space look?
+### 2. How does our latent space look?
 
 In the previous section we used a 5 dimensional latent space but we can reduce this number to a two dimensional space which we can plot. In this way the complete images will be encoded in a 2D vector. Using a scatter plot, we can see how this dimensional space evolves with the number of epochs.
 
@@ -133,7 +133,7 @@ These two dimensional plots can also help us to understand the KL divergence ter
 
 Look the x and y axis. On the left plot, there is not regularization, so points embrace a much larger region of the space, while as in the right image they are more concentrated, so this produces a dense space.
 
-#### 3. Generating samples
+### 3. Generating samples
 
 We can generate random samples that belong to our latent space. These points have not been used during training (they would correspond with a white space in previous plots). Our network decoder though, has learnt to reconstruct valid images that are related with those points without seem them. So let’s create a grid of points as the following one:
 
@@ -183,7 +183,7 @@ After 50 epochs of training and using the grid technique and the fashion MNIST d
 
 All this images here are fake. We can finally see how our encoder works and how our latent space has been able to properly encode 2D image representations. Observe how you can start with a sandal and interpolate points until you get a sneaker or even a boot!
 
-### Conclusion
+## Conclusion
 
 We have learnt about Variational Autoencoders. We started with the theory and main assumptions that lie behind them and finally we implement this network using Google’s Tensorflow.
 

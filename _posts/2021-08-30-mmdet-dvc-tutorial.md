@@ -11,7 +11,7 @@ I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}) where I sh
 
 It is quite a lot of content to cover, so I will be going through it step by step and trying to keep things as simple as possible. You can find all the code for this tutorial in my [Github](https://github.com/mmeendez8/mmdetection_dvc). So let's start with it!
 
-### 1. Setup the environment
+## 1. Setup the environment
 
 We are gonna need a few packages to get our project up and running. I have created a `conda.yml` that you can find in the root of the repository, this is going to install pytorch and cudatoolkit since we are going to train our models using a GPU. You can create the environment by:
 
@@ -20,7 +20,7 @@ conda env create -f conda.yaml
 conda activate mmdetection_dvc
 ```
 
-### 2. Import our dataset
+## 2. Import our dataset
 
 In the previous post we used a subset of the COCO dataset created by fast.ai. We push all data to a Google Drive remote storage using DVC and keep all metada files in a Github repository. We need now to import this dataset in our repo and that's exactly what [dvc import](https://dvc.org/doc/command-reference/import) can do for us!
 
@@ -48,13 +48,13 @@ git push
 
 That's it! We have imported our dataset and we know how to move between different versions so let's create a script that will train our model!
 
-### 3. Train our model
+## 3. Train our model
 
 [MMDetection](https://github.com/open-mmlab/mmdetection) is an open source object detection toolbox based on PyTorch. It is a part of the OpenMMLab project and it is one of the most popular computer vision frameworks. I love it and I am an active contributor since it became my default framework for object detection last year.
 
 They have an extense documentation which really helps first time users. In this post I will skip the very basics and focus on showing how easily can we train a RetinaNet object detector on our coco_sample dataset.
 
-#### 3.1. Model config
+### 3.1. Model config
 
 First thing we need to do is to find the config file for our model, so let's explore mmdet model zoo and more specifically [RetinaNet section](https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet). There's a bunch of different RetinaNet models there but let's stick with the base config from the [original paper](https://arxiv.org/pdf/1708.02002.pdf). I have already downloaded this file to my repo and you can find it under `configs/retinanet_r50_fpn.py`. There are three main sections there:
 
@@ -74,7 +74,7 @@ As a curious fact, I checked out [official torchvision documentation](https://py
 
 - The classification head and the regression head. They predict labels and bounding boxes regression parameters for each of the anchors of the model. I cannot really go deep how this model works and what anchors are but you should check our repo [pyodi](https://github.com/Gradiant/pyodi) if you really want to understand all the details.
 
-#### 3.2 Dataset config
+### 3.2 Dataset config
 
 Mmdetection framework also uses config files for datasets. There we define our train and validation data and which types of transformation do we want to apply before images are feed into the network. Since our dataset follows COCO format, I just modified original [COCO_detection.py](https://github.com/open-mmlab/mmdetection/blob/master/configs/_base_/datasets/coco_detection.py). Note that:
 
@@ -83,7 +83,7 @@ Mmdetection framework also uses config files for datasets. There we define our t
 
 You can check the dataset config file in `configs/coco_sample.py`
 
-#### 3.3 Train configuration
+### 3.3 Train configuration
 
 There are multiple training parameters we can configure using mmdetection. For this simple demo we are going to use the default scheduler (see `configs/scheduler.py`). It uses SGD and a dynamic learning rate policy and that's mostly what we need to know for now.
 
@@ -105,11 +105,11 @@ log_config = dict(
     ])
 ```
 
-### 4. Data pipeline
+## 4. Data pipeline
 
 Let's create our first [data pipeline](https://dvc.org/doc/start/data-pipelines)! Ideally (and following DVC docs) we should use dvc run commands so the pipeline gets automatically generated but... I feel more comfortable creating a dvc.yaml and filling it myself.
 
-#### 4.1 Prepare the data
+### 4.1 Prepare the data
 
 Our COCO annotations are missing a few fields because fast.ai guys considered them unnecessary (they actually are) so they removed all extra fields to reduce the final size of the json. That's fair enough, but mmdetection needs them so I created a very simple script that will prepare the data for us, you can find it in `src/prepare_data.py`. 
 
@@ -135,7 +135,7 @@ There's a stage called called prepare_data that run a small for loop over values
 
 You can now call run the pipeline with `dvc repro` and the new annotations file should appear!
 
-#### 4.2 Train the model
+### 4.2 Train the model
 
 I have created a simple training script in `src/train.py` that adjusts to our needs. You could also use [mmdetection train tool](https://github.com/open-mmlab/mmdetection/blob/master/tools/train.py) since I just applied some minor modifications to it that will allow us to use dvc params.
 
@@ -260,7 +260,7 @@ dvc push
 We have covered most of the step of the official [DVC experiments tutorial](https://dvc.org/doc/start/experiments). You can go there and check more info about how cleaning up your experiments and how to pull specific ones.
 
 
-#### 4.3 Results Visualization
+### 4.3 Results Visualization
 
 We have trained our model and we have an idea of how it performs thanks to the mAP metrics but we all like to the the bounding boxes over our images so we can get a fully understanding of how the model performs! I have create a simple eval script in `src/eval.py` that will latest model and paint a subset of validation images. We simply need to add a new step to our `dvc.yaml`:
 
@@ -297,7 +297,7 @@ git push
 dvc push
 ```
 
-### Conclusion
+## Conclusion
 
 We can use `DVC` combined with `mmdetection` to easily train object detection models, compare them and save different versions and experiments. Summarizing this post we have:
 

@@ -31,10 +31,8 @@
    -->
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href={{ "/libs/external/skeleton/skeleton.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
-
 
   <link rel="preload" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}></noscript>
@@ -47,11 +45,6 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href={{ "/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css" | prepend: site.baseurl }}>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href={{ "/libs/external/skeleton_tabs/skeleton-tabs.css" | prepend: site.baseurl }}>
-  <script src={{ "/libs/external/skeleton_tabs/skeleton-tabs.js" | prepend: site.baseurl }}></script>
 
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -70,56 +63,17 @@
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
+  {{ content}}
 
-    <div class="header-container">
-
-      <div class="header-img">
-        <a href="{{ site.baseurl }}/">
-          <img width="691" height="691" alt="Miguel Mendez profile image" src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'>
-        </a>
-      </div>
-
-      <div class="header-title">
-        <h1>{{ site.data.main_info.name }}</h1>
-        <p>{{ site.data.main_info.title }}</p>
-        <p>{{ site.data.main_info.email }}</p>
-
-        <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
-          <i class="icon-github-circled" aria-hidden="true"></i>
-        </a>
-
-        <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
-          <i class="icon-linkedin-squared" aria-hidden="true"></i>
-        </a>
-
-        <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
-          <i class="icon-twitter-squared" aria-hidden="true"></i>
-        </a>
-
-        <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
-          <i class="icon-medium" aria-hidden="true"></i>
-        </a>
-
-        <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
-          <i class="icon-stackoverflow" aria-hidden="true"></i>
-        </a>
-      </div>
-
-    </div>
-
-
-    {{ content}}
+  <div >
 
     <div class="footer">
       <div class="footer-sign">
-      <p> {{ site.data.main_info.name }} </p>
+      <p> <a  href={{ "/index.html" | prepend: site.baseurl }}>{{ site.data.main_info.name }} </a></p>
       </div>
 
       <div class="footer-thanks">
-        <p>based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a> </p>
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
       </div>
 
       <div class="footer-icons">

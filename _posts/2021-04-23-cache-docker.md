@@ -13,7 +13,7 @@ A classic CI workflow can be split into 2 two different blocks. The first one in
 
 In this post I pretend to provide some intuition of how have I optimized some of these pipelines for building Pytorch and Cuda using a Conda environment in a pretty efficient way.
 
-### 1. The classic approach
+## 1. The classic approach
 
 A common way to automate tasks such as Python package code formatting is to use pre-commit hooks. Also, I am used to working with pytest because I consider it a very flexible and intuitive framework to run all my tests. So these dependencies and others like Pytorch need to be installed in our environment before we can use them properly. I use [Conda](https://www.anaconda.com/) environments for Python package management as it is a very powerful tool.
 
@@ -47,7 +47,7 @@ jobs:
 ```
 
 This workflow needs to configure the conda environment each time it runs, although `conda.yaml` has not changed. This is far from efficient as we spend time doing the same. There must be a better way to speed this up ... and as usual these days, Docker is involved!
-### 2. Adding Docker into the equation
+## 2. Adding Docker into the equation
 
 Docker is great and we should take advantage of it. I don't intend to cover the basics of Docker in this post, so I assume the reader is used to struggling with it. Anyway, if there is anything in this post that is not clear to you, feel free to reach out to me via [Twitter](https://twitter.com/mmeendez8).
 
@@ -142,7 +142,7 @@ If we check the execution times of these two jobs, we see that the Docker action
 ![](/assets/posts/2021-04-23-cache-docker/time_comparison.webp)
 {: refdef}
 
-### 3. Building and pushing Docker images on Github Actions
+## 3. Building and pushing Docker images on Github Actions
 
 What we want to do is automate the build and push steps. There are many ways to solve this problem, the simplest would be to add a Docker build and push step to our pipeline so that the image is always compiled with the latest changes and ready to go. However ... this would be even worse than going back to where we started. We'd be building our Docker image, pushing it to the Github registry, and then running it for our test and lint steps, and this is clearly slower than installing Conda dependencies every time.
 
@@ -232,7 +232,7 @@ But the next time the action fires (and if we don't modify our Dockerfile or Con
 
 So now **we've incorporated the Docker build step into our pipeline**, so we don't need to manually upload a new image every time our dependencies change. In addition, we have been able to optimize this build by taking advantage of the Docker layers and the Github cache, reducing the compilation time to a third of the initial duration. But there is still room for improvement!
 
-### 5. Cache them all!
+## 5. Cache them all!
 
 As we have seen before, our Docker image is built whether our Dockerfile or Conda environment file is modified. So what if we just **skip the build step** when this has not occurred? We can do this in a very simple manner using taking advantage once again from Github Actions! We can track both files, calculating a hash from their content, so the build step only triggers when this hash changes. We just need to add a few lines to our pipeline.
 
@@ -334,7 +334,7 @@ We can now push our changes and Github will compute that hash and save it in the
 
 That's only 2 minutes and 29 seconds! We have fully automated our pipeline minimizing the time we need to install all our dependencies!
 
-### Conclusion
+## Conclusion
 
 We've learned how to improve our CI pipelines by leveraging the power of Github, Docker, and Conda Actions cache. We started by covering some of the usual problems we face when designing this pipelines and finally implemented an optimized version of the example pipeline.
 

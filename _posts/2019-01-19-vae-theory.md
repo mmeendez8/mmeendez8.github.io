@@ -11,7 +11,7 @@ Generative models are one of the cooler branches of Deep Learning. During last w
 
 You can also find this post in [Medium](https://medium.com/@miguelmendez_/vaes-i-generating-images-with-tensorflow-f81b2f1c63b0)
 
-### What are VAEs?
+## What are VAEs?
 
 Variational Autoencoders are after all a neural network. They consist of two main pieces, an encoder and a decoder. The first of them is a neural network which task is to convert an input datapoint *x* to a hidden or latent representation z, with the characteristic that this encoding has a lower number of dimensions than the original output. So, the encoder works as a compressor, that ‘summarizes’ the data into a lower dimensional space.
 
@@ -29,7 +29,7 @@ If you still not impressed think about this example think about this simplificat
 
 We will then act as encoders, transforming the articles into a reduced 100 words space. The decoder task will be based on recovering as much as possible of the original article!
 
-### The math
+## The math
 
 My idea here is to stick just with those parts that were more difficult to understand for me and that might help another person in the same situation! I will cover the intuition behind the algorithm and the most important parts that one needs to understand before implementing this network on on Tensorflow.
 
@@ -83,7 +83,7 @@ This is our lost function! We must highlight two things from here. First of all,
 That’s all! Although it might seem a little convoluted at the beginning, I have found the ELBO trick super interesting! You must think that we have found a tractable solution from an intractable problem by reducing our hypothesis set (our family of distributions will be Gaussian) and applying a small amount of math!
 
 
-#### Gaussian tricks!
+### Gaussian tricks!
 
 As we said before, the family of distribution that we are going to use are Gaussians. Usually, *p(Z) = Normal (0,1), *so if the encoder outputs representations of *z *which are not following a unit normal distribution, will get penalized by the KL divergence term (more info on KL divergence between Gaussians [here](https://stats.stackexchange.com/questions/7440/kl-divergence-between-two-univariate-gaussians))
 
@@ -114,7 +114,7 @@ In this video you can find a good visual explanation of the whole network!
 
 ***
 
-### Conclusion and next steps
+## Conclusion and next steps
 
 In this post I have covered the basic intuition we must have in order to implement a Deep Variational Autoencoder. In next posts we will go through the implementation of this network using tensorflow, we will evaluate some of the obtained results playing with different dimensions of our latent space and observe how our data distributes on it. I must once again thank to the amazing article written by [Doersch](https://arxiv.org/pdf/1606.05908.pdf) who has helped me to properly understand the theory behind VAEs.
 

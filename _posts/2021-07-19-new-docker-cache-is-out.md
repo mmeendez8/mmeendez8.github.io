@@ -9,7 +9,7 @@ selected: y
 
 I have recently [uploaded a post]({% post_url 2021-04-23-cache-docker %}) with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for [Docker BuildX](https://docs.docker.com/buildx/working-with-buildx/) integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!
 
-### 1. Get the basics
+## 1. Get the basics
 
 You can read [my previous post]({% post_url 2021-04-23-cache-docker %}) to get the whole picture but I also recommend you to visit the official pull requests that lead to this new feature:
 
@@ -24,7 +24,7 @@ If you read through all of those you probably realize that we have been waiting 
 
 At this moment we are waiting for Github virtual environments to have new buildx 0.6.0 in Ubuntu base images, but they are generated on weekends and deployed during the week so we might have to wait a week or two before that happens. Anyway we can already test the new feature and add it to our pipelines! 
 
-### 2. Simple example
+## 2. Simple example
 
 I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplify pipeline would be simply this:
 
@@ -105,7 +105,7 @@ git push
 
 That's it! It only took 22 seconds to build our image.
 
-### Conclusion
+## Conclusion
 
 * Docker Buildx is a powerful enhancement and we should try to take full advantage of it
 
