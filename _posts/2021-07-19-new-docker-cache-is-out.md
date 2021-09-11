@@ -24,9 +24,13 @@ If you read through all of those you probably realize that we have been waiting 
 
 At this moment we are waiting for Github virtual environments to have new buildx 0.6.0 in Ubuntu base images, but they are generated on weekends and deployed during the week so we might have to wait a week or two before that happens. Anyway we can already test the new feature and add it to our pipelines! 
 
+### Edit 9/11/21: 
+
+Github virtual environments have been updated so we can use build-push action without extra configurations.
+
 ## 2. Simple example
 
-I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplify pipeline would be simply this:
+I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplified pipeline would look like this:
 
 ```yaml
 name: Continuous Integration new cache
@@ -46,8 +50,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-        with:
-          version: v0.6.0
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -60,7 +62,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          builder: ${{ steps.buildx.outputs.name }}
           file: Dockerfile
           push: true
           tags: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
