@@ -3,4 +3,4 @@
 _site/*
 .jekyll*
 Gemfile.lock
-converter.py
+tools/
