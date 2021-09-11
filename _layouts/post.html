@@ -1,22 +1,35 @@
 ---
 layout: default
 ---
-<div class="docs-section post-image">
 
-  {% if page.subtitle == "" or page.subtitle == nil %}
-  <h2>{{ page.title }}</h2>
-  {% else %}
-  <div class="title-subtitle">
-    <h3>{{ page.title }}</h3>
-    <h5>{{ page.subtitle }}</h5>
+<header class="the-post-header">
+    <div class="container">
+      <a href="{{ site.baseurl }}/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href={{ "/index.html#posts" | prepend: site.baseurl }}>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <h1 class="the-post-title">{{ page.title }}</h1>
+      <p>{{ page.subtitle }}</p>
+    </div>
   </div>
-  {% endif %}
-  {% if page.image %}
-  <div class="image">
-    <img src="{{ page.image}}" alt="{{ include.description }}"/>
+
+  <div class="the-post-title-image">
+    <img src="{{ page.image}}" alt="{{ page.title }}"/>
   </div>
-  {% endif %}
+</div>
+
+<div class="container the-post-content">
 
   {{ content }}
-
+  
 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 
 <head>
 
@@ -27,43 +27,18 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
-  
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href={{ "/libs/external/skeleton/skeleton.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
+  <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
 
   <link rel="preload" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}></noscript>
-
-  <!-- JQuery
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src={{ "/libs/external/jquery-3.1.1.min.js" | prepend: site.baseurl }}></script>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href={{ "/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css" | prepend: site.baseurl }}>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href={{ "/libs/external/skeleton_tabs/skeleton-tabs.css" | prepend: site.baseurl }}>
-  <script src={{ "/libs/external/skeleton_tabs/skeleton-tabs.js" | prepend: site.baseurl }}></script>
-
-  <!-- Timeline
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preload"  href={{ "/libs/external/timeline.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href={{ "/libs/external/timeline.css" | prepend: site.baseurl }}></noscript>
-  <link rel="stylesheet" href={{ "/libs/external/timeline.css" | prepend: site.baseurl }}>
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src={{ "/libs/custom/my_js.js" | prepend: site.baseurl }}></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -78,104 +53,42 @@
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
+  {{ content}}
 
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="{{ site.baseurl }}/"><img width="691" height="691" alt="Miguel Mendez profile image"
-              src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'></a>
-        </div>
-        <div class="nine columns main-description">
-          <div class="eight columns">
-            <h1>{{ site.data.main_info.name }}</h1>
-            <div class="subtitle">
-              <p>{{ site.data.main_info.title }}</p>
-              <p>{{ site.data.main_info.email }}</p>
-              <p class="social">
-                <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
-                  <i class="icon-github-circled" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
-                  <i class="icon-linkedin-squared" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
-                  <i class="icon-twitter-squared2" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
-                  <i class="icon-medium" aria-hidden="true"></i>
-                </a>
-
-                <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
-                  <i class="icon-stackoverflow" aria-hidden="true"></i>
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href={{ "/index.html#bio" | prepend: site.baseurl }}>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href={{ "/index.html#news" | prepend: site.baseurl }}>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#posts" | prepend: site.baseurl }}>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#resume" | prepend: site.baseurl }}>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#publications" | prepend: site.baseurl }}>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href={{ "/index.html#other" | prepend: site.baseurl }}>Other</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    {{ content}}
+  <div >
 
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          {{ site.data.main_info.name }}
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> <a  href={{ "/index.html#top" | prepend: site.baseurl }}>{{ site.data.main_info.name }} </a></p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

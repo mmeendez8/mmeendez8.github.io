@@ -2,191 +2,176 @@
 layout: default
 title: Personal Webpage
 ---
-<!-- ========== BIO ========== -->
-<div class="docs-section" id="bio">
-  <h4>Bio</h4>
-  <p>
-    I am a Machine Learning Research Engineer at <a href="https://www.gradiant.org/en//" target="_blank" rel="noopener">Gradiant</a>. I
-    love creating
-    systems based on data that can interact with the real word.
-    My research interests lie in the general area of machine learning, particularly in deep learning and its
-    applications in object detection,
-    image generation and instance segmentation.
-  </p>
+<!-- ========== Header ========== -->
+<div class="container">
 
-  <p>
-    Prior to coming to Gradiant, I worked at <a href="https://www.desigual.com" target="_blank" rel="noopener">Desigual
-      Headquarters</a> in Barcelona
-    as a Data Science consultant.
-    I spent one year in Barcelona and one year in the United States (Purdue University) to do a M.Sc. in Artificial
-    Intelligence.
-    I got my B.Sc. from University of A Coruña after an exchange year in Norway.
-  </p>
-</div>
+  <div class="header-container">
 
-<!-- ========== NEWS ========== -->
-<div class="docs-section" id="news">
-  <h4>News</h4>
+    <div class="header-img">
+      <a href="{{ site.baseurl }}/">
+        <img width="691" height="691" alt="Miguel Mendez profile image" src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'>
+      </a>
+    </div>
 
-  <ul>
-    {% for new in site.data.news.news %}
-    <li>
-      <p><b>{{new.month}} {{new.year}}</b>. {{new.text}}</p>
-    </li>
-    {% endfor %}
-  </ul>
+    <div class="header-title">
+      <h1>{{ site.data.main_info.name }}</h1>
+      <p>{{ site.data.main_info.title }}</p>
+      <p>{{ site.data.main_info.email }}</p>
 
-</div>
+      <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+        <i class="icon-github-circled" aria-hidden="true"></i>
+      </a>
 
-<!-- ========== POSTS ========== -->
-<div class="docs-section" id="posts">
-  <h4>Posts</h4>
+      <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+        <i class="icon-linkedin-squared" aria-hidden="true"></i>
+      </a>
 
-  <ul class="tab-nav">
-    <li>
-      <div class="button active" data-ref="#posts-selected">Selected</div>
-    </li>
-    <li>
-      <div class="button" data-ref="#posts-all">All</div>
-    </li>
-  </ul>
+      <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+        <i class="icon-twitter-squared" aria-hidden="true"></i>
+      </a>
 
-  <div class="tab-content">
-    <div class="tab-pane active margin" id="posts-selected">
-      {% assign selected_posts = site.posts | where: "selected", "y" %}
+      <a href='{{site.data.main_info.medium}}' target="_blank" rel="noopener">
+        <i class="icon-medium" aria-hidden="true"></i>
+      </a>
+
+      <a href='{{site.data.main_info.stackoverflow}}' target="_blank" rel="noopener">
+        <i class="icon-stackoverflow" aria-hidden="true"></i>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- ========== BIO ========== -->
+  <div class="section" id="bio">
+    <h2>Bio</h2>
+    <p>
+      I am a <span class="bio-highlight">Machine Learning Research Engineer</span> at <a href="https://www.gradiant.org/en//" target="_blank" rel="noopener">Gradiant</a>. I
+      love creating
+      systems based on data that can interact with the real world.
+      My research interests lie in the general area of machine learning, particularly in deep learning and its
+      applications in object detection,
+      image generation and instance segmentation.
+    </p>
+
+    <p>
+      Prior to coming to Gradiant, I worked at <a href="https://www.desigual.com" target="_blank" rel="noopener">Desigual
+        Headquarters</a> in Barcelona
+      as a Data Science consultant.
+      I spent one year in Barcelona and one year in the United States (Purdue University) to do a M.Sc. in Artificial
+      Intelligence.
+      I got my B.Sc. from University of A Coruña after an exchange year in Norway.
+    </p>
+  </div>
+
+  <!-- ========== NEWS ========== -->
+  <div class="section" id="news">
+    <h2>News</h2>
+
+    <ul>
+      {% for new in site.data.news.news %}
+      <li>
+        <p><span class="bio-highlight"><b>{{new.month}} {{new.year}}</b></span>. {{new.text}}</p>
+      </li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+  <!-- ========== POSTS ========== -->
+  <div class="section" id="posts">
+    <h2>Posts</h2>
+
+    <ul class="posts" id="posts-selected">
+      {% assign selected_posts = site.posts %}
       {% for post in selected_posts %}
-      {% assign index_modulo = forloop.index0 | modulo:2 %}
-      {% if index_modulo == 0 %}
-      <div class="row post-row">
-        {% endif %}
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="{{ post.url }}">
-                <img src="{{ post.image }}" alt="{{ post.description }}"" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>{{ post.title }}</b> <br />
-              {{ post.subtitle }}
-            </div>
-
+      <li class="post">
+        <a href="{{ post.url }}">
+          <div class="post-image-placeholder">
+            <img src="{{ post.image }}" alt="{{ post.description }}"" class="post-image" loading="lazy" width="952" height="509"/>
           </div>
-        </div>
-
-        {% if index_modulo == 1 %}
-      </div>
-      {% endif %}
+          <h3 class="post-title">{{ post.title }}</h3>
+          <p class="post-description"> {{ post.subtitle }} </p> 
+        </a>    
+      </li>
       {% endfor %}
-    </div>
-
-    <div class="tab-pane margin" id="posts-all">
-      {% for post in site.posts %}
-      {% assign index_modulo = forloop.index0 | modulo:2 %}
-      {% if index_modulo == 0 %}
-      <div class="row post-row">
-        {% endif %}
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="{{ post.url }}">
-                <img src="{{ post.image }}" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>{{ post.title }}</b> <br />
-              {{ post.subtitle }}
-            </div>
-
-          </div>
-        </div>
-
-        {% if index_modulo == 1 %}
-      </div>
-      {% endif %}
-      {% endfor %}
-    </div>
+    </ul>
   </div>
 
-</div>
 
+  <!-- ========== RESUME ========== -->
+  <div class="section" id="resume">
+    <h2>Vitæ</h2>
 
-<!-- ========== RESUME ========== -->
-<div class="docs-section" id="resume">
-  <h4>Vitæ</h4>
+    <ul class="vitae-content">
+      {% for exp in site.data.experience.experiences %}
+      <li class="vitae-item">
 
-  <!-- The Timeline -->
-  <ul class="timeline">
-    {% for exp in site.data.experience.experiences %}
-    <li>
-      {% if exp.category == "work" %}
-      <div class="direction-l">
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            {{ exp.location }}
+          </div> 
+          <div class="vitae-time">
+            {{ exp.time }}
+          </div>
+        </div>
+
+        {% if forloop.first %}
+        <div class="vitae-actual vitae-image ">
         {% else %}
-        <div class="direction-r">
-          {% endif %}
-          <div class="flag-wrapper">
-            <span class="flag">{{ exp.place }}</span>
-            <span class="time-wrapper"><span class="time">{{ exp.time }}</span></span>
+        <div class="vitae-image">
+        {% endif %}
+          <div class="vitae-image-placeholder">
+            <img src="{{ exp.image }}" alt="experience-logo" loading="lazy" width="79" height="79"/>
           </div>
-          <div class="desc"><b>{{ exp.title }}</b> <br /> {{ exp.subtitle }}</div>
         </div>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
 
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">{{ exp.title }} - <a target="_blank" rel="noopener" href="{{exp.url}}">{{ exp.company }}</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> {{ exp.description }} </p>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
 
-<!-- ========== Publications ========== -->
-<div class="docs-section" id="publications">
-  <h4>Publications</h4>
+  </div>
 
+  <!-- ========== Publications ========== -->
+  <div class="section" id="publications">
+    <h2>Publications</h2>
 
-  <div class="tab-content">
-    <div class="tab-pane active" id="project-selected">
+    <ul class="publications-content">
       {% for paper in site.data.publications.publications %}
-      <div class="other-projects">
-        <p class="title"><b>{{ paper.title }}</b></p>
-        <p>{{ paper.authors }}</p>
-        <p><i>{{ paper.venue }}</i></p>
-        <p class="description">{{ paper.description }}</p>
-        <div class="other-projects-buttons">
-          {% if paper.paper %}
-          <a class="button" href="{{ paper.paper }}" target="_blank" rel="noopener">Paper</a>
-          {% endif %}
-          {% if paper.code %}
-          <a class="button" href="{{ paper.code }}" target="_blank" rel="noopener">Code</a>
-          {% endif %}
-        </div>
-      </div>
+      <li class="publications-item">
+        <h3 class="publication-title">{{ paper.title }}</h3>
+        <a target="_blank" rel="noopener" href="{{paper.paper}}">
+          <p class="publication-venue">{{ paper.venue }}</p>
+        </a>
+        <p class="publication-authors">{{ paper.authors }}</p>
+      </li>
       {% endfor %}
-    </div>
+      </ul>
   </div>
-</div>
 
-<!-- ========== Other Projects ========== -->
-<div class="docs-section" id="other">
-  <h4>Other projects</h4>
+  <!-- ========== Other Projects ========== -->
 
-  <div class="tab-content">
-    <div class="tab-pane active" id="project-selected">
+  <div class="section" id="other-projects">
+    <h2>Other Projects</h2>
+
+    <ul class="other-projects-content">
       {% for project in site.data.other_projects.other_projects %}
-      <div class="other-projects">
-        <p class="title"><b>{{ project.title }}</b></p>
-        <p>{{ project.authors }}</p>
-        <p class="description">{{ project.description }}</p>
-        <div class="other-projects-buttons">
-          {% if project.code %}
-          <a class="button" href="{{ project.code }}" target="_blank" rel="noopener">Code</a>
-          {% endif %}
-        </div>
-      </div>
+      <li class="other-projects-item">
+        <a target="_blank" rel="noopener" href="{{project.code}}">
+          <h3 class="other-project-title">{{ project.title }}</h3>
+        </a>
+        <p class="other-project-description">{{ project.description }}</p>
+        <p>Tags: <span class="bio-highlight">{{ project.tags }}</span></p>
+      </li>
       {% endfor %}
-    </div>
+      </ul>
   </div>
+
 </div>
