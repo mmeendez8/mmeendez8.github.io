@@ -7,7 +7,7 @@ image: "/assets/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail.webp"
 selected: y
 ---
 
-I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}){:target="_blank"}{:rel="noopener noreferrer"} where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md){:target="_blank"}{:rel="noopener noreferrer"} with DVC for designing ML pipelines, versioning our models and monitor training progress.
+I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}){:target="_blank"}{:rel="noopener noreferrer"} where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md){:target="_blank"}{:rel="noopener noreferrer"} with DVC for designing ML pipelines, versioning our models and monitor training progress.
 
 It is quite a lot of content to cover, so I will be going through it step by step and trying to keep things as simple as possible. You can find all the code for this tutorial in my [Github](https://github.com/mmeendez8/mmdetection_dvc){:target="_blank"}{:rel="noopener noreferrer"}. So let's start with it!
 
