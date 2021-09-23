@@ -238,6 +238,8 @@ ul {
   overflow: hidden;
   line-height: 0;
   max-height: 200px;
+  display: flex;
+  align-items: center;
 }
 
 .post a:hover h3:hover {
