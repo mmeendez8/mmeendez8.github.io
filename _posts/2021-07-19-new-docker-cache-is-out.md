@@ -66,7 +66,7 @@ jobs:
           push: true
           tags: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
           cache-from: type=gha
-          cache-to: type=gha
+          cache-to: type=gha,mode=max
 
   lint_and_test:
     needs: build_docker
