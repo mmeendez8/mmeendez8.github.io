@@ -7,11 +7,11 @@ image: "/assets/posts/2021-11-29-cnn-vs-transformers/thumbnail.webp"
 selected: y
 ---
 
-*I created a small demo in [Hugging Face Spaces](https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability) to play with the code*
+*I created a small demo in [Hugging Face Spaces](https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability){:target="_blank"}{:rel="noopener noreferrer"} to play with the code*
 
-A couple of weeks ago I saw a very interesting [post by Alexander Soare and Francisco Massa](https://pytorch.org/blog/FX-feature-extraction-torchvision/) on Pytorch Blog. The authors explained that the latest version of Torchivision  [`v0.11.0`](https://github.com/pytorch/vision/releases/tag/v0.11.0) included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don't need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.
+A couple of weeks ago I saw a very interesting [post by Alexander Soare and Francisco Massa](https://pytorch.org/blog/FX-feature-extraction-torchvision/){:target="_blank"}{:rel="noopener noreferrer"} on Pytorch Blog. The authors explained that the latest version of Torchivision  [`v0.11.0`](https://github.com/pytorch/vision/releases/tag/v0.11.0){:target="_blank"}{:rel="noopener noreferrer"} included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don't need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.
 
-So ... I couldn't resist, I really wanted to try this and see how it works! I've been thinking about the differences between Transformer and CNN when classifying images and was wondering if I could compare them. So I rechecked the Class Activation Map paper[[1]](https://arxiv.org/pdf/1512.04150.pdf) from 2015. This is a classic job that shows how to paint activation maps from your last conv layer, conditioned on your model output label. For the case of transformers, I based my experiments on Attention Flow [[2]](https://arxiv.org/pdf/2005.00928.pdf) which seems to be the standard method in the community.
+So ... I couldn't resist, I really wanted to try this and see how it works! I've been thinking about the differences between Transformer and CNN when classifying images and was wondering if I could compare them. So I rechecked the Class Activation Map paper[[1]](https://arxiv.org/pdf/1512.04150.pdf){:target="_blank"}{:rel="noopener noreferrer"} from 2015. This is a classic job that shows how to paint activation maps from your last conv layer, conditioned on your model output label. For the case of transformers, I based my experiments on Attention Flow [[2]](https://arxiv.org/pdf/2005.00928.pdf){:target="_blank"}{:rel="noopener noreferrer"} which seems to be the standard method in the community.
 
 This post was created with the intention of improving my knowledge on ViT, TorchVision and model's explainability. I do not pretend to compare ResNet against ViT since they have been trained with different datasets. ViT was pre-trained on ImageNet-21k and finetuned on ImageNet whileas ResNet50 was only trained on ImageNet. 
 
@@ -21,7 +21,7 @@ Now, let's see how to implement both methods and visualize some results!
 
 ### A small review 
 
-In [[1]](https://arxiv.org/pdf/1512.04150.pdf) authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:
+In [[1]](https://arxiv.org/pdf/1512.04150.pdf){:target="_blank"}{:rel="noopener noreferrer"} authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:
 
 {:refdef: style="text-align: center;"}
 ![](/assets/posts/2021-11-29-cnn-vs-transformers/gap.webp)
@@ -33,9 +33,9 @@ $$M_c(x,y) = \sum_{k}w_k^c f_k(x,y)$$
 
 where $$k$$ represents the number of filters in the last conv layer, $$w_k^c$$  are the linear layer weights and $$f_k(x,y)$$ represents the 2D stacked filter responses.
 
-This paper was publised in 2015 and at that time popular architectures did not have GAP layers so they have to be finetuned with these extra layers... But we are going to use a ResNet architecture which already has a GAP layer at the end! You can check [here](https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py#L203) torchvision implementation of ResNets to be sure of this.
+This paper was publised in 2015 and at that time popular architectures did not have GAP layers so they have to be finetuned with these extra layers... But we are going to use a ResNet architecture which already has a GAP layer at the end! You can check [here](https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py#L203){:target="_blank"}{:rel="noopener noreferrer"} torchvision implementation of ResNets to be sure of this.
 
-There have been multiple works that have evolved CAM idea, you can check a few implementions of them in [torch-cam](https://github.com/frgfm/torch-cam) repo.
+There have been multiple works that have evolved CAM idea, you can check a few implementions of them in [torch-cam](https://github.com/frgfm/torch-cam){:target="_blank"}{:rel="noopener noreferrer"} repo.
 
 ### Code
 
@@ -81,7 +81,7 @@ That's all! Just a few lines, let's see a few simple examples:
 
 ### Another brief review
 
-ViT paper[[3]](https://arxiv.org/pdf/2010.11929.pdf) was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works[[4]](https://arxiv.org/abs/2101.01169) that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.
+ViT paper[[3]](https://arxiv.org/pdf/2010.11929.pdf){:target="_blank"}{:rel="noopener noreferrer"} was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works[[4]](https://arxiv.org/abs/2101.01169){:target="_blank"}{:rel="noopener noreferrer"} that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.
 
 {:refdef: style="text-align: center;"}
 ![](/assets/posts/2021-11-29-cnn-vs-transformers/vit.webp)
@@ -102,7 +102,7 @@ flat_patch_embeddings = Flatten(patch_embeddings, dim=-1)
 linear_projections = Linear(patch_embeddings, out_features=embedding_size)
 ```
 
-So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In [[2]](https://arxiv.org/abs/2005.00928) two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.
+So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In [[2]](https://arxiv.org/abs/2005.00928){:target="_blank"}{:rel="noopener noreferrer"} two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.
 
 ### Attention Rollout
 
@@ -112,16 +112,16 @@ We can model the information flow as a graph where input patches and hidden embe
 ![](/assets/posts/2021-11-29-cnn-vs-transformers/attention_rollout.gif)
 {: refdef}
 {:refdef: style="text-align: center;"}
-*Attention rollout simulation obtained from [Samira Abnar's blog](https://samiraabnar.github.io/articles/2020-04/attention_flow)*
+*Attention rollout simulation obtained from [Samira Abnar's blog](https://samiraabnar.github.io/articles/2020-04/attention_flow){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
 
 This is super straight-forward and easy to understand but we are missing the influence of residual connections. Paper authors handle this in a very elegant way, they realize that the output at layer $$V_{l+1}$$ depends on the previous output and the attention weights: $$V_{l+1} = V_{l} + W_{att}V_l$$, where $$W_{att}$$ is the attention matrix. This can also be expressed as $$V_{l+1} = (W_{att} + I)V_l$$. Thus, re-normalizing the weights, the raw attention updated by residual connections can be expressed as: $$A = 0.5W_{att} + 0.5I$$.      
 
-Note I have seen other implementations of this method that instead of averaging the attention between the different heads of each layer, use min or max operator since it seems to work better in practice (see [this implementation](https://github.com/jacobgil/vit-explain))
+Note I have seen other implementations of this method that instead of averaging the attention between the different heads of each layer, use min or max operator since it seems to work better in practice (see [this implementation](https://github.com/jacobgil/vit-explain){:target="_blank"}{:rel="noopener noreferrer"})
 
 ### Code
 
-First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision's ViT because it is not included in latest version `0.11.1` (it has been recently added see [this PR](https://github.com/pytorch/vision/pull/4594)). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly. 
+First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision's ViT because it is not included in latest version `0.11.1` (it has been recently added see [this PR](https://github.com/pytorch/vision/pull/4594){:target="_blank"}{:rel="noopener noreferrer"}). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly. 
 
 ```python
 from transformers import ViTForImageClassification
@@ -129,7 +129,7 @@ vit = ViTForImageClassification.from_pretrained("google/vit-base-patch16-224").t
 vit.eval()
 ```
 
-You can check the [official documentation](https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel) to see how we can use `output_attentions` parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:
+You can check the [official documentation](https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel){:target="_blank"}{:rel="noopener noreferrer"} to see how we can use `output_attentions` parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:
 
 
 ```python
@@ -164,7 +164,7 @@ Pretty simple, let's see a few examples:
 ![](/assets/posts/2021-11-29-cnn-vs-transformers/ROLLOUTR.webp)
 {: refdef}
 
-There seems to be a larger noise when we comparing these results wrt CAM ones. One plausible option to reduce this effect is to filter very low attentions and keep only the strongest ones. I will stick with the original implementation but you find about this in [this repo](https://github.com/jacobgil/vit-explain).
+There seems to be a larger noise when we comparing these results wrt CAM ones. One plausible option to reduce this effect is to filter very low attentions and keep only the strongest ones. I will stick with the original implementation but you find about this in [this repo](https://github.com/jacobgil/vit-explain){:target="_blank"}{:rel="noopener noreferrer"}.
 
 ## Conclusion
 
@@ -172,11 +172,11 @@ We have covered two important methods that can give us some intuition on how CNN
 
 - The idea behind this post was to improve my understanding of the ViT architecture, TorchVision new features, GAP and Attention Rollout. This should not be used as a comparison between ResNet and ViT, since ViT was pre-trained on ImageNet-21k and finetuned on ImageNet whileas ResNet50 was only trained on ImageNet.
   
-- CAM does not generalize to models without global average pooling. You would need to retrain your model with a GAP layer or use a different method. [Here](https://github.com/frgfm/torch-cam) you can check some different implementations.
+- CAM does not generalize to models without global average pooling. You would need to retrain your model with a GAP layer or use a different method. [Here](https://github.com/frgfm/torch-cam){:target="_blank"}{:rel="noopener noreferrer"} you can check some different implementations.
 
 - I have used Hugging Face's ViT implementation since it is not yet available on latest Torchvision version.
 
-- Do not forget to check the [Hugging Face Space](https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability) I created for this post!
+- Do not forget to check the [Hugging Face Space](https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability){:target="_blank"}{:rel="noopener noreferrer"} I created for this post!
 
 
 ## References
@@ -186,4 +186,4 @@ We have covered two important methods that can give us some intuition on how CNN
 - [3] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., ... & Houlsby, N. (2020). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929.
 - [4] Khan, S., Naseer, M., Hayat, M., Zamir, S. W., Khan, F. S., & Shah, M. (2021). Transformers in vision: A survey. arXiv preprint arXiv:2101.01169.
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}*
