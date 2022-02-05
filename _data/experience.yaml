@@ -1,12 +1,20 @@
 experiences:
+  - company: "Statsbomb"
+    url: "https://statsbomb.com/"
+    location: "Vigo, ESP (Remote)"
+    time: "Feb'22 - now"
+    title: "Machine Learning Engineer"
+    image: "/assets/vitae/statsbomb.webp"
+    description: ""
+
   - company: "Gradiant"
     url: "https://www.gradiant.org/"
     location: "Vigo, ESP"
-    time: "Apr'19 - now"
+    time: "Apr'19 - Jan'22"
     title: "Machine Learning Research Engineer"
     image: "/assets/vitae/gradiant.webp"
-    description: "I'm working remotely as a machine learning research engineer. 
-    At the moment I am focused in solving real world computer vision problems using deep learning."
+    description: "Research and implementation of Deep Learning based models for object detection and semantic segmentation. Optimization of these solutions for being embedded on UAVs (Nvidia Jetson) 
+    or deployed in the cloud. Leadership, coordination and development of the teams AI methodologies and infrastructure."
 
   - company: "Desigual, InnoIT"
     url: "https://www.inno-it.es/"
