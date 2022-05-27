@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Export to Github Cache with Docker Buildx</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Export to Github Cache with Docker Buildx">
+  
+  
+  <meta name="twitter:description" content="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">July 19, 2021 </span>
+      <h1 class="the-post-title">Export to Github Cache with Docker Buildx</h1>
+      <p>We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp" alt="Export to Github Cache with Docker Buildx"/>
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>I have recently <a href="/2021/04/23/cache-docker.html" target="_blank" rel="noopener noreferrer">uploaded a post</a> with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for <a href="https://docs.docker.com/buildx/working-with-buildx/" target="_blank" rel="noopener noreferrer">Docker BuildX</a> integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!</p>
+
+<h2 id="1-get-the-basics">1. Get the basics</h2>
+
+<p>You can read <a href="/2021/04/23/cache-docker.html" target="_blank" rel="noopener noreferrer">my previous post</a> to get the whole picture but I also recommend you to visit the official pull requests that lead to this new feature:</p>
+
+<ul>
+  <li><a href="https://github.com/docker/buildx/pull/535" target="_blank" rel="noopener noreferrer">This</a> is the buildx code that has been merged for allowing the use of github internal cache</li>
+  <li><a href="https://github.com/docker/build-push-action/pull/406#issuecomment-879184394" target="_blank" rel="noopener noreferrer">This</a> draft PR contains an example of how to use it.</li>
+</ul>
+
+<p>If you read through all of those you probably realize that we have been waiting for new buildx 0.6 version and buildkit 0.9 to be generally available… but that happened just a few days ago!</p>
+
+<center>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">New BuildKit v0.9.0 and Docker Buildx v0.6.0 releases are out with Github cache backend, OpenTelemetry support, Dockerfile Here-docs, better errors, variable support in mount flags etc. <a href="https://t.co/uo89yvSo5j">https://t.co/uo89yvSo5j</a> <a href="https://t.co/L0QM7stmC5">https://t.co/L0QM7stmC5</a></p>&mdash; Tõnis Tiigi (@tonistiigi) <a href="https://twitter.com/tonistiigi/status/1416161830469201920?ref_src=twsrc%5Etfw">July 16, 2021</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
+
+<p>At this moment we are waiting for Github virtual environments to have new buildx 0.6.0 in Ubuntu base images, but they are generated on weekends and deployed during the week so we might have to wait a week or two before that happens. Anyway we can already test the new feature and add it to our pipelines!</p>
+
+<h3 id="edit-91121">Edit 9/11/21:</h3>
+
+<p>Github virtual environments have been updated so we can use build-push action without extra configurations.</p>
+
+<h2 id="2-simple-example">2. Simple example</h2>
+
+<p>I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplified pipeline would look like this:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration new cache</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build_docker</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@v1</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Login to GitHub Container Registry</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">registry</span><span class="pi">:</span> <span class="s">ghcr.io</span>
+          <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
+          <span class="na">password</span><span class="pi">:</span> <span class="s">$</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build production image</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+          <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
+          <span class="na">push</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
+          <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=gha</span>
+          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=gha,mode=max</span>
+
+  <span class="na">lint_and_test</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build_docker</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">container</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
+      <span class="na">credentials</span><span class="pi">:</span>
+        <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
+        <span class="na">password</span><span class="pi">:</span> <span class="s">$</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">pre-commit install</span>
+          <span class="s">pre-commit run</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
+</code></pre></div></div>
+
+<p>Note how <code class="language-plaintext highlighter-rouge">cache-from</code> and <code class="language-plaintext highlighter-rouge">cache-to</code> type is set now to <code class="language-plaintext highlighter-rouge">gha</code> (github action). The first time the action is triggered the cache is empty so Docker will need to build all layers from scratch:</p>
+
+<p style="text-align: center;"><img src="/assets/posts/2021-07-19-new-docker-cache-is-out/empty_cache.webp" alt="" /></p>
+
+<p>But after this cache is full, so we can reuse all our layers in next builds, if the images was not modified, or just some of them when we apply changes to our Dockerfile. Let’s trigger a new build with an empty commit and check the time it needs now:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit <span class="nt">--allow-empty</span> <span class="nt">-m</span> <span class="s2">"Test build"</span>
+git push
+</code></pre></div></div>
+
+<p style="text-align: center;"><img src="/assets/posts/2021-07-19-new-docker-cache-is-out/full_cache.webp" alt="" /></p>
+
+<p>That’s it! It only took 22 seconds to build our image.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<ul>
+  <li>
+    <p>Docker Buildx is a powerful enhancement and we should try to take full advantage of it</p>
+  </li>
+  <li>
+    <p>It is very simple to use Github Cache with build-push-action now</p>
+  </li>
+</ul>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
+
+  
+</div>
+
+
+  <div >
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+</html>

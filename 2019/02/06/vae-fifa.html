@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Generating FIFA 19 players with VAEs and Tensorflow</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/posts/2019-02-06-vae-fifa/thumbnail.webp">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Generating FIFA 19 players with VAEs and Tensorflow">
+  
+  
+  <meta name="twitter:description" content="Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2019-02-06-vae-fifa/thumbnail.webp">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">February 06, 2019 </span>
+      <h1 class="the-post-title">Generating FIFA 19 players with VAEs and Tensorflow</h1>
+      <p>Learn to generate your own footbal players</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/assets/posts/2019-02-06-vae-fifa/thumbnail.webp" alt="Generating FIFA 19 players with VAEs and Tensorflow"/>
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>This is my third post dealing with Variational Autoencoders. If you want to catch up with the math I recommend you to check my first post. If you prefer to skip that part and go directly to some simple experiments with VAEs then move to my second post, where I showed how useful these networks can be. If you just want to see how a neural network can create fake faces of football players then you are in the right place! Just keep reading!</p>
+
+<p>I must admit that I would like to dedicate this post…</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/0*4xBerr9GTrKG0k75.jpg" alt="" /></p>
+
+<p><em>Note: All code in here can be found on my <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a> account</em></p>
+
+<h2 id="1-introduction">1. Introduction</h2>
+
+<p>I spent a few hours thinking about which dataset could I use to apply all the knowledge and lines of code I acquire learning about VAEs.</p>
+
+<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f" target="_blank" rel="noopener noreferrer">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
+
+<p>Finally I found a dataset that fitted all my requirements and at the same time was interesting and funny for me, so I could not resist.</p>
+
+<h2 id="2-data-collection">2. Data Collection</h2>
+
+<p>The dataset I found was upload to Kaggle (more <a href="https://www.kaggle.com/karangadiya/fifa19" target="_blank" rel="noopener noreferrer">here</a>). It consists on detailed attributes for every player registered in the latest edition of FIFA 19 database. I downloaded the csv file and open a Jupyter notebook to have a look at it.</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*qqMNpYth27mUJz4ulyJQpA.png" alt="Sample from csv file" target="_blank" rel="noopener noreferrer" />
+<em>Sample from csv file</em></p>
+
+<p>This file contains URLs to the images of each football player. I started by downloading a couple of images to see if links were working well and to check if image sizes were constant. I got good news, links were fine and images seem to be PNG files of 48x48 pixels with 4 different channels (Red, Green, Blue, Alpha).</p>
+
+<p>After this I coded a Python script that could download as fast as possible this dataset. For this <strong>I used threads to avoid our CPU to be idle</strong> waiting for the IO tasks. You can find the script on <a href="https://github.com/mmeendez8/Fifa/blob/master/downloader.py" target="_blank" rel="noopener noreferrer">Github</a> or <strong>implement it by yourself</strong>.</p>
+
+<p>I was able to collect a <strong>total of 15216 different images</strong> since some of the URLs in the csv file were not valid.</p>
+
+<h2 id="3-data-processing">3. Data Processing</h2>
+
+<p>Yeah! I was able to download our images in a fast way but… when I plotted these images I got the following results:</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*a79H-6aOrWS2OitftEnjGw.png" alt="" /> 
+<img src="https://cdn-images-1.medium.com/max/2000/1*rcHUjgC8uJLEefIBOz0QXA.png" alt="Downloaded images" target="_blank" rel="noopener noreferrer" /></p>
+
+<p style="text-align: center;"><em>Downloaded images</em></p>
+
+<p>I deduced that someone had applied some preprocessing technique to the edges between the player and the background. So I had to revert this process.</p>
+
+<p>One of the constraints I had in mind was that I had to be able of solving this problem using Tensorflow and nothing else (after all I am trying to improve my skills with it). Alright, so I must implement something that is relatively easy and works like a charm…</p>
+
+<p>In the Jupyter notebook you can see how I elaborated this method. I basically used the alpha channel (as a boolean mask) and I convert it to a binary image using a certain threshold. After this step I filtered all the pixels in the image that were not present in the mask. This can be easily done in a few lines of code and results are really great! I encourage you to check the notebook since is the easiest way to understand it.</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*RfMAnXBo3fs-tn2fXV71lQ.png" alt="" /><img src="https://cdn-images-1.medium.com/max/2000/1*BGKp7AMpM6cX31IAVfUYIQ.png" alt="" /><img src="https://cdn-images-1.medium.com/max/2000/1*JQhWpY-MHWSte1fk3PgHUw.png" alt="" /></p>
+
+<p>In Tensorflow you can create a simple function that takes a RGBA image as input and returns the reconstructed one (without the alpha channel).</p>
+
+<script src="https://gist.github.com/mmeendez8/874ea37859b7b93e22ba95dd787335b2.js" charset="utf-8"></script>
+
+<p>In here I convert the alpha channel into a 48x48 boolean matrix. After this I convert the matrix to *uint8 *and I add a third dimension to the data so I can apply a wise multiplication with all the channels of the original image. This multiplication will set to zero all those pixels that have a zero value in the mask and I return only the RGB channels. Isn’t it easy?</p>
+
+<h2 id="3-data-pipe">3. Data Pipe</h2>
+
+<p>Now it’s time to create a pipeline for our data. We need to:</p>
+
+<ul>
+  <li>
+    <p>Read bytes from image files</p>
+  </li>
+  <li>
+    <p>Decode those bytes into tensors</p>
+  </li>
+  <li>
+    <p>Remove noise</p>
+  </li>
+  <li>
+    <p>Convert to tf.float32</p>
+  </li>
+  <li>
+    <p>Shuffle and prefetch data</p>
+  </li>
+</ul>
+
+<p>Tensorflow’s Dataset API allow us to do all these steps in a very simple way.</p>
+
+<script src="https://gist.github.com/mmeendez8/44712f11376486c2d8feb8c4c63b5493.js" charset="utf-8"></script>
+
+<h2 id="4-define-the-network">4. Define the network</h2>
+
+<p>In my <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f" target="_blank" rel="noopener noreferrer">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
+
+<p>So now, I have created a new class which will allow me to create the network in a very simple and intuitive manner. I must thank to <a href="https://danijar.com/structuring-your-tensorflow-models/" target="_blank" rel="noopener noreferrer">this amazing post</a> from <a href="https://danijar.com/" target="_blank" rel="noopener noreferrer">Danijar Hafner</a> where I found a way to combine decorators with Tensorflow’s Graph intuition. I won’t explain this code in here, otherwise the post would be too long but feel free to ask below about anything you want.</p>
+
+<p>The main advantage of using this decorator is that ensures that all nodes of the model are only created once in our Tensorflow graph (and we save a lot of lines of code).</p>
+
+<script src="https://gist.github.com/mmeendez8/257c469341d1fe3b920a4bc15b601981.js" charset="utf-8"></script>
+
+<h2 id="5-put-the-pieces-together">5. Put the pieces together</h2>
+
+<p>The program will read data from a list of filenames which I locate into a placeholder, since I want to be able to feed it with new data in a near future (after training) to evaluate its performance.</p>
+
+<script src="https://gist.github.com/mmeendez8/3b6bb54507b77cde55bf84031168795f.js" charset="utf-8"></script>
+
+<p>As you can see above, the network class constructor receives the <em>input batch</em> tensor, an iterator that moves through our bank of images. Also, <em>filenames *variable</em> <em>corresponds with the previously mentioned placeholder. It has a default value returned by the *get_files *function which simply lists all filenames that are contained in the directory *data_path.</em></p>
+
+<p>How does this look in TensorBoard? Pretty cool!</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*9C_-T1qQ9ej5w58pjgFBbw.png" alt="Graph structure (TensorBoard)" target="_blank" rel="noopener noreferrer" /></p>
+<p style="text-align: center;"><em>Graph structure (TensorBoard)</em></p>
+
+<p>The save block, it’s created to save the network state (weights, biases) and the graph structure (see <a href="https://github.com/mmeendez8/Fifa" target="_blank" rel="noopener noreferrer">GitHub</a> for more)</p>
+
+<h2 id="5-experiments">5. Experiments</h2>
+
+<p>The training phase is computationally expensive and I am working on my personal laptop so I could not get very far with the number of epochs. I encourage the readers who have more resources to try new experiments with longer workouts and to share their results.</p>
+
+<h3 id="2d-latent-space">2D Latent Space</h3>
+
+<p>One of the coolest things with VAEs, is that if you reduce the latent space to just two dimensions, you will be able to deal with data in a 2 dimensional space. So you move your data from a 48x48x3 dimensional space to just 2! This allows you to get visual insights about how is the model distributing the data around the space. I did this for a total of 500 epochs and I force the net to return both input images and the reconstructed ones, in order to see, if the network was able to reconstruct the original inputs.</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*BfqHoDNPUvbjjXRSgNotcw.png" alt="" />
+<img src="https://cdn-images-1.medium.com/max/2000/1*tjKY6ko7p5_r-BNWAy8A1A.png" alt="" />
+<img src="https://cdn-images-1.medium.com/max/2000/1*wq2N6TeCk-rpowsSwzt0Lg.png" alt="Reconstruction at epochs 2, 150 and 500 (left to right)" target="_blank" rel="noopener noreferrer" /></p>
+
+<p style="text-align: center;"><em>Reconstruction at epochs 2, 150 and 500 (left to right)</em></p>
+
+<p>As we can see, at epoch 2, the reconstructed images are almost all the same. It seems the networks learns the pattern of a ‘general’ face and it simply modifies its skin color. At epoch 150 we can see greater differences, the reconstruction is better but still far from reality, though we start to see different hair styles. At epoch 500, the reconstruction did not succeed, but it learn to differentiate the most general aspects of each face and also some expressions.</p>
+
+<p>Why are these results so poor compared with our previous work with MNIST datasets? Well, our model is too simple. We are not able to encode all the information in a 2 dimensional space, so a lot of it is being lost.</p>
+
+<p>But we still can have a look to our **2 dimensional grid space **and force the network to create some fake players for us! Let’s have a look below:</p>
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*MqjnuvwdBL0hc7z0gUDJGA.png" alt="Football players face distribution in two dimensional space" target="_blank" rel="noopener noreferrer" /><em>Football players face distribution in two dimensional space</em></p>
+
+<p>This is what we got! Interesting result… but we already knew this was going to happen isn’t it?. The network is too simple, so this ‘standard faces’ that we see are made of similar football players profiles. This means that our encoder is doing a good job, placing similar faces in close regions in the space BUT the decoder is not able to reconstruct a 48x48x3 image from just 2 points (which is, in fact, a super hard task). This is why the decoder is always outputting similar countenances.</p>
+
+<p>What could we do? Well, we can increase the complexity of our model and add some extra dimensions to our latent space!</p>
+
+<h3 id="15d-latent-space">15D Latent Space</h3>
+
+<p>Let’s repeat the training with a total 15 dimensions in our latent space and check how our face reconstructions are evolving with the training. For this I have trained the network during 1000 epochs.</p>
+
+<p>I discovered <a href="https://www.floydhub.com" target="_blank" rel="noopener noreferrer">Floydhub</a> a Deep Learning platform that allows me to use their GPUs for free (during 2 hours). This fact, allowed me to perform this long training phase. I really recommend to try Floydhub, since it is really easy to deploy your code and run your training there.</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*91bs-t90abbEHQwVLXAd3A.png" alt="" />
+<img src="https://cdn-images-1.medium.com/max/2000/1*T9WpZl_dJg4CDJqvzJ3Baw.png" alt="" />
+<img src="https://cdn-images-1.medium.com/max/2000/1*9lHNkYvZTQJu6b8pjy5Paw.png" alt="" />
+<img src="https://cdn-images-1.medium.com/max/2000/1*oYVwzzxmZQWHVAixfMfKeQ.png" alt="Reconstruction at epochs 150, 500, 750, 1000 (left to right and up down)" target="_blank" rel="noopener noreferrer" /></p>
+
+<p style="text-align: center;"><em>Reconstruction at epochs 150, 500, 750, 1000 (left to right and up down)</em></p>
+
+<p>It seems our network is doing a better job now! The reconstructions have improved and they really look like the original input. Let’s note the jersey colors, the haircuts and the face positions! But is this good enough? Can you guess the original input from these reconstructions?</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*Xp_3-VkhdN2bqeFrZ-Y3jA.png" alt="" /></p>
+
+<p>Well, it’s pretty hard to imagine the original input for these reconstructed faces… From left to right these are Messi, Ronaldo, Neymar, De Gea and De Bruyne. A** longer training** or another <strong>complexity increasement</strong> would produce better results so I encourage you to get my code on Github and give it a try!</p>
+
+<h3 id="interpolate-points">Interpolate points</h3>
+
+<p>We know that our encoder will place each image in a specific point of our 15 dimensional space. So if get two images we will have two different points in that latent space. We can apply a linear interpolation between them, in order to extract other points.</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3358/1*5zx0GtXBe9h67AO_ZFCw0w.png" alt="Modric — Kante transformation" target="_blank" rel="noopener noreferrer" /><em>Modric — Kante transformation</em></p>
+
+<p>This is the result when we get Modric and Kante’s latent vector and we interpolate a total of 5 points between them. We can observe how moving around our latent space make us obtain different facial features. You can try as many combinations as you want!</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3358/1*HmM42jVImDW2OiFoex2Axg.png" alt="Marcelo — Ramos transformation" target="_blank" rel="noopener noreferrer" /><em>Marcelo — Ramos transformation</em></p>
+
+<h3 id="average-player-by-country">Average player by country</h3>
+
+<p>If you are used to work with machine learning, you have heard about unsupervised learning and the importance of centroids on this field. A centroid can be defined as the mean point of all those that belong to the same cluster or set.</p>
+
+<p>Our data is categorized by skills, football team, age, nationality… So imagine the following, we could get all the players for a certain country, let’s say Spain, and obtain the latent vector that our encoder produces for each one of them. After this we can compute an average of these latent vector and encode it, in a way, that we are obtaining an image of a fake player that has the most common facial features for a certain country!! How cool sounds that?</p>
+
+<p>You can observe the most common attributes for each country collected in a single image.</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3350/1*81LDkhE9VaOZ31H3n-_FHA.png" alt="Centroid fake player for each country" target="_blank" rel="noopener noreferrer" /><em>Centroid fake player for each country</em></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post we have learnt how to apply VAEs to a real dataset of colored images. I have shown how to preprocess the data and how to create our network in a structured way. The experiments I have collected are just a reduced set of the huge amount of possibilities that one can obtain after dealing with image embeddings (our latent space vectors).</p>
+
+<p>I would like to encourage you to try the code, create new experiments, use different dimensional spaces or longer trainings!</p>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
+
+  
+</div>
+
+
+  <div >
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+</html>
