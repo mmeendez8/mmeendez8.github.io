@@ -5,6 +5,7 @@ subtitle: "A simple explanation and visualization of ViT attentions and ResNet a
 description: "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout"
 image: "/assets/posts/2021-12-09-cnn-vs-transformers/thumbnail.webp"
 selected: y
+mathjax: y
 ---
 
 *I created a small demo in [Hugging Face Spaces](https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability){:target="_blank"}{:rel="noopener noreferrer"} to play with the code*

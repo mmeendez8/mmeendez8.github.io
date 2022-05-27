@@ -5,6 +5,7 @@ subtitle: "Learn the math"
 image: "/assets/posts/2019-01-19-vae-theory/thumbnail.webp"
 description: "Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow! "
 selected: y
+mathjax: y
 ---
 
 Generative models are one of the cooler branches of Deep Learning. During last weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of post I will try to transmit and also to provide useful resources which I have found and I feel in the need of transmit!

@@ -50,8 +50,9 @@
   {% include twitter_card.html %}
 
   <!-- Mathjax -->
-  {% include mathjax.html %}
-
+  {% if page.mathjax %}
+    {% include mathjax.html %}
+  {% endif %}
 </head>
 
 <body>
