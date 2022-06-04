@@ -1,0 +1,45 @@
+media_queries:
+  mobile: 'max-width: 767px'
+  desktop: "min-width: 768px"
+
+presets:
+
+#   profile:
+#     formats: [webp]
+#     widths: [300]
+#     dimension_attributes: true
+#     sizes:
+#       desktop: 300px
+#     size: 200px
+
+#   posts:
+#     formats: [webp]
+#     widths: [400, 600]
+#     dimension_attributes: true
+#     attributes:
+#       img: 'loading="lazy"'
+#     sizes:
+#       mobile: calc(100vw - 38px)
+#       desktop: 461px
+
+  thumbnail:
+    formats: [webp]
+    widths: [400, 600, 800, 1000]
+    dimension_attributes: true
+    sizes:
+      mobile: 100vp
+    size: 50vp
+
+  pimage:
+    formats: [webp]
+    widths: [400, 600, 800, 1000]
+    dimension_attributes: true
+    attributes:
+      img: 'loading="lazy"'
+    sizes:
+      mobile: 100vp
+    size: 100vp
+
+
+
+
