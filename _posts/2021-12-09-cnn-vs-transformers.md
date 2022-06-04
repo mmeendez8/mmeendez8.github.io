@@ -3,7 +3,7 @@ layout: post
 title:  "CNNs & Transformers Explainability: What do they see?"
 subtitle: "A simple explanation and visualization of ViT attentions and ResNet activations"
 description: "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout"
-image: "/assets/posts/2021-12-09-cnn-vs-transformers/thumbnail.webp"
+image: "/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg"
 selected: y
 mathjax: y
 ---
@@ -24,9 +24,7 @@ Now, let's see how to implement both methods and visualize some results!
 
 In [[1]](https://arxiv.org/pdf/1512.04150.pdf){:target="_blank"}{:rel="noopener noreferrer"} authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-12-09-cnn-vs-transformers/gap.webp)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap.jpg --alt {{ page.title }}  %}
 
 See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size `n_filters` that will be multiplied by a linear layer which weights will be a matrix of size `n_filters` x `n_classes`. Once you know the classification output, you can "isolate" the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:
 
@@ -73,9 +71,7 @@ cam = cam.reshape(cnn_features.shape[1], cnn_features.shape[2])
 
 That's all! Just a few lines, let's see a few simple examples:
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-12-09-cnn-vs-transformers/CAMR.webp)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR.jpg --alt {{ page.title }}  %}
 
 ## ViT Attention Map
 
@@ -84,9 +80,7 @@ That's all! Just a few lines, let's see a few simple examples:
 
 ViT paper[[3]](https://arxiv.org/pdf/2010.11929.pdf){:target="_blank"}{:rel="noopener noreferrer"} was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works[[4]](https://arxiv.org/abs/2101.01169){:target="_blank"}{:rel="noopener noreferrer"} that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-12-09-cnn-vs-transformers/vit.webp)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit.jpg --alt {{ page.title }}  %}
 
 The attentions mechanism allows us to figure out what parts or patches of the image are key for the classification result. This will allow us to interpret model's decision.
 
@@ -109,9 +103,7 @@ So it would be very easy to visualize attention weights at this very first layer
 
 We can model the information flow as a graph where input patches and hidden embeddings are the nodes and the edges represent the attentions from the nodes in one layer to the next layer. These edges are weighted by the attention weights which determine the amount of information that is passed from one layer to the next. Hence, if we want to compute the attention that a node at layer $$i$$ receives from all previous layer nodes, we can simply multiply the attention weights matrices from the input layer until our target $$i$$. Check the following animation to see how this works:
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-12-09-cnn-vs-transformers/attention_rollout.gif)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg --alt {{ page.title }}  %}
 {:refdef: style="text-align: center;"}
 *Attention rollout simulation obtained from [Samira Abnar's blog](https://samiraabnar.github.io/articles/2020-04/attention_flow){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
@@ -161,9 +153,7 @@ mask = mask.reshape(mask_size, mask_size)
 
 Pretty simple, let's see a few examples:
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.webp)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.jpg --alt {{ page.title }}  %}
 
 There seems to be a larger noise when we comparing these results wrt CAM ones. One plausible option to reduce this effect is to filter very low attentions and keep only the strongest ones. I will stick with the original implementation but you find about this in [this repo](https://github.com/jacobgil/vit-explain){:target="_blank"}{:rel="noopener noreferrer"}.
 
