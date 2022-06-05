@@ -35,11 +35,8 @@ presets:
     widths: [400, 600, 800, 1000]
     dimension_attributes: true
     attributes:
-      img: 'loading="lazy"'
+      img: 'loading="lazy"' 
+    noscript: true
     sizes:
       mobile: 100vp
-    size: 100vp
-
-
-
-
+    size: 80vp
