@@ -68,9 +68,7 @@ pyodi paint-annotations data/coco_sample/annotations/train_sample.json data/coco
 
 This will paint the first 10 images of the dataset and save them into `output/painted_images` folder.
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-07-01-dvc-tutorial/painted_coco_sample.webp)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample.jpg --alt Coco image with painted detections  %}
 
 ## Version the data
 
@@ -258,9 +256,7 @@ git commit -m "Add tests"
 git push
 ```
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-07-01-dvc-tutorial/ci.webp)
-{: refdef}
+{% picture pimage /assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci.jpg --alt Github CI results caption  %}
 
 That's it! Our test completed successfully!
 
