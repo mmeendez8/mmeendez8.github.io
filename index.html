@@ -9,7 +9,7 @@ title: Personal Webpage
 
     <div class="header-img">
       <a href="{{ site.baseurl }}/">
-        <img width="691" height="691" alt="Miguel Mendez profile image" src='{{ site.baseurl }}{{ site.data.main_info.profile_pic }}'>
+        {% picture profile {{ site.baseurl }}{{ site.data.main_info.profile_pic }} --alt Site main picture %}
       </a>
     </div>
 
@@ -86,7 +86,7 @@ title: Personal Webpage
       <li class="post">
         <a href="{{ post.url }}">
           <div class="post-image-placeholder">
-            <img src="{{ post.image }}" alt="{{ post.description }}"" class="post-image" loading="lazy" width="952" height="509"/>
+            {% picture posts-grid {{ post.image }} --alt {{ post.description }} %}
           </div>
           <h3 class="post-title">{{ post.title }}</h3>
           <p class="post-description"> {{ post.subtitle }} </p> 
@@ -120,7 +120,8 @@ title: Personal Webpage
         <div class="vitae-image">
         {% endif %}
           <div class="vitae-image-placeholder">
-            <img src="{{ exp.image }}" alt="experience-logo" loading="lazy" width="79" height="79"/>
+            {% picture exp-logos {{ exp.image }} --alt {{ exp.company }} %}
+            <!-- <img src="{{ exp.image }}" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
           </div>
         </div>
 
