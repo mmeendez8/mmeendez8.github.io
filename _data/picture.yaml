@@ -1,0 +1,48 @@
+media_queries:
+  mobile: 'max-width: 767px'
+  desktop: "min-width: 768px"
+
+presets:
+
+  profile:
+    formats: [webp]
+    widths: [300]
+    dimension_attributes: true
+
+  posts-grid:
+    formats: [webp]
+    widths: [400, 600, 800]
+    dimension_attributes: true
+    attributes:
+      img: 'loading="lazy"' 
+    sizes:
+      desktop: 25vw
+      mobile: calc(100vw - 38px)
+    size: 400px
+
+  exp-logos:
+    formats: [webp]
+    widths: [120]
+    dimension_attributes: true
+    attributes:
+      img: 'loading="lazy"' 
+
+
+  thumbnail:
+    formats: [webp]
+    widths: [400, 600, 800, 1000]
+    dimension_attributes: true
+    sizes:
+      mobile: 100vw
+    size: 50vw
+
+  pimage:
+    formats: [webp]
+    widths: [400, 600, 800, 1000]
+    dimension_attributes: true
+    attributes:
+      img: 'loading="lazy"' 
+    noscript: true
+    sizes:
+      mobile: 100vw
+    size: 80vw

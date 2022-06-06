@@ -25,7 +25,7 @@ layout: default
   </div>
 
   <div class="the-post-title-image">
-    <img src="{{ page.image}}" alt="{{ page.title }}"/>
+    {% picture thumbnail {{ page.image}} --alt {{ page.title }} %}
   </div>
 </div>
 

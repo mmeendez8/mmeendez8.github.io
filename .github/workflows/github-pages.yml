@@ -2,27 +2,51 @@ name: Build and deploy Jekyll site to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel any runs in progress -- just complete the latest run
+concurrency: 
+  group: github_pages
+  cancel-in-progress: true
 
 jobs:
   github-pages:
     runs-on: ubuntu-latest
+    permissions: 
+      contents: write
+
     steps:
     - uses: actions/checkout@v2
+
+    # Jekyll Picture Tag requires libvips libraries for resizing images, which must be installed
+    - name: Install JPT's dependencies
+      run: sudo apt-get install libvips-tools
+
+    - name: 💎 setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0' # Not needed with a .ruby-version file
+        bundler-cache: true
 
     - name: Install and run css-html-js-minify
       run: |
         pip install css-html-js-minify
         css-html-js-minify --overwrite libs
 
-    - uses: actions/cache@v2
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
+    # Build the site
+    - name: Jekyll build
+      run: bundle exec jekyll build
+      env:
+        JEKYLL_ENV: production
 
-    - uses: helaili/jekyll-action@v2
+    # Publish built site to Pages
+    - name: 🚀 deploy
+      if: ${{ github.event_name != 'pull_request'}}
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        folder: _site
+        force: false

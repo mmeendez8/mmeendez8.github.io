@@ -2,7 +2,7 @@
 layout: post
 title:  "The theory behind Variational Autoencoders"
 subtitle: "Learn the math"
-image: "/assets/posts/2019-01-19-vae-theory/thumbnail.webp"
+image: "/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail.jpg"
 description: "Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow! "
 selected: y
 mathjax: y
@@ -23,9 +23,9 @@ But wait… wasn’t this a **generative** model? Yes! The encoder is in fact fi
 
 If you are not impressed yet, think about this simplification of the problem. Imagine we collect all articles that have been published in New York Times during last year and we force ourselves to summarize them but with the following restriction: we can only use one hundred words from English vocabulary. For this task we will need to select this set of words carefully to minimize the loss of information. When we have succeed at this task, we might be able to reconstruct the original article from the words we see. But also, we can select a random number of words (from the 100 sample set) and create a new 'fake' article!
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*dorUno1NL7A9o4u8usbC3A.jpeg)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/fake.jpg --alt Fake news image %}
+</div>
 
 We will then act as encoders, transforming the articles into a reduced 100 words space. The decoder task will be based on recovering as much as possible of the original article!
 
@@ -54,29 +54,29 @@ The family of distributions can be expressed as $$q​_λ​​(z∣x)$$. The $$
 
 So we use $$q(z\|x)$$ to approximate $$p(z\|x)$$. We can use [Kullback-Leibler](https://www.youtube.com/watch?v=xmvxXXZUXdk){:target="_blank"}{:rel="noopener noreferrer"} divergence to measure how well are we approximating p.
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*sby4pZqsBjsfJc6NhCNewA.png)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula.jpg --alt KL divergence formula %}
+</div>
 
 We need to minimize this divergence but, once again, we find the intractable term $$\log p(x)$$. Nevertheless we can rewrite this into an intuitive way. Let’s define the Evidence Lower BOund function (**ELBO**) as:
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*4RFgwB-Id8XQhMHcp8q_FQ.png)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/elbo.jpg --alt ELBO formula %}
+</div>
 
 This functions is a lower bound on the evidence, this means that if we maximize it, we will increase the probability of observing the data ([more here](http://edwardlib.org/tutorials/klqp){:target="_blank"}{:rel="noopener noreferrer"}). If we mix the two previous equations we will get:
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*vn9tOG9xDyKlEzQeGFlbdQ.png)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik.jpg --alt Log formula %}
+</div>
 
 And it is known that KL divergence is always greater or equal than zero. So… maximizing the ELBO is all we need to do and we can get rid of the KL divergence term.
 
 In our neural network the encoder takes input data and outputs $$λ$$ parameters that approximate $$q​_θ​​(z\|x, λ)$$ and the decoder gets latent variables into the original data distribution $$p_ϕ(x\|z)$$. This $$θ$$, $$ϕ$$ are the neural networks weights. So we can write the ELBO function (unwrapping the joint probability term) as:
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*FvBk-6jDfs8wU1tSfuwT_Q.png)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt.jpg --alt Elbo%}
+</div>
 
 This is our lost function! We must highlight two things from here. First of all, we can apply backpropagation to this function (the previous equation is defined for single datapoints). Second, a lost function in Deep Learning is always minimized, so we will have to work with the **negative** ELBO.
 
@@ -87,16 +87,16 @@ That’s all! Although it might seem a little convoluted at the beginning, I hav
 
 As we said before, the family of distribution that we are going to use are Gaussians. Usually, $$p(Z) = Normal(0,1)$$, so if the encoder outputs representations of $$z$$ which are not following a unit normal distribution, will get penalized by the KL divergence term (more info on KL divergence between Gaussians [here](https://stats.stackexchange.com/questions/7440/kl-divergence-between-two-univariate-gaussians){:target="_blank"}{:rel="noopener noreferrer"})
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*Dgqsq_B4UXw5EZtqKMShHQ.png)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/architecture.jpg --alt Architecture VAE %}
+</div>
 
 
 Decoder will sample z from $$q​_θ​​(z\|x)$$. The problem here is that backprop will not be able to flow through this random node since it is purely stochastic and non deterministic on networks parameters. We can enforce this, knowing that a normal distributed variable with mean $$μ$$ and standard deviation $$σ$$, can be sampled from:
 
-{:refdef: style="text-align: center;"}
-![](https://cdn-images-1.medium.com/max/2000/1*hFfPr3CtQ0VLeLDAHPPOfQ.png)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula.jpg --alt Z sample formula %}
+</div>
 
 where $$ϵ$$ is drawn from a standard normal. Why is this helping us? Think that now we are dealing with fixed values for $$μ$$ and $$σ$$, we are moving all the stochasticity to the epsilon term so the derivatives can flow through the deterministic nodes! (Note that in image below $$ϕ$$ corresponds with our $$θ$$ term)
 
@@ -105,7 +105,7 @@ where $$ϵ$$ is drawn from a standard normal. Why is this helping us? Think that
 {: refdef}
 
 {:refdef: style="text-align: center;"}
-Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target="_blank"}{:rel="noopener noreferrer"}*
+*Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
 
 In this video you can find a good visual explanation of the whole network!

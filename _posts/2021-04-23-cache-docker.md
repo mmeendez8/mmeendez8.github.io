@@ -3,7 +3,7 @@ layout: post
 title:  "Reduce Actions time with Docker and Github Cache"
 subtitle: "Use Github Actions cache and Docker to reduce time installing Conda dependencies"
 description: "Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache"
-image: "/assets/posts/2021-04-23-cache-docker/thumbnail.webp"
+image: "assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail.jpg"
 selected: y
 ---
 
@@ -138,9 +138,9 @@ jobs:
 
 If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda's job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But ... we need to **manually build and load** our docker image when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let's see how we can avoid it.
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-04-23-cache-docker/time_comparison.webp)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison.jpg --alt Time comparison between builds  %}
+</div>
 
 ## 3. Building and pushing Docker images on Github Actions
 
@@ -220,15 +220,15 @@ jobs:
 
 The first time we run this job, our cache is empty, so it will create the docker image from scratch, and that takes about 15 minutes!
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-04-23-cache-docker/empty_docker_cache.webp)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache.jpg --alt Empty cache result  %}
+</div>
 
 But the next time the action fires (and if we don't modify our Dockerfile or Conda environment) we can reuse the cached layers and reduce this time to just ~ 6 minutes.
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-04-23-cache-docker/full_docker_cache.webp)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache.jpg --alt Full cache result  %}
+</div>
 
 So now **we've incorporated the Docker build step into our pipeline**, so we don't need to manually upload a new image every time our dependencies change. In addition, we have been able to optimize this build by taking advantage of the Docker layers and the Github cache, reducing the compilation time to a third of the initial duration. But there is still room for improvement!
 
@@ -328,9 +328,9 @@ Note how I have also added some if conditionals `if: steps.cache.outputs.cache-h
 
 We can now push our changes and Github will compute that hash and save it in the cache.. If we later commit some changes to our repository, like adding a new test function or some new feature to our source code, the compile time will look like this:
 
-{:refdef: style="text-align: center;"}
-![](/assets/posts/2021-04-23-cache-docker/full_cache.webp)
-{: refdef}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache.jpg --alt Full cache caption  %}
+</div>
 
 That's only 2 minutes and 29 seconds! We have fully automated our pipeline minimizing the time we need to install all our dependencies!
 
