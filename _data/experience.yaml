@@ -4,7 +4,7 @@ experiences:
     location: "Vigo, ESP (Remote)"
     time: "Feb'22 - now"
     title: "Machine Learning Engineer"
-    image: "/assets/vitae/statsbomb.webp"
+    image: "/assets/images/fullsize/vitae/statsbomb.webp"
     description: ""
 
   - company: "Gradiant"
@@ -12,7 +12,7 @@ experiences:
     location: "Vigo, ESP"
     time: "Apr'19 - Jan'22"
     title: "Machine Learning Research Engineer"
-    image: "/assets/vitae/gradiant.webp"
+    image: "/assets/images/fullsize/vitae/gradiant.webp"
     description: "Research and implementation of Deep Learning based models for object detection and semantic segmentation. Optimization of these solutions for being embedded on UAVs (Nvidia Jetson) 
     or deployed in the cloud. Leadership, coordination and development of the teams AI methodologies and infrastructure."
 
@@ -21,7 +21,7 @@ experiences:
     location: "Barcelona, ESP"
     time: "Feb'18 - Apr'19"
     title: "Data Scientist, Consultant"
-    image: "/assets/vitae/desigual.webp"
+    image: "/assets/images/fullsize/vitae/desigual.webp"
     description: "Developed machine learning models for analyzing stock distribution and sales / returns forecasting. 
     Research on using CNN for database image retrieval and user recommendations."
 
@@ -30,7 +30,7 @@ experiences:
     location: "Indiana, USA"
     time: "Aug'16 - Jun'17"
     title: "Master in Artificial Intelligence (Study Abroad)"
-    image: "/assets/vitae/purdue.webp"
+    image: "/assets/images/fullsize/vitae/purdue.webp"
     description: "I was a member of Purdue Datalab and collaborated with PhD students by presenting, exploring and discussing new topics on AI research.
     Also took data mining, machine learning courses and finish my Master Thesis: <i>Feature construction and classification on Time Series</i>."
 
@@ -39,7 +39,7 @@ experiences:
     location: "Barcelona, ESP"
     time: "Sep'15 - Jun'17"
     title: "Master in Artificial Intelligence"
-    image: "/assets/vitae/upc.webp"
+    image: "/assets/images/fullsize/vitae/upc.webp"
     description: "This was the moment when my adventure with AI began. I remember being totally impressed with the CNNs of the moment! I took courses that were mainly 
     related with supervised / unsupervised learning approaches."
 
@@ -48,7 +48,7 @@ experiences:
     location: "Stavanger, NOR"
     time: "Aug'14 - Jun'14"
     title: "B.Sc. Student (Study Abroad)"
-    image: "/assets/vitae/uis.webp"
+    image: "/assets/images/fullsize/vitae/uis.webp"
     description: "I got awarded with Erasmus and NILS scholarship. I did my final project with three ingredients: Optical Flow, a GoPro camera and my own bike."
 
 
@@ -57,7 +57,7 @@ experiences:
     location: "A Coruña, ESP"
     time: "Sep'11 - Jun'16"
     title: "B.Sc. Student"
-    image: "/assets/vitae/udc.webp"
+    image: "/assets/images/fullsize/vitae/udc.webp"
     description: "This is where I learned about data structures, algorithm complexity and so many other things 
     that I use so often that still surprise myself from time to time."
 
