@@ -216,18 +216,24 @@ ul {
 
 /*  ================ Posts grid styling  ================ */
 
+.posts{
+  margin: 0px;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 768px){
+  .posts li{
+    margin-bottom: 20px;
+  }
+}
+
 @media (min-width: 768px){
   .posts {
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     display: grid;
   }
-}
-
-.posts{
-  margin: 0px;
-  padding: 0;
-  list-style: none;
 }
 
 .post{
