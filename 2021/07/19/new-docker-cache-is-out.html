@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 
 <head>
 
@@ -16,47 +16,25 @@
   
 
   
-  <meta name="image" property="og:image" content="/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp">
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg">
   
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
-  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
   <link rel="stylesheet" href=/libs/custom/my_css.css>
-  <link rel="stylesheet" href=/libs/custom/syntax.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- JQuery
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src=/libs/external/jquery-3.1.1.min.js></script>
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
-  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
-
-  <!-- Timeline
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/timeline.css>
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
-  <script src=/libs/custom/my_js.js></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -64,15 +42,14 @@
   <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
 
   <!-- Google Analytics -->
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-133014227-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
@@ -85,100 +62,57 @@
 
   
   <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg">
   
 
   <!-- end of Twitter cards -->
   
 
+  <!-- Mathjax -->
+  
 </head>
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="/"><img class="u-max-full-width"
-              src='/assets/profile-pics/main_circle.webp'></a>
-        </div>
-        <div class="nine columns main-description">
-          <h1>Miguel Méndez</h1>
-          <div class="subtitle">
-            <p>Machine Learning Research Engineer, Gradiant</p>
-            <p>miguelmndez [AT] gmail.com</p>
-            <p class="social">
-              <a href='https://github.com/mmeendez8' target="_blank">
-                <i class="icon-github-circled" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-                <i class="icon-linkedin-squared" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://twitter.com/mmeendez8' target="_blank">
-                <i class="icon-twitter-squared2" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://medium.com/@miguelmendez_' target="_blank">
-                <i class="icon-medium" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-                <i class="icon-stackoverflow" aria-hidden="true"></i>
-              </a>
-            </p>
-          </div>
-        </div>
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
       </div>
-    </section>
+    </div>
+</header>
 
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href=/index.html#news>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#posts>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#resume>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#publications>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#other>Other</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="docs-section post-image">
-
-  
-  <div class="title-subtitle">
-    <h3>Export to Github Cache with Docker Buildx</h3>
-    <h5>We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!</h5>
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">July 19, 2021 </span>
+      <h1 class="the-post-title">Export to Github Cache with Docker Buildx</h1>
+      <p>We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!</p>
+    </div>
   </div>
-  
-  
-  <div>
-    <img src="/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp" alt=""/>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-8df78676f.jpg" alt="Export to Github Cache with Docker Buildx" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-400-6bd122606.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-600-6bd122606.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-6bd122606.webp 768w" sizes="(max-width: 767px) 100vw, 50vw" width="768" height="572">
+
   </div>
-  
+</div>
 
-  <p>I have recently <a href="/2021/04/23/cache-docker.html">uploaded a post</a> with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for <a href="https://docs.docker.com/buildx/working-with-buildx/">Docker BuildX</a> integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!</p>
+<div class="container the-post-content">
 
-<h3 id="1-get-the-basics">1. Get the basics</h3>
+  <p>I have recently <a href="/2021/04/23/cache-docker.html" target="_blank" rel="noopener noreferrer">uploaded a post</a> with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for <a href="https://docs.docker.com/buildx/working-with-buildx/" target="_blank" rel="noopener noreferrer">Docker BuildX</a> integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!</p>
 
-<p>You can read <a href="/2021/04/23/cache-docker.html">my previous post</a> to get the whole picture but I also recommend you to visit the official pull requests that lead to this new feature:</p>
+<h2 id="1-get-the-basics">1. Get the basics</h2>
+
+<p>You can read <a href="/2021/04/23/cache-docker.html" target="_blank" rel="noopener noreferrer">my previous post</a> to get the whole picture but I also recommend you to visit the official pull requests that lead to this new feature:</p>
 
 <ul>
-  <li><a href="https://github.com/docker/buildx/pull/535">This</a> is the buildx code that has been merged for allowing the use of github internal cache</li>
-  <li><a href="https://github.com/docker/build-push-action/pull/406#issuecomment-879184394">This</a> draft PR contains an example of how to use it.</li>
+  <li><a href="https://github.com/docker/buildx/pull/535" target="_blank" rel="noopener noreferrer">This</a> is the buildx code that has been merged for allowing the use of github internal cache</li>
+  <li><a href="https://github.com/docker/build-push-action/pull/406#issuecomment-879184394" target="_blank" rel="noopener noreferrer">This</a> draft PR contains an example of how to use it.</li>
 </ul>
 
 <p>If you read through all of those you probably realize that we have been waiting for new buildx 0.6 version and buildkit 0.9 to be generally available… but that happened just a few days ago!</p>
@@ -189,9 +123,13 @@
 
 <p>At this moment we are waiting for Github virtual environments to have new buildx 0.6.0 in Ubuntu base images, but they are generated on weekends and deployed during the week so we might have to wait a week or two before that happens. Anyway we can already test the new feature and add it to our pipelines!</p>
 
-<h3 id="2-simple-example">2. Simple example</h3>
+<h3 id="edit-91121">Edit 9/11/21:</h3>
 
-<p>I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplify pipeline would be simply this:</p>
+<p>Github virtual environments have been updated so we can use build-push action without extra configurations.</p>
+
+<h2 id="2-simple-example">2. Simple example</h2>
+
+<p>I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplified pipeline would look like this:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration new cache</span>
 
@@ -210,8 +148,6 @@
 
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@v1</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">version</span><span class="pi">:</span> <span class="s">v0.6.0</span>
 
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Login to GitHub Container Registry</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
@@ -224,12 +160,11 @@
         <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v2</span>
         <span class="na">with</span><span class="pi">:</span>
           <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
-          <span class="na">builder</span><span class="pi">:</span> <span class="s">$</span>
           <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
           <span class="na">push</span><span class="pi">:</span> <span class="no">true</span>
           <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
           <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=gha</span>
-          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=gha</span>
+          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=gha,mode=max</span>
 
   <span class="na">lint_and_test</span><span class="pi">:</span>
     <span class="na">needs</span><span class="pi">:</span> <span class="s">build_docker</span>
@@ -252,7 +187,10 @@
 
 <p>Note how <code class="language-plaintext highlighter-rouge">cache-from</code> and <code class="language-plaintext highlighter-rouge">cache-to</code> type is set now to <code class="language-plaintext highlighter-rouge">gha</code> (github action). The first time the action is triggered the cache is empty so Docker will need to build all layers from scratch:</p>
 
-<p style="text-align: center;"><img src="/assets/posts/2021-07-19-new-docker-cache-is-out/empty_cache.webp" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/empty_cache-677-4bba7b45f.jpg" alt="Image showing empty cache" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/empty_cache-400-c943f5a58.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/empty_cache-600-c943f5a58.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/empty_cache-677-c943f5a58.webp 677w" sizes="(max-width: 767px) 100vw, 80vw" width="677" height="415" />
+
+</div>
 
 <p>But after this cache is full, so we can reuse all our layers in next builds, if the images was not modified, or just some of them when we apply changes to our Dockerfile. Let’s trigger a new build with an empty commit and check the time it needs now:</p>
 
@@ -260,11 +198,14 @@
 git push
 </code></pre></div></div>
 
-<p style="text-align: center;"><img src="/assets/posts/2021-07-19-new-docker-cache-is-out/full_cache.webp" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/full_cache-673-3df8281a5.jpg" alt="Image showing full cache" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/full_cache-400-70343b0e6.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/full_cache-600-70343b0e6.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/full_cache-673-70343b0e6.webp 673w" sizes="(max-width: 767px) 100vw, 80vw" width="673" height="420" />
+
+</div>
 
 <p>That’s it! It only took 22 seconds to build our image.</p>
 
-<h3 id="conclusion">Conclusion</h3>
+<h2 id="conclusion">Conclusion</h2>
 
 <ul>
   <li>
@@ -275,44 +216,46 @@ git push
   </li>
 </ul>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8">Twitter</a> or <a href="https://github.com/mmeendez8">Github</a></em></p>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-
+  
 </div>
 
+
+  <div >
+
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          Miguel Méndez
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='https://github.com/mmeendez8' target="_blank">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://twitter.com/mmeendez8' target="_blank">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://medium.com/@miguelmendez_' target="_blank">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

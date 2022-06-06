@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | CNNs & Transformers Explainability: What do they see?</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="CNNs & Transformers Explainability: What do they see?">
+  
+  
+  <meta name="twitter:description" content="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">December 09, 2021 </span>
+      <h1 class="the-post-title">CNNs & Transformers Explainability: What do they see?</h1>
+      <p>A simple explanation and visualization of ViT attentions and ResNet activations</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-3fbd1fc19.jpg" alt="CNNs & Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-eccb3b6b6.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-eccb3b6b6.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-eccb3b6b6.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1000-eccb3b6b6.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1092" height="772">
+
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p><em>I created a small demo in <a href="https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability" target="_blank" rel="noopener noreferrer">Hugging Face Spaces</a> to play with the code</em></p>
+
+<p>A couple of weeks ago I saw a very interesting <a href="https://pytorch.org/blog/FX-feature-extraction-torchvision/" target="_blank" rel="noopener noreferrer">post by Alexander Soare and Francisco Massa</a> on Pytorch Blog. The authors explained that the latest version of Torchivision  <a href="https://github.com/pytorch/vision/releases/tag/v0.11.0" target="_blank" rel="noopener noreferrer"><code class="language-plaintext highlighter-rouge">v0.11.0</code></a> included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don’t need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.</p>
+
+<p>So … I couldn’t resist, I really wanted to try this and see how it works! I’ve been thinking about the differences between Transformer and CNN when classifying images and was wondering if I could compare them. So I rechecked the Class Activation Map paper<a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> from 2015. This is a classic job that shows how to paint activation maps from your last conv layer, conditioned on your model output label. For the case of transformers, I based my experiments on Attention Flow <a href="https://arxiv.org/pdf/2005.00928.pdf" target="_blank" rel="noopener noreferrer">[2]</a> which seems to be the standard method in the community.</p>
+
+<p>This post was created with the intention of improving my knowledge on ViT, TorchVision and model’s explainability. I do not pretend to compare ResNet against ViT since they have been trained with different datasets. ViT was pre-trained on ImageNet-21k and finetuned on ImageNet whileas ResNet50 was only trained on ImageNet.</p>
+
+<p>Now, let’s see how to implement both methods and visualize some results!</p>
+
+<h2 id="class-activation-map---resnet">Class Activation Map - ResNet</h2>
+
+<h3 id="a-small-review">A small review</h3>
+
+<p>In <a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:</p>
+
+<p><img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-600-c0f0bfcc7.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1000-c0f0bfcc7.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" /></p>
+
+<p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code class="language-plaintext highlighter-rouge">n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code class="language-plaintext highlighter-rouge">n_filters</code> x <code class="language-plaintext highlighter-rouge">n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
+
+\[M_c(x,y) = \sum_{k}w_k^c f_k(x,y)\]
+
+<p>where \(k\) represents the number of filters in the last conv layer, \(w_k^c\)  are the linear layer weights and \(f_k(x,y)\) represents the 2D stacked filter responses.</p>
+
+<p>This paper was publised in 2015 and at that time popular architectures did not have GAP layers so they have to be finetuned with these extra layers… But we are going to use a ResNet architecture which already has a GAP layer at the end! You can check <a href="https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py#L203" target="_blank" rel="noopener noreferrer">here</a> torchvision implementation of ResNets to be sure of this.</p>
+
+<p>There have been multiple works that have evolved CAM idea, you can check a few implementions of them in <a href="https://github.com/frgfm/torch-cam" target="_blank" rel="noopener noreferrer">torch-cam</a> repo.</p>
+
+<h3 id="code">Code</h3>
+
+<p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code class="language-plaintext highlighter-rouge">get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code class="language-plaintext highlighter-rouge">layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code class="language-plaintext highlighter-rouge">layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">torchvision.models.feature_extraction</span> <span class="kn">import</span> <span class="n">create_feature_extractor</span>
+
+<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">resnet50</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+
+<span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="s">'layer4'</span><span class="p">,</span> <span class="s">'fc'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>For computing the CAM we just need to apply the previous formula. First we need to get linear layer weight matrix, select the row that relates with the predicted output class and multiply it by the extracted features, then we can apply min-max normalization so that the CAM is between 0 and 1.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fc_layer_weights</span> <span class="o">=</span> <span class="n">resnet50</span><span class="p">.</span><span class="n">fc</span><span class="p">.</span><span class="n">weight</span>
+
+<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="c1"># Extract features and remove batch dim
+</span>    <span class="n">output</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
+    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"layer4"</span><span class="p">].</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"fc"</span><span class="p">].</span><span class="n">argmax</span><span class="p">()</span>
+
+    <span class="c1"># Linear combination of class weights and cnn features
+</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">fc_layer_weights</span><span class="p">[</span><span class="n">class_id</span><span class="p">].</span><span class="n">matmul</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># Reshape back to 2D
+</span><span class="n">cam</span> <span class="o">=</span> <span class="n">cam</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>That’s all! Just a few lines, let’s see a few simple examples:</p>
+
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-333ec12b6.jpg" alt="CAM" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-400-d5f6fcf29.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-600-d5f6fcf29.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-d5f6fcf29.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-1000-d5f6fcf29.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+
+</div>
+
+<h2 id="vit-attention-map">ViT Attention Map</h2>
+
+<h3 id="another-brief-review">Another brief review</h3>
+
+<p>ViT paper<a href="https://arxiv.org/pdf/2010.11929.pdf" target="_blank" rel="noopener noreferrer">[3]</a> was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works<a href="https://arxiv.org/abs/2101.01169" target="_blank" rel="noopener noreferrer">[4]</a> that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.</p>
+
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-da40c3cdb.jpg" alt="Vision Transformer" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-400-23824f5be.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-600-23824f5be.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-23824f5be.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-879-23824f5be.webp 879w" sizes="(max-width: 767px) 100vw, 80vw" width="879" height="470" />
+
+</div>
+
+<p>The attentions mechanism allows us to figure out what parts or patches of the image are key for the classification result. This will allow us to interpret model’s decision.</p>
+
+\[Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V\]
+
+<p>In the attention formula, the dot product between the query and the key represents the raw attention scores. I like to imagine this as a similarity matrix, where each position represents how “similar” the query and key embeddings are. So when both vectors are not aligned the dot product will tend to zero.</p>
+
+<p>At the very first attention layer, the input vectors are the linear projections of the flattened patches:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Pseudocode simplification from HF implementation
+</span><span class="n">patch_embeddings</span> <span class="o">=</span> <span class="n">PatchEmbeddings</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">flat_patch_embeddings</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">linear_projections</span> <span class="o">=</span> <span class="n">Linear</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In <a href="https://arxiv.org/abs/2005.00928" target="_blank" rel="noopener noreferrer">[2]</a> two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.</p>
+
+<h3 id="attention-rollout">Attention Rollout</h3>
+
+<p>We can model the information flow as a graph where input patches and hidden embeddings are the nodes and the edges represent the attentions from the nodes in one layer to the next layer. These edges are weighted by the attention weights which determine the amount of information that is passed from one layer to the next. Hence, if we want to compute the attention that a node at layer \(i\) receives from all previous layer nodes, we can simply multiply the attention weights matrices from the input layer until our target \(i\). Check the following animation to see how this works:</p>
+
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-2f6a36848.jpg" alt="Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-400-d83342cea.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-600-d83342cea.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-d83342cea.webp 774w" sizes="(max-width: 767px) 100vw, 80vw" width="774" height="658" />
+
+</div>
+
+<p style="text-align: center;"><em>Attention rollout simulation obtained from <a href="https://samiraabnar.github.io/articles/2020-04/attention_flow" target="_blank" rel="noopener noreferrer">Samira Abnar’s blog</a></em></p>
+
+<p>This is super straight-forward and easy to understand but we are missing the influence of residual connections. Paper authors handle this in a very elegant way, they realize that the output at layer \(V_{l+1}\) depends on the previous output and the attention weights: \(V_{l+1} = V_{l} + W_{att}V_l\), where \(W_{att}\) is the attention matrix. This can also be expressed as \(V_{l+1} = (W_{att} + I)V_l\). Thus, re-normalizing the weights, the raw attention updated by residual connections can be expressed as: \(A = 0.5W_{att} + 0.5I\).</p>
+
+<p>Note I have seen other implementations of this method that instead of averaging the attention between the different heads of each layer, use min or max operator since it seems to work better in practice (see <a href="https://github.com/jacobgil/vit-explain" target="_blank" rel="noopener noreferrer">this implementation</a>)</p>
+
+<h3 id="code-1">Code</h3>
+
+<p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code class="language-plaintext highlighter-rouge">0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTForImageClassification</span>
+<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">"google/vit-base-patch16-224"</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">vit</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code class="language-plaintext highlighter-rouge">output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Inference
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">vit</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># Stack all layers attention
+</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Average the attention at each layer over all heads
+</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Add residual and re-normalize
+</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="n">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">attention_probs</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">attention_probs</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">residual</span>
+
+<span class="c1"># Normalize by layer
+</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">attention_probs</span> <span class="o">/</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Compute rollout
+</span><span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">attention_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">attention_probs</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+    <span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">attention_rollout</span><span class="p">)</span>
+
+<span class="c1"># Attentions between CLS token and patches
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">attention_rollout</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
+<span class="c1"># Reshape back to 2D
+</span><span class="n">mask_size</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mask</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mask_size</span><span class="p">,</span> <span class="n">mask_size</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Pretty simple, let’s see a few examples:</p>
+
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-62565fb71.jpg" alt="Rollout Transform" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-400-c56709655.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-600-c56709655.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-c56709655.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-1000-c56709655.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+
+</div>
+
+<p>There seems to be a larger noise when we comparing these results wrt CAM ones. One plausible option to reduce this effect is to filter very low attentions and keep only the strongest ones. I will stick with the original implementation but you find about this in <a href="https://github.com/jacobgil/vit-explain" target="_blank" rel="noopener noreferrer">this repo</a>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We have covered two important methods that can give us some intuition on how CNNs and Transformers work internally. A few key aspects that we must keep in mind:</p>
+
+<ul>
+  <li>
+    <p>The idea behind this post was to improve my understanding of the ViT architecture, TorchVision new features, GAP and Attention Rollout. This should not be used as a comparison between ResNet and ViT, since ViT was pre-trained on ImageNet-21k and finetuned on ImageNet whileas ResNet50 was only trained on ImageNet.</p>
+  </li>
+  <li>
+    <p>CAM does not generalize to models without global average pooling. You would need to retrain your model with a GAP layer or use a different method. <a href="https://github.com/frgfm/torch-cam" target="_blank" rel="noopener noreferrer">Here</a> you can check some different implementations.</p>
+  </li>
+  <li>
+    <p>I have used Hugging Face’s ViT implementation since it is not yet available on latest Torchvision version.</p>
+  </li>
+  <li>
+    <p>Do not forget to check the <a href="https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability" target="_blank" rel="noopener noreferrer">Hugging Face Space</a> I created for this post!</p>
+  </li>
+</ul>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>[1] Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., &amp; Torralba, A. (2016). Learning deep features for discriminative localization. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 2921-2929).</li>
+  <li>[2] Abnar, S., &amp; Zuidema, W. (2020). Quantifying attention flow in transformers. arXiv preprint arXiv:2005.00928.</li>
+  <li>[3] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., … &amp; Houlsby, N. (2020). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929.</li>
+  <li>[4] Khan, S., Naseer, M., Hayat, M., Zamir, S. W., Khan, F. S., &amp; Shah, M. (2021). Transformers in vision: A survey. arXiv preprint arXiv:2101.01169.</li>
+</ul>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
+
+  
+</div>
+
+
+  <div >
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+</html>

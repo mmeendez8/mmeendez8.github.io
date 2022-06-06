@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 
 <head>
 
@@ -16,47 +16,25 @@
   
 
   
-  <meta name="image" property="og:image" content="/assets/profile-pics/main_rectangle.webp">
+  <meta name="image" property="og:image" content="https://mmeendez8.github.ioassets/images/fullsize/profile-pics/main_rectangle.png">
   
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
-  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
   <link rel="stylesheet" href=/libs/custom/my_css.css>
-  <link rel="stylesheet" href=/libs/custom/syntax.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- JQuery
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src=/libs/external/jquery-3.1.1.min.js></script>
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
-  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
-
-  <!-- Timeline
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/timeline.css>
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
-  <script src=/libs/custom/my_js.js></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -64,15 +42,14 @@
   <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
 
   <!-- Google Analytics -->
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-133014227-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
@@ -85,675 +62,569 @@
 
   
   <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/profile-pics/main_rectangle.webp">
+  <meta name="twitter:image" content="https://mmeendez8.github.ioassets/images/fullsize/profile-pics/main_rectangle.png">
   
 
   <!-- end of Twitter cards -->
   
 
+  <!-- Mathjax -->
+  
 </head>
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
+  <!-- ========== Header ========== -->
+<div class="container">
 
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="/"><img class="u-max-full-width"
-              src='/assets/profile-pics/main_circle.webp'></a>
-        </div>
-        <div class="nine columns main-description">
-          <h1>Miguel Méndez</h1>
-          <div class="subtitle">
-            <p>Machine Learning Research Engineer, Gradiant</p>
-            <p>miguelmndez [AT] gmail.com</p>
-            <p class="social">
-              <a href='https://github.com/mmeendez8' target="_blank">
-                <i class="icon-github-circled" aria-hidden="true"></i>
-              </a>
+  <div class="header-container">
 
-              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-                <i class="icon-linkedin-squared" aria-hidden="true"></i>
-              </a>
+    <div class="header-img">
+      <a href="/">
+        <img src="/generated/assets/images/fullsize/profile-pics/main_circle-691-86b223b2e.webp" alt="Site main picture" srcset="/generated/assets/images/fullsize/profile-pics/main_circle-300-86b223b2e.webp 300w" width="691" height="691">
 
-              <a href='https://twitter.com/mmeendez8' target="_blank">
-                <i class="icon-twitter-squared2" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://medium.com/@miguelmendez_' target="_blank">
-                <i class="icon-medium" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-                <i class="icon-stackoverflow" aria-hidden="true"></i>
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href=/index.html#news>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#posts>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#resume>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#publications>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#other>Other</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <!-- ========== BIO ========== -->
-<div class="docs-section" id="bio">
-  <h4>Bio</h4>
-  <p>
-    I am a Machine Learning Research Engineer at <a href="https://www.gradiant.org/en//" target="_blank">Gradiant</a>. I
-    love creating
-    systems based on data that can interact with the real word.
-    My research interests lie in the general area of machine learning, particularly in deep learning and its
-    applications in object detection,
-    image generation and instance segmentation.
-  </p>
-
-  <p>
-    Prior to coming to Gradiant, I worked at <a href="https://www.desigual.com" target="_blank">Desigual
-      Headquarters</a> in Barcelona
-    as a Data Science consultant.
-    I spent one year in Barcelona and one year in the United States (Purdue University) to do a M.Sc. in Artificial
-    Intelligence.
-    I got my B.Sc. from University of A Coruña after an exchange year in Norway.
-  </p>
-</div>
-
-<!-- ========== NEWS ========== -->
-<div class="docs-section" id="news">
-  <h4>News</h4>
-
-  <ul>
-    
-    <li>
-      <p><b>April 2021</b>. Drone vs Bird paper is out! Check <a href='https://www.mdpi.com/1424-8220/21/8/2824' target='_blank'>our awarded solution</a>.</p>
-    </li>
-    
-    <li>
-      <p><b>February 2021</b>. We have open sourced <a href='https://github.com/Gradiant/pyodi/' target='_blank'>Pyodi</a> our Python Object Detecion Insights library.</p>
-    </li>
-    
-    <li>
-      <p><b>September 2020</b>. We have won Drone vs Bird Detection Challenge. More info <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank'>here</a>.</p>
-    </li>
-    
-    <li>
-      <p><b>September 2019</b>. Paper from <a href='https://ieeexplore.ieee.org/abstract/document/8909876' target='_blank'>IEEE AVSS2019 Drone-vs-Bird Detection Challenge</a> is out.</p>
-    </li>
-    
-  </ul>
-
-</div>
-
-<!-- ========== POSTS ========== -->
-<div class="docs-section" id="posts">
-  <h4>Posts</h4>
-
-  <ul class="tab-nav">
-    <li>
-      <div class="button active" data-ref="#posts-selected">Selected</div>
-    </li>
-    <li>
-      <div class="button" data-ref="#posts-all">All</div>
-    </li>
-  </ul>
-
-  <div class="tab-content">
-    <div class="tab-pane active margin" id="posts-selected">
-      
-      
-      
-      
-      <div class="row post-row">
-        
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2021/07/19/new-docker-cache-is-out.html">
-                <img src="/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Export to Github Cache with Docker Buildx</b> <br />
-              We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!
-            </div>
-
-          </div>
-        </div>
-
-        
-      
-      
-      
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2021/07/01/dvc-tutorial.html">
-                <img src="/assets/posts/2021-07-01-dvc-tutorial/thumbnail.webp" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Version control your dataset with DVC</b> <br />
-              Use DVC and Git for tracking changes on your machine learning dataset
-            </div>
-
-          </div>
-        </div>
-
-        
-      </div>
-      
-      
-      
-      
-      <div class="row post-row">
-        
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2021/04/23/cache-docker.html">
-                <img src="/assets/posts/2021-04-23-cache-docker/thumbnail.webp" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Reduce Actions time with Docker and Github Cache</b> <br />
-              Use Github Actions cache and Docker to reduce time installing Conda dependencies
-            </div>
-
-          </div>
-        </div>
-
-        
-      
-      
-      
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/02/06/vae-fifa.html">
-                <img src="/assets/posts/2019-02-06-vae-fifa/thumbnail.webp" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Generating FIFA 19 players with VAEs and Tensorflow</b> <br />
-              Learn to generate your own footbal players
-            </div>
-
-          </div>
-        </div>
-
-        
-      </div>
-      
-      
-      
-      
-      <div class="row post-row">
-        
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/01/24/vae-tensorflow.html">
-                <img src="/assets/posts/2019-01-24-vae-tensorflow/thumbnail.webp" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>VAEs! Generating images with Tensorflow</b> <br />
-              Learn how to code a Variational Autoencoder
-            </div>
-
-          </div>
-        </div>
-
-        
-      
-      
-      
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/01/19/vae-theory.html">
-                <img src="/assets/posts/2019-01-19-vae-theory/thumbnail.webp" class="u-max-full-width post-image" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>The theory behind Variational Autoencoders</b> <br />
-              Learn the math
-            </div>
-
-          </div>
-        </div>
-
-        
-      </div>
-      
-      
+      </a>
     </div>
 
-    <div class="tab-pane margin" id="posts-all">
-      
-      
-      
-      <div class="row post-row">
-        
+    <div class="header-title">
+      <h1>Miguel Méndez</h1>
+      <p>Machine Learning Engineer, Statsbomb</p>
+      <p>miguelmndez [AT] gmail.com</p>
 
-        <div class="six columns">
-          <div class="post-container">
+      <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+        <i class="icon-github-circled" aria-hidden="true"></i>
+      </a>
 
-            <div class="post-image-container">
-              <a href="/2021/07/19/new-docker-cache-is-out.html">
-                <img src="/assets/posts/2021-07-19-new-docker-cache-is-out/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
+      <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+        <i class="icon-linkedin-squared" aria-hidden="true"></i>
+      </a>
 
-            <div class="post-caption">
-              <b>Export to Github Cache with Docker Buildx</b> <br />
-              We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!
-            </div>
+      <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+        <i class="icon-twitter-squared" aria-hidden="true"></i>
+      </a>
 
-          </div>
-        </div>
+      <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+        <i class="icon-medium" aria-hidden="true"></i>
+      </a>
 
-        
-      
-      
-      
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2021/07/01/dvc-tutorial.html">
-                <img src="/assets/posts/2021-07-01-dvc-tutorial/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Version control your dataset with DVC</b> <br />
-              Use DVC and Git for tracking changes on your machine learning dataset
-            </div>
-
-          </div>
-        </div>
-
-        
-      </div>
-      
-      
-      
-      
-      <div class="row post-row">
-        
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2021/04/23/cache-docker.html">
-                <img src="/assets/posts/2021-04-23-cache-docker/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Reduce Actions time with Docker and Github Cache</b> <br />
-              Use Github Actions cache and Docker to reduce time installing Conda dependencies
-            </div>
-
-          </div>
-        </div>
-
-        
-      
-      
-      
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/06/07/fashion.html">
-                <img src="/assets/posts/2019-06-07-fashion/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Automatic Classification of an online Fashion Catalogue</b> <br />
-              Scrap data and train a model
-            </div>
-
-          </div>
-        </div>
-
-        
-      </div>
-      
-      
-      
-      
-      <div class="row post-row">
-        
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/02/06/vae-fifa.html">
-                <img src="/assets/posts/2019-02-06-vae-fifa/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>Generating FIFA 19 players with VAEs and Tensorflow</b> <br />
-              Learn to generate your own footbal players
-            </div>
-
-          </div>
-        </div>
-
-        
-      
-      
-      
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/01/24/vae-tensorflow.html">
-                <img src="/assets/posts/2019-01-24-vae-tensorflow/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>VAEs! Generating images with Tensorflow</b> <br />
-              Learn how to code a Variational Autoencoder
-            </div>
-
-          </div>
-        </div>
-
-        
-      </div>
-      
-      
-      
-      
-      <div class="row post-row">
-        
-
-        <div class="six columns">
-          <div class="post-container">
-
-            <div class="post-image-container">
-              <a href="/2019/01/19/vae-theory.html">
-                <img src="/assets/posts/2019-01-19-vae-theory/thumbnail.webp" class="u-max-full-width" />
-              </a>
-            </div>
-
-            <div class="post-caption">
-              <b>The theory behind Variational Autoencoders</b> <br />
-              Learn the math
-            </div>
-
-          </div>
-        </div>
-
-        
-      
+      <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+        <i class="icon-stackoverflow" aria-hidden="true"></i>
+      </a>
     </div>
+
+  </div>
+
+  <!-- ========== BIO ========== -->
+  <div class="section" id="bio">
+    <h2>Bio</h2>
+    <p>
+      I am a <span class="bio-highlight">Machine Learning Engineer</span> at <a href="https://www.statsbomb.com" target="_blank" rel="noopener">Statsbomb</a>. I
+      love creating
+      systems based on data that can interact with the real world.
+      My research interests lie in the general area of machine learning, particularly in deep learning and its
+      applications in object detection,
+      image generation and instance segmentation.
+    </p>
+
+    <p>
+      Prior to coming to Statsbomb, I worked at <a href="https://www.gradiant.org/en//" target="_blank" rel="noopener">Gradiant</a> as a Machine Learning Research Engineer and at 
+       <a href="https://www.desigual.com" target="_blank" rel="noopener">Desigual Headquarters</a> as a Data Science consultant.
+      I spent one year in Barcelona and one year in the United States (Purdue University) to do a M.Sc. in Artificial
+      Intelligence.
+      I got my B.Sc. from University of A Coruña after an exchange year in Norway.
+    </p>
+  </div>
+
+  <!-- ========== NEWS ========== -->
+  <div class="section" id="news">
+    <h2>News</h2>
+
+    <ul>
+      
+      <li>
+        <p><span class="bio-highlight"><b>February 2022</b></span>. I am joining <a href='https://www.stats.bomb.com' target='_blank' rel='noopener noreferrer'>Statsbomb</a> as a Machine Learning Engineer .</p>
+      </li>
+      
+      <li>
+        <p><span class="bio-highlight"><b>April 2021</b></span>. Drone vs Bird paper is out! Check <a href='https://www.mdpi.com/1424-8220/21/8/2824' target='_blank' rel='noopener noreferrer'>our awarded solution</a>.</p>
+      </li>
+      
+      <li>
+        <p><span class="bio-highlight"><b>February 2021</b></span>. We have open sourced <a href='https://github.com/Gradiant/pyodi/' target='_blank' rel='noopener noreferrer'>Pyodi</a> our Python Object Detecion Insights library.</p>
+      </li>
+      
+      <li>
+        <p><span class="bio-highlight"><b>September 2020</b></span>. We have won Drone vs Bird Detection Challenge. More info <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank' rel='noopener noreferrer'>here</a>.</p>
+      </li>
+      
+      <li>
+        <p><span class="bio-highlight"><b>September 2019</b></span>. Paper from <a href='https://ieeexplore.ieee.org/abstract/document/8909876' target='_blank' rel='noopener noreferrer'>IEEE AVSS2019 Drone-vs-Bird Detection Challenge</a> is out.</p>
+      </li>
+      
+    </ul>
+
+  </div>
+
+  <!-- ========== POSTS ========== -->
+  <div class="section" id="posts">
+    <h2>Posts</h2>
+
+    <ul class="posts" id="posts-selected">
+      
+      
+      <li class="post">
+        <a href="/2021/12/09/cnn-vs-transformers.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-3fbd1fc19.jpg" alt="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-eccb3b6b6.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-eccb3b6b6.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-eccb3b6b6.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1092" height="772">
+
+          </div>
+          <h3 class="post-title">CNNs & Transformers Explainability: What do they see?</h3>
+          <p class="post-description"> A simple explanation and visualization of ViT attentions and ResNet activations </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2021/09/23/ansible-conda.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-c52a5160c.jpg" alt="The best way for monitoring your server is through your own code," srcset="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-400-1fefb4d77.webp 400w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-600-1fefb4d77.webp 600w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-1fefb4d77.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1177" height="768">
+
+          </div>
+          <h3 class="post-title">Using Ansible and Python to monitor my servers</h3>
+          <p class="post-description"> Code your own scripts in Python, deploy them using Ansible & Conda and get real time reports from your server </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2021/08/30/mmdet-dvc-tutorial.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-1f776a3e5.jpg" alt="Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!" srcset="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-400-b7ca4b2d0.webp 400w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-600-b7ca4b2d0.webp 600w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-b7ca4b2d0.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1600" height="836">
+
+          </div>
+          <h3 class="post-title">DVC + MMdetection</h3>
+          <p class="post-description"> A guide to train, monitor, compare and evaluate your pytorch object detection models </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2021/07/19/new-docker-cache-is-out.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-8df78676f.jpg" alt="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-400-6bd122606.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-600-6bd122606.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-6bd122606.webp 768w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="768" height="572">
+
+          </div>
+          <h3 class="post-title">Export to Github Cache with Docker Buildx</h3>
+          <p class="post-description"> We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast! </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2021/07/01/dvc-tutorial.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-601183df4.jpg" alt="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code." srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-400-cd6ecdf64.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-600-cd6ecdf64.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cd6ecdf64.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1200" height="627">
+
+          </div>
+          <h3 class="post-title">Version control your dataset with DVC</h3>
+          <p class="post-description"> Use DVC and Git for tracking changes on your machine learning dataset </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2021/04/23/cache-docker.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1992" height="1440">
+
+          </div>
+          <h3 class="post-title">Reduce Actions time with Docker and Github Cache</h3>
+          <p class="post-description"> Use Github Actions cache and Docker to reduce time installing Conda dependencies </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2019/06/07/fashion.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-06-07-fashion/thumbnail-800-f6473f507.jpg" alt="Learn to find a public fashion dataset, download it and process it for training a classification model on Tensorflow" srcset="/generated/assets/images/fullsize/posts/2019-06-07-fashion/thumbnail-400-2952f5f5f.webp 400w, /generated/assets/images/fullsize/posts/2019-06-07-fashion/thumbnail-600-2952f5f5f.webp 600w, /generated/assets/images/fullsize/posts/2019-06-07-fashion/thumbnail-800-2952f5f5f.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1200" height="675">
+
+          </div>
+          <h3 class="post-title">Automatic Classification of an online Fashion Catalogue</h3>
+          <p class="post-description"> Scrap data and train a model </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2019/02/06/vae-fifa.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-cf9d327a3.jpg" alt="Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-400-3989e34a2.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-600-3989e34a2.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-3989e34a2.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1280" height="720">
+
+          </div>
+          <h3 class="post-title">Generating FIFA 19 players with VAEs and Tensorflow</h3>
+          <p class="post-description"> Learn to generate your own footbal players </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2019/01/24/vae-tensorflow.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-303e983fa.jpg" alt="This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-400-3b8ac1db5.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-600-3b8ac1db5.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-3b8ac1db5.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2500" height="1667">
+
+          </div>
+          <h3 class="post-title">VAEs! Generating images with Tensorflow</h3>
+          <p class="post-description"> Learn how to code a Variational Autoencoder </p> 
+        </a>    
+      </li>
+      
+      <li class="post">
+        <a href="/2019/01/19/vae-theory.html">
+          <div class="post-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow!" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-400-b3e614e1f.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-600-b3e614e1f.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2002" height="1497">
+
+          </div>
+          <h3 class="post-title">The theory behind Variational Autoencoders</h3>
+          <p class="post-description"> Learn the math </p> 
+        </a>    
+      </li>
+      
+    </ul>
+  </div>
+
+
+  <!-- ========== RESUME ========== -->
+  <div class="section" id="resume">
+    <h2>Vitæ</h2>
+
+    <ul class="vitae-content">
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            Vigo, ESP (Remote)
+          </div> 
+          <div class="vitae-time">
+            Feb'22 - now
+          </div>
+        </div>
+
+        
+        <div class="vitae-actual vitae-image ">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/statsbomb-300-19a997f39.webp" alt="Statsbomb" srcset="/generated/assets/images/fullsize/vitae/statsbomb-120-19a997f39.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/statsbomb.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">Machine Learning Engineer - <a target="_blank" rel="noopener" href="https://statsbomb.com/">Statsbomb</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p>  </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            Vigo, ESP
+          </div> 
+          <div class="vitae-time">
+            Apr'19 - Jan'22
+          </div>
+        </div>
+
+        
+        <div class="vitae-image">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/gradiant-300-7f2844f5f.webp" alt="Gradiant" srcset="/generated/assets/images/fullsize/vitae/gradiant-120-7f2844f5f.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/gradiant.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">Machine Learning Research Engineer - <a target="_blank" rel="noopener" href="https://www.gradiant.org/">Gradiant</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> Research and implementation of Deep Learning based models for object detection and semantic segmentation. Optimization of these solutions for being embedded on UAVs (Nvidia Jetson) or deployed in the cloud. Leadership, coordination and development of the teams AI methodologies and infrastructure. </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            Barcelona, ESP
+          </div> 
+          <div class="vitae-time">
+            Feb'18 - Apr'19
+          </div>
+        </div>
+
+        
+        <div class="vitae-image">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/desigual-300-2d0adfa27.webp" alt="Desigual, InnoIT" srcset="/generated/assets/images/fullsize/vitae/desigual-120-2d0adfa27.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/desigual.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">Data Scientist, Consultant - <a target="_blank" rel="noopener" href="https://www.inno-it.es/">Desigual, InnoIT</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> Developed machine learning models for analyzing stock distribution and sales / returns forecasting. Research on using CNN for database image retrieval and user recommendations. </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            Indiana, USA
+          </div> 
+          <div class="vitae-time">
+            Aug'16 - Jun'17
+          </div>
+        </div>
+
+        
+        <div class="vitae-image">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/purdue-300-c02dd89fc.webp" alt="Purdue University" srcset="/generated/assets/images/fullsize/vitae/purdue-120-c02dd89fc.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/purdue.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">Master in Artificial Intelligence (Study Abroad) - <a target="_blank" rel="noopener" href="https://www.purdue.edu/">Purdue University</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> I was a member of Purdue Datalab and collaborated with PhD students by presenting, exploring and discussing new topics on AI research. Also took data mining, machine learning courses and finish my Master Thesis: <i>Feature construction and classification on Time Series</i>. </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            Barcelona, ESP
+          </div> 
+          <div class="vitae-time">
+            Sep'15 - Jun'17
+          </div>
+        </div>
+
+        
+        <div class="vitae-image">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/upc-300-64b24b798.webp" alt="Polytechnic University of Catalonia" srcset="/generated/assets/images/fullsize/vitae/upc-120-64b24b798.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/upc.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">Master in Artificial Intelligence - <a target="_blank" rel="noopener" href="https://www.upc.edu/en?set_language=en">Polytechnic University of Catalonia</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> This was the moment when my adventure with AI began. I remember being totally impressed with the CNNs of the moment! I took courses that were mainly related with supervised / unsupervised learning approaches. </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            Stavanger, NOR
+          </div> 
+          <div class="vitae-time">
+            Aug'14 - Jun'14
+          </div>
+        </div>
+
+        
+        <div class="vitae-image">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/uis-300-689c221c8.webp" alt="University of Stavanger" srcset="/generated/assets/images/fullsize/vitae/uis-120-689c221c8.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/uis.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">B.Sc. Student (Study Abroad) - <a target="_blank" rel="noopener" href="https://www.uis.no/en">University of Stavanger</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> I got awarded with Erasmus and NILS scholarship. I did my final project with three ingredients: Optical Flow, a GoPro camera and my own bike. </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="vitae-item">
+
+        <div class="vitae-time-place">
+          <div class="vitae-place">
+            A Coruña, ESP
+          </div> 
+          <div class="vitae-time">
+            Sep'11 - Jun'16
+          </div>
+        </div>
+
+        
+        <div class="vitae-image">
+        
+          <div class="vitae-image-placeholder">
+            <img loading="lazy" src="/generated/assets/images/fullsize/vitae/udc-300-82a2e94d9.webp" alt="University of A Coruña" srcset="/generated/assets/images/fullsize/vitae/udc-120-82a2e94d9.webp 120w" width="300" height="300">
+
+            <!-- <img src="/assets/images/fullsize/vitae/udc.webp" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
+          </div>
+        </div>
+
+        <div class="vitae-panel">
+          <div class="vitae-position">
+            <h3 class="vitae-title">B.Sc. Student - <a target="_blank" rel="noopener" href="https://www.udc.es/">University of A Coruña</a> </h3>
+          </div>
+          <div class="vitae-description">
+            <p> This is where I learned about data structures, algorithm complexity and so many other things that I use so often that still surprise myself from time to time. </p>
+          </div>
+        </div>
+      </li>
+      
+    </ul>
+
+  </div>
+
+  <!-- ========== Publications ========== -->
+  <div class="section" id="publications">
+    <h2>Publications</h2>
+
+    <ul class="publications-content">
+      
+      <li class="publications-item">
+        <h3 class="publication-title">Drone vs. Bird Detection: Deep Learning Algorithms and Results from a Grand Challenge</h3>
+        <a target="_blank" rel="noopener" href="https://www.mdpi.com/1424-8220/21/8/2824">
+          <p class="publication-venue">Sensors: Special Issue Deep Learning Based UAV Detection, Classification, and Tracking</p>
+        </a>
+        <p class="publication-authors">Coluccia, Angelo and Fascista, Alessio and Schumann, Arne and Sommer, Lars and Dimou, Anastasios and Zarpalas, Dimitrios and <span class='bio-highlight'>Méndez, Miguel</span> and de la Iglesia, David and González, Iago and Mercier, Jean-Philippe and Gagné, Guillaume and Mitra, Arka and Rajashekar, Shobha</p>
+      </li>
+      
+      <li class="publications-item">
+        <h3 class="publication-title">Drone-vs-Bird Detection Challenge at IEEE AVSS2019</h3>
+        <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/8909876">
+          <p class="publication-venue">2019 16th IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS)</p>
+        </a>
+        <p class="publication-authors">A. Coluccia and A. Fascista and A. Schumann and L. Sommer and M. Ghenescu and T. Piatrik and G. De Cubber and M. Nalamati and A. Kapoor and M. Saqib and N. Sharma and M. Blumenstein and V. Magoulianitis and D. Ataloglou and A. Dimou and D. Zarpalas and P. Daras and C. Craye and S. Ardjoune and D. De la Iglesia and <span class='bio-highlight'>M. Méndez</span> and R. Dosil and I. González</p>
+      </li>
+      
+      </ul>
+  </div>
+
+  <!-- ========== Other Projects ========== -->
+
+  <div class="section" id="other-projects">
+    <h2>Other Projects</h2>
+
+    <ul class="other-projects-content">
+      
+      <li class="other-projects-item">
+        <a target="_blank" rel="noopener" href="https://github.com/Gradiant/pyodi">
+          <h3 class="other-project-title">Pyodi: Python Object Detection Insights</h3>
+        </a>
+        <p class="other-project-description">A simple tool for explore your object detection dataset. The goal of this library is to provide simple and intuitive visualizations from your dataset and automatically find the best parameters for generating a specific grid of anchors that can fit you data characteristics</p>
+        <p>Tags: <span class="bio-highlight">#deep-learning #computer-vision #object-detection #pytorch</span></p>
+      </li>
+      
+      <li class="other-projects-item">
+        <a target="_blank" rel="noopener" href="https://github.com/mmeendez8/Pegasas">
+          <h3 class="other-project-title">Feature construction and classification on Time Series</h3>
+        </a>
+        <p class="other-project-description">Collaborated with Federal Aviation Administration (FAA) in PEGASAS project with the aim of enhance general aviation safety. Developed a model which could classify flights in different categories (using data obtained from airborne sensors) through an unsupervised learning stage and an active learning procedure. Tools: Python, Scikit-Learn, Pandas, C, OpenMPI, Java <br />Presented in PEGASAS 2017 meeting at Texas A&M University</p>
+        <p>Tags: <span class="bio-highlight">#machine-learning #scikit-learn</span></p>
+      </li>
+      
+      <li class="other-projects-item">
+        <a target="_blank" rel="noopener" href="https://github.com/mmeendez8/InstrumentRecognition">
+          <h3 class="other-project-title">Instrument recognition using Neural Networks</h3>
+        </a>
+        <p class="other-project-description">System for musical instrument recognition using NNs with over 10000 audio samples based on Fourier Transform input features. Created our own NN library in Python from scratch.</p>
+        <p>Tags: <span class="bio-highlight">#python #numpy #fftransform</span></p>
+      </li>
+      
+      <li class="other-projects-item">
+        <a target="_blank" rel="noopener" href="https://github.com/mmeendez8/CorruptionSimulationTwitter">
+          <h3 class="other-project-title">Corruption simulation in Social Networks (Twitter)</h3>
+        </a>
+        <p class="other-project-description">Analysis using Twitter public API where we focused in understanding how politicians relate in the social network. We performed a Monte Carlo simulation of corruption behavior spreading with the aim of observing how corruption flows starting from some seed users that were imprisoned or involved in some case.</p>
+        <p>Tags: <span class="bio-highlight">#twitter #python #numpy</span></p>
+      </li>
+      
+      <li class="other-projects-item">
+        <a target="_blank" rel="noopener" href="https://github.com/mmeendez8/SafeFlight">
+          <h3 class="other-project-title">Flight Safe Android App</h3>
+        </a>
+        <p class="other-project-description">Developed Android app for collecting AHRS data during flights to facilitate the creation of a dataset for future experiments. This app was used by pilots and students that flew from Purdue’s airport.</p>
+        <p>Tags: <span class="bio-highlight">#java #android #sensors</span></p>
+      </li>
+      
+      </ul>
   </div>
 
 </div>
 
 
-<!-- ========== RESUME ========== -->
-<div class="docs-section" id="resume">
-  <h4>Vitæ</h4>
-
-  <!-- The Timeline -->
-  <ul class="timeline">
-    
-    <li>
-      
-      <div class="direction-l">
-        
-          <div class="flag-wrapper">
-            <span class="flag">Gradiant</span>
-            <span class="time-wrapper"><span class="time">2019 - now</span></span>
-          </div>
-          <div class="desc"><b>Machine Learning Research Engineer</b> <br /> Videoanalytics Team</div>
-        </div>
-    </li>
-    
-    <li>
-      
-      <div class="direction-l">
-        
-          <div class="flag-wrapper">
-            <span class="flag">InnoIt</span>
-            <span class="time-wrapper"><span class="time">Feb 2018 - Apr 2019</span></span>
-          </div>
-          <div class="desc"><b>Data Scientist, Consultant</b> <br /> Desigual</div>
-        </div>
-    </li>
-    
-    <li>
-      
-        <div class="direction-r">
-          
-          <div class="flag-wrapper">
-            <span class="flag">Purdue University</span>
-            <span class="time-wrapper"><span class="time">Aug 2017 - June 2017</span></span>
-          </div>
-          <div class="desc"><b>Master in Artificial Intelligence</b> <br /> Purdue Datalab</div>
-        </div>
-    </li>
-    
-    <li>
-      
-        <div class="direction-r">
-          
-          <div class="flag-wrapper">
-            <span class="flag">Polytechnic University of Catalonia</span>
-            <span class="time-wrapper"><span class="time">Sep 2016 - June 2016</span></span>
-          </div>
-          <div class="desc"><b>Master in Artificial Intelligence</b> <br /> </div>
-        </div>
-    </li>
-    
-    <li>
-      
-        <div class="direction-r">
-          
-          <div class="flag-wrapper">
-            <span class="flag">University of Stavanger</span>
-            <span class="time-wrapper"><span class="time">Aug 2015 - June 2016</span></span>
-          </div>
-          <div class="desc"><b>B.Sc. Student (Study Abroad)</b> <br /> Awarded with Erasmus and NILS scholarship</div>
-        </div>
-    </li>
-    
-    <li>
-      
-        <div class="direction-r">
-          
-          <div class="flag-wrapper">
-            <span class="flag">University of A Coruña</span>
-            <span class="time-wrapper"><span class="time">Sep 2011 - June 2016</span></span>
-          </div>
-          <div class="desc"><b>B.Sc. Student</b> <br /> Computer Science</div>
-        </div>
-    </li>
-    
-  </ul>
-</div>
-
-
-<!-- ========== Publications ========== -->
-<div class="docs-section" id="publications">
-  <h4>Publications</h4>
-
-
-  <div class="tab-content">
-    <div class="tab-pane active" id="project-selected">
-      
-      <div class="other-projects">
-        <p class="title"><b>Drone vs. Bird Detection: Deep Learning Algorithms and Results from a Grand Challenge</b></p>
-        <p>Coluccia, Angelo and Fascista, Alessio and Schumann, Arne and Sommer, Lars and Dimou, Anastasios and Zarpalas, Dimitrios and <b>Méndez, Miguel</b> and de la Iglesia, David and González, Iago and Mercier, Jean-Philippe and Gagné, Guillaume and Mitra, Arka and Rajashekar, Shobha</p>
-        <p><i>Sensors: Special Issue Deep Learning Based UAV Detection, Classification, and Tracking</i></p>
-        <p class="description"></p>
-        <div class="other-projects-buttons">
-          
-          <a class="button" href="https://www.mdpi.com/1424-8220/21/8/2824" target="_blank">Paper</a>
-          
-          
-          <a class="button" href="https://github.com/Gradiant/pyodi/" target="_blank">Code</a>
-          
-        </div>
-      </div>
-      
-      <div class="other-projects">
-        <p class="title"><b>Drone-vs-Bird Detection Challenge at IEEE AVSS2019</b></p>
-        <p>A. Coluccia and A. Fascista and A. Schumann and L. Sommer and M. Ghenescu and T. Piatrik and G. De Cubber and M. Nalamati and A. Kapoor and M. Saqib and N. Sharma and M. Blumenstein and V. Magoulianitis and D. Ataloglou and A. Dimou and D. Zarpalas and P. Daras and C. Craye and S. Ardjoune and D. De la Iglesia and <b>M. Méndez</b> and R. Dosil and I. González</p>
-        <p><i>2019 16th IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS)</i></p>
-        <p class="description"></p>
-        <div class="other-projects-buttons">
-          
-          <a class="button" href="https://ieeexplore.ieee.org/abstract/document/8909876" target="_blank">Paper</a>
-          
-          
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</div>
-
-<!-- ========== Other Projects ========== -->
-<div class="docs-section" id="other">
-  <h4>Other projects</h4>
-
-  <div class="tab-content">
-    <div class="tab-pane active" id="project-selected">
-      
-      <div class="other-projects">
-        <p class="title"><b>Feature construction and classification on Time Series</b></p>
-        <p>Master Thesis - Prof. Bruno Ribero - Purdue University</p>
-        <p class="description">Collaborated with Federal Aviation Administration (FAA) in PEGASAS project with the aim of enhance general aviation safety. Developed a model which could classify flights in different categories using data obtained from airborne sensors through an unsupervised learning stage and an active learning procedure. Tools: Python, Scikit-Learn, Pandas, C, OpenMPI, Java <br />Presented in PEGASAS 2017 meeting at Texas A&M University</p>
-        <div class="other-projects-buttons">
-          
-          <a class="button" href="https://github.com/mmeendez8/Pegasas" target="_blank">Code</a>
-          
-        </div>
-      </div>
-      
-      <div class="other-projects">
-        <p class="title"><b>Instrument recognition using Neural Networks</b></p>
-        <p></p>
-        <p class="description">System for musical instruments recognition using NNs with over 10000 audio samples using Fourier Transform and its harmonics to create the input features. Created our own NN library in Python from scratch.</p>
-        <div class="other-projects-buttons">
-          
-          <a class="button" href="https://github.com/mmeendez8/InstrumentRecognition" target="_blank">Code</a>
-          
-        </div>
-      </div>
-      
-      <div class="other-projects">
-        <p class="title"><b>Corruption simulation in Social Netowrks (Twitter)</b></p>
-        <p></p>
-        <p class="description">Analysis using Twitter publics API where we focus in the relations between politicians in the social network. We performed a Monte Carlo simulation of corruption behavior spreading with the aim of observing how corruption flows starting from some seed users that were imprisoned or involved in some case.</p>
-        <div class="other-projects-buttons">
-          
-          <a class="button" href="https://github.com/mmeendez8/CorruptionSimulationTwitter" target="_blank">Code</a>
-          
-        </div>
-      </div>
-      
-      <div class="other-projects">
-        <p class="title"><b>Flight Safe Android App</b></p>
-        <p></p>
-        <p class="description">Guide and developed android app for collecting AHRS data during flights to facilitate the creation of a dataset for future experiments. This app is used by all pilots and students at that flight from Purdue’s airport.</p>
-        <div class="other-projects-buttons">
-          
-          <a class="button" href="https://github.com/mmeendez8/SafeFlight" target="_blank">Code</a>
-          
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</div>
+  <div >
 
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          Miguel Méndez
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='https://github.com/mmeendez8' target="_blank">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://twitter.com/mmeendez8' target="_blank">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://medium.com/@miguelmendez_' target="_blank">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

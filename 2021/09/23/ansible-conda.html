@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Using Ansible and Python to monitor my servers</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="The best way for monitoring your server is through your own code,">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Using Ansible and Python to monitor my servers">
+  
+  
+  <meta name="twitter:description" content="The best way for monitoring your server is through your own code,">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">September 23, 2021 </span>
+      <h1 class="the-post-title">Using Ansible and Python to monitor my servers</h1>
+      <p>Code your own scripts in Python, deploy them using Ansible & Conda and get real time reports from your server</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-c52a5160c.jpg" alt="Using Ansible and Python to monitor my servers" srcset="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-400-1fefb4d77.webp 400w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-600-1fefb4d77.webp 600w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-1fefb4d77.webp 800w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-1000-1fefb4d77.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1177" height="768">
+
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>I have been in charge of my team’s computational servers for about a year. I am far from being an expert in this field and most of the things I know are related to having been using Linux for so many years. I needed to automate some things that were wasting me a lot of time, so I decided that instead of learning and configuring a new monitoring tool, I would use this opportunity to create my own. This may not be the best decision for you, but in my case I had a clear vision of what I needed and the amount of work it would take to do it (and I also wanted to play a little bit with all this stuff).</p>
+
+<p>Anyway, the best advice I can give and the one I learned by heart is: when it comes to a shared infrastructure, better make sure you test everything thoroughly before touching things there or you will end up with a high rate of mail blaming you.</p>
+
+<h2 id="why-ansible">Why Ansible?</h2>
+
+<p>Well, Ansible’s moto is: Ansible is Simple IT Automation. That’s what I was looking for and after checking their documentations I realized that I wouldn’t need much more than 15 minutes to set it up and that’s pretty awesome. I read a few posts such <a href="https://mtyurt.net/post/2020/good-bad-parts-of-ansible-after-two-years.html" target="_blank" rel="noopener noreferrer">this one</a> that basically supported all my initial intuitions. I was also influenced by some of my devops friends who used to say good thing about it. Summarizing:</p>
+
+<h3 id="advantages">Advantages</h3>
+
+<ul>
+  <li>Open source</li>
+  <li>Written in Python!</li>
+  <li>YAML based = Low barrier of entry</li>
+  <li>Agentless = You don’t need to install any other software on the client systems (this is super)</li>
+  <li>Many integrated modules (it hardly takes time to automate classic operations such as user creation, database operations …)</li>
+</ul>
+
+<h3 id="drawbacks">Drawbacks</h3>
+
+<p>In fact, I still didn’t find any drawbacks, although I did seek other people’s opinion, but things like lack of user interface or lack of Windows support don’t really matter to me.</p>
+
+<h2 id="my-python-monitoring-library">My Python monitoring library</h2>
+
+<p>My idea was to create a simple python library that could execute commands and communicate with our internal messaging application <a href="https://rocket.chat/" target="_blank" rel="noopener noreferrer">Rocket.chat</a>. In this way, you could receive private messages when something does not work as expected and also automate tasks such as sending welcome messages on user creation, cleaning system caches, updating packages…</p>
+
+<p>Since we use conda in all our servers, the intention was to automatically create a new environment to install there my monitoring application and all its dependencies. I cannot share this application but it is quite a simple thing, I followed a <a href="https://charlesreid1.github.io/python-patterns-the-registry.html" target="_blank" rel="noopener noreferrer">register pattern</a> since I wanted to be able to sequentially add new functionalities that could get automatically registered in my application. I recommend you to use the <a href="https://github.com/explosion/catalogue" target="_blank" rel="noopener noreferrer">catalogue</a> library from explosion guys. The provide a super simple way to register your functions or classes using a decorator. What I did was to use my library main’s <code class="language-plaintext highlighter-rouge">__init__.py</code> file to declare the register:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">catalogue</span>
+
+<span class="n">SERVICES</span> <span class="o">=</span> <span class="n">catalogue</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"my_services_app"</span><span class="p">,</span> <span class="s">"services"</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>And the simply register my ‘services’ with:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
+<span class="kn">from</span> <span class="nn">my_services_app.services.base</span> <span class="kn">import</span> <span class="n">ServerStatus</span>
+
+
+<span class="o">@</span><span class="n">SERVICES</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"PingService"</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">PingService</span><span class="p">(</span><span class="n">BaseService</span><span class="p">):</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>That’s all, you now would be able to instantiate your <code class="language-plaintext highlighter-rouge">PingService</code> by:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
+<span class="n">service</span> <span class="o">=</span> <span class="n">SERVICES</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"PingService"</span><span class="p">)()</span>
+</code></pre></div></div>
+
+<p>So simple and so powerful! Also note that I have created a <code class="language-plaintext highlighter-rouge">BaseService</code> class, which basically has all the necessary funcionality to send messages to Rocket.chat.</p>
+
+<h2 id="conda--ansible">Conda &amp; Ansible</h2>
+
+<p>I created a super simple playbook that helps to clone the latest version of my code from Github, create a new conda environment if does not exists, install my Python monitoring library and also set up some of those services as cron jobs!</p>
+
+<p>But first we need to create a Github Personal Access Token (PAT) to let ansible to login and clone the source code. You can check the official documentation <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" target="_blank" rel="noopener noreferrer">here</a>. Once we have our token we can encrypt it with ansible add an extra security layer to our deployment. You can simply do something like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"gh_tokeen: [YOUR-TOKEN]"</span> <span class="o">&gt;</span> gh_token.enc
+ansible-vault encrypt gh_token.enc
+</code></pre></div></div>
+
+<p>You should now have a <code class="language-plaintext highlighter-rouge">gh_token.enc</code> encrypted file and Ansible will be in charge of asking you for the password when running the playbook so it can decrypt it. Note that this is very handy since you can place encrypted content under source control and share it more safely.</p>
+
+<p>Let’s now create our Ansible playbook to deploy our monitoring library and also deploy one of our services as a cron tass than runs once hourly:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nn">---</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Create remote services</span>
+  <span class="na">hosts</span><span class="pi">:</span> <span class="s">all</span>
+  <span class="na">vars</span><span class="pi">:</span>
+    <span class="na">conda_path</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">Conda installation path</span><span class="pi">]</span>
+    <span class="na">conda_env</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">Conda environment name</span><span class="pi">]</span>
+    <span class="na">repo_path</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">Path where clone the repo</span><span class="pi">]</span>
+
+  <span class="na">tasks</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Clone and update repo</span>
+    <span class="na">git</span><span class="pi">:</span>
+      <span class="na">repo</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://@github.com/mmeendez8/myrepo.git"</span>
+      <span class="na">dest</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+      <span class="na">clone</span><span class="pi">:</span> <span class="s">yes</span>
+      <span class="na">update</span><span class="pi">:</span> <span class="s">yes</span>
+  
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check conda environment exists</span>
+    <span class="na">command</span><span class="pi">:</span>
+      <span class="na">cmd</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/bin/activate</span><span class="nv"> </span><span class="s">"</span>
+    <span class="na">register</span><span class="pi">:</span> <span class="s">env_output</span>
+    <span class="na">ignore_errors</span><span class="pi">:</span> <span class="s">True</span>
+
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install conda environment if not exists</span>
+    <span class="na">command</span><span class="pi">:</span> 
+      <span class="na">cmd</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/bin/conda</span><span class="nv"> </span><span class="s">env</span><span class="nv"> </span><span class="s">create</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">/conda.yaml"</span>
+    <span class="na">when</span><span class="pi">:</span> <span class="s">env_output.failed == True</span>
+  
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install server_status package</span>
+    <span class="na">shell</span><span class="pi">:</span> 
+      <span class="na">cmd</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/envs//bin</span><span class="nv"> </span><span class="s">setup.py</span><span class="nv"> </span><span class="s">install"</span>
+      <span class="na">chdir</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check status</span>
+    <span class="na">ansible.builtin.cron</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">My</span><span class="nv"> </span><span class="s">Ping</span><span class="nv"> </span><span class="s">Service"</span>
+    <span class="na">special_time</span><span class="pi">:</span> <span class="s">hourly</span>
+    <span class="na">job</span><span class="pi">:</span> <span class="pi">&gt;</span>
+        <span class="s">/envs//bin/server_status --service_name=PingService</span>
+</code></pre></div></div>
+
+<p>This code is basically plain english! There are a few things we can highlight. First, see how we use `` variable inside the github repository url. We need to tell Ansible that this variable is inside our encrypted file so we should run our playbook with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook create_services.yml <span class="nt">-e</span> @gh_token.enc <span class="nt">--ask-vault-pass</span>
+</code></pre></div></div>
+
+<p>Also see how the ‘check conda environmet’ task registers in a variable the return of activate command so the conda installation task runs only when the environment does not exist.
+You can execute this playbook as many times as you want since Ansible is pretty smart and will not create new cron tasks, it will identify this one was already created and update its values if necessary!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>There is a very simple way to create and deploy Python code on your computational servers without spending effort and time in complex configurations. We have learned to:</p>
+
+<ul>
+  <li>
+    <p>Setup Ansible to deploy our library in all our servers</p>
+  </li>
+  <li>
+    <p>Use conda to encapsulate our library dependencies</p>
+  </li>
+  <li>
+    <p>Add a pattern registry to dinamically add modules to our Python library</p>
+  </li>
+  <li>
+    <p>Hide our secrets with Ansible built-in encription</p>
+  </li>
+  <li>
+    <p>Set cron jobs that will run automatically</p>
+  </li>
+</ul>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
+
+  
+</div>
+
+
+  <div >
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+</html>

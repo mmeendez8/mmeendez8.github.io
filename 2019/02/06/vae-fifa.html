@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 
 <head>
 
@@ -16,47 +16,25 @@
   
 
   
-  <meta name="image" property="og:image" content="/assets/posts/2019-02-06-vae-fifa/thumbnail.webp">
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail.jpg">
   
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
-  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
   <link rel="stylesheet" href=/libs/custom/my_css.css>
-  <link rel="stylesheet" href=/libs/custom/syntax.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- JQuery
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src=/libs/external/jquery-3.1.1.min.js></script>
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
-  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
-
-  <!-- Timeline
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/timeline.css>
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
-  <script src=/libs/custom/my_js.js></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -64,15 +42,14 @@
   <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
 
   <!-- Google Analytics -->
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-133014227-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
@@ -85,128 +62,90 @@
 
   
   <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2019-02-06-vae-fifa/thumbnail.webp">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail.jpg">
   
 
   <!-- end of Twitter cards -->
   
 
+  <!-- Mathjax -->
+  
 </head>
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="/"><img class="u-max-full-width"
-              src='/assets/profile-pics/main_circle.webp'></a>
-        </div>
-        <div class="nine columns main-description">
-          <h1>Miguel Méndez</h1>
-          <div class="subtitle">
-            <p>Machine Learning Research Engineer, Gradiant</p>
-            <p>miguelmndez [AT] gmail.com</p>
-            <p class="social">
-              <a href='https://github.com/mmeendez8' target="_blank">
-                <i class="icon-github-circled" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-                <i class="icon-linkedin-squared" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://twitter.com/mmeendez8' target="_blank">
-                <i class="icon-twitter-squared2" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://medium.com/@miguelmendez_' target="_blank">
-                <i class="icon-medium" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-                <i class="icon-stackoverflow" aria-hidden="true"></i>
-              </a>
-            </p>
-          </div>
-        </div>
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
       </div>
-    </section>
+    </div>
+</header>
 
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href=/index.html#news>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#posts>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#resume>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#publications>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#other>Other</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="docs-section post-image">
-
-  
-  <div class="title-subtitle">
-    <h3>Generating FIFA 19 players with VAEs and Tensorflow</h3>
-    <h5>Learn to generate your own footbal players</h5>
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">February 06, 2019 </span>
+      <h1 class="the-post-title">Generating FIFA 19 players with VAEs and Tensorflow</h1>
+      <p>Learn to generate your own footbal players</p>
+    </div>
   </div>
-  
-  
-  <div>
-    <img src="/assets/posts/2019-02-06-vae-fifa/thumbnail.webp" alt=""/>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-cf9d327a3.jpg" alt="Generating FIFA 19 players with VAEs and Tensorflow" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-400-3989e34a2.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-600-3989e34a2.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-3989e34a2.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-1000-3989e34a2.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1280" height="720">
+
   </div>
-  
+</div>
+
+<div class="container the-post-content">
 
   <p>This is my third post dealing with Variational Autoencoders. If you want to catch up with the math I recommend you to check my first post. If you prefer to skip that part and go directly to some simple experiments with VAEs then move to my second post, where I showed how useful these networks can be. If you just want to see how a neural network can create fake faces of football players then you are in the right place! Just keep reading!</p>
 
 <p>I must admit that I would like to dedicate this post…</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/0*4xBerr9GTrKG0k75.jpg" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/fifa-600-e083c946b.jpg" alt="Fifa Meme" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/fifa-400-7f328c6a4.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/fifa-600-7f328c6a4.webp 600w" sizes="(max-width: 767px) 100vw, 80vw" width="600" height="400" />
 
-<p><em>Note: All code in here can be found on my <a href="https://github.com/mmeendez8">Github</a> account</em></p>
+</div>
 
-<h3 id="1-introduction">1. Introduction</h3>
+<p><em>Note: All code in here can be found on my <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a> account</em></p>
+
+<h2 id="1-introduction">1. Introduction</h2>
 
 <p>I spent a few hours thinking about which dataset could I use to apply all the knowledge and lines of code I acquire learning about VAEs.</p>
 
-<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
+<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f" target="_blank" rel="noopener noreferrer">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
 
 <p>Finally I found a dataset that fitted all my requirements and at the same time was interesting and funny for me, so I could not resist.</p>
 
-<h3 id="2-data-collection">2. Data Collection</h3>
+<h2 id="2-data-collection">2. Data Collection</h2>
 
-<p>The dataset I found was upload to Kaggle (more <a href="https://www.kaggle.com/karangadiya/fifa19">here</a>). It consists on detailed attributes for every player registered in the latest edition of FIFA 19 database. I downloaded the csv file and open a Jupyter notebook to have a look at it.</p>
+<p>The dataset I found was upload to Kaggle (more <a href="https://www.kaggle.com/karangadiya/fifa19" target="_blank" rel="noopener noreferrer">here</a>). It consists on detailed attributes for every player registered in the latest edition of FIFA 19 database. I downloaded the csv file and open a Jupyter notebook to have a look at it.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*qqMNpYth27mUJz4ulyJQpA.png" alt="Sample from csv file" />
-<em>Sample from csv file</em></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/dataset-800-5ae50b26a.jpg" alt="Dataset table caption" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/dataset-400-690177d33.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/dataset-600-690177d33.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/dataset-800-690177d33.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/dataset-886-690177d33.webp 886w" sizes="(max-width: 767px) 100vw, 80vw" width="886" height="238" />
+
+</div>
 
 <p>This file contains URLs to the images of each football player. I started by downloading a couple of images to see if links were working well and to check if image sizes were constant. I got good news, links were fine and images seem to be PNG files of 48x48 pixels with 4 different channels (Red, Green, Blue, Alpha).</p>
 
-<p>After this I coded a Python script that could download as fast as possible this dataset. For this <strong>I used threads to avoid our CPU to be idle</strong> waiting for the IO tasks. You can find the script on <a href="https://github.com/mmeendez8/Fifa/blob/master/downloader.py">Github</a> or <strong>implement it by yourself</strong>.</p>
+<p>After this I coded a Python script that could download as fast as possible this dataset. For this <strong>I used threads to avoid our CPU to be idle</strong> waiting for the IO tasks. You can find the script on <a href="https://github.com/mmeendez8/Fifa/blob/master/downloader.py" target="_blank" rel="noopener noreferrer">Github</a> or <strong>implement it by yourself</strong>.</p>
 
 <p>I was able to collect a <strong>total of 15216 different images</strong> since some of the URLs in the csv file were not valid.</p>
 
-<h3 id="3-data-processing">3. Data Processing</h3>
+<h2 id="3-data-processing">3. Data Processing</h2>
 
 <p>Yeah! I was able to download our images in a fast way but… when I plotted these images I got the following results:</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*a79H-6aOrWS2OitftEnjGw.png" alt="" /> 
-<img src="https://cdn-images-1.medium.com/max/2000/1*rcHUjgC8uJLEefIBOz0QXA.png" alt="Downloaded images" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/download_results-432-076da4930.jpg" alt="Dataset table caption" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/download_results-400-9aadb08d5.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/download_results-432-9aadb08d5.webp 432w" sizes="(max-width: 767px) 100vw, 80vw" width="432" height="288" />
 
-<p style="text-align: center;"><em>Downloaded images</em></p>
+</div>
 
 <p>I deduced that someone had applied some preprocessing technique to the edges between the player and the background. So I had to revert this process.</p>
 
@@ -214,13 +153,16 @@
 
 <p>In the Jupyter notebook you can see how I elaborated this method. I basically used the alpha channel (as a boolean mask) and I convert it to a binary image using a certain threshold. After this step I filtered all the pixels in the image that were not present in the mask. This can be easily done in a few lines of code and results are really great! I encourage you to check the notebook since is the easiest way to understand it.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*RfMAnXBo3fs-tn2fXV71lQ.png" alt="" /><img src="https://cdn-images-1.medium.com/max/2000/1*BGKp7AMpM6cX31IAVfUYIQ.png" alt="" /><img src="https://cdn-images-1.medium.com/max/2000/1*JQhWpY-MHWSte1fk3PgHUw.png" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/alpha-482-af3f21f4b.jpg" alt="Alpha channel results" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/alpha-400-dbf44b64c.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/alpha-482-dbf44b64c.webp 482w" sizes="(max-width: 767px) 100vw, 80vw" width="482" height="239" />
+
+</div>
 
 <p>In Tensorflow you can create a simple function that takes a RGBA image as input and returns the reconstructed one (without the alpha channel).</p>
 
 <script src="https://gist.github.com/mmeendez8/874ea37859b7b93e22ba95dd787335b2.js" charset="utf-8"></script>
 
-<p>In here I convert the alpha channel into a 48x48 boolean matrix. After this I convert the matrix to *uint8 *and I add a third dimension to the data so I can apply a wise multiplication with all the channels of the original image. This multiplication will set to zero all those pixels that have a zero value in the mask and I return only the RGB channels. Isn’t it easy?</p>
+<p>In here I convert the alpha channel into a 48x48 boolean matrix. After this I convert the matrix to <em>uint8</em> and I add a third dimension to the data so I can apply a wise multiplication with all the channels of the original image. This multiplication will set to zero all those pixels that have a zero value in the mask and I return only the RGB channels. Isn’t it easy?</p>
 
 <h2 id="3-data-pipe">3. Data Pipe</h2>
 
@@ -248,86 +190,108 @@
 
 <script src="https://gist.github.com/mmeendez8/44712f11376486c2d8feb8c4c63b5493.js" charset="utf-8"></script>
 
-<h3 id="4-define-the-network">4. Define the network</h3>
+<h2 id="4-define-the-network">4. Define the network</h2>
 
-<p>In my <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
+<p>In my <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f" target="_blank" rel="noopener noreferrer">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
 
-<p>So now, I have created a new class which will allow me to create the network in a very simple and intuitive manner. I must thank to <a href="https://danijar.com/structuring-your-tensorflow-models/">this amazing post</a> from <a href="https://danijar.com/">Danijar Hafner</a> where I found a way to combine decorators with Tensorflow’s Graph intuition. I won’t explain this code in here, otherwise the post would be too long but feel free to ask below about anything you want.</p>
+<p>So now, I have created a new class which will allow me to create the network in a very simple and intuitive manner. I must thank to <a href="https://danijar.com/structuring-your-tensorflow-models/" target="_blank" rel="noopener noreferrer">this amazing post</a> from <a href="https://danijar.com/" target="_blank" rel="noopener noreferrer">Danijar Hafner</a> where I found a way to combine decorators with Tensorflow’s Graph intuition. I won’t explain this code in here, otherwise the post would be too long but feel free to ask below about anything you want.</p>
 
 <p>The main advantage of using this decorator is that ensures that all nodes of the model are only created once in our Tensorflow graph (and we save a lot of lines of code).</p>
 
 <script src="https://gist.github.com/mmeendez8/257c469341d1fe3b920a4bc15b601981.js" charset="utf-8"></script>
 
-<h3 id="5-put-the-pieces-together">5. Put the pieces together</h3>
+<h2 id="5-put-the-pieces-together">5. Put the pieces together</h2>
 
 <p>The program will read data from a list of filenames which I locate into a placeholder, since I want to be able to feed it with new data in a near future (after training) to evaluate its performance.</p>
 
 <script src="https://gist.github.com/mmeendez8/3b6bb54507b77cde55bf84031168795f.js" charset="utf-8"></script>
 
-<p>As you can see above, the network class constructor receives the <em>input batch</em> tensor, an iterator that moves through our bank of images. Also, <em>filenames *variable</em> <em>corresponds with the previously mentioned placeholder. It has a default value returned by the *get_files *function which simply lists all filenames that are contained in the directory *data_path.</em></p>
+<p>As you can see above, the network class constructor receives the <em>input batch</em> tensor, an iterator that moves through our bank of images. Also, <code class="language-plaintext highlighter-rouge">filenames</code> variable corresponds with the previously mentioned placeholder. It has a default value returned by the <code class="language-plaintext highlighter-rouge">get_files</code> function which simply lists all filenames that are contained in the directory <code class="language-plaintext highlighter-rouge">data_path</code>.</p>
 
 <p>How does this look in TensorBoard? Pretty cool!</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*9C_-T1qQ9ej5w58pjgFBbw.png" alt="Graph structure (TensorBoard)" /></p>
-<p style="text-align: center;"><em>Graph structure (TensorBoard)</em></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/graph-630-968bfb298.jpg" alt="Tensorboard graph view" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/graph-400-479ada6f9.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/graph-600-479ada6f9.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/graph-630-479ada6f9.webp 630w" sizes="(max-width: 767px) 100vw, 80vw" width="630" height="732" />
 
-<p>The save block, it’s created to save the network state (weights, biases) and the graph structure (see <a href="https://github.com/mmeendez8/Fifa">GitHub</a> for more)</p>
+</div>
 
-<h3 id="5-experiments">5. Experiments</h3>
+<p>The save block, it’s created to save the network state (weights, biases) and the graph structure (see <a href="https://github.com/mmeendez8/Fifa" target="_blank" rel="noopener noreferrer">GitHub</a> for more)</p>
+
+<h2 id="5-experiments">5. Experiments</h2>
 
 <p>The training phase is computationally expensive and I am working on my personal laptop so I could not get very far with the number of epochs. I encourage the readers who have more resources to try new experiments with longer workouts and to share their results.</p>
 
-<h4 id="2d-latent-space">2D Latent Space</h4>
+<h3 id="2d-latent-space">2D Latent Space</h3>
 
-<p>One of the coolest things with VAEs, is that if you reduce the latent space to just two dimensions, you will be able to deal with data in a 2 dimensional space. So you move your data from a 48x48x3 dimensional space to just 2! This allows you to get visual insights about how is the model distributing the data around the space. I did this for a total of 500 epochs and I force the net to return both input images and the reconstructed ones, in order to see, if the network was able to reconstruct the original inputs.</p>
+<p>One of the coolest things with VAEs, is that if you reduce the latent space to just two dimensions, you will be able to deal with data in a 2 dimensional space. So you move your data from a <code class="language-plaintext highlighter-rouge">48x48x3</code> dimensional space to just 2! This allows you to get visual insights about how is the model distributing the data around the space. I did this for a total of 500 epochs and I force the net to return both input images and the reconstructed ones, in order to see, if the network was able to reconstruct the original inputs.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*BfqHoDNPUvbjjXRSgNotcw.png" alt="" />
-<img src="https://cdn-images-1.medium.com/max/2000/1*tjKY6ko7p5_r-BNWAy8A1A.png" alt="" />
-<img src="https://cdn-images-1.medium.com/max/2000/1*wq2N6TeCk-rpowsSwzt0Lg.png" alt="Reconstruction at epochs 2, 150 and 500 (left to right)" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_2-640-89056469a.jpg" alt="Reconstruction at epoch 2" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_2-400-e65a0555b.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_2-600-e65a0555b.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_2-640-e65a0555b.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
 
-<p style="text-align: center;"><em>Reconstruction at epochs 2, 150 and 500 (left to right)</em></p>
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_150-640-067639042.jpg" alt="Reconstruction at epoch 150" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_150-400-a01db1504.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_150-600-a01db1504.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_150-640-a01db1504.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_500-640-9a015180d.jpg" alt="Reconstruction at epoch 500" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_500-400-0c4ee979e.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_500-600-0c4ee979e.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_500-640-0c4ee979e.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+
+</div>
+<p style="text-align: center;"><em>Reconstruction at epochs 2, 150 and 500 (top to bottom)</em></p>
 
 <p>As we can see, at epoch 2, the reconstructed images are almost all the same. It seems the networks learns the pattern of a ‘general’ face and it simply modifies its skin color. At epoch 150 we can see greater differences, the reconstruction is better but still far from reality, though we start to see different hair styles. At epoch 500, the reconstruction did not succeed, but it learn to differentiate the most general aspects of each face and also some expressions.</p>
 
 <p>Why are these results so poor compared with our previous work with MNIST datasets? Well, our model is too simple. We are not able to encode all the information in a 2 dimensional space, so a lot of it is being lost.</p>
 
-<p>But we still can have a look to our **2 dimensional grid space **and force the network to create some fake players for us! Let’s have a look below:</p>
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*MqjnuvwdBL0hc7z0gUDJGA.png" alt="Football players face distribution in two dimensional space" /><em>Football players face distribution in two dimensional space</em></p>
+<p>But we still can have a look to our <strong>2 dimensional grid space</strong> and force the network to create some fake players for us! Let’s have a look below:</p>
 
-<p>This is what we got! Interesting result… but we already knew this was going to happen isn’t it?. The network is too simple, so this ‘standard faces’ that we see are made of similar football players profiles. This means that our encoder is doing a good job, placing similar faces in close regions in the space BUT the decoder is not able to reconstruct a 48x48x3 image from just 2 points (which is, in fact, a super hard task). This is why the decoder is always outputting similar countenances.</p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/face_distribution-800-8154ca5fa.jpg" alt="Football players face distribution in two dimensional space" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/face_distribution-400-1dcc888a0.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/face_distribution-600-1dcc888a0.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/face_distribution-800-1dcc888a0.webp 800w" sizes="(max-width: 767px) 100vw, 80vw" width="800" height="800" />
+
+</div>
+
+<p>This is what we got! Interesting result… but we already knew this was going to happen isn’t it?. The network is too simple, so this ‘standard faces’ that we see are made of similar football players profiles. This means that our encoder is doing a good job, placing similar faces in close regions in the space BUT the decoder is not able to reconstruct a <code class="language-plaintext highlighter-rouge">48x48x3</code> image from just 2 points (which is, in fact, a super hard task). This is why the decoder is always outputting similar countenances.</p>
 
 <p>What could we do? Well, we can increase the complexity of our model and add some extra dimensions to our latent space!</p>
 
-<h4 id="15d-latent-space">15D Latent Space</h4>
+<h3 id="15d-latent-space">15D Latent Space</h3>
 
 <p>Let’s repeat the training with a total 15 dimensions in our latent space and check how our face reconstructions are evolving with the training. For this I have trained the network during 1000 epochs.</p>
 
-<p>I discovered <a href="https://www.floydhub.com">Floydhub</a> a Deep Learning platform that allows me to use their GPUs for free (during 2 hours). This fact, allowed me to perform this long training phase. I really recommend to try Floydhub, since it is really easy to deploy your code and run your training there.</p>
+<p>I discovered <a href="https://www.floydhub.com" target="_blank" rel="noopener noreferrer">Floydhub</a> a Deep Learning platform that allows me to use their GPUs for free (during 2 hours). This fact, allowed me to perform this long training phase. I really recommend to try Floydhub, since it is really easy to deploy your code and run your training there.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*91bs-t90abbEHQwVLXAd3A.png" alt="" />
-<img src="https://cdn-images-1.medium.com/max/2000/1*T9WpZl_dJg4CDJqvzJ3Baw.png" alt="" />
-<img src="https://cdn-images-1.medium.com/max/2000/1*9lHNkYvZTQJu6b8pjy5Paw.png" alt="" />
-<img src="https://cdn-images-1.medium.com/max/2000/1*oYVwzzxmZQWHVAixfMfKeQ.png" alt="Reconstruction at epochs 150, 500, 750, 1000 (left to right and up down)" /></p>
+<p><em>Update: FloydHub was shutdown at 5:00pm Pacific Time on Friday, August 20, 2021.</em></p>
 
-<p style="text-align: center;"><em>Reconstruction at epochs 150, 500, 750, 1000 (left to right and up down)</em></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_150-640-cf0781c6a.jpg" alt="Reconstruction at epoch 150" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_150-400-1ac675008.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_150-600-1ac675008.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_150-640-1ac675008.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_1000-640-6455bfda7.jpg" alt="Reconstruction at epoch 1000" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_1000-400-cd77e160e.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_1000-600-cd77e160e.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/rec_1000-640-cd77e160e.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+
+</div>
+<p style="text-align: center;"><em>Reconstruction at epochs 150 and 1000</em></p>
 
 <p>It seems our network is doing a better job now! The reconstructions have improved and they really look like the original input. Let’s note the jersey colors, the haircuts and the face positions! But is this good enough? Can you guess the original input from these reconstructions?</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*Xp_3-VkhdN2bqeFrZ-Y3jA.png" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/jersey-colors-640-528382e9b.jpg" alt="Player reconstruction visualization" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/jersey-colors-400-f82e741fc.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/jersey-colors-600-f82e741fc.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/jersey-colors-640-f82e741fc.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="140" />
 
-<p>Well, it’s pretty hard to imagine the original input for these reconstructed faces… From left to right these are Messi, Ronaldo, Neymar, De Gea and De Bruyne. A** longer training** or another <strong>complexity increasement</strong> would produce better results so I encourage you to get my code on Github and give it a try!</p>
+</div>
 
-<h4 id="interpolate-points">Interpolate points</h4>
+<p>Well, it’s pretty hard to imagine the original input for these reconstructed faces… From left to right these are Messi, Ronaldo, Neymar, De Gea and De Bruyne. A <strong>longer training</strong> or another <strong>complexity increasement</strong> would produce better results so I encourage you to get my code on Github and give it a try!</p>
+
+<h3 id="interpolate-points">Interpolate points</h3>
 
 <p>We know that our encoder will place each image in a specific point of our 15 dimensional space. So if get two images we will have two different points in that latent space. We can apply a linear interpolation between them, in order to extract other points.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3358/1*5zx0GtXBe9h67AO_ZFCw0w.png" alt="Modric — Kante transformation" /><em>Modric — Kante transformation</em></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/modric_kante-800-40a2f8bfc.jpg" alt="Modric - Kante transformation" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/modric_kante-400-d25edb7e2.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/modric_kante-600-d25edb7e2.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/modric_kante-800-d25edb7e2.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/modric_kante-1000-d25edb7e2.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1679" height="321" />
+
+</div>
 
 <p>This is the result when we get Modric and Kante’s latent vector and we interpolate a total of 5 points between them. We can observe how moving around our latent space make us obtain different facial features. You can try as many combinations as you want!</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3358/1*HmM42jVImDW2OiFoex2Axg.png" alt="Marcelo — Ramos transformation" /><em>Marcelo — Ramos transformation</em></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/marcelo_ramos-800-c5387b1b4.jpg" alt="Marcelo - Ramos transformation" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/marcelo_ramos-400-45273331f.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/marcelo_ramos-600-45273331f.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/marcelo_ramos-800-45273331f.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/marcelo_ramos-1000-45273331f.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1679" height="321" />
 
-<h4 id="average-player-by-country">Average player by country</h4>
+</div>
+
+<h3 id="average-player-by-country">Average player by country</h3>
 
 <p>If you are used to work with machine learning, you have heard about unsupervised learning and the importance of centroids on this field. A centroid can be defined as the mean point of all those that belong to the same cluster or set.</p>
 
@@ -335,52 +299,57 @@
 
 <p>You can observe the most common attributes for each country collected in a single image.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/3350/1*81LDkhE9VaOZ31H3n-_FHA.png" alt="Centroid fake player for each country" /><em>Centroid fake player for each country</em></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/countries-800-a620806b2.jpg" alt="Country centroid visualization" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/countries-400-873b9b922.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/countries-600-873b9b922.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/countries-800-873b9b922.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/countries-1000-873b9b922.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1675" height="267" />
 
-<h3 id="conclusion">Conclusion</h3>
+</div>
+
+<h2 id="conclusion">Conclusion</h2>
 
 <p>In this post we have learnt how to apply VAEs to a real dataset of colored images. I have shown how to preprocess the data and how to create our network in a structured way. The experiments I have collected are just a reduced set of the huge amount of possibilities that one can obtain after dealing with image embeddings (our latent space vectors).</p>
 
 <p>I would like to encourage you to try the code, create new experiments, use different dimensional spaces or longer trainings!</p>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8">Twitter</a> or <a href="https://github.com/mmeendez8">Github</a></em></p>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-
+  
 </div>
 
+
+  <div >
+
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          Miguel Méndez
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='https://github.com/mmeendez8' target="_blank">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://twitter.com/mmeendez8' target="_blank">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://medium.com/@miguelmendez_' target="_blank">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

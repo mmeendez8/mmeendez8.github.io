@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 
 <head>
 
@@ -16,47 +16,25 @@
   
 
   
-  <meta name="image" property="og:image" content="/assets/posts/2019-01-19-vae-theory/thumbnail.webp">
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail.jpg">
   
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
-  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
   <link rel="stylesheet" href=/libs/custom/my_css.css>
-  <link rel="stylesheet" href=/libs/custom/syntax.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- JQuery
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src=/libs/external/jquery-3.1.1.min.js></script>
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
-  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
-
-  <!-- Timeline
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/timeline.css>
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
-  <script src=/libs/custom/my_js.js></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -64,15 +42,14 @@
   <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
 
   <!-- Google Analytics -->
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-133014227-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
@@ -85,169 +62,154 @@
 
   
   <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2019-01-19-vae-theory/thumbnail.webp">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail.jpg">
   
 
   <!-- end of Twitter cards -->
   
 
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
 </head>
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="/"><img class="u-max-full-width"
-              src='/assets/profile-pics/main_circle.webp'></a>
-        </div>
-        <div class="nine columns main-description">
-          <h1>Miguel Méndez</h1>
-          <div class="subtitle">
-            <p>Machine Learning Research Engineer, Gradiant</p>
-            <p>miguelmndez [AT] gmail.com</p>
-            <p class="social">
-              <a href='https://github.com/mmeendez8' target="_blank">
-                <i class="icon-github-circled" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-                <i class="icon-linkedin-squared" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://twitter.com/mmeendez8' target="_blank">
-                <i class="icon-twitter-squared2" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://medium.com/@miguelmendez_' target="_blank">
-                <i class="icon-medium" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-                <i class="icon-stackoverflow" aria-hidden="true"></i>
-              </a>
-            </p>
-          </div>
-        </div>
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
       </div>
-    </section>
+    </div>
+</header>
 
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href=/index.html#news>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#posts>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#resume>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#publications>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#other>Other</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="docs-section post-image">
-
-  
-  <div class="title-subtitle">
-    <h3>The theory behind Variational Autoencoders</h3>
-    <h5>Learn the math</h5>
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">January 19, 2019 </span>
+      <h1 class="the-post-title">The theory behind Variational Autoencoders</h1>
+      <p>Learn the math</p>
+    </div>
   </div>
-  
-  
-  <div>
-    <img src="/assets/posts/2019-01-19-vae-theory/thumbnail.webp" alt=""/>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="The theory behind Variational Autoencoders" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-400-b3e614e1f.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-600-b3e614e1f.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1000-b3e614e1f.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="2002" height="1497">
+
   </div>
-  
+</div>
+
+<div class="container the-post-content">
 
   <p>Generative models are one of the cooler branches of Deep Learning. During last weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of post I will try to transmit and also to provide useful resources which I have found and I feel in the need of transmit!</p>
 
-<p>You can also find this post in <a href="https://medium.com/@miguelmendez_/vaes-i-generating-images-with-tensorflow-f81b2f1c63b0">Medium</a></p>
+<h2 id="what-are-vaes">What are VAEs?</h2>
 
-<h3 id="what-are-vaes">What are VAEs?</h3>
-
-<p>Variational Autoencoders are after all a neural network. They consist of two main pieces, an encoder and a decoder. The first of them is a neural network which task is to convert an input datapoint <em>x</em> to a hidden or latent representation z, with the characteristic that this encoding has a lower number of dimensions than the original output. So, the encoder works as a compressor, that ‘summarizes’ the data into a lower dimensional space.</p>
+<p>Variational Autoencoders are after all a neural network. They consist of two main pieces, an encoder and a decoder. The first of them is a neural network which task is to convert an input datapoint \(x\) to a hidden or latent representation \(z\), with the characteristic that this encoding has a lower number of dimensions than the original output. So, the encoder works as a compressor, that ‘summarizes’ the data into a lower dimensional space.</p>
 
 <p>The decoder is also neural network. It’s input will be in the same dimensional space than the encoder’s output and its function consists on bringing the data back to the original probability distribution. This is, output an image as the ones we have in our dataset.</p>
 
-<p>So during training, the encoder ‘encodes’ the images into the latent space (information is lost due to lower dimensionality), after this the decoder tries to recover the original input. The commited error is for sure **backpropagated **through the whole network and the this improves its ability to reconstruct the original inputs.</p>
+<p>So during training, the encoder ‘encodes’ the images into the latent space (information is lost due to lower dimensionality), after this the decoder tries to recover the original input. The commited error is for sure <strong>backpropagated</strong> through the whole network and the this improves its ability to reconstruct the original inputs.</p>
 
 <p>But wait… wasn’t this a <strong>generative</strong> model? Yes! The encoder is in fact fitting a probability distribution to our data! The lower dimensional space is stochastic (usually modeled with a Gaussian probability density), so once our training has converged to an stable solution, we can sample from this distribution an create new unseen samples!!</p>
 
-<p>If you still not impressed think about this example think about this simplification of the problem. We collect all articles that have been published in New York Times during last year and we force ourselves to summarize them but with the following restriction: we can only use one hundred words from English vocabulary. For this task we will need to select this set of words carefully to minimize the loss of information. When we have succeed at this task, we might be able to reconstruct the original article from the words we see. But also, we can select a random number of words (from the 100 sample set) and create a new ‘’fake’ article!</p>
+<p>If you are not impressed yet, think about this simplification of the problem. Imagine we collect all articles that have been published in New York Times during last year and we force ourselves to summarize them but with the following restriction: we can only use one hundred words from English vocabulary. For this task we will need to select this set of words carefully to minimize the loss of information. When we have succeed at this task, we might be able to reconstruct the original article from the words we see. But also, we can select a random number of words (from the 100 sample set) and create a new ‘fake’ article!</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*dorUno1NL7A9o4u8usbC3A.jpeg" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-410396935.jpg" alt="Fake news image" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-400-0d7a34b13.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-600-0d7a34b13.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-0d7a34b13.webp 624w" sizes="(max-width: 767px) 100vw, 80vw" width="624" height="351" />
+
+</div>
 
 <p>We will then act as encoders, transforming the articles into a reduced 100 words space. The decoder task will be based on recovering as much as possible of the original article!</p>
 
-<h3 id="the-math">The math</h3>
+<h2 id="the-math">The math</h2>
 
 <p>My idea here is to stick just with those parts that were more difficult to understand for me and that might help another person in the same situation! I will cover the intuition behind the algorithm and the most important parts that one needs to understand before implementing this network on on Tensorflow.</p>
 
-<p>There are two main resources I have used where you can find a whole explanation of VAEs algorithm. These are <a href="https://arxiv.org/pdf/1606.05908.pdf">Doersch article</a> and <a href="https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field">Jaan Altosaar blog post</a>.</p>
+<p>There are two main resources I have used where you can find a whole explanation of VAEs algorithm. These are <a href="https://arxiv.org/pdf/1606.05908.pdf" target="_blank" rel="noopener noreferrer">Doersch article</a> and <a href="https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field" target="_blank" rel="noopener noreferrer">Jaan Altosaar blog post</a>.</p>
 
-<p>The variational autoencoder can be represented as a <strong>graphical model.</strong> Where the joint probability can be expressed as <em>p(x, z) = p(x|z) p(z). *So latent variables (the lower representation) and data points can be sampled from *p(z)</em> and <em>p(x|z)</em> respectively.</p>
+<p>The variational autoencoder can be represented as a <strong>graphical model.</strong> Where the joint probability can be expressed as \(p(x, z) = p(x\|z) p(z)\). So latent variables (the lower representation) and data points can be sampled from \(p(z)\) and \(p(x\|z)\) respectively.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/0*FQhrThokEvkpi2DP.png" alt="Graphical model representation obtained from Jaan’s blog ([https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field))" /></p>
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/0*FQhrThokEvkpi2DP.png" alt="Graphical model representation obtained from Jaan’s blog ([https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field){:target=&quot;_blank&quot;}{:rel=&quot;noopener noreferrer&quot;})" /></p>
 
-<p style="text-align: center;"><em>Graphical model representation obtained from <a href="https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field">Jaan’s blog</a></em></p>
+<p style="text-align: center;"><em>Graphical model representation obtained from <a href="https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field" target="_blank" rel="noopener noreferrer">Jaan’s blog</a></em></p>
 
-<p>What we in fact want, is to find good values for the latent variables given our dataset, which is known as the posterior <em>p(z|x)</em>. We can use Bayes rule to calculate this value by: <em>p(z|x) = p(x|z)p(z) / p(x)</em>. Nevertheless <em>p(x)</em> cannot be efficiently computed since it has to be evaluated over all possible <em>z (z can be any distribution!!)</em>. So here is where things get interesting. VAEs assume that samples of <em>z</em> can drawn from a simple distribution. We can then approximate the posterior using only a family of distributions. But why does this strong approximation can work? Well, in own Doersch words:</p>
+<p>What we in fact want, is to find good values for the latent variables given our dataset, which is known as the posterior \(p(z\|x)\). We can use Bayes rule to calculate this value by: \(p(z\|x) = p(x\|z)p(z) / p(x)\). Nevertheless \(p(x)\) cannot be efficiently computed since it has to be evaluated over all possible \(z\) (\(z\) can be any distribution!!). So here is where things get interesting. VAEs assume that samples of \(z\) can drawn from a simple distribution. We can then approximate the posterior using only a family of distributions. But why does this strong approximation can work? Well, in own Doersch words:</p>
 <blockquote>
   <p>“<em>The key is to notice that any distribution in d dimensions can be generated by taking a set of d variables that are normally distributed and mapping them through a sufficiently complicated function</em>”</p>
 </blockquote>
 
 <p>Which I would express in another way as: do not worry, it is a simplification but the <strong>neural network will take care of it</strong>!</p>
 
-<p>The family of distributions can be expressed as <em>q</em>​_<em>λ</em>​​(<em>z</em>∣<em>x</em>). The λ term refers to a specific family, if we are working with <strong>Gaussians,</strong> then <em>λ *will</em> *correspond with the mean and variance of the latent variables <strong>for each datapoint</strong>.</p>
+<p>The family of distributions can be expressed as \(q​_λ​​(z∣x)\). The \(λ\) term refers to a specific family, if we are working with <strong>Gaussians</strong>, then \(λ\) will Zcorrespond with the mean and variance of the latent variables <strong>for each datapoint</strong>.</p>
 
-<p>So we use* q(z|x)* to approximate <em>p(z|x).</em> We can use <a href="https://www.youtube.com/watch?v=xmvxXXZUXdk">Kullback-Leibler</a> divergence to measure how well are we approximating p.</p>
+<p>So we use \(q(z\|x)\) to approximate \(p(z\|x)\). We can use <a href="https://www.youtube.com/watch?v=xmvxXXZUXdk" target="_blank" rel="noopener noreferrer">Kullback-Leibler</a> divergence to measure how well are we approximating p.</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*sby4pZqsBjsfJc6NhCNewA.png" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-5d6bb6d30.jpg" alt="KL divergence formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-400-388f4102b.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-388f4102b.webp 450w" sizes="(max-width: 767px) 100vw, 80vw" width="450" height="107" />
 
-<p>We need to minimize this divergence but, once again, we find the intractable term* log p(x)*. Nevertheless we can rewrite this into an intuitive way. Let’s define the Evidence Lower BOund function (<strong>ELBO</strong>) as:</p>
+</div>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*4RFgwB-Id8XQhMHcp8q_FQ.png" alt="" /></p>
+<p>We need to minimize this divergence but, once again, we find the intractable term \(\log p(x)\). Nevertheless we can rewrite this into an intuitive way. Let’s define the Evidence Lower BOund function (<strong>ELBO</strong>) as:</p>
 
-<p>This functions is a lower bound on the evidence, this means that if we maximize it, we will increase the probability of observing the data (<a href="http://edwardlib.org/tutorials/klqp">more here</a>). If we mix the two previous equations we will get:</p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-3798e4a84.jpg" alt="ELBO formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-400-5a455e3a8.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-5a455e3a8.webp 462w" sizes="(max-width: 767px) 100vw, 80vw" width="462" height="35" />
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*vn9tOG9xDyKlEzQeGFlbdQ.png" alt="" /></p>
+</div>
+
+<p>This functions is a lower bound on the evidence, this means that if we maximize it, we will increase the probability of observing the data (<a href="http://edwardlib.org/tutorials/klqp" target="_blank" rel="noopener noreferrer">more here</a>). If we mix the two previous equations we will get:</p>
+
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-7aa21b89d.jpg" alt="Log formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-400-9689f96fb.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-9689f96fb.webp 471w" sizes="(max-width: 767px) 100vw, 80vw" width="471" height="35" />
+
+</div>
 
 <p>And it is known that KL divergence is always greater or equal than zero. So… maximizing the ELBO is all we need to do and we can get rid of the KL divergence term.</p>
 
-<p>In our neural network the encoder takes input data and outputs *λ *parameters that approximate *q​_θ​​(z|x, λ) *and the decoder gets latent variables into the original data distribution *p_ϕ(x|z). *This *θ, ϕ *are the neural networks weights. So we can write the ELBO function (unwrapping the joint probability term) as:</p>
+<p>In our neural network the encoder takes input data and outputs \(λ\) parameters that approximate \(q​_θ​​(z\|x, λ)\) and the decoder gets latent variables into the original data distribution \(p_ϕ(x\|z)\). This \(θ\), \(ϕ\) are the neural networks weights. So we can write the ELBO function (unwrapping the joint probability term) as:</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*FvBk-6jDfs8wU1tSfuwT_Q.png" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-d41a1b2d2.jpg" alt="Elbo" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-400-ec287e278.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-ec287e278.webp 595w" sizes="(max-width: 767px) 100vw, 80vw" width="595" height="31" />
+
+</div>
 
 <p>This is our lost function! We must highlight two things from here. First of all, we can apply backpropagation to this function (the previous equation is defined for single datapoints). Second, a lost function in Deep Learning is always minimized, so we will have to work with the <strong>negative</strong> ELBO.</p>
 
 <p>That’s all! Although it might seem a little convoluted at the beginning, I have found the ELBO trick super interesting! You must think that we have found a tractable solution from an intractable problem by reducing our hypothesis set (our family of distributions will be Gaussian) and applying a small amount of math!</p>
 
-<h4 id="gaussian-tricks">Gaussian tricks!</h4>
+<h3 id="gaussian-tricks">Gaussian tricks!</h3>
 
-<p>As we said before, the family of distribution that we are going to use are Gaussians. Usually, *p(Z) = Normal (0,1), *so if the encoder outputs representations of *z *which are not following a unit normal distribution, will get penalized by the KL divergence term (more info on KL divergence between Gaussians <a href="https://stats.stackexchange.com/questions/7440/kl-divergence-between-two-univariate-gaussians">here</a>)</p>
+<p>As we said before, the family of distribution that we are going to use are Gaussians. Usually, \(p(Z) = Normal(0,1)\), so if the encoder outputs representations of \(z\) which are not following a unit normal distribution, will get penalized by the KL divergence term (more info on KL divergence between Gaussians <a href="https://stats.stackexchange.com/questions/7440/kl-divergence-between-two-univariate-gaussians" target="_blank" rel="noopener noreferrer">here</a>)</p>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*Dgqsq_B4UXw5EZtqKMShHQ.png" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-0f1952f53.jpg" alt="Architecture VAE" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-400-48a7b5dcf.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-48a7b5dcf.webp 460w" sizes="(max-width: 767px) 100vw, 80vw" width="460" height="327" />
 
-<p>Decoder will sample z from <em>q​_θ​​(z|x). *The problem here is that backprop will not be able to flow through this random node since it is purely stochastic and non deterministic on networks parameters. We can enforce this, knowing that a normal distributed variable with mean *μ *and standard deviation *σ</em>, can be sampled from:</p>
+</div>
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*hFfPr3CtQ0VLeLDAHPPOfQ.png" alt="" /></p>
+<p>Decoder will sample z from \(q​_θ​​(z\|x)\). The problem here is that backprop will not be able to flow through this random node since it is purely stochastic and non deterministic on networks parameters. We can enforce this, knowing that a normal distributed variable with mean \(μ\) and standard deviation \(σ\), can be sampled from:</p>
 
-<p>where <em>ϵ</em> is drawn from a standard normal. Why is this helping us? Think that now we are dealing with fixed values for <em>μ *and *σ, *we are moving all the stochasticity to the epsilon term so the derivatives can flow through the deterministic nodes! (Note that in image below *ϕ *corresponds with our</em> θ <em>term</em>)*</p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-ab0d9328e.jpg" alt="Z sample formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-fdeba3d78.webp 160w" sizes="(max-width: 767px) 100vw, 80vw" width="160" height="21" />
 
-<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png" alt="Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf)" />*</p>
+</div>
 
-<p style="text-align: center;">Image obtained from <a href="http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf">Kingma’s talk</a>*</p>
+<p>where \(ϵ\) is drawn from a standard normal. Why is this helping us? Think that now we are dealing with fixed values for \(μ\) and \(σ\), we are moving all the stochasticity to the epsilon term so the derivatives can flow through the deterministic nodes! (Note that in image below \(ϕ\) corresponds with our \(θ\) term)</p>
+
+<p style="text-align: center;"><img src="https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png" alt="Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target=&quot;_blank&quot;}{:rel=&quot;noopener noreferrer&quot;}" />*</p>
+
+<p style="text-align: center;"><em>Image obtained from <a href="http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf" target="_blank" rel="noopener noreferrer">Kingma’s talk</a></em></p>
 
 <p>In this video you can find a good visual explanation of the whole network!</p>
 
@@ -255,48 +217,50 @@
 
 <hr />
 
-<h3 id="conclusion-and-next-steps">Conclusion and next steps</h3>
+<h2 id="conclusion-and-next-steps">Conclusion and next steps</h2>
 
-<p>In this post I have covered the basic intuition we must have in order to implement a Deep Variational Autoencoder. In next posts we will go through the implementation of this network using tensorflow, we will evaluate some of the obtained results playing with different dimensions of our latent space and observe how our data distributes on it. I must once again thank to the amazing article written by <a href="https://arxiv.org/pdf/1606.05908.pdf">Doersch</a> who has helped me to properly understand the theory behind VAEs.</p>
+<p>In this post I have covered the basic intuition we must have in order to implement a Deep Variational Autoencoder. In next posts we will go through the implementation of this network using tensorflow, we will evaluate some of the obtained results playing with different dimensions of our latent space and observe how our data distributes on it. I must once again thank to the amazing article written by <a href="https://arxiv.org/pdf/1606.05908.pdf" target="_blank" rel="noopener noreferrer">Doersch</a> who has helped me to properly understand the theory behind VAEs.</p>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8">Twitter</a> or <a href="https://github.com/mmeendez8">Github</a></em></p>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-
+  
 </div>
 
+
+  <div >
+
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          Miguel Méndez
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='https://github.com/mmeendez8' target="_blank">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://twitter.com/mmeendez8' target="_blank">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://medium.com/@miguelmendez_' target="_blank">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

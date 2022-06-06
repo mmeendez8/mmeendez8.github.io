@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 
 <head>
 
@@ -16,47 +16,25 @@
   
 
   
-  <meta name="image" property="og:image" content="/assets/posts/2021-04-23-cache-docker/thumbnail.webp">
+  <meta name="image" property="og:image" content="https://mmeendez8.github.ioassets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail.jpg">
   
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton/normalize.css>
-  <link rel="stylesheet" href=/libs/external/skeleton/skeleton.css>
   <link rel="stylesheet" href=/libs/custom/my_css.css>
-  <link rel="stylesheet" href=/libs/custom/syntax.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- JQuery
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src=/libs/external/jquery-3.1.1.min.js></script>
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href=/libs/external/fontello-33e07bd3/css/fa_icons_fontello.css>
-  
-  <!-- Skeleton tabs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/skeleton_tabs/skeleton-tabs.css>
-  <script src=/libs/external/skeleton_tabs/skeleton-tabs.js></script>
-
-  <!-- Timeline
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href=/libs/external/timeline.css>
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="stylesheet" href=/libs/external/github-prettify-theme.css>-->
-  <script src=/libs/custom/my_js.js></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -64,15 +42,14 @@
   <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
 
   <!-- Google Analytics -->
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-133014227-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
@@ -85,102 +62,59 @@
 
   
   <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/posts/2021-04-23-cache-docker/thumbnail.webp">
+  <meta name="twitter:image" content="https://mmeendez8.github.ioassets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail.jpg">
   
 
   <!-- end of Twitter cards -->
   
 
+  <!-- Mathjax -->
+  
 </head>
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-
-    <section class="header">
-      <div class="row">
-        <div class="three columns">
-          <a href="/"><img class="u-max-full-width"
-              src='/assets/profile-pics/main_circle.webp'></a>
-        </div>
-        <div class="nine columns main-description">
-          <h1>Miguel Méndez</h1>
-          <div class="subtitle">
-            <p>Machine Learning Research Engineer, Gradiant</p>
-            <p>miguelmndez [AT] gmail.com</p>
-            <p class="social">
-              <a href='https://github.com/mmeendez8' target="_blank">
-                <i class="icon-github-circled" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-                <i class="icon-linkedin-squared" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://twitter.com/mmeendez8' target="_blank">
-                <i class="icon-twitter-squared2" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://medium.com/@miguelmendez_' target="_blank">
-                <i class="icon-medium" aria-hidden="true"></i>
-              </a>
-
-              <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-                <i class="icon-stackoverflow" aria-hidden="true"></i>
-              </a>
-            </p>
-          </div>
-        </div>
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
       </div>
-    </section>
+    </div>
+</header>
 
-    <div class="navbar-spacer"></div>
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href=/index.html#bio>Bio</a>
-          </li>
-          <li class="navbar-item"><a class="navbar-link"
-            href=/index.html#news>News</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#posts>Posts</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#resume>Vita</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#publications>Publications</a></li>
-          <li class="navbar-item"><a class="navbar-link"
-              href=/index.html#other>Other</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="docs-section post-image">
-
-  
-  <div class="title-subtitle">
-    <h3>Reduce Actions time with Docker and Github Cache</h3>
-    <h5>Use Github Actions cache and Docker to reduce time installing Conda dependencies</h5>
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">April 23, 2021 </span>
+      <h1 class="the-post-title">Reduce Actions time with Docker and Github Cache</h1>
+      <p>Use Github Actions cache and Docker to reduce time installing Conda dependencies</p>
+    </div>
   </div>
-  
-  
-  <div>
-    <img src="/assets/posts/2021-04-23-cache-docker/thumbnail.webp" alt=""/>
-  </div>
-  
 
-  <p>I’ve been bumping my head around Github Actions recently, as most of our Continuos Integration (CI) builds time was spent installing third party libraries. In most of our projects we have to deal with large dependencies like Pytorch or CUDA, which are needed to run our test suite and some others like <a href="https://pre-commit.com/">pre-commit</a> that help us to lint our code. This is very annoying since you need to run all setup steps on every build even though your environment does not change.</p>
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Reduce Actions time with Docker and Github Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-1000-4b8e5649b.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1992" height="1440">
+
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>I’ve been bumping my head around Github Actions recently, as most of our Continuos Integration (CI) builds time was spent installing third party libraries. In most of our projects we have to deal with large dependencies like Pytorch or CUDA, which are needed to run our test suite and some others like <a href="https://pre-commit.com/" target="_blank" rel="noopener noreferrer">pre-commit</a> that help us to lint our code. This is very annoying since you need to run all setup steps on every build even though your environment does not change.</p>
 
 <p>A classic CI workflow can be split into 2 two different blocks. The first one installs all dependencies that are going to be needed for running all jobs that compone the second block (test, lint, etc.). When these dependencies are small and they can be installed in a few seconds, you do not need to worry about them. Problems come when you deal with larger packages which is usually the case when working with Deep Learning.</p>
 
 <p>In this post I pretend to provide some intuition of how have I optimized some of these pipelines for building Pytorch and Cuda using a Conda environment in a pretty efficient way.</p>
 
-<h3 id="1-the-classic-approach">1. The classic approach</h3>
+<h2 id="1-the-classic-approach">1. The classic approach</h2>
 
-<p>A common way to automate tasks such as Python package code formatting is to use pre-commit hooks. Also, I am used to working with pytest because I consider it a very flexible and intuitive framework to run all my tests. So these dependencies and others like Pytorch need to be installed in our environment before we can use them properly. I use <a href="https://www.anaconda.com/">Conda</a> environments for Python package management as it is a very powerful tool.</p>
+<p>A common way to automate tasks such as Python package code formatting is to use pre-commit hooks. Also, I am used to working with pytest because I consider it a very flexible and intuitive framework to run all my tests. So these dependencies and others like Pytorch need to be installed in our environment before we can use them properly. I use <a href="https://www.anaconda.com/" target="_blank" rel="noopener noreferrer">Conda</a> environments for Python package management as it is a very powerful tool.</p>
 
-<p>I’ve set up a very simple and straightforward <a href="https://github.com/mmeendez8/cache_docker">Github repository</a> that follows this approach so that we can easily visualize the different pipelines that we’re going to use. So a simple CI pipeline that uses Anaconda Action for Python package management might look like this:</p>
+<p>I’ve set up a very simple and straightforward <a href="https://github.com/mmeendez8/cache_docker" target="_blank" rel="noopener noreferrer">Github repository</a> that follows this approach so that we can easily visualize the different pipelines that we’re going to use. So a simple CI pipeline that uses Anaconda Action for Python package management might look like this:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
 
@@ -209,11 +143,11 @@
 </code></pre></div></div>
 
 <p>This workflow needs to configure the conda environment each time it runs, although <code class="language-plaintext highlighter-rouge">conda.yaml</code> has not changed. This is far from efficient as we spend time doing the same. There must be a better way to speed this up … and as usual these days, Docker is involved!</p>
-<h3 id="2-adding-docker-into-the-equation">2. Adding Docker into the equation</h3>
+<h2 id="2-adding-docker-into-the-equation">2. Adding Docker into the equation</h2>
 
-<p>Docker is great and we should take advantage of it. I don’t intend to cover the basics of Docker in this post, so I assume the reader is used to struggling with it. Anyway, if there is anything in this post that is not clear to you, feel free to reach out to me via <a href="https://twitter.com/mmeendez8">Twitter</a>.</p>
+<p>Docker is great and we should take advantage of it. I don’t intend to cover the basics of Docker in this post, so I assume the reader is used to struggling with it. Anyway, if there is anything in this post that is not clear to you, feel free to reach out to me via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a>.</p>
 
-<p>We can build our Docker image based on Conda in multiple different ways. I just recently discover <a href="https://pythonspeed.com/">this amazing blog</a> which actually covers an important topic when building this kind of images: <strong>their size</strong>. In <a href="https://pythonspeed.com/articles/conda-docker-image-size/">here</a> you can understand why is necessary to <strong>shrink your conda Docker images</strong> as much as you can and the different possibilities you can use. For this case we will stick with the classic approach and build a single stage image over miniconda. I have also used some old tricks to clean conda cache and python bytecode files.</p>
+<p>We can build our Docker image based on Conda in multiple different ways. I just recently discover <a href="https://pythonspeed.com/" target="_blank" rel="noopener noreferrer">this amazing blog</a> which actually covers an important topic when building this kind of images: <strong>their size</strong>. In <a href="https://pythonspeed.com/articles/conda-docker-image-size/" target="_blank" rel="noopener noreferrer">here</a> you can understand why is necessary to <strong>shrink your conda Docker images</strong> as much as you can and the different possibilities you can use. For this case we will stick with the classic approach and build a single stage image over miniconda. I have also used some old tricks to clean conda cache and python bytecode files.</p>
 
 <div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> continuumio/miniconda3</span>
 
@@ -233,7 +167,7 @@
 <span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
 </code></pre></div></div>
 
-<p>We can build the image with all our dependencies installed and push it to some public image registry. In this case I am going to use the new <a href="https://docs.github.com/en/packages/guides/container-guides-for-github-packages">Github container registry</a>. I have created an access token (check <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">this</a> for knowing more about creating personal access tokens) for my account so I can login and push images for this repository. You can do the same on your computer by:</p>
+<p>We can build the image with all our dependencies installed and push it to some public image registry. In this case I am going to use the new <a href="https://docs.github.com/en/packages/guides/container-guides-for-github-packages" target="_blank" rel="noopener noreferrer">Github container registry</a>. I have created an access token (check <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank" rel="noopener noreferrer">this</a> for knowing more about creating personal access tokens) for my account so I can login and push images for this repository. You can do the same on your computer by:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">export</span> <span class="nv">$MY_TOKEN</span><span class="o">=[</span>INTRODUCE_YOUR_TOKEN_HERE]
 <span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$MY_TOKEN</span> | docker login ghcr.io <span class="nt">-u</span> USERNAME <span class="nt">--password-stdin</span>
@@ -294,15 +228,18 @@
 
 <p>If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda’s job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But … we need to <strong>manually build and load</strong> our docker image when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let’s see how we can avoid it.</p>
 
-<p style="text-align: center;"><img src="/assets/posts/2021-04-23-cache-docker/time_comparison.webp" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-800-90aba4581.jpg" alt="Time comparison between builds" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-400-cbbdf90ab.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-600-cbbdf90ab.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-800-cbbdf90ab.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-932-cbbdf90ab.webp 932w" sizes="(max-width: 767px) 100vw, 80vw" width="932" height="489" />
 
-<h3 id="3-building-and-pushing-docker-images-on-github-actions">3. Building and pushing Docker images on Github Actions</h3>
+</div>
+
+<h2 id="3-building-and-pushing-docker-images-on-github-actions">3. Building and pushing Docker images on Github Actions</h2>
 
 <p>What we want to do is automate the build and push steps. There are many ways to solve this problem, the simplest would be to add a Docker build and push step to our pipeline so that the image is always compiled with the latest changes and ready to go. However … this would be even worse than going back to where we started. We’d be building our Docker image, pushing it to the Github registry, and then running it for our test and lint steps, and this is clearly slower than installing Conda dependencies every time.</p>
 
-<p>There is (as usually) a better way. I found this wonderful <a href="https://evilmartians.com/chronicles/build-images-on-github-actions-with-docker-layer-caching">evilmartians post</a> that explains why you should use Docker Layer Caching (DLC). If you are unfamiliar with DLC, I recommend that you stop here now and read that post in its entirety. The DLC will save the image layers created within your jobs, so we can reuse those layers when the docker build step is executed, reducing its duration. In other words, we’re going to take advantage of the Github cache to store Docker layers, so those layers are there ready to use for us next time the action is triggered.</p>
+<p>There is (as usually) a better way. I found this wonderful <a href="https://evilmartians.com/chronicles/build-images-on-github-actions-with-docker-layer-caching" target="_blank" rel="noopener noreferrer">evilmartians post</a> that explains why you should use Docker Layer Caching (DLC). If you are unfamiliar with DLC, I recommend that you stop here now and read that post in its entirety. The DLC will save the image layers created within your jobs, so we can reuse those layers when the docker build step is executed, reducing its duration. In other words, we’re going to take advantage of the Github cache to store Docker layers, so those layers are there ready to use for us next time the action is triggered.</p>
 
-<p>The new pipeline would look a little bit more complicated. It has been adapted from the example on <a href="https://evilmartians.com/chroniclesuild-images-on-github-actions-with-docker-layer-caching">evilmartians post</a> so refer to there in case you have any doubt.</p>
+<p>The new pipeline would look a little bit more complicated. It has been adapted from the example on <a href="https://evilmartians.com/chroniclesuild-images-on-github-actions-with-docker-layer-caching" target="_blank" rel="noopener noreferrer">evilmartians post</a> so refer to there in case you have any doubt.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration with layer caching</span>
 
@@ -371,15 +308,21 @@
 
 <p>The first time we run this job, our cache is empty, so it will create the docker image from scratch, and that takes about 15 minutes!</p>
 
-<p style="text-align: center;"><img src="/assets/posts/2021-04-23-cache-docker/empty_docker_cache.webp" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-690-104eab200.jpg" alt="Empty cache result" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-400-b8b614e0e.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-600-b8b614e0e.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-690-b8b614e0e.webp 690w" sizes="(max-width: 767px) 100vw, 80vw" width="690" height="417" />
+
+</div>
 
 <p>But the next time the action fires (and if we don’t modify our Dockerfile or Conda environment) we can reuse the cached layers and reduce this time to just ~ 6 minutes.</p>
 
-<p style="text-align: center;"><img src="/assets/posts/2021-04-23-cache-docker/full_docker_cache.webp" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-691-b4b11f9bd.jpg" alt="Full cache result" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-400-4508fa067.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-600-4508fa067.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-691-4508fa067.webp 691w" sizes="(max-width: 767px) 100vw, 80vw" width="691" height="427" />
+
+</div>
 
 <p>So now <strong>we’ve incorporated the Docker build step into our pipeline</strong>, so we don’t need to manually upload a new image every time our dependencies change. In addition, we have been able to optimize this build by taking advantage of the Docker layers and the Github cache, reducing the compilation time to a third of the initial duration. But there is still room for improvement!</p>
 
-<h3 id="5-cache-them-all">5. Cache them all!</h3>
+<h2 id="5-cache-them-all">5. Cache them all!</h2>
 
 <p>As we have seen before, our Docker image is built whether our Dockerfile or Conda environment file is modified. So what if we just <strong>skip the build step</strong> when this has not occurred? We can do this in a very simple manner using taking advantage once again from Github Actions! We can track both files, calculating a hash from their content, so the build step only triggers when this hash changes. We just need to add a few lines to our pipeline.</p>
 
@@ -472,11 +415,14 @@
 
 <p>We can now push our changes and Github will compute that hash and save it in the cache.. If we later commit some changes to our repository, like adding a new test function or some new feature to our source code, the compile time will look like this:</p>
 
-<p style="text-align: center;"><img src="/assets/posts/2021-04-23-cache-docker/full_cache.webp" alt="" /></p>
+<div class="post-center-image">
+<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-681-c4d1414e7.jpg" alt="Full cache caption" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-400-42a861f81.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-600-42a861f81.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-681-42a861f81.webp 681w" sizes="(max-width: 767px) 100vw, 80vw" width="681" height="409" />
+
+</div>
 
 <p>That’s only 2 minutes and 29 seconds! We have fully automated our pipeline minimizing the time we need to install all our dependencies!</p>
 
-<h3 id="conclusion">Conclusion</h3>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>We’ve learned how to improve our CI pipelines by leveraging the power of Github, Docker, and Conda Actions cache. We started by covering some of the usual problems we face when designing this pipelines and finally implemented an optimized version of the example pipeline.</p>
 
@@ -495,44 +441,46 @@
   </li>
 </ul>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8">Twitter</a> or <a href="https://github.com/mmeendez8">Github</a></em></p>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-
+  
 </div>
 
+
+  <div >
+
     <div class="footer">
-      <div class="row">
-        <div class="three columns">
-          Miguel Méndez
-        </div>
-        <div class="six columns">
-          based on the template by <a href="http://web.media.mit.edu/~msaveski">Martin Saveski</a>
-        </div>
-        <div class="three columns icons">
-          <a href='https://github.com/mmeendez8' target="_blank">
-            <i class="icon-github-circled" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank">
-            <i class="icon-linkedin-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://twitter.com/mmeendez8' target="_blank">
-            <i class="icon-twitter-squared" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://medium.com/@miguelmendez_' target="_blank">
-            <i class="icon-medium" aria-hidden="true"></i>
-          </a>
-
-          <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank">
-            <i class="icon-stackoverflow" aria-hidden="true"></i>
-          </a>
-        </div>
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
       </div>
-    </div>
 
-  </div>
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
