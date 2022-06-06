@@ -27,8 +27,8 @@ presets:
     widths: [400, 600, 800, 1000]
     dimension_attributes: true
     sizes:
-      mobile: 100vp
-    size: 50vp
+      mobile: 100vw
+    size: 50vw
 
   pimage:
     formats: [webp]
@@ -38,5 +38,5 @@ presets:
       img: 'loading="lazy"' 
     noscript: true
     sizes:
-      mobile: 100vp
-    size: 80vp
+      mobile: 100vw
+    size: 80vw
