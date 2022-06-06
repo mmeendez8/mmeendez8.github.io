@@ -89,7 +89,9 @@ jobs:
 
 Note how `cache-from` and `cache-to` type is set now to `gha` (github action). The first time the action is triggered the cache is empty so Docker will need to build all layers from scratch:
 
+<div class="post-center-image">
 {% picture pimage /assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/empty_cache.jpg --alt Image showing empty cache  %}
+</div>
 
 But after this cache is full, so we can reuse all our layers in next builds, if the images was not modified, or just some of them when we apply changes to our Dockerfile. Let's trigger a new build with an empty commit and check the time it needs now:
 
@@ -98,7 +100,9 @@ git commit --allow-empty -m "Test build"
 git push
 ```
 
+<div class="post-center-image">
 {% picture pimage /assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/full_cache.jpg --alt Image showing full cache  %}
+</div>
 
 That's it! It only took 22 seconds to build our image.
 

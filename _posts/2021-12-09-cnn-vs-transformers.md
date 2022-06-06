@@ -71,7 +71,9 @@ cam = cam.reshape(cnn_features.shape[1], cnn_features.shape[2])
 
 That's all! Just a few lines, let's see a few simple examples:
 
-{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR.jpg --alt {{ page.title }}  %}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR.jpg --alt CAM %}
+</div>
 
 ## ViT Attention Map
 
@@ -80,7 +82,9 @@ That's all! Just a few lines, let's see a few simple examples:
 
 ViT paper[[3]](https://arxiv.org/pdf/2010.11929.pdf){:target="_blank"}{:rel="noopener noreferrer"} was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works[[4]](https://arxiv.org/abs/2101.01169){:target="_blank"}{:rel="noopener noreferrer"} that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.
 
-{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit.jpg --alt {{ page.title }}  %}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit.jpg --alt Vision Transformer  %}
+</div>
 
 The attentions mechanism allows us to figure out what parts or patches of the image are key for the classification result. This will allow us to interpret model's decision.
 
@@ -103,7 +107,10 @@ So it would be very easy to visualize attention weights at this very first layer
 
 We can model the information flow as a graph where input patches and hidden embeddings are the nodes and the edges represent the attentions from the nodes in one layer to the next layer. These edges are weighted by the attention weights which determine the amount of information that is passed from one layer to the next. Hence, if we want to compute the attention that a node at layer $$i$$ receives from all previous layer nodes, we can simply multiply the attention weights matrices from the input layer until our target $$i$$. Check the following animation to see how this works:
 
-{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg --alt {{ page.title }}  %}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg --alt Attention Rollout  %}
+</div>
+
 {:refdef: style="text-align: center;"}
 *Attention rollout simulation obtained from [Samira Abnar's blog](https://samiraabnar.github.io/articles/2020-04/attention_flow){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
@@ -123,7 +130,6 @@ vit.eval()
 ```
 
 You can check the [official documentation](https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel){:target="_blank"}{:rel="noopener noreferrer"} to see how we can use `output_attentions` parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:
-
 
 ```python
 # Inference
@@ -153,7 +159,9 @@ mask = mask.reshape(mask_size, mask_size)
 
 Pretty simple, let's see a few examples:
 
-{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.jpg --alt {{ page.title }}  %}
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.jpg --alt Rollout Transform  %}
+</div>
 
 There seems to be a larger noise when we comparing these results wrt CAM ones. One plausible option to reduce this effect is to filter very low attentions and keep only the strongest ones. I will stick with the original implementation but you find about this in [this repo](https://github.com/jacobgil/vit-explain){:target="_blank"}{:rel="noopener noreferrer"}.
 
