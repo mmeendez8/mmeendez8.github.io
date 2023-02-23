@@ -145,30 +145,30 @@
 
 <p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code class="language-plaintext highlighter-rouge">get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code class="language-plaintext highlighter-rouge">layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code class="language-plaintext highlighter-rouge">layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">torchvision.models.feature_extraction</span> <span class="kn">import</span> <span class="n">create_feature_extractor</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="n">torchvision.models.feature_extraction</span> <span class="kn">import</span> <span class="n">create_feature_extractor</span>
 
-<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
-<span class="n">resnet50</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nf">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">resnet50</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
 
-<span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="s">'layer4'</span><span class="p">,</span> <span class="s">'fc'</span><span class="p">])</span>
+<span class="n">feature_extractor</span> <span class="o">=</span> <span class="nf">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="s">'layer4'</span><span class="p">,</span> <span class="s">'fc'</span><span class="p">])</span>
 </code></pre></div></div>
 
 <p>For computing the CAM we just need to apply the previous formula. First we need to get linear layer weight matrix, select the row that relates with the predicted output class and multiply it by the extracted features, then we can apply min-max normalization so that the CAM is between 0 and 1.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fc_layer_weights</span> <span class="o">=</span> <span class="n">resnet50</span><span class="p">.</span><span class="n">fc</span><span class="p">.</span><span class="n">weight</span>
 
-<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
     <span class="c1"># Extract features and remove batch dim
-</span>    <span class="n">output</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
-    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"layer4"</span><span class="p">].</span><span class="n">squeeze</span><span class="p">()</span>
-    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"fc"</span><span class="p">].</span><span class="n">argmax</span><span class="p">()</span>
+</span>    <span class="n">output</span> <span class="o">=</span> <span class="nf">feature_extractor</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
+    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"layer4"</span><span class="p">].</span><span class="nf">squeeze</span><span class="p">()</span>
+    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"fc"</span><span class="p">].</span><span class="nf">argmax</span><span class="p">()</span>
 
     <span class="c1"># Linear combination of class weights and cnn features
-</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">fc_layer_weights</span><span class="p">[</span><span class="n">class_id</span><span class="p">].</span><span class="n">matmul</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">fc_layer_weights</span><span class="p">[</span><span class="n">class_id</span><span class="p">].</span><span class="nf">matmul</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
 <span class="c1"># Reshape back to 2D
-</span><span class="n">cam</span> <span class="o">=</span> <span class="n">cam</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span><span class="n">cam</span> <span class="o">=</span> <span class="n">cam</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </code></pre></div></div>
 
 <p>That’s all! Just a few lines, let’s see a few simple examples:</p>
@@ -198,9 +198,9 @@
 <p>At the very first attention layer, the input vectors are the linear projections of the flattened patches:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Pseudocode simplification from HF implementation
-</span><span class="n">patch_embeddings</span> <span class="o">=</span> <span class="n">PatchEmbeddings</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">flat_patch_embeddings</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">linear_projections</span> <span class="o">=</span> <span class="n">Linear</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">)</span>
+</span><span class="n">patch_embeddings</span> <span class="o">=</span> <span class="nc">PatchEmbeddings</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">flat_patch_embeddings</span> <span class="o">=</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">linear_projections</span> <span class="o">=</span> <span class="nc">Linear</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In <a href="https://arxiv.org/abs/2005.00928" target="_blank" rel="noopener noreferrer">[2]</a> two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.</p>
@@ -224,36 +224,36 @@
 
 <p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code class="language-plaintext highlighter-rouge">0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTForImageClassification</span>
-<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">"google/vit-base-patch16-224"</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
-<span class="n">vit</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">transformers</span> <span class="kn">import</span> <span class="n">ViTForImageClassification</span>
+<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="s">"google/vit-base-patch16-224"</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">vit</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code class="language-plaintext highlighter-rouge">output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Inference
-</span><span class="n">result</span> <span class="o">=</span> <span class="n">vit</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class="n">result</span> <span class="o">=</span> <span class="nf">vit</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="c1"># Stack all layers attention
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nf">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># Average the attention at each layer over all heads
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># Add residual and re-normalize
-</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="n">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="nf">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
 <span class="n">attention_probs</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">attention_probs</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">residual</span>
 
 <span class="c1"># Normalize by layer
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">attention_probs</span> <span class="o">/</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">attention_probs</span> <span class="o">/</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="nf">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Compute rollout
 </span><span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">attention_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">attention_probs</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
-    <span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">attention_rollout</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+    <span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">matmul</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">attention_rollout</span><span class="p">)</span>
 
 <span class="c1"># Attentions between CLS token and patches
 </span><span class="n">mask</span> <span class="o">=</span> <span class="n">attention_rollout</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
 <span class="c1"># Reshape back to 2D
-</span><span class="n">mask_size</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mask</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mask_size</span><span class="p">,</span> <span class="n">mask_size</span><span class="p">)</span>
+</span><span class="n">mask_size</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">mask</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nf">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="n">mask_size</span><span class="p">,</span> <span class="n">mask_size</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>Pretty simple, let’s see a few examples:</p>

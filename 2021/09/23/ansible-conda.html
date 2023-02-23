@@ -132,27 +132,27 @@
 
 <p>Since we use conda in all our servers, the intention was to automatically create a new environment to install there my monitoring application and all its dependencies. I cannot share this application but it is quite a simple thing, I followed a <a href="https://charlesreid1.github.io/python-patterns-the-registry.html" target="_blank" rel="noopener noreferrer">register pattern</a> since I wanted to be able to sequentially add new functionalities that could get automatically registered in my application. I recommend you to use the <a href="https://github.com/explosion/catalogue" target="_blank" rel="noopener noreferrer">catalogue</a> library from explosion guys. The provide a super simple way to register your functions or classes using a decorator. What I did was to use my library main’s <code class="language-plaintext highlighter-rouge">__init__.py</code> file to declare the register:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">catalogue</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">catalogue</span>
 
-<span class="n">SERVICES</span> <span class="o">=</span> <span class="n">catalogue</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"my_services_app"</span><span class="p">,</span> <span class="s">"services"</span><span class="p">)</span>
+<span class="n">SERVICES</span> <span class="o">=</span> <span class="n">catalogue</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="s">"my_services_app"</span><span class="p">,</span> <span class="s">"services"</span><span class="p">)</span>
 
 </code></pre></div></div>
 
 <p>And the simply register my ‘services’ with:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
-<span class="kn">from</span> <span class="nn">my_services_app.services.base</span> <span class="kn">import</span> <span class="n">ServerStatus</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
+<span class="kn">from</span> <span class="n">my_services_app.services.base</span> <span class="kn">import</span> <span class="n">ServerStatus</span>
 
 
-<span class="o">@</span><span class="n">SERVICES</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"PingService"</span><span class="p">)</span>
+<span class="nd">@SERVICES.register</span><span class="p">(</span><span class="s">"PingService"</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">PingService</span><span class="p">(</span><span class="n">BaseService</span><span class="p">):</span>
     <span class="p">...</span>
 </code></pre></div></div>
 
 <p>That’s all, you now would be able to instantiate your <code class="language-plaintext highlighter-rouge">PingService</code> by:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
-<span class="n">service</span> <span class="o">=</span> <span class="n">SERVICES</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"PingService"</span><span class="p">)()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
+<span class="n">service</span> <span class="o">=</span> <span class="n">SERVICES</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"PingService"</span><span class="p">)()</span>
 </code></pre></div></div>
 
 <p>So simple and so powerful! Also note that I have created a <code class="language-plaintext highlighter-rouge">BaseService</code> class, which basically has all the necessary funcionality to send messages to Rocket.chat.</p>

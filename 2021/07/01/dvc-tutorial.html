@@ -250,12 +250,12 @@ dvc checkout
 
 <p>Create a new file <code class="language-plaintext highlighter-rouge">tests/test_annotations.py</code> and paste the following content:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">pytest</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="n">pytest</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span><span class="p">,</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span> <span class="n">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span><span class="p">,</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
 
 <span class="n">CATEGORY_NAMES</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s">"chair"</span><span class="p">,</span> <span class="s">"couch"</span><span class="p">,</span> <span class="s">"tv"</span><span class="p">,</span> <span class="s">"remote"</span><span class="p">,</span> <span class="s">"book"</span><span class="p">,</span> <span class="s">"vase"</span><span class="p">]</span> 
 
@@ -271,7 +271,7 @@ dvc checkout
 
 <span class="k">class</span> <span class="nc">COCOAnnotation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">image_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">bbox</span><span class="p">:</span> <span class="n">conlist</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="nf">conlist</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">category_id</span><span class="p">:</span> <span class="nb">int</span>
 
 
@@ -281,23 +281,23 @@ dvc checkout
     <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOCategory</span><span class="p">]</span>
 
 
-<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"split"</span><span class="p">,</span> <span class="p">[</span><span class="s">"train"</span><span class="p">,</span> <span class="s">"val"</span><span class="p">])</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s">"split"</span><span class="p">,</span> <span class="p">[</span><span class="s">"train"</span><span class="p">,</span> <span class="s">"val"</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">test_coco_format</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
 
     <span class="n">annotations_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"data/coco_sample/annotations/split_</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s">.json"</span>
     
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">COCODetectionDataset</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
 
     <span class="c1"># Check image ids are unique
 </span>    <span class="n">image_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">images</span><span class="p">]</span>
-    <span class="n">image_ids_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_ids_set</span><span class="p">)</span>
+    <span class="n">image_ids_set</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nf">len</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">image_ids_set</span><span class="p">)</span>
 
     <span class="c1"># Check annotation ids are unique
 </span>    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">categories</span><span class="p">]</span>
-    <span class="n">categories_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories_set</span><span class="p">)</span>
+    <span class="n">categories_set</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nf">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">categories_set</span><span class="p">)</span>
 
     <span class="c1"># Check each annotation corresponds with existent image
 </span>    <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">annotations</span><span class="p">:</span>

@@ -258,7 +258,7 @@
         <span class="na">id</span><span class="pi">:</span> <span class="s">buildx</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@master</span>
         <span class="na">with</span><span class="pi">:</span>
-          <span class="na">install</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">install</span><span class="pi">:</span> <span class="kc">true</span>
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Cache Docker layers</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/cache@v2</span>
         <span class="na">with</span><span class="pi">:</span>
@@ -278,7 +278,7 @@
           <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
           <span class="na">builder</span><span class="pi">:</span> <span class="s">${{ steps.buildx.outputs.name }}</span>
           <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
-          <span class="na">push</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">push</span><span class="pi">:</span> <span class="kc">true</span>
           <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
           <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=local,src=/tmp/.buildx-cache</span>
           <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=local,mode=max,dest=/tmp/.buildx-cache-new</span>
@@ -356,7 +356,7 @@
         <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span> <span class="c1"># Condition to skip step when cache hit</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@master</span>
         <span class="na">with</span><span class="pi">:</span>
-          <span class="na">install</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">install</span><span class="pi">:</span> <span class="kc">true</span>
 
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Cache Docker layers</span>
         <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span>
@@ -381,7 +381,7 @@
           <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
           <span class="na">builder</span><span class="pi">:</span> <span class="s">${{ steps.buildx.outputs.name }}</span>
           <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
-          <span class="na">push</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">push</span><span class="pi">:</span> <span class="kc">true</span>
           <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
           <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=local,src=/tmp/.buildx-cache</span>
           <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=local,mode=max,dest=/tmp/.buildx-cache-new</span>

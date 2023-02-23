@@ -155,7 +155,7 @@ git push
   <li>The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at:</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">init_cfg</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'Pretrained'</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="s">'torchvision://resnet50'</span><span class="p">))</span><span class="err">`</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">init_cfg</span><span class="o">=</span><span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'Pretrained'</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="s">'torchvision://resnet50'</span><span class="p">))</span><span class="err">`</span>
 </code></pre></div></div>
 
 <p>As a curious fact, I checked out <a href="https://pytorch.org/vision/stable/models.html" target="_blank" rel="noopener noreferrer">official torchvision documentation</a> and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results…</p>
@@ -199,11 +199,11 @@ git push
 
 <p>Since we are using DVC, we are also going to use the <a href="https://dvc.org/doc/dvclive" target="_blank" rel="noopener noreferrer">DVCLive</a> hook. DVCLive is an open-source Python library for monitoring the progress of metrics during training of machine learning models. It is a recent and super cool library with git integration and that’s all I need! See how simple is to add this hook:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">log_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">log_config</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">(</span>
     <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">hooks</span><span class="o">=</span><span class="p">[</span>
-        <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'TextLoggerHook'</span><span class="p">),</span>
-        <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">"DvcliveLoggerHook"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">"training/metrics"</span><span class="p">),</span>
+        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'TextLoggerHook'</span><span class="p">),</span>
+        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">"DvcliveLoggerHook"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">"training/metrics"</span><span class="p">),</span>
     <span class="p">])</span>
 </code></pre></div></div>
 
@@ -257,8 +257,8 @@ git push
     <span class="pi">-</span> <span class="s">training/checkpoints</span>
   <span class="na">live</span><span class="pi">:</span>
     <span class="na">training/metrics</span><span class="pi">:</span>
-      <span class="na">summary</span><span class="pi">:</span> <span class="no">true</span>
-      <span class="na">html</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">summary</span><span class="pi">:</span> <span class="kc">true</span>
+      <span class="na">html</span><span class="pi">:</span> <span class="kc">true</span>
 </code></pre></div></div>
 
 <p>Note how I have added the <code class="language-plaintext highlighter-rouge">live</code> key to notify DVC that our script will be saving metrics in the <code class="language-plaintext highlighter-rouge">training/metrics</code> folder. Also, this will generate a html file that we can use to visualize in real time our train progress. So simple!</p>
@@ -316,8 +316,8 @@ git push
     <span class="pi">-</span> <span class="s">training/checkpoints</span>
   <span class="na">live</span><span class="pi">:</span>
     <span class="na">training/metrics</span><span class="pi">:</span>
-      <span class="na">summary</span><span class="pi">:</span> <span class="no">true</span>
-      <span class="na">html</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">summary</span><span class="pi">:</span> <span class="kc">true</span>
+      <span class="na">html</span><span class="pi">:</span> <span class="kc">true</span>
   <span class="na">params</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">optimizer.weight_decay</span>
 </code></pre></div></div>
