@@ -1,16 +1,23 @@
 # Personal website
 
 
-## Updates guide
-Change one of the files in `_data`, unless you are changing the look of the website.
+## Codespaces
 
-Test changes with:
+1. Open new codespace
+2. Install lvips
+   
 ```
-jekyll serve
+sudo apt update && sudo install libvips-tools
 ```
 
-## External Libraries
-- Framework: [Jekyll](http://jekyllrb.com/)
+3. Install gems
+   
+```
+bundle install
+```
 
-___
-Based on [msavenski website](http://web.media.mit.edu/~msaveski/)
+4. Run jekyll
+
+```
+bundle exec jekyll serve
+```
