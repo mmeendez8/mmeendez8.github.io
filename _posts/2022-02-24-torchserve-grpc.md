@@ -3,16 +3,14 @@ layout: post
 title:  "Torchserve in Computer Vision: REST vs gRPC"
 subtitle: "Benchmarking protocols performance for sending images"
 description: "This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case."
-image: "/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg"
+image: "/assets/images/fullsize/posts/2022-02-24-torchserve-grpc/thumbnail.jpg"
 selected: y
 mathjax: y
 ---
 
-
-EXPLAIN WHY EVERYTHING IN K8S -> WANT TO TEST IN EKS REAL ENV
-
-
 For the past few weeks at my current company we have been considering the benefits of using gRPC to improve the performance of some of our services. However, despite my efforts to research the topic, I have not been able to find relevant information that is suitable for our current use case, sending images to a model server and receiving a response in the most efficient way possible. It's easy to find benchmarks that show how switching from REST to gRPC using structured data results in huge performance improvements. However, it was quite difficult to find a similar benchmark using images... And that is the main reason behind these post!
+
+All the code for the different benchmarks can be found in [this Github repository](https://github.com/mmeendez8/grpc_vs_rest). Note that the main goal was to test this on our cloud infrastructure so that the servers and clients were deployed on the same kubernetes cluster to get as close to a real world scenario as possible.
 
 ## Some thoughts on gRPC
 
@@ -33,9 +31,7 @@ In [this post](https://nilsmagnus.github.io/post/proto-json-sizes/) you can see 
 
 ### How does this apply to images?
 
-Images are a special case of data. Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. 
-
-Things are different with images. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG... In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:
+Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. Things are different with images. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG... In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:
 
 ```python
 # create random 100x100 rgb image
@@ -52,6 +48,14 @@ The point here is that Protobuf is not really helping. Given that it is one of k
 
 First thing we wanted to do is to check if we were able to reproduce those benchmarks we found on the web. The idea is simple, create two equivalent REST and gRPC servers and measure the time they take to process and respond to different requests.
 The gRPC server has been implemented using [python grpc library](https://grpc.io/docs/languages/python/basics/) and we have used [FastAPI](https://fastapi.tiangolo.com/) for the REST one. 
+
+<div class="post-center-image">
+{% picture pimage /assets/images/fullsize/posts/2022-02-24-torchserve-grpc/cat_bytes.png --alt Cat being compressed to bytes  %}
+</div>
+
+{:refdef: class="image-caption"}
+*This is what Stable Diffusion creates with the prompt "an image of a cat is being encoded into a chunk of bytes"*
+{: refdef}
 
 We decided to measure three different requests and using a single response for all of them. The gRPC `.proto` file for those requests looks like the following:
 
@@ -188,5 +192,26 @@ The experiment is very similar to the previous one, sending 20 concurrent reques
 
 </div>
 
+Translating the insights gained from benchmarking with the base servers can be challenging. The tables indicate that Base64 encoding should be avoided and that there are no significant performance differences between using gRPC and REST.
+
+Two factors contribute to the similar performance results for gRPC and REST. Firstly, the model's inference time is considerably longer than the networking time, making it difficult to discern the small gains obtained by changing the transmission protocol. For example, sending 20 large images concurrently in the simple base case (Table 3) took roughly 0.19s, whereas we are now spending approximately 1.4 seconds, highlighting the significant impact of model inference time on the comparison.
+
+Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve's `.proto` definition for [prediction response](https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23) is too generic and it cannot be personalized with your model specifics.
+
+```python
+message PredictionResponse {
+    // Response content for prediction
+    bytes prediction = 1;
+}
+``` 
+
+This means that your response will be converted to a chunk of bytes so you would not be getting any advantage of Protobuf serialization (similar to what happens with images). 
+
+## Conclusion
+
+If you're using Torchserve to serve computer vision models, it's recommended to steer clear of gRPC. Our findings show that there are no performance benefits to using gRPC, and it adds complexity to your code while making debugging more challenging due to its non-human-readable messages. Since REST is more commonly used, most developers are already familiar with it. Switching to gRPC in this scenario comes with a learning curve that doesn't offer any significant advantages.
+
+
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}*
 
 

@@ -715,6 +715,11 @@ table thead {
   }
 }
 
+.image-caption {
+  text-align: center;
+  font-size: 16px;
+}
+
 /*  ================ Code  ================ */
 
 code {
