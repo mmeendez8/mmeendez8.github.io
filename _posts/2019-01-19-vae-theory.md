@@ -37,11 +37,11 @@ There are two main resources I have used where you can find a whole explanation 
 
 The variational autoencoder can be represented as a **graphical model.** Where the joint probability can be expressed as $$p(x, z) = p(x\|z) p(z)$$. So latent variables (the lower representation) and data points can be sampled from $$p(z)$$ and $$p(x\|z)$$ respectively.
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![Graphical model representation obtained from Jaan’s blog ([https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field){:target="_blank"}{:rel="noopener noreferrer"})](https://cdn-images-1.medium.com/max/2000/0*FQhrThokEvkpi2DP.png)
 {: refdef}
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Graphical model representation obtained from [Jaan’s blog](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
 
@@ -100,11 +100,11 @@ Decoder will sample z from $$q​_θ​​(z\|x)$$. The problem here is that bac
 
 where $$ϵ$$ is drawn from a standard normal. Why is this helping us? Think that now we are dealing with fixed values for $$μ$$ and $$σ$$, we are moving all the stochasticity to the epsilon term so the derivatives can flow through the deterministic nodes! (Note that in image below $$ϕ$$ corresponds with our $$θ$$ term)
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target="_blank"}{:rel="noopener noreferrer"}](https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png)*
 {: refdef}
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
 
