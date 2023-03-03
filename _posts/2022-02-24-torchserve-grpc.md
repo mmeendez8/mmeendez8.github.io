@@ -8,6 +8,10 @@ selected: y
 mathjax: y
 ---
 
+
+EXPLAIN WHY EVERYTHING IN K8S -> WANT TO TEST IN EKS REAL ENV
+
+
 For the past few weeks at my current company we have been considering the benefits of using gRPC to improve the performance of some of our services. However, despite my efforts to research the topic, I have not been able to find relevant information that is suitable for our current use case, sending images to a model server and receiving a response in the most efficient way possible. It's easy to find benchmarks that show how switching from REST to gRPC using structured data results in huge performance improvements. However, it was quite difficult to find a similar benchmark using images... And that is the main reason behind these post!
 
 ## Some thoughts on gRPC
@@ -86,9 +90,9 @@ Our client does a very simple thing, it sends concurrent requests to each server
 ```python
 times = []
 for _ in range(10):
-	start= time()
-	send_concurrent_request_to_specific_server(n=20)
-	times.append(time() - start())
+    start= time()
+    send_concurrent_request_to_specific_server(n=20)
+    times.append(time() - start())
 
 average_time = mean(times)
 ```
@@ -140,4 +144,49 @@ We can extract some conclussion from previous tables:
 
 ## Torchserve benchmark
 
-I have been using [TorchServe](https://pytorch.org/serve/) for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things as batching and queing requests. I do not pretend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers but you can get some of that information [here](https://hamel.dev/notes/serving/#inference-servers).
+I have been using [TorchServe](https://pytorch.org/serve/) for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things as batching and queing requests. 
+I do not pretend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers, I will let that for a plausible future post.
+
+Torchserve provides documentation for its [gRPC API](https://pytorch.org/serve/grpc_api.html). I reckon it could be improved since it forces you to download the official repo to generate python gRPC client stub using the proto files. I already attach them into the repo so you do not need to worry about that in case you want to run the benchmark.
+
+The experiment is very similar to the previous one, sending 20 concurrent request and repeating that 10 times to measure the average time. I am going to use one of the pytorch vision model examples, [densenet161](https://pytorch.org/hub/pytorch_vision_densenet/). I do not really care about the model, I just want to measure the time for:
+
+- REST request using base64 and binary encoding
+- gRPC requests using binary encoded image
+
+
+<div class="table-wrapper" markdown="block">
+
+|      | B64 (0.306 MB) | Binary (0.229) |
+|------|----------------|----------------|
+| REST | 0.884          | 0.628          |
+| gRPC |       X        | 0.645          |
+
+<p>Table 4. Results for small images: 360x640</p>
+
+</div>
+
+<div class="table-wrapper" markdown="block">
+
+|      | B64 (0.306 MB) | Binary (0.229) |
+|------|----------------|----------------|
+| REST | 1.262          | 0.946          |
+| gRPC |        X       | 0.927          |
+
+<p>Table 5. Results for medium images: 720x1280</p>
+
+</div>
+
+<div class="table-wrapper" markdown="block">
+
+|      | B64 (0.306 MB) | Binary (0.229) |
+|------|----------------|----------------|
+| REST | 2.188          | 1.384          |
+| gRPC |         X      | 1.422          |
+
+<p>Table 6. Results for large images: 1080x1920</p>
+
+</div>
+
+
+
