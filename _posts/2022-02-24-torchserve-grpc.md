@@ -8,6 +8,8 @@ selected: y
 mathjax: y
 ---
 
+Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/) for working with me in completing the benchmarking discussed in this blog post.
+
 In the past few weeks, we have been exploring the potential advantages of adopting gRPC to enhance the performance of our services. Although I have conducted extensive research on this topic, I have not been able to find relevant information that specifically addresses our use case, which involves transmitting images to a model server and receiving a response in the most efficient manner. While there are numerous benchmarks that demonstrate significant performance improvements when migrating from REST to gRPC using structured data, it has been challenging to locate a similar benchmark for image transmission... And that is the main reason behind this post!  
 
 All the code for the different benchmarks can be found in [this Github repository](https://github.com/mmeendez8/grpc_vs_rest){:target="_blank"}{:rel="noopener noreferrer"}. You can find instructions in the README file. It's important to note that our primary objective was to conduct this testing on our cloud infrastructure, where both the servers and clients were deployed on the same Kubernetes cluster. This allowed us to replicate a real-world scenario as closely as possible.
@@ -203,7 +205,7 @@ message PredictionResponse {
 }
 ``` 
 
-This means that your response will be converted to a chunk of bytes so you would not be getting any advantage of Protobuf serialization (similar to what happens with images). 
+This means that your response will be converted to a chunk of bytes so you would not be getting any advantage of Protobuf serialization (similar to what happens with images). A better or more customizable definition, as the one provided by Tfserving, of the `.proto` file could help to boost performance.
 
 ## Conclusion
 
