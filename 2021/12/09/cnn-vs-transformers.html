@@ -214,7 +214,7 @@
 
 </div>
 
-<p style="text-align: center;"><em>Attention rollout simulation obtained from <a href="https://samiraabnar.github.io/articles/2020-04/attention_flow" target="_blank" rel="noopener noreferrer">Samira Abnar’s blog</a></em></p>
+<p class="image-caption"><em>Attention rollout simulation obtained from <a href="https://samiraabnar.github.io/articles/2020-04/attention_flow" target="_blank" rel="noopener noreferrer">Samira Abnar’s blog</a></em></p>
 
 <p>This is super straight-forward and easy to understand but we are missing the influence of residual connections. Paper authors handle this in a very elegant way, they realize that the output at layer \(V_{l+1}\) depends on the previous output and the attention weights: \(V_{l+1} = V_{l} + W_{att}V_l\), where \(W_{att}\) is the attention matrix. This can also be expressed as \(V_{l+1} = (W_{att} + I)V_l\). Thus, re-normalizing the weights, the raw attention updated by residual connections can be expressed as: \(A = 0.5W_{att} + 0.5I\).</p>
 

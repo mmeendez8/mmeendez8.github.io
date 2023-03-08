@@ -189,7 +189,7 @@
 <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-d1f17c253.jpg" alt="Fashion Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-400-93c6d0307.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-93c6d0307.webp 540w" sizes="(max-width: 767px) 100vw, 80vw" width="540" height="480" />
 
 </div>
-<p style="text-align: center;"><em>Image recovering vs epoch number for MNIST and Fashion MNIST datasets</em></p>
+<p class="image-caption"><em>Image recovering vs epoch number for MNIST and Fashion MNIST datasets</em></p>
 
 <p>We see how our network keeps improving the quality of the recovered images. It’s interesting to see how at the initial epochs numbers 6, 3, 4 are converted into something that we can considered as “similar” to a 9. But, after a few iterations the original input shape is conserved. For the fashion dataset we get a similar behavior with the bag pictures that are initially recovered as a boot!</p>
 
@@ -201,15 +201,15 @@
 
 <p>In a first moment all images are close to the prior (all point are located around 0). But during training the encoder learns to approximate the posterior distribution, so it will locate the latent variables in different parts of the space having into account their labels (equal label -&gt; close region in the space). Let’s have a look first and then discuss more about this!</p>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evol_20_epochs.gif" alt="MNIST latent space evolution during 20 epochs" /></p>
-<p style="text-align: center;"><em>MNIST latent space evolution during 20 epochs</em></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evol_20_epochs.gif" alt="MNIST latent space evolution during 20 epochs" /></p>
+<p class="image-caption"><em>MNIST latent space evolution during 20 epochs</em></p>
 
 <p>Isn’t this cool? Numbers that are similar are placed in a similar region of the space. For example we can see that zeros (red) and ones (orange) are easily recognized and located in a specific region of the space. Nevertheless it seems the network can’t do the same thing with eights (purple) and threes (green). Both of them occupy a very similar region.</p>
 
 <p>Same thing happens with clothes. Similar garments as shirts, t-shirt and even dresses (which can be seen as an intersection between shirts and trousers) will be located in similar regions and the same thing happens with boots, sneakers and sandals!</p>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evol_20_epochs.gif" alt="Fashion MNIST latent space evolution during 20 epochs" /></p>
-<p style="text-align: center;"><em>Fashion MNIST latent space evolution during 20 epochs</em></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evol_20_epochs.gif" alt="Fashion MNIST latent space evolution during 20 epochs" /></p>
+<p class="image-caption"><em>Fashion MNIST latent space evolution during 20 epochs</em></p>
 
 <p>These two dimensional plots can also help us to understand the KL divergence term. In my previous post I explained where does it come from and also that acts as a penalization (or regularization term) over the encoder when this one outputs probabilities that are not following an unit norm. Without this term the encoder can use the whole space and place equal labels in very different regions. Imagine for example two images of a number 1. Instead of being close one to each other in the space, the encoder could place them far away. This would result in a problem to generate unseen samples, since the space will be large and it will have ‘holes’ of information, empty areas that do not correspond to any number and are related with noise.</p>
 
@@ -217,13 +217,13 @@
 <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-039d710fb.jpg" alt="Latent space without KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-400-9fc1af072.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-600-9fc1af072.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-9fc1af072.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
 
 </div>
-<p style="text-align: center;"><em>Latent space without KL reg</em></p>
+<p class="image-caption"><em>Latent space without KL reg</em></p>
 
 <div class="post-center-image">
 <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-a81727186.jpg" alt="Latent space with KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-400-2dc270081.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-600-2dc270081.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-2dc270081.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
 
 </div>
-<p style="text-align: center;"><em>Latent space with KL reg</em></p>
+<p class="image-caption"><em>Latent space with KL reg</em></p>
 
 <p>Look the x and y axis. On the left plot, there is not regularization, so points embrace a much larger region of the space, while as in the right image they are more concentrated, so this produces a dense space.</p>
 
@@ -240,21 +240,21 @@
 
 <script src="https://gist.github.com/mmeendez8/aa5b73d6d64cf5e1ceba31472a1ebf64.js"></script>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif" alt="" /></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif" alt="" /></p>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_latent_evolution.gif" alt="Comparsion between grid space generated images and latent space distribution" /></p>
-<p style="text-align: center;"><em>Comparsion between grid space generated images and latent space distribution</em></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_latent_evolution.gif" alt="Comparsion between grid space generated images and latent space distribution" /></p>
+<p class="image-caption"><em>Comparsion between grid space generated images and latent space distribution</em></p>
 
 <p>What about the fashion dataset? Results are even more fun! Look how the different garment are positioned by ‘similarity’ in the space. Also the grid generated images look super real!</p>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif" alt="" /></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif" alt="" /></p>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif" alt="" /></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif" alt="" /></p>
 
 <p>After 50 epochs of training and using the grid technique and the fashion MNIST dataset we achieve these results:</p>
 
-<p style="text-align: center;"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fake_images_using_grid.jpg" alt="Fake images generated using mesh grid points" /></p>
-<p style="text-align: center;"><em>Fake images generated using mesh grid points</em></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fake_images_using_grid.jpg" alt="Fake images generated using mesh grid points" /></p>
+<p class="image-caption"><em>Fake images generated using mesh grid points</em></p>
 
 <p>All this images here are fake. We can finally see how our encoder works and how our latent space has been able to properly encode 2D image representations. Observe how you can start with a sandal and interpolate points until you get a sneaker or even a boot!</p>
 
