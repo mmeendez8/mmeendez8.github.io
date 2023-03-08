@@ -91,6 +91,42 @@ ul {
   color: #030303
 }
 
+table {
+  display: table;
+  overflow-x: auto;
+  font-size: 16px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table th,
+table td {
+  padding: .625rem;
+  text-align: center;
+}
+
+table thead {
+  border-bottom: 1px solid black;
+}
+
+/*  Add horizontal scroll to a table when is too small  */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 2.5rem;
+}
+
+.table-wrapper p {
+  text-align: center;
+  font-size: 15px;
+}
+
+
 
 /*  ================ Container  ================ */
 
@@ -658,7 +694,6 @@ ul {
 
 @media (min-width: 768px) {
   .the-post-content{
-    padding: 7.2rem 0;
     font-size: 19px;
   }
 }
@@ -677,6 +712,11 @@ ul {
     padding: 7.2rem 0;
     font-size: 19px;
   }
+}
+
+.image-caption {
+  text-align: center;
+  font-size: 16px;
 }
 
 /*  ================ Code  ================ */

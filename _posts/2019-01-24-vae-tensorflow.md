@@ -80,7 +80,7 @@ Below, we can see how our network learns to transform the input image in the lat
 <div class="post-center-image">
 {% picture pimage /assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist.jpg --alt Fashion Mnist recovery %}
 </div>
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Image recovering vs epoch number for MNIST and Fashion MNIST datasets*
 {: refdef}
 
@@ -94,10 +94,10 @@ In the previous section we used a 5 dimensional latent space but we can reduce t
 
 In a first moment all images are close to the prior (all point are located around 0). But during training the encoder learns to approximate the posterior distribution, so it will locate the latent variables in different parts of the space having into account their labels (equal label -> close region in the space). Let’s have a look first and then discuss more about this!
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![MNIST latent space evolution during 20 epochs](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evol_20_epochs.gif)
 {: refdef}
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *MNIST latent space evolution during 20 epochs*
 {: refdef}
 
@@ -105,10 +105,10 @@ Isn’t this cool? Numbers that are similar are placed in a similar region of th
 
 Same thing happens with clothes. Similar garments as shirts, t-shirt and even dresses (which can be seen as an intersection between shirts and trousers) will be located in similar regions and the same thing happens with boots, sneakers and sandals!
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![Fashion MNIST latent space evolution during 20 epochs](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evol_20_epochs.gif)
 {: refdef}
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Fashion MNIST latent space evolution during 20 epochs*
 {: refdef}
 
@@ -117,14 +117,14 @@ These two dimensional plots can also help us to understand the KL divergence ter
 <div class="post-center-image">
 {% picture pimage /assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl.jpg --alt Latent space without KL reg %}
 </div>
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Latent space without KL reg*
 {: refdef}
 
 <div class="post-center-image">
 {% picture pimage /assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl.jpg --alt Latent space with KL reg %}
 </div>
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Latent space with KL reg*
 {: refdef}
 
@@ -142,33 +142,33 @@ Each of this points can be passed to the decoder which will return us a valid im
 
 <script src="https://gist.github.com/mmeendez8/aa5b73d6d64cf5e1ceba31472a1ebf64.js"></script>
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif)
 {: refdef}
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![Comparsion between grid space generated images and latent space distribution](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_latent_evolution.gif)
 {: refdef}
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Comparsion between grid space generated images and latent space distribution*
 {: refdef}
 
 What about the fashion dataset? Results are even more fun! Look how the different garment are positioned by ‘similarity’ in the space. Also the grid generated images look super real!
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif)
 {: refdef}
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif)
 {: refdef}
 
 After 50 epochs of training and using the grid technique and the fashion MNIST dataset we achieve these results:
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 ![Fake images generated using mesh grid points](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fake_images_using_grid.jpg)
 {: refdef}
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Fake images generated using mesh grid points*
 {: refdef}
 

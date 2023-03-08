@@ -111,7 +111,7 @@ We can model the information flow as a graph where input patches and hidden embe
 {% picture pimage /assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg --alt Attention Rollout  %}
 </div>
 
-{:refdef: style="text-align: center;"}
+{:refdef: class="image-caption"}
 *Attention rollout simulation obtained from [Samira Abnar's blog](https://samiraabnar.github.io/articles/2020-04/attention_flow){:target="_blank"}{:rel="noopener noreferrer"}*
 {: refdef}
 
