@@ -8,7 +8,7 @@ selected: y
 mathjax: y
 ---
 
-Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/) for working with me in completing the benchmarking discussed in this blog post.
+Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/) for working with me in completing the benchmarking discussed in this post.
 
 In the past few weeks, we have been exploring the potential advantages of adopting gRPC to enhance the performance of our services. Although I have conducted extensive research on this topic, I have not been able to find relevant information that specifically addresses our use case, which involves transmitting images to a model server and receiving a response in the most efficient manner. While there are numerous benchmarks that demonstrate significant performance improvements when migrating from REST to gRPC using structured data, it has been challenging to locate a similar benchmark for image transmission... And that is the main reason behind this post!  
 
@@ -16,25 +16,28 @@ All the code for the different benchmarks can be found in [this Github repositor
 
 ## Some thoughts on gRPC
 
-When you start reading about gRPC, you soon realize that it involves two main things that can really help you to speed up your system communications. 
+When you start reading about gRPC, you soon realize that it involves two main features that can really help you to speed up your system communications. 
 
 ### HTTP2
 
 gRPC is built on the HTTP/2 protocol, which was specifically designed to address the latency issues of its predecessor, HTTP/1.1. There are two key features of HTTP/2 that are particularly relevant to our benchmarking efforts:
 
-- **Multiplexed streams**: With HTTP/2, multiple requests and responses can be transmitted over a single connection. While HTTP/1.1 can also reuse connections through pooling, the ability to multiplex streams becomes more important in scenarios with a large number of servers, where HTTP/1.1 may need to open and maintain a large number of connections.
+- **Multiplexed streams**: With HTTP/2, multiple requests and responses can be transmitted over a single connection. While HTTP/1.1 can also reuse connections through pooling, the ability to multiplex streams becomes more important as the number of servers increases. When multiple HTTP requests are performed in a very short span of time, HTTP/1.1 has no way to share those connections. Therefore, it will create new connections to the content server for each HTTP request (see [here](https://blog.codavel.com/http2-multiplexing){:target="_blank"}{:rel="noopener noreferrer"} for a extended explanation)
 
-- **Binary protocol**: Unlike HTTP/1.1, which is text-based, HTTP/2 uses a binary protocol that reduces message size and facilitates more efficient parsing. This can have a significant impact on performance, particularly when dealing with large datasets such as images.
+- **Binary protocol**: Unlike HTTP/1.1, which is text-based, HTTP/2 uses a binary protocol which facilitates more efficient parsing. This can have a significant impact on performance, particularly when dealing with large datasets such as images.
 
 ### Protobuf
 
-Protocol Buffers, also known as Protobuf, is a language-agnostic binary serialization format developed by Google. It is used for efficient data **serialization of structured data** and communication between applications. It is faster than JSON for two reasons: messages are shorter and serialization (convert messages to and from bytes) is faster.
+Protocol Buffers, also known as Protobuf, is a language-agnostic binary serialization format developed by Google. It is used for efficient data **serialization of structured data** and communication between applications. It is faster than JSON for two reasons: 
+
+- **Messages are shorter**. In Protobuf messages do not contain any metadata or extra information such as field names and data types. This is not needed since the data schema has been strictly predefined in the `.proto` file. It also uses a compact binary representation, variable-length encoding, which means that the number of bytes required to represent a value depends on its size.
+- **Serialization is faster**. Converting messages to and from bytes is faster than in JSON because of its binary format and predefined schema. Decoding can be optimized and parallelized.
 
 In [this post](https://nilsmagnus.github.io/post/proto-json-sizes/){:target="_blank"}{:rel="noopener noreferrer"} you can see a good comparison of Protobuf vs JSON sizes for structured data. TLDR: Protobuf is always smaller than gzipped json but seems to lose its clear advantage when mesage sizes are large.
 
 ### How does this apply to images?
 
-Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. Things are different with images. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG... In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:
+Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. However, images do not fall under the category of structured text. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG... In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:
 
 ```python
 # create random 100x100 rgb image
@@ -45,11 +48,11 @@ encoded_image = cv2.imencode(".jpg", image)[1].tobytes()
 grpc.send(encoded_image)
 ```
 
-The point here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here... Let's check this with real numbers :)
+The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here... Let's check this with real numbers :)
 
 ## 1. Base benchmark 
 
-First thing we wanted to do is to check if we were able to reproduce those benchmarks we found on the web. The idea is simple, create two equivalent REST and gRPC servers and measure the time they take to process and respond to different requests.
+First thing we wanted to do is check if we were able to reproduce those benchmarks we found on the web. The idea is simple, create two equivalent REST and gRPC servers and measure the time they take to process and respond to different requests.
 The gRPC server has been implemented using [python grpc library](https://grpc.io/docs/languages/python/basics/){:target="_blank"}{:rel="noopener noreferrer"} and we have used [FastAPI](https://fastapi.tiangolo.com/){:target="_blank"}{:rel="noopener noreferrer"} for the REST one. 
 
 <div class="post-center-image">
@@ -75,7 +78,7 @@ class BasicRequest(BaseModel):
 class ImageBase64Request(BaseModel):
     """
     Encode image as a string using Base64 encoding. 
-    This is simple and very bad solution (but simple to do) that should be always avoided
+    This is a very bad solution (but simple to do) that should always be avoided
     """
     image: str
 
@@ -92,7 +95,7 @@ class BasicResponse(BaseModel):
 
 Note REST's requests and responses are identical to these so we can make a fair comparison.
 
-Our client does a very simple thing, it sends concurrent requests to each server and waits for a response. It then computes the average time it took. Pseudocode for the client it is shown below:
+Our client does a very simple thing, sends twenty concurrent requests to each server and waits for a response. It repeats this ten times for then computing the average time it took. Pseudocode for the client it is shown below:
 
 ```python
 times = []
@@ -151,8 +154,8 @@ We can extract some conclussion from previous tables:
 
 ## Torchserve benchmark
 
-I have been using [TorchServe](https://pytorch.org/serve/) for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things as batching and queing requests. 
-I do not pretend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers, I will let that for a plausible future post.
+I have been using [TorchServe](https://pytorch.org/serve/) for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things such as batching and queing requests. 
+I do not intend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers, I will leave that for a plausible future post.
 
 The documentation for Torchserve's [gRPC API](https://pytorch.org/serve/grpc_api.html){:target="_blank"}{:rel="noopener noreferrer"} could be improved, as it currently requires users to download the official repository to generate a Python gRPC client stub from the proto files. However, I have attached these files to the repository, so you can easily run the benchmark without having to worry about this step.
 
@@ -192,9 +195,11 @@ The experiment is very similar to the previous one, sending 20 concurrent reques
 
 </div>
 
+Note there are not results for B64 gRPC since this is not allowed by Torchserve schema definition. 
+
 Translating the insights gained from benchmarking with the base servers can be challenging. The tables indicate that Base64 encoding should be avoided and that there are no significant performance differences between using gRPC and REST.
 
-Two factors contribute to the similar performance results for gRPC and REST. Firstly, the model's inference time is considerably longer than the networking time, making it difficult to discern the small gains obtained by changing the transmission protocol. For example, sending 20 large images concurrently in the simple base case (Table 3) took roughly 0.19s, whereas we are now spending approximately 1.4 seconds, highlighting the significant impact of model inference time on the comparison.
+Two factors contribute to the similar performance results for gRPC and REST. Firstly, the model's inference time is considerably longer than the networking time, making it difficult to discern the small gains obtained by changing the transmission protocol. For example, sending 20 large images concurrently in the simple base case (Table 3) took roughly 0.19s, whereas we are now spending approximately 1.4 seconds (Table 6), highlighting the significant impact of model inference time on the comparison.
 
 Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve's `.proto` definition for [prediction response](https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23){:target="_blank"}{:rel="noopener noreferrer"} is too generic and it cannot be personalized with your model specifics.
 
@@ -205,11 +210,21 @@ message PredictionResponse {
 }
 ``` 
 
-This means that your response will be converted to a chunk of bytes so you would not be getting any advantage of Protobuf serialization (similar to what happens with images). A better or more customizable definition, as the one provided by Tfserving, of the `.proto` file could help to boost performance.
+This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the `.proto` file for our response could be something like:
+
+```python
+message PredictionResponse {
+    repeated float scores = 1;
+    repeated int32 scores = 2;
+    repeated repeated int32 bboxes = 3;
+}
+``` 
+
+The differences between this response and the one provided by Torchserve are clear. You do not get any of the Protobuf advantage since the Torchserve schema definition is too general. A better or more customizable definition such as the one provided by Tfserving, of the `.proto` file could help boost performance. 
 
 ## Conclusion
 
-If you're using Torchserve to serve computer vision models, it's recommended to steer clear of gRPC. Our findings show that there are no performance benefits to using gRPC, and it adds complexity to your code while making debugging more challenging due to its non-human-readable messages. Since REST is more commonly used, most developers are already familiar with it. Switching to gRPC in this scenario comes with a learning curve that doesn't offer any significant advantages.
+If you're using Torchserve to serve computer vision models, it's recommended to steer clear of gRPC. Our findings show that there are no performance benefits to using gRPC. Moreover, it adds code complexity while hindering debugging due to its non-human-readable messages. Since REST is more commonly used, most developers are already familiar with it. Switching to gRPC in this scenario comes with a learning curve that doesn't offer any significant advantages.
 
 
 *Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}*
