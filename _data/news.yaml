@@ -1,7 +1,10 @@
 news:
+  - month: "October"
+    year: "2023"
+    text: "I'll be at the next <a href='https://statsbomb.com/events/statsbomb-conference-2023/' target='_blank' rel='noopener noreferrer'>Statsbomb conference</a> at Wembley. Come say hi! 👋"
   - month: "February"
     year: "2022"
-    text: "I am joining <a href='https://www.stats.bomb.com' target='_blank' rel='noopener noreferrer'>Statsbomb</a> as a Machine Learning Engineer ."
+    text: "I am joining <a href='https://statsbomb.com/' target='_blank' rel='noopener noreferrer'>Statsbomb</a> as a Machine Learning Engineer ."
   - month: "April"
     year: "2021"
     text: "Drone vs Bird paper is out! Check <a href='https://www.mdpi.com/1424-8220/21/8/2824' target='_blank' rel='noopener noreferrer'>our awarded solution</a>."
