@@ -148,10 +148,10 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="n">torchvision.models.feature_extraction</span> <span class="kn">import</span> <span class="n">create_feature_extractor</span>
 
-<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nf">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nf">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
 <span class="n">resnet50</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
 
-<span class="n">feature_extractor</span> <span class="o">=</span> <span class="nf">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="s">'layer4'</span><span class="p">,</span> <span class="s">'fc'</span><span class="p">])</span>
+<span class="n">feature_extractor</span> <span class="o">=</span> <span class="nf">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">layer4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">fc</span><span class="sh">'</span><span class="p">])</span>
 </code></pre></div></div>
 
 <p>For computing the CAM we just need to apply the previous formula. First we need to get linear layer weight matrix, select the row that relates with the predicted output class and multiply it by the extracted features, then we can apply min-max normalization so that the CAM is between 0 and 1.</p>
@@ -161,8 +161,8 @@
 <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
     <span class="c1"># Extract features and remove batch dim
 </span>    <span class="n">output</span> <span class="o">=</span> <span class="nf">feature_extractor</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
-    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"layer4"</span><span class="p">].</span><span class="nf">squeeze</span><span class="p">()</span>
-    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">"fc"</span><span class="p">].</span><span class="nf">argmax</span><span class="p">()</span>
+    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="sh">"</span><span class="s">layer4</span><span class="sh">"</span><span class="p">].</span><span class="nf">squeeze</span><span class="p">()</span>
+    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="sh">"</span><span class="s">fc</span><span class="sh">"</span><span class="p">].</span><span class="nf">argmax</span><span class="p">()</span>
 
     <span class="c1"># Linear combination of class weights and cnn features
 </span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">fc_layer_weights</span><span class="p">[</span><span class="n">class_id</span><span class="p">].</span><span class="nf">matmul</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
@@ -225,7 +225,7 @@
 <p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code class="language-plaintext highlighter-rouge">0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">transformers</span> <span class="kn">import</span> <span class="n">ViTForImageClassification</span>
-<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="s">"google/vit-base-patch16-224"</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="sh">"</span><span class="s">google/vit-base-patch16-224</span><span class="sh">"</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
 <span class="n">vit</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
 </code></pre></div></div>
 
@@ -238,7 +238,7 @@
 <span class="c1"># Average the attention at each layer over all heads
 </span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># Add residual and re-normalize
-</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="nf">to</span><span class="p">(</span><span class="s">"cuda"</span><span class="p">)</span>
+</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
 <span class="n">attention_probs</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">attention_probs</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">residual</span>
 
 <span class="c1"># Normalize by layer

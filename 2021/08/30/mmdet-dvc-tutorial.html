@@ -155,7 +155,7 @@ git push
   <li>The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at:</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">init_cfg</span><span class="o">=</span><span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'Pretrained'</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="s">'torchvision://resnet50'</span><span class="p">))</span><span class="err">`</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">init_cfg</span><span class="o">=</span><span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sh">'</span><span class="s">Pretrained</span><span class="sh">'</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="sh">'</span><span class="s">torchvision://resnet50</span><span class="sh">'</span><span class="p">))</span><span class="err">`</span>
 </code></pre></div></div>
 
 <p>As a curious fact, I checked out <a href="https://pytorch.org/vision/stable/models.html" target="_blank" rel="noopener noreferrer">official torchvision documentation</a> and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results…</p>
@@ -202,8 +202,8 @@ git push
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">log_config</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">(</span>
     <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">hooks</span><span class="o">=</span><span class="p">[</span>
-        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'TextLoggerHook'</span><span class="p">),</span>
-        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">"DvcliveLoggerHook"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">"training/metrics"</span><span class="p">),</span>
+        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sh">'</span><span class="s">TextLoggerHook</span><span class="sh">'</span><span class="p">),</span>
+        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sh">"</span><span class="s">DvcliveLoggerHook</span><span class="sh">"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="sh">"</span><span class="s">training/metrics</span><span class="sh">"</span><span class="p">),</span>
     <span class="p">])</span>
 </code></pre></div></div>
 

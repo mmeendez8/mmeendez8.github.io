@@ -257,7 +257,7 @@ dvc checkout
 <span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
 <span class="kn">from</span> <span class="n">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span><span class="p">,</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
 
-<span class="n">CATEGORY_NAMES</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s">"chair"</span><span class="p">,</span> <span class="s">"couch"</span><span class="p">,</span> <span class="s">"tv"</span><span class="p">,</span> <span class="s">"remote"</span><span class="p">,</span> <span class="s">"book"</span><span class="p">,</span> <span class="s">"vase"</span><span class="p">]</span> 
+<span class="n">CATEGORY_NAMES</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="sh">"</span><span class="s">chair</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">couch</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tv</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">remote</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">book</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">vase</span><span class="sh">"</span><span class="p">]</span> 
 
 <span class="k">class</span> <span class="nc">COCOCategory</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
@@ -281,12 +281,12 @@ dvc checkout
     <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOCategory</span><span class="p">]</span>
 
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s">"split"</span><span class="p">,</span> <span class="p">[</span><span class="s">"train"</span><span class="p">,</span> <span class="s">"val"</span><span class="p">])</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="sh">"</span><span class="s">split</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="sh">"</span><span class="s">train</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">val</span><span class="sh">"</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">test_coco_format</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
 
-    <span class="n">annotations_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"data/coco_sample/annotations/split_</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s">.json"</span>
+    <span class="n">annotations_file</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">data/coco_sample/annotations/split_</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s">.json</span><span class="sh">"</span>
     
-    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
 
     <span class="c1"># Check image ids are unique

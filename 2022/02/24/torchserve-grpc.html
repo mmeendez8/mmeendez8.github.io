@@ -154,7 +154,7 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create random 100x100 rgb image
 </span><span class="n">image</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
 <span class="c1"># serialize image to jpg using opencv
-</span><span class="n">encoded_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imencode</span><span class="p">(</span><span class="s">".jpg"</span><span class="p">,</span> <span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">tobytes</span><span class="p">()</span>
+</span><span class="n">encoded_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imencode</span><span class="p">(</span><span class="sh">"</span><span class="s">.jpg</span><span class="sh">"</span><span class="p">,</span> <span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">tobytes</span><span class="p">()</span>
 <span class="c1"># fake send with grpc
 </span><span class="n">grpc</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">encoded_image</span><span class="p">)</span>
 </code></pre></div></div>
@@ -176,25 +176,25 @@ The gRPC server has been implemented using <a href="https://grpc.io/docs/languag
 <p>We decided to measure three different requests and using a single response for all of them. The gRPC <code class="language-plaintext highlighter-rouge">.proto</code> file for those requests looks like the following:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BasicRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="s">"""
+    <span class="sh">"""</span><span class="s">
     Structured data request, we expect to match online benchmarks with this
-    """</span>
+    </span><span class="sh">"""</span>
     <span class="n">field1</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">field2</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">field3</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">field4</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">ImageBase64Request</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="s">"""
+    <span class="sh">"""</span><span class="s">
     Encode image as a string using Base64 encoding. 
     This is a very bad solution (but simple to do) that should always be avoided
-    """</span>
+    </span><span class="sh">"""</span>
     <span class="n">image</span><span class="p">:</span> <span class="nb">str</span>
 
 <span class="k">class</span> <span class="nc">ImageBinaryRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="s">"""
+    <span class="sh">"""</span><span class="s">
     Contains an image encoded as bytes.
-    """</span>
+    </span><span class="sh">"""</span>
     <span class="n">image</span><span class="p">:</span> <span class="nb">bytes</span>
 
 <span class="k">class</span> <span class="nc">BasicResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
