@@ -1,1 +1,5 @@
 Sitemap: https://mmeendez8.github.io/sitemap.xml
+
+User-agent: GPTBot
+User-agent: ChatGPT-User
+Disallow: /
