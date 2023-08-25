@@ -3,7 +3,7 @@ layout: post
 title:  "Torchserve in Computer Vision: REST vs gRPC"
 subtitle: "Benchmarking protocols performance for sending images"
 description: "This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case."
-image: "/assets/images/fullsize/posts/2022-02-24-torchserve-grpc/thumbnail.jpg"
+image: "/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg"
 selected: y
 mathjax: y
 ---
@@ -56,7 +56,7 @@ First thing we wanted to do is check if we were able to reproduce those benchmar
 The gRPC server has been implemented using [python grpc library](https://grpc.io/docs/languages/python/basics/){:target="_blank"}{:rel="noopener noreferrer"} and we have used [FastAPI](https://fastapi.tiangolo.com/){:target="_blank"}{:rel="noopener noreferrer"} for the REST one. 
 
 <div class="post-center-image">
-{% picture pimage /assets/images/fullsize/posts/2022-02-24-torchserve-grpc/cat_bytes.png --alt Cat being compressed to bytes  %}
+{% picture pimage /assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes.png --alt Cat being compressed to bytes  %}
 </div>
 
 {:refdef: class="image-caption"}
