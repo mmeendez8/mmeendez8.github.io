@@ -81,7 +81,7 @@ title: Personal Webpage
     <h2>Posts</h2>
 
     <ul class="posts" id="posts-selected">
-      {% assign selected_posts = site.posts %}
+      {% assign selected_posts = site.posts | where: "selected", "y"  %}
       {% for post in selected_posts %}
       <li class="post">
         <a href="{{ post.url }}">
