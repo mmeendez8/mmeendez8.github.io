@@ -7,7 +7,7 @@
 2. Install lvips
    
 ```
-sudo apt update && sudo install libvips-tools
+sudo apt update && sudo apt install libvips-tools
 ```
 
 3. Install gems
