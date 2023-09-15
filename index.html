@@ -81,17 +81,30 @@ title: Personal Webpage
     <h2>Posts</h2>
 
     <ul class="posts" id="posts-selected">
+      {% assign post_count = 0 %}
       {% assign selected_posts = site.posts | where: "selected", "y"  %}
+      {% assign post_classes = 'post ' %}
+      
       {% for post in selected_posts %}
-      <li class="post">
-        <a href="{{ post.url }}">
-          <div class="post-image-placeholder">
-            {% picture posts-grid {{ post.image }} --alt {{ post.description }} %}
-          </div>
-          <h3 class="post-title">{{ post.title }}</h3>
-          <p class="post-description"> {{ post.subtitle }} </p> 
-        </a>    
-      </li>
+        <li class="{{ post_classes }}">
+          <a href="{{ post.url }}">
+            <div class="post-image-placeholder">
+              {% picture posts-grid {{ post.image }} --alt {{ post.description }} %}
+            </div>
+            <h3 class="post-title">{{ post.title }}</h3>
+            <p class="post-description"> {{ post.subtitle }} </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        {% assign post_count = post_count | plus: 1 %}
+        
+        <!-- add see more link and set next posts to class hidden -->
+        {% if post_count == {{site.data.main_info.posts_to_show }} %}
+          <a href="#" class="see-more-link">See more posts</a>
+          {% assign post_classes = post_classes | append: 'hidden' %}
+        {% endif %}
+
       {% endfor %}
     </ul>
   </div>
