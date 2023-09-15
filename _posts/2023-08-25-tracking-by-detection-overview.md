@@ -8,6 +8,11 @@ selected: n
 mathjax: y
 ---
 
+# todo:
+
+1. lightbox does not work, link to original image instead. probably best option is to remove the picture tag and use single image size
+2. mmdet in table makes no sense
+
 ## Table of Contents
 
 <div class="table-wrapper" markdown="block">
