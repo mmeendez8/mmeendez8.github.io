@@ -25,11 +25,22 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -172,115 +183,191 @@
     <ul class="posts" id="posts-selected">
       
       
-      <li class="post">
-        <a href="/2023/02/24/torchserve-grpc.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0a3487f5b.jpg" alt="This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case." srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-0fd0326d8.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-600-0fd0326d8.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0fd0326d8.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="3200" height="1879">
-
-          </div>
-          <h3 class="post-title">Torchserve in Computer Vision: REST vs gRPC</h3>
-          <p class="post-description"> Benchmarking protocols performance for sending images </p> 
-        </a>    
-      </li>
       
-      <li class="post">
-        <a href="/2021/12/09/cnn-vs-transformers.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-3fbd1fc19.jpg" alt="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-eccb3b6b6.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-eccb3b6b6.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-eccb3b6b6.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1092" height="772">
-
-          </div>
-          <h3 class="post-title">CNNs & Transformers Explainability: What do they see?</h3>
-          <p class="post-description"> A simple explanation and visualization of ViT attentions and ResNet activations </p> 
-        </a>    
-      </li>
       
-      <li class="post">
-        <a href="/2021/09/23/ansible-conda.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-c52a5160c.jpg" alt="The best way for monitoring your server is through your own code," srcset="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-400-1fefb4d77.webp 400w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-600-1fefb4d77.webp 600w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-1fefb4d77.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1177" height="768">
-
-          </div>
-          <h3 class="post-title">Using Ansible and Python to monitor my servers</h3>
-          <p class="post-description"> Code your own scripts in Python, deploy them using Ansible & Conda and get real time reports from your server </p> 
-        </a>    
-      </li>
       
-      <li class="post">
-        <a href="/2021/08/30/mmdet-dvc-tutorial.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-1f776a3e5.jpg" alt="Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!" srcset="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-400-b7ca4b2d0.webp 400w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-600-b7ca4b2d0.webp 600w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-b7ca4b2d0.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1600" height="836">
+        <li class="post ">
+          <a href="/2023/02/24/torchserve-grpc.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0a3487f5b.jpg" alt="This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case." srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-0fd0326d8.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-600-0fd0326d8.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0fd0326d8.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="3200" height="1879">
 
-          </div>
-          <h3 class="post-title">DVC + MMdetection</h3>
-          <p class="post-description"> A guide to train, monitor, compare and evaluate your pytorch object detection models </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">Torchserve in Computer Vision: REST vs gRPC</h3>
+            <p class="post-description"> Benchmarking protocols performance for sending images </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
       
-      <li class="post">
-        <a href="/2021/07/19/new-docker-cache-is-out.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-8df78676f.jpg" alt="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-400-6bd122606.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-600-6bd122606.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-6bd122606.webp 768w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="768" height="572">
+        <li class="post ">
+          <a href="/2021/12/09/cnn-vs-transformers.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-3fbd1fc19.jpg" alt="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-eccb3b6b6.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-eccb3b6b6.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-eccb3b6b6.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1092" height="772">
 
-          </div>
-          <h3 class="post-title">Export to Github Cache with Docker Buildx</h3>
-          <p class="post-description"> We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast! </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">CNNs & Transformers Explainability: What do they see?</h3>
+            <p class="post-description"> A simple explanation and visualization of ViT attentions and ResNet activations </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
       
-      <li class="post">
-        <a href="/2021/07/01/dvc-tutorial.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-601183df4.jpg" alt="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code." srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-400-cd6ecdf64.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-600-cd6ecdf64.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cd6ecdf64.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1200" height="627">
+        <li class="post ">
+          <a href="/2021/09/23/ansible-conda.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-c52a5160c.jpg" alt="The best way for monitoring your server is through your own code," srcset="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-400-1fefb4d77.webp 400w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-600-1fefb4d77.webp 600w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-1fefb4d77.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1177" height="768">
 
-          </div>
-          <h3 class="post-title">Version control your dataset with DVC</h3>
-          <p class="post-description"> Use DVC and Git for tracking changes on your machine learning dataset </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">Using Ansible and Python to monitor my servers</h3>
+            <p class="post-description"> Code your own scripts in Python, deploy them using Ansible & Conda and get real time reports from your server </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
       
-      <li class="post">
-        <a href="/2021/04/23/cache-docker.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1992" height="1440">
+        <li class="post ">
+          <a href="/2021/08/30/mmdet-dvc-tutorial.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-1f776a3e5.jpg" alt="Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!" srcset="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-400-b7ca4b2d0.webp 400w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-600-b7ca4b2d0.webp 600w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-b7ca4b2d0.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1600" height="836">
 
-          </div>
-          <h3 class="post-title">Reduce Actions time with Docker and Github Cache</h3>
-          <p class="post-description"> Use Github Actions cache and Docker to reduce time installing Conda dependencies </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">DVC + MMdetection</h3>
+            <p class="post-description"> A guide to train, monitor, compare and evaluate your pytorch object detection models </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
       
-      <li class="post">
-        <a href="/2019/02/06/vae-fifa.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-cf9d327a3.jpg" alt="Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-400-3989e34a2.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-600-3989e34a2.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-3989e34a2.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1280" height="720">
+        <li class="post ">
+          <a href="/2021/07/19/new-docker-cache-is-out.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-8df78676f.jpg" alt="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-400-6bd122606.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-600-6bd122606.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-768-6bd122606.webp 768w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="768" height="572">
 
-          </div>
-          <h3 class="post-title">Generating FIFA 19 players with VAEs and Tensorflow</h3>
-          <p class="post-description"> Learn to generate your own footbal players </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">Export to Github Cache with Docker Buildx</h3>
+            <p class="post-description"> We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast! </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
       
-      <li class="post">
-        <a href="/2019/01/24/vae-tensorflow.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-303e983fa.jpg" alt="This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-400-3b8ac1db5.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-600-3b8ac1db5.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-3b8ac1db5.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2500" height="1667">
+        <li class="post ">
+          <a href="/2021/07/01/dvc-tutorial.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-601183df4.jpg" alt="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code." srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-400-cd6ecdf64.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-600-cd6ecdf64.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cd6ecdf64.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1200" height="627">
 
-          </div>
-          <h3 class="post-title">VAEs! Generating images with Tensorflow</h3>
-          <p class="post-description"> Learn how to code a Variational Autoencoder </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">Version control your dataset with DVC</h3>
+            <p class="post-description"> Use DVC and Git for tracking changes on your machine learning dataset </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+          <a href="#" class="see-more-link">See more posts</a>
+          
+        
+
       
-      <li class="post">
-        <a href="/2019/01/19/vae-theory.html">
-          <div class="post-image-placeholder">
-            <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow!" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-400-b3e614e1f.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-600-b3e614e1f.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2002" height="1497">
+        <li class="post hidden">
+          <a href="/2021/04/23/cache-docker.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1992" height="1440">
 
-          </div>
-          <h3 class="post-title">The theory behind Variational Autoencoders</h3>
-          <p class="post-description"> Learn the math </p> 
-        </a>    
-      </li>
+            </div>
+            <h3 class="post-title">Reduce Actions time with Docker and Github Cache</h3>
+            <p class="post-description"> Use Github Actions cache and Docker to reduce time installing Conda dependencies </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
+      
+        <li class="post hidden">
+          <a href="/2019/02/06/vae-fifa.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-cf9d327a3.jpg" alt="Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-400-3989e34a2.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-600-3989e34a2.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-3989e34a2.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1280" height="720">
+
+            </div>
+            <h3 class="post-title">Generating FIFA 19 players with VAEs and Tensorflow</h3>
+            <p class="post-description"> Learn to generate your own footbal players </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
+      
+        <li class="post hidden">
+          <a href="/2019/01/24/vae-tensorflow.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-303e983fa.jpg" alt="This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-400-3b8ac1db5.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-600-3b8ac1db5.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-3b8ac1db5.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2500" height="1667">
+
+            </div>
+            <h3 class="post-title">VAEs! Generating images with Tensorflow</h3>
+            <p class="post-description"> Learn how to code a Variational Autoencoder </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
+      
+        <li class="post hidden">
+          <a href="/2019/01/19/vae-theory.html">
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow!" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-400-b3e614e1f.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-600-b3e614e1f.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2002" height="1497">
+
+            </div>
+            <h3 class="post-title">The theory behind Variational Autoencoders</h3>
+            <p class="post-description"> Learn the math </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
       
     </ul>
   </div>
@@ -629,8 +716,8 @@
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-  <script type="text/javascript" src="/libs/external/lightbox/lightbox.js"></script>
-  <link rel="stylesheet" href="/libs/external/lightbox/lightbox.css">
+  <script type="text/javascript" src="/libs/external/lightbox/lightbox.js" defer></script>
+  <script type="text/javascript" src="/libs/custom/myjs.js" defer></script>
 
 </body>
 

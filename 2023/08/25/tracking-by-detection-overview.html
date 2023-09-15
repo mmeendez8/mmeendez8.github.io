@@ -25,11 +25,22 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
 
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -113,7 +124,14 @@
 
 <div class="container the-post-content">
 
-  <h2 id="table-of-contents">Table of Contents</h2>
+  <h1 id="todo">todo:</h1>
+
+<ol>
+  <li>lightbox does not work, link to original image instead. probably best option is to remove the picture tag and use single image size</li>
+  <li>mmdet in table makes no sense</li>
+</ol>
+
+<h2 id="table-of-contents">Table of Contents</h2>
 
 <div class="table-wrapper">
 
@@ -352,8 +370,8 @@
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-  <script type="text/javascript" src="/libs/external/lightbox/lightbox.js"></script>
-  <link rel="stylesheet" href="/libs/external/lightbox/lightbox.css">
+  <script type="text/javascript" src="/libs/external/lightbox/lightbox.js" defer></script>
+  <script type="text/javascript" src="/libs/custom/myjs.js" defer></script>
 
 </body>
 
