@@ -4,7 +4,7 @@ title: "An overview of tracking by detection"
 subtitle: "A look at the evolution and precision of Multi-Object Tracking"
 description: "Object tracking is a challenging problem in computer vision. It involves identifying and tracking the movement of objects in a video or image sequence. One common approach to object tracking is tracking by detection. This approach first uses an object detector to identify objects in each frame of the video. Then, a tracker is used to associate the detected objects across frames. This blog post provides an overview of tracking by detection. We will discuss the basics of the approach, and we will introduce some of the most popular tracking algorithms: SORT, DeepSORT, ByteTrack... We will also discuss the strengths and weaknesses of each algorithm, and we will provide some recommendations on which algorithm to choose for your application."
 image: "/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/thumbnail.png"
-selected: y
+selected: n
 mathjax: y
 ---
 
