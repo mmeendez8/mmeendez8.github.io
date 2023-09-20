@@ -31,10 +31,10 @@ jobs:
         ruby-version: '3.0' # Not needed with a .ruby-version file
         bundler-cache: true
 
-    - name: Install and run css-html-js-minify
-      run: |
-        pip install css-html-js-minify
-        css-html-js-minify --overwrite libs
+    - name: Auto Minify
+      uses: nizarmah/auto-minify@v2.1
+      with:
+        overwrite: true
 
     # Build the site
     - name: Jekyll build
