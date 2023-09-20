@@ -240,7 +240,9 @@
 <p>If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda’s job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But … we need to <strong>manually build and load</strong> our docker image when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let’s see how we can avoid it.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-800-90aba4581.jpg" alt="Time comparison between builds" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-400-cbbdf90ab.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-600-cbbdf90ab.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-800-cbbdf90ab.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-932-cbbdf90ab.webp 932w" sizes="(max-width: 767px) 100vw, 80vw" width="932" height="489" />
+<a href="/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-800-90aba4581.jpg" alt="Time comparison between builds" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-400-cbbdf90ab.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-600-cbbdf90ab.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-800-cbbdf90ab.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/time_comparison-932-cbbdf90ab.webp 932w" sizes="(max-width: 767px) 100vw, 80vw" width="932" height="489" />
+</a>
 
 </div>
 
@@ -320,14 +322,18 @@
 <p>The first time we run this job, our cache is empty, so it will create the docker image from scratch, and that takes about 15 minutes!</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-690-104eab200.jpg" alt="Empty cache result" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-400-b8b614e0e.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-600-b8b614e0e.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-690-b8b614e0e.webp 690w" sizes="(max-width: 767px) 100vw, 80vw" width="690" height="417" />
+<a href="/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-690-104eab200.jpg" alt="Empty cache result" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-400-b8b614e0e.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-600-b8b614e0e.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/empty_docker_cache-690-b8b614e0e.webp 690w" sizes="(max-width: 767px) 100vw, 80vw" width="690" height="417" />
+</a>
 
 </div>
 
 <p>But the next time the action fires (and if we don’t modify our Dockerfile or Conda environment) we can reuse the cached layers and reduce this time to just ~ 6 minutes.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-691-b4b11f9bd.jpg" alt="Full cache result" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-400-4508fa067.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-600-4508fa067.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-691-4508fa067.webp 691w" sizes="(max-width: 767px) 100vw, 80vw" width="691" height="427" />
+<a href="/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-691-b4b11f9bd.jpg" alt="Full cache result" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-400-4508fa067.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-600-4508fa067.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_docker_cache-691-4508fa067.webp 691w" sizes="(max-width: 767px) 100vw, 80vw" width="691" height="427" />
+</a>
 
 </div>
 
@@ -427,7 +433,9 @@
 <p>We can now push our changes and Github will compute that hash and save it in the cache.. If we later commit some changes to our repository, like adding a new test function or some new feature to our source code, the compile time will look like this:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-681-c4d1414e7.jpg" alt="Full cache caption" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-400-42a861f81.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-600-42a861f81.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-681-42a861f81.webp 681w" sizes="(max-width: 767px) 100vw, 80vw" width="681" height="409" />
+<a href="/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-681-c4d1414e7.jpg" alt="Full cache caption" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-400-42a861f81.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-600-42a861f81.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/full_cache-681-42a861f81.webp 681w" sizes="(max-width: 767px) 100vw, 80vw" width="681" height="409" />
+</a>
 
 </div>
 

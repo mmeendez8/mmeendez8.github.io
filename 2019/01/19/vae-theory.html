@@ -139,7 +139,9 @@
 <p>If you are not impressed yet, think about this simplification of the problem. Imagine we collect all articles that have been published in New York Times during last year and we force ourselves to summarize them but with the following restriction: we can only use one hundred words from English vocabulary. For this task we will need to select this set of words carefully to minimize the loss of information. When we have succeed at this task, we might be able to reconstruct the original article from the words we see. But also, we can select a random number of words (from the 100 sample set) and create a new ‘fake’ article!</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-410396935.jpg" alt="Fake news image" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-400-0d7a34b13.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-600-0d7a34b13.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-0d7a34b13.webp 624w" sizes="(max-width: 767px) 100vw, 80vw" width="624" height="351" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/fake.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-410396935.jpg" alt="Fake news image" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-400-0d7a34b13.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-600-0d7a34b13.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-0d7a34b13.webp 624w" sizes="(max-width: 767px) 100vw, 80vw" width="624" height="351" />
+</a>
 
 </div>
 
@@ -169,21 +171,27 @@
 <p>So we use \(q(z\|x)\) to approximate \(p(z\|x)\). We can use <a href="https://www.youtube.com/watch?v=xmvxXXZUXdk" target="_blank" rel="noopener noreferrer">Kullback-Leibler</a> divergence to measure how well are we approximating p.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-5d6bb6d30.jpg" alt="KL divergence formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-400-388f4102b.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-388f4102b.webp 450w" sizes="(max-width: 767px) 100vw, 80vw" width="450" height="107" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-5d6bb6d30.jpg" alt="KL divergence formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-400-388f4102b.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-388f4102b.webp 450w" sizes="(max-width: 767px) 100vw, 80vw" width="450" height="107" />
+</a>
 
 </div>
 
 <p>We need to minimize this divergence but, once again, we find the intractable term \(\log p(x)\). Nevertheless we can rewrite this into an intuitive way. Let’s define the Evidence Lower BOund function (<strong>ELBO</strong>) as:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-3798e4a84.jpg" alt="ELBO formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-400-5a455e3a8.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-5a455e3a8.webp 462w" sizes="(max-width: 767px) 100vw, 80vw" width="462" height="35" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-3798e4a84.jpg" alt="ELBO formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-400-5a455e3a8.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-5a455e3a8.webp 462w" sizes="(max-width: 767px) 100vw, 80vw" width="462" height="35" />
+</a>
 
 </div>
 
 <p>This functions is a lower bound on the evidence, this means that if we maximize it, we will increase the probability of observing the data (<a href="http://edwardlib.org/tutorials/klqp" target="_blank" rel="noopener noreferrer">more here</a>). If we mix the two previous equations we will get:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-7aa21b89d.jpg" alt="Log formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-400-9689f96fb.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-9689f96fb.webp 471w" sizes="(max-width: 767px) 100vw, 80vw" width="471" height="35" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-7aa21b89d.jpg" alt="Log formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-400-9689f96fb.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-9689f96fb.webp 471w" sizes="(max-width: 767px) 100vw, 80vw" width="471" height="35" />
+</a>
 
 </div>
 
@@ -192,7 +200,9 @@
 <p>In our neural network the encoder takes input data and outputs \(λ\) parameters that approximate \(q​_θ​​(z\|x, λ)\) and the decoder gets latent variables into the original data distribution \(p_ϕ(x\|z)\). This \(θ\), \(ϕ\) are the neural networks weights. So we can write the ELBO function (unwrapping the joint probability term) as:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-d41a1b2d2.jpg" alt="Elbo" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-400-ec287e278.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-ec287e278.webp 595w" sizes="(max-width: 767px) 100vw, 80vw" width="595" height="31" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-d41a1b2d2.jpg" alt="Elbo" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-400-ec287e278.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-ec287e278.webp 595w" sizes="(max-width: 767px) 100vw, 80vw" width="595" height="31" />
+</a>
 
 </div>
 
@@ -205,14 +215,18 @@
 <p>As we said before, the family of distribution that we are going to use are Gaussians. Usually, \(p(Z) = Normal(0,1)\), so if the encoder outputs representations of \(z\) which are not following a unit normal distribution, will get penalized by the KL divergence term (more info on KL divergence between Gaussians <a href="https://stats.stackexchange.com/questions/7440/kl-divergence-between-two-univariate-gaussians" target="_blank" rel="noopener noreferrer">here</a>)</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-0f1952f53.jpg" alt="Architecture VAE" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-400-48a7b5dcf.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-48a7b5dcf.webp 460w" sizes="(max-width: 767px) 100vw, 80vw" width="460" height="327" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-0f1952f53.jpg" alt="Architecture VAE" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-400-48a7b5dcf.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-48a7b5dcf.webp 460w" sizes="(max-width: 767px) 100vw, 80vw" width="460" height="327" />
+</a>
 
 </div>
 
 <p>Decoder will sample z from \(q​_θ​​(z\|x)\). The problem here is that backprop will not be able to flow through this random node since it is purely stochastic and non deterministic on networks parameters. We can enforce this, knowing that a normal distributed variable with mean \(μ\) and standard deviation \(σ\), can be sampled from:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-ab0d9328e.jpg" alt="Z sample formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-fdeba3d78.webp 160w" sizes="(max-width: 767px) 100vw, 80vw" width="160" height="21" />
+<a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-ab0d9328e.jpg" alt="Z sample formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-fdeba3d78.webp 160w" sizes="(max-width: 767px) 100vw, 80vw" width="160" height="21" />
+</a>
 
 </div>
 

@@ -140,7 +140,9 @@
 
 <p>In <a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:</p>
 
-<p><img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-600-c0f0bfcc7.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1000-c0f0bfcc7.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" /></p>
+<p><a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-600-c0f0bfcc7.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1000-c0f0bfcc7.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" />
+</a></p>
 
 <p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code class="language-plaintext highlighter-rouge">n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code class="language-plaintext highlighter-rouge">n_filters</code> x <code class="language-plaintext highlighter-rouge">n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
 
@@ -185,7 +187,9 @@
 <p>That’s all! Just a few lines, let’s see a few simple examples:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-333ec12b6.jpg" alt="CAM" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-400-d5f6fcf29.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-600-d5f6fcf29.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-d5f6fcf29.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-1000-d5f6fcf29.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-333ec12b6.jpg" alt="CAM" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-400-d5f6fcf29.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-600-d5f6fcf29.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-d5f6fcf29.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-1000-d5f6fcf29.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+</a>
 
 </div>
 
@@ -196,7 +200,9 @@
 <p>ViT paper<a href="https://arxiv.org/pdf/2010.11929.pdf" target="_blank" rel="noopener noreferrer">[3]</a> was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works<a href="https://arxiv.org/abs/2101.01169" target="_blank" rel="noopener noreferrer">[4]</a> that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-da40c3cdb.jpg" alt="Vision Transformer" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-400-23824f5be.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-600-23824f5be.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-23824f5be.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-879-23824f5be.webp 879w" sizes="(max-width: 767px) 100vw, 80vw" width="879" height="470" />
+<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-da40c3cdb.jpg" alt="Vision Transformer" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-400-23824f5be.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-600-23824f5be.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-23824f5be.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-879-23824f5be.webp 879w" sizes="(max-width: 767px) 100vw, 80vw" width="879" height="470" />
+</a>
 
 </div>
 
@@ -221,7 +227,9 @@
 <p>We can model the information flow as a graph where input patches and hidden embeddings are the nodes and the edges represent the attentions from the nodes in one layer to the next layer. These edges are weighted by the attention weights which determine the amount of information that is passed from one layer to the next. Hence, if we want to compute the attention that a node at layer \(i\) receives from all previous layer nodes, we can simply multiply the attention weights matrices from the input layer until our target \(i\). Check the following animation to see how this works:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-2f6a36848.jpg" alt="Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-400-d83342cea.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-600-d83342cea.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-d83342cea.webp 774w" sizes="(max-width: 767px) 100vw, 80vw" width="774" height="658" />
+<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-2f6a36848.jpg" alt="Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-400-d83342cea.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-600-d83342cea.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-d83342cea.webp 774w" sizes="(max-width: 767px) 100vw, 80vw" width="774" height="658" />
+</a>
 
 </div>
 
@@ -270,7 +278,9 @@
 <p>Pretty simple, let’s see a few examples:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-62565fb71.jpg" alt="Rollout Transform" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-400-c56709655.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-600-c56709655.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-c56709655.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-1000-c56709655.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-62565fb71.jpg" alt="Rollout Transform" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-400-c56709655.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-600-c56709655.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-c56709655.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-1000-c56709655.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+</a>
 
 </div>
 

@@ -157,7 +157,9 @@
 <p>Tip: we can see how our network looks using TensorBoard! (<a href="https://github.com/mmeendez8/Autoencoder" target="_blank" rel="noopener noreferrer">full code on Github</a>)</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-e71e24b94.jpg" alt="Tensorboard graph view" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-400-dab2e0ffa.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-600-dab2e0ffa.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-dab2e0ffa.webp 719w" sizes="(max-width: 767px) 100vw, 80vw" width="719" height="793" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-e71e24b94.jpg" alt="Tensorboard graph view" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-400-dab2e0ffa.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-600-dab2e0ffa.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-dab2e0ffa.webp 719w" sizes="(max-width: 767px) 100vw, 80vw" width="719" height="793" />
+</a>
 
 </div>
 
@@ -170,7 +172,9 @@
 <p>Note that <code class="language-plaintext highlighter-rouge">FLAGS.inputs_decoder</code> references the number of neurons in our dense layers which will determine the size of the image before the transpose convolution layers. In this case I will use the same structure as in the encoder, so the number of neurons will be 49 and the input image size to the first tranposed conv layer will be <code class="language-plaintext highlighter-rouge">7x7</code>. It’s also interesting to point that the last layer uses a <a href="https://en.wikipedia.org/wiki/Sigmoid_function" target="_blank" rel="noopener noreferrer">sigmoid</a> activation, <strong>so we force our outputs to be between 0 and 1</strong>.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-64a395de0.jpg" alt="Sigmoid function plot" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-8331251bb.webp 320w" sizes="(max-width: 767px) 100vw, 80vw" width="320" height="213" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-64a395de0.jpg" alt="Sigmoid function plot" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-8331251bb.webp 320w" sizes="(max-width: 767px) 100vw, 80vw" width="320" height="213" />
+</a>
 
 </div>
 
@@ -193,11 +197,15 @@
 <p>Below, we can see how our network learns to transform the input image in the latent space of 5 dimensions, to recover them then to the original space. Note how as more epochs have passed, we obtain better results and a better loss.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-59c688a41.jpg" alt="Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-400-f9ce5a4c9.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-f9ce5a4c9.webp 540w" sizes="(max-width: 767px) 100vw, 80vw" width="540" height="480" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-59c688a41.jpg" alt="Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-400-f9ce5a4c9.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-f9ce5a4c9.webp 540w" sizes="(max-width: 767px) 100vw, 80vw" width="540" height="480" />
+</a>
 
 </div>
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-d1f17c253.jpg" alt="Fashion Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-400-93c6d0307.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-93c6d0307.webp 540w" sizes="(max-width: 767px) 100vw, 80vw" width="540" height="480" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-d1f17c253.jpg" alt="Fashion Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-400-93c6d0307.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-93c6d0307.webp 540w" sizes="(max-width: 767px) 100vw, 80vw" width="540" height="480" />
+</a>
 
 </div>
 <p class="image-caption"><em>Image recovering vs epoch number for MNIST and Fashion MNIST datasets</em></p>
@@ -225,13 +233,17 @@
 <p>These two dimensional plots can also help us to understand the KL divergence term. In my previous post I explained where does it come from and also that acts as a penalization (or regularization term) over the encoder when this one outputs probabilities that are not following an unit norm. Without this term the encoder can use the whole space and place equal labels in very different regions. Imagine for example two images of a number 1. Instead of being close one to each other in the space, the encoder could place them far away. This would result in a problem to generate unseen samples, since the space will be large and it will have ‘holes’ of information, empty areas that do not correspond to any number and are related with noise.</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-039d710fb.jpg" alt="Latent space without KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-400-9fc1af072.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-600-9fc1af072.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-9fc1af072.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-039d710fb.jpg" alt="Latent space without KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-400-9fc1af072.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-600-9fc1af072.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-9fc1af072.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+</a>
 
 </div>
 <p class="image-caption"><em>Latent space without KL reg</em></p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-a81727186.jpg" alt="Latent space with KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-400-2dc270081.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-600-2dc270081.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-2dc270081.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-a81727186.jpg" alt="Latent space with KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-400-2dc270081.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-600-2dc270081.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-2dc270081.webp 640w" sizes="(max-width: 767px) 100vw, 80vw" width="640" height="480" />
+</a>
 
 </div>
 <p class="image-caption"><em>Latent space with KL reg</em></p>
@@ -243,7 +255,9 @@
 <p>We can generate random samples that belong to our latent space. These points have not been used during training (they would correspond with a white space in previous plots). Our network decoder though, has learnt to reconstruct valid images that are related with those points without seem them. So let’s create a grid of points as the following one:</p>
 
 <div class="post-center-image">
-<img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-d5faf1424.jpg" alt="Two dimensional grid of points" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-400-920980fc6.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-600-920980fc6.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-920980fc6.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-1000-920980fc6.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1861" height="959" />
+<a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-d5faf1424.jpg" alt="Two dimensional grid of points" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-400-920980fc6.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-600-920980fc6.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-920980fc6.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-1000-920980fc6.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1861" height="959" />
+</a>
 
 </div>
 

@@ -124,14 +124,7 @@
 
 <div class="container the-post-content">
 
-  <h1 id="todo">todo:</h1>
-
-<ol>
-  <li>lightbox does not work, link to original image instead. probably best option is to remove the picture tag and use single image size</li>
-  <li>mmdet in table makes no sense</li>
-</ol>
-
-<h2 id="table-of-contents">Table of Contents</h2>
+  <h2 id="table-of-contents">Table of Contents</h2>
 
 <div class="table-wrapper">
 
@@ -141,7 +134,6 @@
         <th> </th>
         <th>Appearence Features</th>
         <th>Camera Compensation</th>
-        <th>MMDetection</th>
       </tr>
     </thead>
     <tbody>
@@ -149,23 +141,19 @@
         <td><a href="#sort">SORT</a></td>
         <td>❌</td>
         <td>❌</td>
-        <td>✅</td>
       </tr>
       <tr>
         <td><a href="#deepsort">DeepSORT</a></td>
         <td>✅</td>
         <td>❌</td>
-        <td>✅</td>
       </tr>
       <tr>
         <td><a href="#bytetrack">ByteTrack</a></td>
         <td>✅</td>
         <td>❌</td>
-        <td>✅</td>
       </tr>
       <tr>
         <td><a href="#bot-sort">BoT-SORT</a></td>
-        <td>✅</td>
         <td>✅</td>
         <td>✅</td>
       </tr>
@@ -201,9 +189,9 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort.jpg">
-        <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-800-ef8ea65f7.jpg" alt="SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-400-0129c6d0c.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-600-0129c6d0c.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-800-0129c6d0c.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-1000-0129c6d0c.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1352" height="739" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-800-ef8ea65f7.jpg" alt="SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-400-0129c6d0c.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-600-0129c6d0c.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-800-0129c6d0c.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-1000-0129c6d0c.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1352" height="739" />
+</a>
 
-    </a>
 </div>
 
 <p class="image-caption"><em>SORT architecture diagram</em></p>
@@ -228,14 +216,14 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort.jpg">
-        <img src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-800-58a403e1a.jpg" alt="DeepSORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-400-58a403e1a.jpg 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-600-58a403e1a.jpg 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-800-58a403e1a.jpg 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-1000-58a403e1a.jpg 1000w" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-800-58a403e1a.jpg" alt="DeepSORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-400-d49ec61a3.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-600-d49ec61a3.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-800-d49ec61a3.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-1000-d49ec61a3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1378" height="725" />
+</a>
 
-    </a>
 </div>
 
-<p>There is a small modification on the Kalman Filter prediction step that is included in the <a href="https://github.com/nwojke/deep_sort/blob/master/deep_sort/kalman_filter.py#L108">code</a> but not mentioned in the original paper. The matrices \(Q\), \(R\) of the Kalman Filter were chosen in SORT to be time indepent, however in DeepSORT it was suggested to choose \(Q%\), \(R\) as functions of the scale of the bounding box. This can be due to the scale is less likely to change over time than other features and it can be also be used to compensate for changes in camera’s viewpoint.</p>
-
 <p class="image-caption"><em>DeepSORT architecture diagram</em></p>
+
+<p>There is a small modification on the Kalman Filter prediction step that is included in the <a href="https://github.com/nwojke/deep_sort/blob/master/deep_sort/kalman_filter.py#L108">code</a> but not mentioned in the original paper. The matrices \(Q\), \(R\) of the Kalman Filter were chosen in SORT to be time indepent, however in DeepSORT it was suggested to choose \(Q%\), \(R\) as functions of the scale of the bounding box. This can be due to the scale is less likely to change over time than other features and it can be also be used to compensate for changes in camera’s viewpoint.</p>
 
 <p>The cascade association step would look like this:</p>
 
@@ -258,9 +246,9 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack.jpg">
-        <img src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-800-eb704f5e3.jpg" alt="ByteTrack architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-400-eb704f5e3.jpg 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-600-eb704f5e3.jpg 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-800-eb704f5e3.jpg 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-1000-eb704f5e3.jpg 1000w" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-800-eb704f5e3.jpg" alt="ByteTrack architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-400-1a0b7d0b3.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-600-1a0b7d0b3.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-800-1a0b7d0b3.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-1000-1a0b7d0b3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1311" height="762" />
+</a>
 
-    </a>
 </div>
 
 <p class="image-caption"><em>ByteTrack architecture diagram</em></p>
@@ -284,9 +272,9 @@
 
     <div class="post-center-image">
      <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc.png">
-         <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-600-ed5e82503.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-1000-ed5e82503.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1152" height="1296" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-600-ed5e82503.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-1000-ed5e82503.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1152" height="1296" />
+</a>
 
-     </a>
  </div>
 
     <p class="image-caption"><em>Player is static on the pitch while throwing the ball but location on the image changes due to camera movement.</em></p>
@@ -312,9 +300,9 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort.jpg">
-        <img src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-800-ed3f0f9ff.jpg" alt="BoT-SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-400-ed3f0f9ff.jpg 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-600-ed3f0f9ff.jpg 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-800-ed3f0f9ff.jpg 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-1000-ed3f0f9ff.jpg 1000w" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-800-ed3f0f9ff.jpg" alt="BoT-SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-400-f1cf4e2c5.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-600-f1cf4e2c5.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-800-f1cf4e2c5.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-1000-f1cf4e2c5.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1329" height="752" />
+</a>
 
-    </a>
 </div>
 
 <p class="image-caption"><em>ByteTrack architecture diagram</em></p>
