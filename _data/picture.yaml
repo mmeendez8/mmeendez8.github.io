@@ -46,3 +46,5 @@ presets:
     sizes:
       mobile: 100vw
     size: 80vw
+    link_source: true
+    nomarkdown: false

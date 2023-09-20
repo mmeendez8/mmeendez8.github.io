@@ -8,21 +8,19 @@ selected: n
 mathjax: y
 ---
 
-# todo:
-
-1. lightbox does not work, link to original image instead. probably best option is to remove the picture tag and use single image size
-2. mmdet in table makes no sense
 
 ## Table of Contents
 
 <div class="table-wrapper" markdown="block">
 
-|           | Appearence Features | Camera Compensation | MMDetection |
-|-----------|---------------------|---------------------|-------------|
-| [SORT](#sort)      |       ❌            |         ❌         |     ✅      |
-| [DeepSORT](#deepsort)  |       ✅            |        ❌          |     ✅      |
-| [ByteTrack](#bytetrack) |       ✅            |        ❌          |     ✅      |
-| [BoT-SORT](#bot-sort)  |       ✅            |        ✅          |     ✅      |
+
+|                         | Appearence Features | Camera Compensation |
+|-------------------------|---------------------|---------------------|
+| [SORT](#sort)           | ❌                   | ❌                   |
+| [DeepSORT](#deepsort)   | ✅                   | ❌                   |
+| [ByteTrack](#bytetrack) | ✅                   | ❌                   |
+| [BoT-SORT](#bot-sort)   | ✅                   | ✅                   |
+
 
 </div>
 
@@ -50,9 +48,7 @@ They employ two classical methods:
 - **Hungarian method:** used in the data association step to match new predictions with tracks based on IOU metric.
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort.jpg">
-        {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort.jpg --alt SORT architecture diagram  %}
-    </a>
+    {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort.jpg --alt SORT architecture diagram %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -77,16 +73,14 @@ DeepSORT is an extension of SORT that uses appearance features. It adds a simple
 Each track maintains a gallery of the last $$n$$ appearance descriptors, enabling cosine distance calculations between new detections and descriptors. Track age, determined by frames since the last association, plays a crucial role in the association process. DeepSORT adopts a cascade approach, prioritizing tracks with lower ages over a single-step association between predicted Kalman states and new measurements.
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort.jpg">
-        {% picture /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort.jpg --alt DeepSORT architecture diagram  %}
-    </a>
+    {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort.jpg --alt DeepSORT architecture diagram  %}
 </div>
-
-There is a small modification on the Kalman Filter prediction step that is included in the [code](https://github.com/nwojke/deep_sort/blob/master/deep_sort/kalman_filter.py#L108) but not mentioned in the original paper. The matrices $$Q$$, $$R$$ of the Kalman Filter were chosen in SORT to be time indepent, however in DeepSORT it was suggested to choose $$Q%$$, $$R$$ as functions of the scale of the bounding box. This can be due to the scale is less likely to change over time than other features and it can be also be used to compensate for changes in camera's viewpoint.
 
 {:refdef: class="image-caption"}
 *DeepSORT architecture diagram*
 {: refdef}
+
+There is a small modification on the Kalman Filter prediction step that is included in the [code](https://github.com/nwojke/deep_sort/blob/master/deep_sort/kalman_filter.py#L108) but not mentioned in the original paper. The matrices $$Q$$, $$R$$ of the Kalman Filter were chosen in SORT to be time indepent, however in DeepSORT it was suggested to choose $$Q%$$, $$R$$ as functions of the scale of the bounding box. This can be due to the scale is less likely to change over time than other features and it can be also be used to compensate for changes in camera's viewpoint.
 
 The cascade association step would look like this:
 
@@ -108,9 +102,7 @@ ByteTrack addresses this problem by using all detections, regardless of their co
 2. **Low-confidence detections**: Low-confidence detections are associated with tracks using only IoU. This is because low-confidence detections are more likely to be spurious or inaccurate, so it is important to be more conservative when associating them with tracks.
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack.jpg">
-        {% picture /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack.jpg --alt ByteTrack architecture diagram  %}
-    </a>
+    {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack.jpg --alt ByteTrack architecture diagram  %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -135,9 +127,7 @@ I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines
 2. **Camera Motion Compensation**: In dynamic camera situations, objects that are static can appear to move, and objects that are moving can appear to be static. The Kalman Filter does not take camera motion into account for its predictions, so BoT-SORT proposes to incorporate this knowledge. To do this, they use the global motion compensation technique (GMC) from the OpenCV Video Stabilization module. This technique extracts keypoints from consecutive frames and computes the homography matrix between the matching pairs. This matrix can then be used to transform the prediction bounding box from the coordinate system of frame $$k − 1$$ to the coordinates of the next frame $$k$$ (see section 3.2 of [BoT-SORT paper](https://arxiv.org/pdf/2206.14651v2.pdf) to a full formulation on how incorporate the homography matrix in the prediction step).
 
     <div class="post-center-image">
-        <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc.png">
-            {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc.png --alt Camera movement example  %}
-        </a>
+        {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc.png --alt Camera movement example  %}
     </div>
 
     {:refdef: class="image-caption"}
@@ -163,9 +153,7 @@ I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines
     The appearence distance is recomputed as shown in the first equation. The idea is to filter out pairs with large iou or large appearance distance (two different thresholds are used here).  Then, the cost matrix element is updated as the minimum between the IoU and the new appearance distance. This method seems to be handcrafted, and the authors likely spent a significant amount of time evaluating different thresholds on the MOT17 dataset to arrive at this formulation. Note thresholds are callibrated using MOT17 validation set. 
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort.jpg">
-        {% picture /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort.jpg --alt BoT-SORT architecture diagram  %}
-    </a>
+    {% picture pimage /assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort.jpg --alt BoT-SORT architecture diagram  %}
 </div>
 
 {:refdef: class="image-caption"}
