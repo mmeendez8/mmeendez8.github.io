@@ -87,7 +87,13 @@ title: Personal Webpage
       
       {% for post in selected_posts %}
         <li class="{{ post_classes }}">
-          <a href="{{ post.url }}">
+
+          {% if post.external-url %}
+            <a href="{{ post.external-url }}" target=”_blank”> 
+          {% else %}
+            <a href="{{ post.url }}">
+          {% endif %}
+
             <div class="post-image-placeholder">
               {% picture posts-grid {{ post.image }} --alt {{ post.description }} %}
             </div>
@@ -134,7 +140,6 @@ title: Personal Webpage
         {% endif %}
           <div class="vitae-image-placeholder">
             {% picture exp-logos {{ exp.image }} --alt {{ exp.company }} %}
-            <!-- <img src="{{ exp.image }}" alt="experience-logo" loading="lazy" width="79" height="79"/> -->
           </div>
         </div>
 
