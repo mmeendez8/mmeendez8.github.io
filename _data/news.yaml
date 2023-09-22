@@ -1,4 +1,7 @@
 news:
+  - month: "September"
+    year: "2023"
+    text: "Published a blog post about homography estimation in Statsbomb blog [<a href='https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/' target='_blank' rel='noopener noreferrer'>English</a>, <a href='https://statsbomb.com/es/articulos/futbol/nuevas-tecnologias/ia-y-los-datos-deportivos-la-estimacion-de-homografia/' target='_blank' rel='noopener noreferrer'>Spanish</a>]."
   - month: "February"
     year: "2022"
     text: "I am joining <a href='https://statsbomb.com/' target='_blank' rel='noopener noreferrer'>Statsbomb</a> as a Machine Learning Engineer ."
