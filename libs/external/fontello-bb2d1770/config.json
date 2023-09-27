@@ -1,5 +1,5 @@
 {
-  "name": "fa_icons_fontello",
+  "name": "",
   "css_prefix_text": "icon-",
   "css_use_suffix": false,
   "hinting": true,
@@ -7,9 +7,21 @@
   "ascent": 850,
   "glyphs": [
     {
-      "uid": "0f6a2573a7b6df911ed199bb63717e27",
+      "uid": "ff16079eb4be12c49bf3014d2322acdd",
       "css": "github-circled",
-      "code": 61595,
+      "code": 59392,
+      "src": "zocial"
+    },
+    {
+      "uid": "e7d17d4d07756f4ab5eb690eea1275ca",
+      "css": "stackoverflow",
+      "code": 59393,
+      "src": "zocial"
+    },
+    {
+      "uid": "1145676a91138011729fa2909997af66",
+      "css": "linkedin-squared",
+      "code": 62220,
       "src": "fontawesome"
     },
     {
@@ -25,15 +37,9 @@
       "src": "fontawesome"
     },
     {
-      "uid": "1145676a91138011729fa2909997af66",
-      "css": "linkedin-squared",
-      "code": 62220,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "e1597911f34fea0a188ae51fe4a2d9a9",
-      "css": "stackoverflow",
-      "code": 61804,
+      "uid": "de5f0a564ccf8816325330e292e11533",
+      "css": "rss-squared",
+      "code": 61763,
       "src": "fontawesome"
     }
   ]
