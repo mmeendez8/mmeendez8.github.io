@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-09-27T11:57:14+00:00</updated><id>/feed.xml</id><entry><title type="html">Creating Better Data: AI &amp;amp; Homography Estimation</title><link href="/2023/09/22/homography-estimation.html" rel="alternate" type="text/html" title="Creating Better Data: AI &amp;amp; Homography Estimation" /><published>2023-09-22T00:00:00+00:00</published><updated>2023-09-22T00:00:00+00:00</updated><id>/2023/09/22/homography-estimation</id><content type="html" xml:base="/2023/09/22/homography-estimation.html"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" /><media:content medium="image" url="/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">An overview of tracking by detection</title><link href="/2023/08/25/tracking-by-detection-overview.html" rel="alternate" type="text/html" title="An overview of tracking by detection" /><published>2023-08-25T00:00:00+00:00</published><updated>2023-08-25T00:00:00+00:00</updated><id>/2023/08/25/tracking-by-detection-overview</id><content type="html" xml:base="/2023/08/25/tracking-by-detection-overview.html"><![CDATA[<h2 id="table-of-contents">Table of Contents</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-09-28T09:06:29+00:00</updated><id>/feed.xml</id><entry><title type="html">An overview of tracking by detection</title><link href="/2023/09/28/tracking-by-detection-overview.html" rel="alternate" type="text/html" title="An overview of tracking by detection" /><published>2023-09-28T00:00:00+00:00</published><updated>2023-09-28T00:00:00+00:00</updated><id>/2023/09/28/tracking-by-detection-overview</id><content type="html" xml:base="/2023/09/28/tracking-by-detection-overview.html"><![CDATA[<h2 id="table-of-contents">Table of Contents</h2>
 
 <div class="table-wrapper">
 
@@ -6,29 +6,52 @@
     <thead>
       <tr>
         <th> </th>
+        <th>Year</th>
         <th>Appearence Features</th>
         <th>Camera Compensation</th>
+        <th>HOTA MOT20</th>
+        <th>Extra data</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><a href="#sort">SORT</a></td>
+        <td>2016</td>
         <td>❌</td>
+        <td>❌</td>
+        <td> </td>
         <td>❌</td>
       </tr>
       <tr>
         <td><a href="#deepsort">DeepSORT</a></td>
+        <td>2017</td>
         <td>✅</td>
         <td>❌</td>
+        <td> </td>
+        <td>✅</td>
       </tr>
       <tr>
         <td><a href="#bytetrack">ByteTrack</a></td>
+        <td>2021</td>
         <td>✅</td>
         <td>❌</td>
+        <td>61.3</td>
+        <td>✅</td>
       </tr>
       <tr>
         <td><a href="#bot-sort">BoT-SORT</a></td>
+        <td>2022</td>
         <td>✅</td>
+        <td>✅</td>
+        <td>63.3</td>
+        <td>✅</td>
+      </tr>
+      <tr>
+        <td><a href="#smiletrack">SMILEtrack</a></td>
+        <td>2022</td>
+        <td>✅</td>
+        <td>✅  (?)</td>
+        <td>63.4</td>
         <td>✅</td>
       </tr>
     </tbody>
@@ -40,7 +63,8 @@
 
 <p>Tracking by detection is an object tracking approach that first detects objects in each frame of a video and then associates the detections across frames. This is done by matching the detections based on their location, appearance, or motion. Tracking by detection has become the most popular method for addressing object tracking due to the rapid development of reliable object detectors.</p>
 
-<p>The intention of this blog is to keep myself updated with the bibliography of tracking by detection methods. My intention is to regularly update this blog with new information and resources I find interesting.</p>
+<p>The intention of this blog is to keep myself updated with the bibliography of tracking by detection methods. My intention is to regularly update this blog with new information and resources I find interesting.
+I have included the SORT and DeepSORT papers in the list, despite being older methods, as they laid the groundwork for many of the techniques covered here.</p>
 
 <h2 id="sort">SORT</h2>
 
@@ -62,8 +86,8 @@
 </ul>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-800-ef8ea65f7.jpg" alt="SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-400-0129c6d0c.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-600-0129c6d0c.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-800-0129c6d0c.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/sort-1000-0129c6d0c.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1352" height="739" />
+    <a href="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort-800-ef8ea65f7.jpg" alt="SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort-400-0129c6d0c.webp 400w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort-600-0129c6d0c.webp 600w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort-800-0129c6d0c.webp 800w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort-1000-0129c6d0c.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1352" height="739" />
 </a>
 
 </div>
@@ -89,15 +113,15 @@
 <p>Each track maintains a gallery of the last \(n\) appearance descriptors, enabling cosine distance calculations between new detections and descriptors. Track age, determined by frames since the last association, plays a crucial role in the association process. DeepSORT adopts a cascade approach, prioritizing tracks with lower ages over a single-step association between predicted Kalman states and new measurements.</p>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-800-58a403e1a.jpg" alt="DeepSORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-400-d49ec61a3.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-600-d49ec61a3.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-800-d49ec61a3.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/deepsort-1000-d49ec61a3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1378" height="725" />
+    <a href="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort-800-58a403e1a.jpg" alt="DeepSORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort-400-d49ec61a3.webp 400w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort-600-d49ec61a3.webp 600w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort-800-d49ec61a3.webp 800w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort-1000-d49ec61a3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1378" height="725" />
 </a>
 
 </div>
 
 <p class="image-caption"><em>DeepSORT architecture diagram</em></p>
 
-<p>There is a small modification on the Kalman Filter prediction step that is included in the <a href="https://github.com/nwojke/deep_sort/blob/master/deep_sort/kalman_filter.py#L108">code</a> but not mentioned in the original paper. The matrices \(Q\), \(R\) of the Kalman Filter were chosen in SORT to be time indepent, however in DeepSORT it was suggested to choose \(Q%\), \(R\) as functions of the scale of the bounding box. This can be due to the scale is less likely to change over time than other features and it can be also be used to compensate for changes in camera’s viewpoint.</p>
+<p>There is a small modification on the Kalman Filter prediction step that is included in the <a href="https://github.com/nwojke/deep_sort/blob/master/deep_sort/kalman_filter.py#L108" target="_blank" rel="noopener noreferrer">code</a> but not mentioned in the original paper. The matrices \(Q\), \(R\) of the Kalman Filter were chosen in SORT to be time indepent, however in DeepSORT it was suggested to choose \(Q%\), \(R\) as functions of the scale of the bounding box. This can be due to the scale is less likely to change over time than other features and it can be also be used to compensate for changes in camera’s viewpoint.</p>
 
 <p>The cascade association step would look like this:</p>
 
@@ -119,8 +143,8 @@
 </ol>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-800-eb704f5e3.jpg" alt="ByteTrack architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-400-1a0b7d0b3.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-600-1a0b7d0b3.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-800-1a0b7d0b3.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/bytetrack-1000-1a0b7d0b3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1311" height="762" />
+    <a href="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack-800-eb704f5e3.jpg" alt="ByteTrack architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack-400-1a0b7d0b3.webp 400w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack-600-1a0b7d0b3.webp 600w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack-800-1a0b7d0b3.webp 800w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack-1000-1a0b7d0b3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1311" height="762" />
 </a>
 
 </div>
@@ -139,14 +163,14 @@
 
 \[\mathbf{x} = [x_c,y_c,w,h,\dot{x_c},\dot{y_c},\dot{w}, \dot{h}]^T\]
 
-    <p>They also choose Q, R matrices from the Kalman Filter as functions of the bounding box width and height. Recall that in DeepSORT, only the scale of the bounding box influenced on the Q, R matrices (see section 3.1 of <a href="https://arxiv.org/pdf/2206.14651v2.pdf">BoT-SORT paper</a> for more details).</p>
+    <p>They also choose Q, R matrices from the Kalman Filter as functions of the bounding box width and height. Recall that in DeepSORT, only the scale of the bounding box influenced on the Q, R matrices (see section 3.1 of <a href="https://arxiv.org/pdf/2206.14651v2.pdf" target="_blank" rel="noopener noreferrer">BoT-SORT paper</a> for more details).</p>
   </li>
   <li>
-    <p><strong>Camera Motion Compensation</strong>: In dynamic camera situations, objects that are static can appear to move, and objects that are moving can appear to be static. The Kalman Filter does not take camera motion into account for its predictions, so BoT-SORT proposes to incorporate this knowledge. To do this, they use the global motion compensation technique (GMC) from the OpenCV Video Stabilization module. This technique extracts keypoints from consecutive frames and computes the homography matrix between the matching pairs. This matrix can then be used to transform the prediction bounding box from the coordinate system of frame \(k − 1\) to the coordinates of the next frame \(k\) (see section 3.2 of <a href="https://arxiv.org/pdf/2206.14651v2.pdf">BoT-SORT paper</a> to a full formulation on how incorporate the homography matrix in the prediction step).</p>
+    <p><strong>Camera Motion Compensation</strong>: In dynamic camera situations, objects that are static can appear to move, and objects that are moving can appear to be static. The Kalman Filter does not take camera motion into account for its predictions, so BoT-SORT proposes to incorporate this knowledge. To do this, they use the global motion compensation technique (GMC) from the OpenCV Video Stabilization module. This technique extracts keypoints from consecutive frames and computes the homography matrix between the matching pairs. This matrix can then be used to transform the prediction bounding box from the coordinate system of frame \(k − 1\) to the coordinates of the next frame \(k\) (see section 3.2 of <a href="https://arxiv.org/pdf/2206.14651v2.pdf" target="_blank" rel="noopener noreferrer">BoT-SORT paper</a> to a full formulation on how incorporate the homography matrix in the prediction step).</p>
 
     <div class="post-center-image">
-     <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-600-ed5e82503.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/cmc-1000-ed5e82503.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1152" height="1296" />
+     <a href="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc-600-ed5e82503.webp 600w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc-1000-ed5e82503.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1152" height="1296" />
 </a>
 
  </div>
@@ -173,22 +197,39 @@
 </ol>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-800-ed3f0f9ff.jpg" alt="BoT-SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-400-f1cf4e2c5.webp 400w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-600-f1cf4e2c5.webp 600w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-800-f1cf4e2c5.webp 800w, /generated/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/botsort-1000-f1cf4e2c5.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1329" height="752" />
+    <a href="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort-800-ed3f0f9ff.jpg" alt="BoT-SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort-400-f1cf4e2c5.webp 400w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort-600-f1cf4e2c5.webp 600w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort-800-f1cf4e2c5.webp 800w, /generated/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort-1000-f1cf4e2c5.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1329" height="752" />
 </a>
 
 </div>
 
 <p class="image-caption"><em>ByteTrack architecture diagram</em></p>
 
+<h2 id="smiletrack">SMILEtrack</h2>
+
+<p>This method currently holds the title of being the State-of-the-Art (SOTA) in the MOT17 and MOT20 datasets. It builds upon ByteTrack but throws in a handful of fresh ideas designed to give appearance features more importance.</p>
+
+<p>I spent a couple hours trying to understand the paper but I have to admit it felt very confusing to me, so I went straight to the <a href="https://github.com/pingyang1117/SMILEtrack_Official" target="_blank" rel="noopener noreferrer">code</a>. Things got even trickier there; I noticed quite a few things that didn’t align with what was mentioned in the paper. As a results, so I opened an <a href="https://github.com/pingyang1117/SMILEtrack_Official/issues/3" target="_blank" rel="noopener noreferrer">issue</a> on the project’s GitHub repository. I’ll update this section once I hear back from the authors.</p>
+
+<!-- Let's see what they are:
+
+1. **Similarity Learning Module (SLM)**: It is a Siamese network that computes appearence similarity between two objects using a Patch Self-Attention (PSA) block. Think about it as a boosted feature descriptor that incorporates attention mechanism following ViT style.
+
+2. **Similarity Matching Cascade (SMC)**: Very similar to ByteTrack, it splits the data association step in two parts depending on detection scores. First, high confidence detections are tried to be matched with the tracks, for then proceeding with the low confidence ones. In both cases, IoU and appearence features are used to compute the cost matrix. The key addition is a new **GATE function** that is used right after the high confidence association. Unmatched objects with high scores might find matches in subsequent frames due to occlusions or lighting changes. When an object passes this GATE function, a new track is created for it.
+
+Idea is, if iou is high but they don't look alike, probably occlusion. If they don't match but they have some past track that looks alike, create a new track for it (this i don't understand very well)
+There is camera motion correction in the code but not in the paper!!!!
+ -->
+
 <h2 id="references">References</h2>
 
 <ul>
-  <li>[<a href="https://arxiv.org/pdf/1602.00763.pdf">1</a>]  Bewley, A., Ge, Z., Ott, L., Ramos, F., &amp; Upcroft, B. (2016, September). Simple online and realtime tracking. In 2016 IEEE international conference on image processing (ICIP) (pp. 3464-3468). IEEE.</li>
-  <li>[<a href="https://arxiv.org/pdf/1703.07402.pdf">2</a>]  Wojke, N., Bewley, A., &amp; Paulus, D. (2017, September). Simple online and realtime tracking with a deep association metric. In 2017 IEEE international conference on image processing (ICIP) (pp. 3645-3649). IEEE.</li>
+  <li>[<a href="https://arxiv.org/pdf/1602.00763.pdf">1</a>] Bewley, A., Ge, Z., Ott, L., Ramos, F., &amp; Upcroft, B. (2016, September). Simple online and realtime tracking. In 2016 IEEE international conference on image processing (ICIP) (pp. 3464-3468). IEEE.</li>
+  <li>[<a href="https://arxiv.org/pdf/1703.07402.pdf">2</a>] Wojke, N., Bewley, A., &amp; Paulus, D. (2017, September). Simple online and realtime tracking with a deep association metric. In 2017 IEEE international conference on image processing (ICIP) (pp. 3645-3649). IEEE.</li>
   <li>[<a href="https://arxiv.org/pdf/2110.06864.pdf">3</a>] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., … &amp; Wang, X. (2022, October). Bytetrack: Multi-object tracking by associating every detection box. In European Conference on Computer Vision (pp. 1-21). Cham: Springer Nature Switzerland.</li>
-  <li>[<a href="https://arxiv.org/pdf/2206.14651.pdf">4</a>]Aharon, N., Orfaig, R., &amp; Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.</li>
-</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Object tracking is a challenging problem in computer vision. It involves identifying and tracking the movement of objects in a video or image sequence. One common approach to object tracking is tracking by detection. This approach first uses an object detector to identify objects in each frame of the video. Then, a tracker is used to associate the detected objects across frames. This blog post provides an overview of tracking by detection. We will discuss the basics of the approach, and we will introduce some of the most popular tracking algorithms: SORT, DeepSORT, ByteTrack... We will also discuss the strengths and weaknesses of each algorithm, and we will provide some recommendations on which algorithm to choose for your application.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/thumbnail.png" /><media:content medium="image" url="/assets/images/fullsize/posts/2023-08-25-tracking-by-detection-overview/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Torchserve in Computer Vision: REST vs gRPC</title><link href="/2023/02/24/torchserve-grpc.html" rel="alternate" type="text/html" title="Torchserve in Computer Vision: REST vs gRPC" /><published>2023-02-24T00:00:00+00:00</published><updated>2023-02-24T00:00:00+00:00</updated><id>/2023/02/24/torchserve-grpc</id><content type="html" xml:base="/2023/02/24/torchserve-grpc.html"><![CDATA[<p>Special thanks to <a href="https://www.linkedin.com/in/jguzmanfd/">Javier Guzman</a> for working with me in completing the benchmarking discussed in this post.</p>
+  <li>[<a href="https://arxiv.org/pdf/2206.14651.pdf">4</a>] Aharon, N., Orfaig, R., &amp; Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.</li>
+  <li>[<a href="https://arxiv.org/pdf/2211.08824.pdf">5</a>] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.</li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Object tracking is a challenging problem in computer vision. It involves identifying and tracking the movement of objects in a video or image sequence. One common approach to object tracking is tracking by detection. This approach first uses an object detector to identify objects in each frame of the video. Then, a tracker is used to associate the detected objects across frames. This blog post provides an overview of tracking by detection. We will discuss the basics of the approach, and we will introduce some of the most popular tracking algorithms: SORT, DeepSORT, ByteTrack... We will also discuss the strengths and weaknesses of each algorithm, and we will provide some recommendations on which algorithm to choose for your application.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/thumbnail.png" /><media:content medium="image" url="/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Creating Better Data: AI &amp;amp; Homography Estimation</title><link href="/2023/09/22/homography-estimation.html" rel="alternate" type="text/html" title="Creating Better Data: AI &amp;amp; Homography Estimation" /><published>2023-09-22T00:00:00+00:00</published><updated>2023-09-22T00:00:00+00:00</updated><id>/2023/09/22/homography-estimation</id><content type="html" xml:base="/2023/09/22/homography-estimation.html"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" /><media:content medium="image" url="/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Torchserve in Computer Vision: REST vs gRPC</title><link href="/2023/02/24/torchserve-grpc.html" rel="alternate" type="text/html" title="Torchserve in Computer Vision: REST vs gRPC" /><published>2023-02-24T00:00:00+00:00</published><updated>2023-02-24T00:00:00+00:00</updated><id>/2023/02/24/torchserve-grpc</id><content type="html" xml:base="/2023/02/24/torchserve-grpc.html"><![CDATA[<p>Special thanks to <a href="https://www.linkedin.com/in/jguzmanfd/">Javier Guzman</a> for working with me in completing the benchmarking discussed in this post.</p>
 
 <p>In the past few weeks, we have been exploring the potential advantages of adopting gRPC to enhance the performance of our services. Although I have conducted extensive research on this topic, I have not been able to find relevant information that specifically addresses our use case, which involves transmitting images to a model server and receiving a response in the most efficient manner. While there are numerous benchmarks that demonstrate significant performance improvements when migrating from REST to gRPC using structured data, it has been challenging to locate a similar benchmark for image transmission… And that is the main reason behind this post!</p>
 
