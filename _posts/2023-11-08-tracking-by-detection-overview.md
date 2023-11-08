@@ -3,8 +3,8 @@ layout: post
 title: "An overview of tracking by detection"
 subtitle: "A look at the evolution and precision of Multi-Object Tracking"
 description: "Object tracking is a challenging problem in computer vision. It involves identifying and tracking the movement of objects in a video or image sequence. One common approach to object tracking is tracking by detection. This approach first uses an object detector to identify objects in each frame of the video. Then, a tracker is used to associate the detected objects across frames. This blog post provides an overview of tracking by detection. We will discuss the basics of the approach, and we will introduce some of the most popular tracking algorithms: SORT, DeepSORT, ByteTrack... We will also discuss the strengths and weaknesses of each algorithm, and we will provide some recommendations on which algorithm to choose for your application."
-image: "/assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/thumbnail.png"
-selected: n
+image: "/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png"
+selected: y
 mathjax: y
 ---
 
@@ -25,14 +25,14 @@ mathjax: y
 
 ## Introduction
 
-Tracking by detection is an object tracking approach that first detects objects in each frame of a video and then associates the detections across frames. This is done by matching the detections based on their location, appearance, or motion. Tracking by detection has become the most popular method for addressing object tracking due to the rapid development of reliable object detectors.
+Tracking by detection is an object tracking approach that first detects objects in each frame of a video and then associates the detections across frames. This process involves matching detections by analyzing their location, appearance, or motion characteristics. Tracking by detection has become the most popular method for addressing object tracking due to the rapid development of reliable object detectors.
 
 The intention of this blog is to keep myself updated with the bibliography of tracking by detection methods. My intention is to regularly update this blog with new information and resources I find interesting.
 I have included the SORT and DeepSORT papers in the list, despite being older methods, as they laid the groundwork for many of the techniques covered here.
 
 ## SORT 
 
-It is a very good and simple work from 2016 that quickly became a standard in the field. Authors main goal was to create the fastest possible tracker relying on the quality of the object detector predictions. Appearance features of the objects are not used, only bounding box position and size. 
+It is a very good and simple work from 2016 that quickly became a standard in the field. The author's main goal was to create the fastest possible tracker relying on the quality of the object detector predictions. Appearance features of the objects are not used; the system relies solely on bounding box position and size.
 
 They employ two classical methods:
 
@@ -44,10 +44,10 @@ They employ two classical methods:
     
     These are the center of the target bounding box ($u, v$), the scales and aspect ratio of it ($s, r$) and their velocity components ($\dot{u},\dot{v},\dot{s}$).
     
-- **Hungarian method:** used in the data association step to match new predictions with tracks based on IOU metric.
+- **Hungarian method:** used in the data association step to match new predictions with tracks based on IoU metric.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/sort.jpg --alt SORT architecture diagram %}
+    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort.jpg --alt SORT architecture diagram %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -67,12 +67,12 @@ They employ two classical methods:
 
 ## DeepSORT
 
-DeepSORT is an extension of SORT that uses appearance features. It adds a simple CNN extension that extracts appearance features from bounding boxes, improving object tracking, especially during occlusions. An object can be re-identified using appearance similarity after being occluded for a long period of time
+DeepSORT is an extension of SORT that uses appearance features. It enhances SORT by adding a simple CNN extension that extracts appearance features from bounding boxes, improving object tracking, especially during occlusions. An object can be re-identified using appearance similarity after being occluded for a long period of time
 
 Each track maintains a gallery of the last $$n$$ appearance descriptors, enabling cosine distance calculations between new detections and descriptors. Track age, determined by frames since the last association, plays a crucial role in the association process. DeepSORT adopts a cascade approach, prioritizing tracks with lower ages over a single-step association between predicted Kalman states and new measurements.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/deepsort.jpg --alt DeepSORT architecture diagram  %}
+    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort.jpg --alt DeepSORT architecture diagram  %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -101,7 +101,7 @@ ByteTrack addresses this problem by using all detections, regardless of their co
 2. **Low-confidence detections**: Low-confidence detections are associated with tracks using only IoU. This is because low-confidence detections are more likely to be spurious or inaccurate, so it is important to be more conservative when associating them with tracks.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/bytetrack.jpg --alt ByteTrack architecture diagram  %}
+    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack.jpg --alt ByteTrack architecture diagram  %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -126,7 +126,7 @@ I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines
 2. **Camera Motion Compensation**: In dynamic camera situations, objects that are static can appear to move, and objects that are moving can appear to be static. The Kalman Filter does not take camera motion into account for its predictions, so BoT-SORT proposes to incorporate this knowledge. To do this, they use the global motion compensation technique (GMC) from the OpenCV Video Stabilization module. This technique extracts keypoints from consecutive frames and computes the homography matrix between the matching pairs. This matrix can then be used to transform the prediction bounding box from the coordinate system of frame $$k − 1$$ to the coordinates of the next frame $$k$$ (see section 3.2 of [BoT-SORT paper](https://arxiv.org/pdf/2206.14651v2.pdf){:target="_blank"}{:rel="noopener noreferrer"} to a full formulation on how incorporate the homography matrix in the prediction step).
 
     <div class="post-center-image">
-        {% picture pimage /assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/cmc.png --alt Camera movement example  %}
+        {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc.png --alt Camera movement example  %}
     </div>
 
     {:refdef: class="image-caption"}
@@ -152,7 +152,7 @@ I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines
     The appearence distance is recomputed as shown in the first equation. The idea is to filter out pairs with large iou or large appearance distance (two different thresholds are used here).  Then, the cost matrix element is updated as the minimum between the IoU and the new appearance distance. This method seems to be handcrafted, and the authors likely spent a significant amount of time evaluating different thresholds on the MOT17 dataset to arrive at this formulation. Note thresholds are callibrated using MOT17 validation set. 
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-09-28-tracking-by-detection-overview/botsort.jpg --alt BoT-SORT architecture diagram  %}
+    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort.jpg --alt BoT-SORT architecture diagram  %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -172,7 +172,7 @@ I spent a couple hours trying to understand the paper but I have to admit it fel
 
 2. **Similarity Matching Cascade (SMC)**: Very similar to ByteTrack, it splits the data association step in two parts depending on detection scores. First, high confidence detections are tried to be matched with the tracks, for then proceeding with the low confidence ones. In both cases, IoU and appearence features are used to compute the cost matrix. The key addition is a new **GATE function** that is used right after the high confidence association. Unmatched objects with high scores might find matches in subsequent frames due to occlusions or lighting changes. When an object passes this GATE function, a new track is created for it.
 
-Idea is, if iou is high but they don't look alike, probably occlusion. If they don't match but they have some past track that looks alike, create a new track for it (this i don't understand very well)
+Idea is, if IoU is high but they don't look alike, probably occlusion. If they don't match but they have some past track that looks alike, create a new track for it (this i don't understand very well)
 There is camera motion correction in the code but not in the paper!!!!
  -->
 
