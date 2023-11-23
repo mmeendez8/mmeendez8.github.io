@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Deploying MLFlow in AWS with Terraform</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="Explore this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud.">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Deploying MLFlow in AWS with Terraform">
+  
+  
+  <meta name="twitter:description" content="Explore this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">November 22, 2023 </span>
+      <h1 class="the-post-title">Deploying MLFlow in AWS with Terraform</h1>
+      <p>Streamline Your ML Workflows: A Simple Guide to MLFlow Deployment on AWS</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-2c1587934.jpg" alt="Deploying MLFlow in AWS with Terraform" srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-400-cb6960f9e.webp 400w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-600-cb6960f9e.webp 600w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-cb6960f9e.webp 800w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1000-cb6960f9e.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="975">
+
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>Training and deploying machine learning models is a complex process. There are lots of steps involved – think data prep, model training, evaluating how good your model is, and then deploying it. Especially when it comes to training and evaluation, it’s super important to have a tool that makes life easier, something that lets us compare different experiments and track their performance (like losses, hyperparameters, metrics, etc.).</p>
+
+<p>There are a bunch of tools out there for this, but we’re going to focus on one: <a href="https://mlflow.org/" target="_blank" rel="noopener noreferrer">MLFlow</a>. The goal of this post is to learn how to set up MLFlow in AWS, and we’re going to use Terraform for that. <a href="https://www.terraform.io/" target="_blank" rel="noopener noreferrer">Terraform</a> is awesome because (disclaimer: I hate its syntax) it lets you define all your infrastructure as code so you will never ever forget what button did you click to set up that AWS instance.</p>
+
+<h2 id="why-mlflow">Why MLFlow?</h2>
+
+<p>MLFlow is an open-source platform designed for managing the entire machine learning lifecycle. It’s great for tracking experiments, managing models, and even deploying them into production. Personally, I have primarily used MLFlow for tracking experiments. I became quite familiar with it in my previous job and really appreciated its features, especially the ability to create custom visualizations and share experiment links with colleagues. These links can also be embedded in reports, which is super handy.</p>
+
+<p>I really missed using it and was eager to set it up in my current job. But, as often happens, more pressing tasks always seemed to take priority. To be fair, for basic tracking needs, you can get by with TensorBoard. It’s a straightforward tool that provides all the essentials. However, it starts to feel a bit overwhelming when you’re juggling a large number of experiments. Also, I did not have much experience with Terraform, just added a few lines here and there to existing configurations to set up some permissions and such. So, I decided to kill two birds with one stone and get into this project.</p>
+
+<h2 id="what-do-we-need">What do we need?</h2>
+
+<p>Before we dive in, let’s make sure we have got everything we need. We are going to use Terraform for setting up our infrastructure, so you’ll need that installed. This post assumes you’ve got Terraform ready and configured for your AWS account, so we’ll skip that part and focus on what we need to add to our Terraform configuration. If you haven’t set up Terraform yet, no problem – just follow <a href="https://learn.hashicorp.com/tutorials/terraform/aws-build?in=terraform/aws-get-started" target="_blank" rel="noopener noreferrer">this guide</a> for the setup. Also, I have deployed the MLFlow server in AWS EKS using <a href="https://fluxcd.io/" target="_blank" rel="noopener noreferrer">Flux</a>, a great tool for deploying services in Kubernetes. It’s not essential for this tutorial, though. Feel free to deploy the MLFlow server manually or with any other tool that you’re comfortable with.</p>
+
+<p>Now, the MLFlow tracking server needs a few key components:</p>
+
+<ul>
+  <li>A <strong>database</strong> to store all your data</li>
+  <li>A <strong>storage bucket</strong> for artifacts, like model checkpoints.</li>
+  <li>A <strong>server</strong> to run the tracking server, which is essentially a Docker image with MLFlow installed.</li>
+</ul>
+
+<p>Let’s take it step by step and see how we can set up each of these components.</p>
+
+<h2 id="database">Database</h2>
+
+<p>MLFlow supports a bunch of different databases, but we are going to use Postgres – it’s popular, and I’m quite familiar with it.We will use AWS RDS to set up our database and its security group. Here’s what to add to your Terraform configuration:</p>
+
+<p>First, we create a random password without special characters:</p>
+
+<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Creates a random password for the database</span>
+<span class="nx">resource</span> <span class="s2">"random_password"</span> <span class="s2">"mlflow_db"</span> <span class="p">{</span>
+  <span class="nx">length</span>  <span class="p">=</span> <span class="mi">16</span>
+  <span class="nx">special</span> <span class="p">=</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we set up a security group for the database that allows TCP traffic on port 5432 (typical for PostgreSQL databases). We are limiting incoming traffic to only our VPN. If you are not looking to restrict traffic, you can skip this step.</p>
+
+<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This specifies the security group for the database</span>
+<span class="nx">module</span> <span class="s2">"mlflow_db_security_group"</span> <span class="p">{</span>
+  <span class="nx">source</span>  <span class="p">=</span> <span class="s2">"terraform-aws-modules/security-group/aws"</span>
+  <span class="nx">version</span> <span class="p">=</span> <span class="s2">"~&gt; 4"</span>
+
+  <span class="nx">name</span>        <span class="p">=</span> <span class="s2">"mlflow-db-sg"</span>
+  <span class="nx">description</span> <span class="p">=</span> <span class="s2">"RDS Aurora ingress security group"</span>
+  <span class="nx">vpc_id</span>      <span class="p">=</span> <span class="nx">aws_vpc</span><span class="p">.</span><span class="nx">main</span><span class="p">.</span><span class="nx">id</span> <span class="c1"># You need to use you own vpc id here</span>
+
+  <span class="nx">ingress_with_cidr_blocks</span> <span class="p">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">from_port</span>   <span class="p">=</span> <span class="mi">5432</span>
+      <span class="nx">to_port</span>     <span class="p">=</span> <span class="mi">5432</span>
+      <span class="nx">protocol</span>    <span class="p">=</span> <span class="s2">"tcp"</span>
+      <span class="nx">description</span> <span class="p">=</span> <span class="s2">"RDS Aurora access from within VPC"</span>
+      <span class="nx">cidr_blocks</span> <span class="p">=</span> <span class="p">[</span><span class="nx">var</span><span class="p">.</span><span class="nx">your_vpn</span><span class="p">]</span>
+    <span class="p">},</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Finally, we create a RDS Aurora cluster for the MLFlow database. The setup is straightforward, but you can always refer to the <a href="https://registry.terraform.io/modules/terraform-aws-modules/rds-aurora/aws/latest" target="_blank" rel="noopener noreferrer">official documentation</a> for more details. Notice how we use the earlier created password and security group to restrict access. We are creating a single writer instance, assuming limited traffic. If you expect more, consider adding a read replica in the instances map.</p>
+
+<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Database configuration</span>
+<span class="nx">module</span> <span class="s2">"mlflow_cluster_db"</span> <span class="p">{</span>
+  <span class="nx">source</span>         <span class="p">=</span> <span class="s2">"terraform-aws-modules/rds-aurora/aws"</span>
+  <span class="nx">version</span>        <span class="p">=</span> <span class="s2">"6.2.0"</span>
+
+  <span class="nx">name</span>           <span class="p">=</span> <span class="s2">"mlflow-db"</span>
+  <span class="nx">engine</span>         <span class="p">=</span> <span class="s2">"aurora-postgresql"</span>
+  <span class="nx">engine_version</span> <span class="p">=</span> <span class="s2">"14.5"</span>
+  <span class="nx">instance_class</span> <span class="p">=</span> <span class="s2">"db.r5.large"</span>
+  <span class="nx">instances</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="nx">one</span> <span class="p">=</span> <span class="p">{}</span>
+  <span class="p">}</span>
+
+  <span class="nx">database_name</span>          <span class="p">=</span> <span class="s2">"mlflow"</span>
+  <span class="nx">master_username</span>        <span class="p">=</span> <span class="s2">"mlflow"</span>
+  <span class="nx">create_random_password</span> <span class="p">=</span> <span class="kc">false</span>
+  <span class="nx">master_password</span>        <span class="p">=</span> <span class="nx">random_password</span><span class="p">.</span><span class="nx">mlflow_db</span><span class="p">.</span><span class="nx">result</span>
+
+  <span class="nx">create_security_group</span>  <span class="p">=</span> <span class="kc">false</span>
+  <span class="nx">subnets</span>                <span class="p">=</span> <span class="nx">local</span><span class="p">.</span><span class="nx">subnets_ids_database</span>
+  <span class="nx">vpc_security_group_ids</span> <span class="p">=</span> <span class="p">[</span><span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_db_security_group</span><span class="p">.</span><span class="nx">security_group_id</span><span class="p">]</span>
+
+  <span class="nx">storage_encrypted</span>   <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">apply_immediately</span>   <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">monitoring_interval</span> <span class="p">=</span> <span class="mi">10</span>
+
+  <span class="nx">enabled_cloudwatch_logs_exports</span> <span class="p">=</span> <span class="p">[</span><span class="s2">"postgresql"</span><span class="p">]</span>
+
+  <span class="nx">tags</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="nx">Environment</span> <span class="p">=</span> <span class="s2">"dev"</span>
+    <span class="nx">Terraform</span>   <span class="p">=</span> <span class="s2">"true"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That is about it for the database setup. Lastly, we need to store the DB user, password, and endpoint for later connection. I will use AWS Secrets Manager for this. How you manage secrets may vary; the only thing you really want to avoid is to store them in source code. You could also use AWS Parameter Store or Hashicorp Vault, for example. Here’s how to store the secrets in AWS Secrets Manager:</p>
+
+<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_username_id"</span> <span class="p">{</span>
+  <span class="nx">name</span>  <span class="p">=</span> <span class="s2">"mlflow-username"</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_username"</span> <span class="p">{</span>
+  <span class="nx">secret_id</span>     <span class="p">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_username_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">secret_string</span> <span class="p">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_username</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_password_id"</span> <span class="p">{</span>
+  <span class="nx">name</span>  <span class="p">=</span> <span class="s2">"mlflow-password"</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_password"</span> <span class="p">{</span>
+  <span class="nx">secret_id</span>     <span class="p">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_password_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">secret_string</span> <span class="p">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_password</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_endpoint_id"</span> <span class="p">{</span>
+  <span class="nx">name</span>  <span class="p">=</span> <span class="s2">"mlflow-db-writer-endpoint"</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_endpoint"</span> <span class="p">{</span>
+  <span class="nx">secret_id</span>     <span class="p">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_endpoint_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">secret_string</span> <span class="p">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_endpoint</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="storage-bucket-and-iam-role">Storage bucket and IAM Role</h2>
+
+<p>Next up is setting up a storage bucket for all the artifacts, and we’re going to use AWS S3 for this. Here’s the Terraform configuration needed:</p>
+
+<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_s3_bucket"</span> <span class="s2">"mlflow_artifacts_bucket"</span> <span class="p">{</span>
+  <span class="nx">bucket</span> <span class="p">=</span> <span class="s2">"mlflow-artifacts-bucket"</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_s3_bucket_ownership_controls"</span> <span class="s2">"mlflow_bucket_ownership"</span> <span class="p">{</span>
+  <span class="nx">bucket</span> <span class="p">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">rule</span> <span class="p">{</span>
+    <span class="nx">object_ownership</span> <span class="p">=</span> <span class="s2">"BucketOwnerPreferred"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="s2">"aws_s3_bucket_acl"</span> <span class="s2">"mlflow_bucket_acl"</span> <span class="p">{</span>
+  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="nx">aws_s3_bucket_ownership_controls</span><span class="p">.</span><span class="nx">mlflow_bucket_ownership</span><span class="p">]</span>
+
+  <span class="nx">bucket</span> <span class="p">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">acl</span>    <span class="p">=</span> <span class="s2">"private"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This configuration creates an S3 bucket named ‘mlflow-artifacts-bucket’. It also sets up ownership controls, ensuring new objects uploaded without an ACL are owned by the bucket owner. Additionally, it enforces a private ACL for the bucket, securing the stored data.</p>
+
+<p>Now, MLFlow needs to access this bucket from EKS, so we’ll create an IAM Role for Service Accounts. Here’s how to do it:</p>
+
+<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_iam_role"</span> <span class="s2">"mlflow-role"</span> <span class="p">{</span>
+  <span class="nx">name</span> <span class="p">=</span> <span class="s2">"mlflow-role"</span>
+
+  <span class="nx">assume_role_policy</span> <span class="p">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
+    <span class="nx">Version</span> <span class="p">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
+    <span class="nx">Statement</span> <span class="p">=</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nx">Action</span> <span class="p">=</span> <span class="s2">"sts:AssumeRole"</span><span class="p">,</span>
+        <span class="nx">Effect</span> <span class="p">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
+        <span class="nx">Principal</span> <span class="p">=</span> <span class="p">{</span>
+          <span class="nx">Service</span> <span class="p">=</span> <span class="s2">"ec2.amazonaws.com"</span> 
+        <span class="p">},</span>
+      <span class="p">},</span>
+    <span class="p">],</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="c1"># Custom Policy for Specific S3 Bucket Access</span>
+<span class="nx">resource</span> <span class="s2">"aws_iam_policy"</span> <span class="s2">"mlflow_s3_policy"</span> <span class="p">{</span>
+  <span class="nx">name</span>   <span class="p">=</span> <span class="s2">"mlflow_s3_policy"</span>
+  <span class="nx">policy</span> <span class="p">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
+    <span class="nx">Version</span> <span class="p">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
+    <span class="nx">Statement</span> <span class="p">=</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nx">Action</span> <span class="p">=</span> <span class="p">[</span>
+          <span class="s2">"s3:GetObject"</span><span class="p">,</span>
+          <span class="s2">"s3:GetObject*"</span><span class="p">,</span>
+          <span class="s2">"s3:ListBucket"</span><span class="p">,</span>
+          <span class="s2">"s3:PutObject"</span><span class="p">,</span>
+          <span class="s2">"s3:DeleteObject"</span>
+        <span class="p">],</span>
+        <span class="nx">Effect</span>   <span class="p">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
+        <span class="nx">Resource</span> <span class="p">=</span> <span class="p">[</span>
+          <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket"</span><span class="p">,</span>
+          <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket/*"</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="c1"># Attach Custom Policy to the Role</span>
+<span class="nx">resource</span> <span class="s2">"aws_iam_role_policy_attachment"</span> <span class="s2">"s3_policy_attachment"</span> <span class="p">{</span>
+  <span class="nx">role</span>       <span class="p">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">mlflow-role</span><span class="p">.</span><span class="nx">name</span>
+  <span class="nx">policy_arn</span> <span class="p">=</span> <span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">.</span><span class="nx">arn</span>
+  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This code sets up a new role, <code class="language-plaintext highlighter-rouge">mlflow-role</code>, and attaches a custom policy, <code class="language-plaintext highlighter-rouge">mlflow_s3_policy</code>, to it. This policy grants specific permissions to access the S3 bucket we created earlier.</p>
+
+<h2 id="docker">Docker</h2>
+
+<p>Before we proceed, it’s important to note that the official MLFlow Docker image doesn’t include the necessary libraries for connecting with AWS S3 and Postgres. To address this, we’ll need to create a custom image that includes these libraries. This is done by crafting a Dockerfile like the one below:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ghcr.io/mlflow/mlflow:v2.7.1</span>
+
+<span class="k">RUN </span>apt-get <span class="nt">-y</span> update <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    apt-get <span class="nt">-y</span> <span class="nb">install </span>python3-dev build-essential pkg-config <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install </span>psycopg2-binary boto3
+
+<span class="k">CMD</span><span class="s"> ["bash"]</span>
+</code></pre></div></div>
+
+<p>This Dockerfile starts with the official MLFlow image and adds the required libraries. After crafting this file, you can build the image and push it to your ECR repository, or any other repository you prefer to use.</p>
+
+<h2 id="deployment">Deployment</h2>
+
+<p>Finally, we’ll set up the server to run the MLflow tracking server on AWS EKS. We typically use Flux for deploying services in Kubernetes, so we’ll create a <code class="language-plaintext highlighter-rouge">kustomization.yaml</code> file containing all the necessary resources. Alternatively, you could also deploy using Terraform, although I am less familiar with this method as we primarily utilize Flux for our deployments.</p>
+
+<p>We will begin with defining secrets. Our secrets are stored in AWS Secrets Manager and accessed from Kubernetes. We use the <a href="https://github.com/external-secrets/kubernetes-external-secrets" target="_blank" rel="noopener noreferrer">External Secrets</a> package for simplicity. Here is what our <code class="language-plaintext highlighter-rouge">secrets.yaml</code> file looks like:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes-client.io/v1"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ExternalSecret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-secrets</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">backendType</span><span class="pi">:</span> <span class="s">secretsManager</span>
+  <span class="na">data</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span>  <span class="s">mlflow-username</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_USERNAME</span>
+    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">mlflow-password</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_PASSWORD</span>
+    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">mlflow-db-writer-endpoint</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_HOST</span>
+</code></pre></div></div>
+
+<p>Next, we need a service account for our deployment, defined in <code class="language-plaintext highlighter-rouge">service-account.yaml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-sa</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">eks.amazonaws.com/role-arn</span><span class="pi">:</span> <span class="s">arn:aws:iam::941819254007:role/mlflow-role</span>
+</code></pre></div></div>
+
+<p>This configuration uses the earlier created IAM role for accessing the S3 bucket.</p>
+
+<p>We also need a service for our deployment, specified in <code class="language-plaintext highlighter-rouge">service.yaml</code> file:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
+      <span class="na">targetPort</span><span class="pi">:</span> <span class="s">http</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app.kubernetes.io/name</span><span class="pi">:</span> <span class="s">mlflow</span>
+</code></pre></div></div>
+
+<p>This is a very simple service definition that just exposes port 8080 and targets all pods with the label <code class="language-plaintext highlighter-rouge">app.kubernetes.io/name: mlflow</code>.</p>
+
+<p>Next, we need an ingress to expose our service to the outside world. We use AWS ALB Ingress Controller for this. Here’s what our <code class="language-plaintext highlighter-rouge">ingress.yaml</code> file looks like:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s">alb</span>
+    <span class="na">alb.ingress.kubernetes.io/scheme</span><span class="pi">:</span> <span class="s">internal</span>
+    <span class="na">alb.ingress.kubernetes.io/target-type</span><span class="pi">:</span> <span class="s">ip</span>
+    <span class="na">alb.ingress.kubernetes.io/ssl-redirect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">443"</span>
+    <span class="na">alb.ingress.kubernetes.io/listen-ports</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[{"HTTPS":</span><span class="nv"> </span><span class="s">443}]'</span>
+    <span class="na">alb.ingress.kubernetes.io/healthcheck-path</span><span class="pi">:</span> <span class="s">/</span>
+
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">host-url</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+          <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+          <span class="na">backend</span><span class="pi">:</span>
+            <span class="na">service</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
+              <span class="na">port</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
+</code></pre></div></div>
+
+<p>This Ingress configuration sets up access for our MLFlow tracking server. It is very simple, the configuration ensures SSL redirection to HTTPS on port 443 and that is is only accessible from within the VPC (internal). The rule specified routes traffic for the <code class="language-plaintext highlighter-rouge">host-url</code> to the MLflow service on the HTTP port.</p>
+
+<p>Lastly, the deployment itself, outlined in <code class="language-plaintext highlighter-rouge">deployment.yaml</code> file:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">mlflow</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">mlflow</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">serviceAccount</span><span class="pi">:</span> <span class="s">mlflow-sa</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">app</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">add-your-image-here</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">mlflow"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">server"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">--host=0.0.0.0"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">--backend-store-uri=postgresql://$(AWS_SECRET_MLFLOW_USERNAME):$(AWS_SECRET_MLFLOW_PASSWORD)@$(AWS_SECRET_MLFLOW_HOST):5432/mlflow"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">--default-artifact-root=s3://mlflow-artifacts-bucket"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">--port=8080"</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
+          <span class="na">containerPort</span><span class="pi">:</span> <span class="m">8080</span>
+        <span class="na">envFrom</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-secrets</span>
+        <span class="na">readinessProbe</span><span class="pi">:</span>
+          <span class="na">httpGet</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+        <span class="na">startupProbe</span><span class="pi">:</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">10</span>
+          <span class="na">httpGet</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s">1G</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
+          <span class="na">limits</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s">1G</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+</code></pre></div></div>
+
+<p>Key takeaways from this setup:</p>
+
+<ol>
+  <li>We deploy a single replica of the MLFlow pod.</li>
+  <li>Replace <code class="language-plaintext highlighter-rouge">add-your-image-here</code> with the image we created earlier.</li>
+  <li>Secrets created earlier are passed as environment variables in the <code class="language-plaintext highlighter-rouge">envFrom</code> section.</li>
+  <li>Entrypoint is set to <code class="language-plaintext highlighter-rouge">mlflow server</code> and we pass the required arguments to connect to the database and the S3 bucket.</li>
+  <li>Readiness and startup probes ensure the pod is fully operational before receiving requests.</li>
+</ol>
+
+<p>And that’s it! With these steps, our MLFlow server is ready to go and can start tracking experiments.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post we have seen how to set up MLFlow in AWS using Terraform. We have seen how to set up a Postgres database, an S3 bucket, and a Kubernetes deployment for the MLFlow server. We have also seen how to create a custom Docker image that includes the required libraries to connect to the database and the S3 bucket.</p>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
+
+
+  
+</div>
+
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+</body>
+
+</html>
