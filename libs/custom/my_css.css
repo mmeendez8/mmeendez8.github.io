@@ -730,11 +730,31 @@ code {
   margin: 0 .2rem;
   font-size: 80%;
   white-space: nowrap;
-  background: #F1F1F1;
-  border: 1px solid #E1E1E1;
-  border-radius: 4px; }
+  background: #f6f8faff;
+  border-radius: 3px; }
 pre > code {
   display: block;
   padding: 1rem 1.5rem;
   white-space: pre; 
   overflow-x: auto;}
+
+  
+/* pre {
+  padding: 1rem;
+  overflow: auto;
+  line-height: 1.5;
+  border-radius: 3px;
+  margin: 1.5rem 0 2.5rem;
+  font-size: 90%;
+  background-color: #f6f8fa;
+}
+
+code {
+  counter-reset: step;
+  counter-increment: step 0;
+}
+*/
+code, pre {
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+} 
