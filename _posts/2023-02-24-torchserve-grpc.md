@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Torchserve in Computer Vision: REST vs gRPC"
+title:  "Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC"
 subtitle: "Benchmarking protocols performance for sending images"
-description: "This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case."
+description: " This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology."
 image: "/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg"
 selected: y
 mathjax: y
@@ -48,7 +48,7 @@ encoded_image = cv2.imencode(".jpg", image)[1].tobytes()
 grpc.send(encoded_image)
 ```
 
-The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here... Let's check this with real numbers :)
+The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here... Let's check this with real numbers:
 
 ## 1. Base benchmark 
 
