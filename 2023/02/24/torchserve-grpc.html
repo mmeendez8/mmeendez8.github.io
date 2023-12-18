@@ -7,12 +7,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Torchserve in Computer Vision: REST vs gRPC</title>
+  <title>Miguel Méndez | Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC</title>
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   
   
-  <meta name="description" property="og:description" content="This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case.">
+  <meta name="description" property="og:description" content=" This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.">
   
 
   
@@ -64,10 +64,10 @@
 </script>
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
-  <meta name="twitter:title" content="Torchserve in Computer Vision: REST vs gRPC">
+  <meta name="twitter:title" content="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC">
   
   
-  <meta name="twitter:description" content="This post compares the performance of gRPC and REST communication protocols for serving a computer vision deep learning model using TorchServe. I tested both protocols and looked at the pros and cons of each. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their use case.">
+  <meta name="twitter:description" content=" This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.">
   
   
 
@@ -111,13 +111,13 @@
   <div class="offset">
     <div class="the-post-title-text">
       <span class="the-post-date">February 24, 2023 </span>
-      <h1 class="the-post-title">Torchserve in Computer Vision: REST vs gRPC</h1>
+      <h1 class="the-post-title">Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC</h1>
       <p>Benchmarking protocols performance for sending images</p>
     </div>
   </div>
 
   <div class="the-post-title-image">
-    <img src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0a3487f5b.jpg" alt="Torchserve in Computer Vision: REST vs gRPC" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-0fd0326d8.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-600-0fd0326d8.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0fd0326d8.webp 800w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1000-0fd0326d8.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="3200" height="1879">
+    <img src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0a3487f5b.jpg" alt="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-0fd0326d8.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-600-0fd0326d8.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0fd0326d8.webp 800w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1000-0fd0326d8.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="3200" height="1879">
 
   </div>
 </div>
@@ -170,7 +170,7 @@
 </span><span class="n">grpc</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">encoded_image</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here… Let’s check this with real numbers :)</p>
+<p>The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here… Let’s check this with real numbers:</p>
 
 <h2 id="1-base-benchmark">1. Base benchmark</h2>
 
