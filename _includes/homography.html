@@ -1,0 +1,27 @@
+<link rel="stylesheet" type="text/css" href="{{ '/libs/custom/homography.css' | prepend: site.baseurl }}">
+
+<div class="app-container">
+    <div>
+        <div id="button-container" class="button-container">
+            <div>
+                <input type="file" id="imageLoader" name="imageLoader"/>
+            </div>
+            <div>
+                <button id="removeLastPoint">Remove Last Point</button>
+                <button id="computeHomography">Compute Homography</button>
+            </div>
+        </div>
+        <div id="template-container" class="container">
+            <div id="templateContainer" class="templateContainer">
+                <canvas id="templateCanvas" class="templateCanvas"></canvas>
+                <canvas id="pointsTemplateCanvas" class="pointsTemplateCanvas"></canvas>
+            </div>
+            <div id="canvasContainer" class="canvasContainer">
+                <canvas id="imageCanvas" class="imageCanvas"></canvas>
+                <canvas id="pointsImageCanvas" class="pointsImageCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="https://docs.opencv.org/master/opencv.js" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ '/libs/custom/homography.js' | prepend: site.baseurl }}"></script>
+</div>
