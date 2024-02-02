@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | A demo on sport field registration</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="A demo on sport field registration">
+  
+  
+  <meta name="twitter:description" content="">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">February 02, 2024 </span>
+      <h1 class="the-post-title">A demo on sport field registration</h1>
+      <p>Extract the homography that relates the sport field to the image</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail-800-cb24aec13.jpg" alt="A demo on sport field registration" srcset="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail-400-a9c63d958.webp 400w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail-600-a9c63d958.webp 600w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail-800-a9c63d958.webp 800w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail-1000-a9c63d958.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="7801" height="4198">
+
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My team goal is simple: extract as much information as possible from sports event video feeds, ensuring the data is high-quality. In order to achieve this, the starting point is to be able to know what are you seeing in the video. This is, to be able to relate the pixels in the video feed to the real world coordinates. That relation is called the homography. I have already written a post in the company blog about this, you if you are interested in why this is so important and all applications that it has, you can check it out <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/">here</a>.</p>
+
+<p>In this post, I decided to challenge myself withto write simple JavaScript code with the assistance of Copilot. So, be kind and withhold judgment on any of the code you see. After all, I’m no JavaScript developer, and I’m essentially in GPT-4’s hands here 😎.</p>
+
+<h2 id="todo">todo:</h2>
+
+<p>goals of post are use gpt, be sure i can do this simple thing and I understand the whole process end to end</p>
+
+<h2 id="the-goal">The goal</h2>
+
+<p>The goal is straightforward: for any given American football NFL event video feed, I want to map the pixels in the video to their corresponding real-world coordinates. Essentially, we want to pinpoint the location of the ball, the players, the goal, etc. The simplest approach to start tackling this problem is to work at the frame level and figure out how to match each image to a predefined pitch template.</p>
+
+<p>My plan was to develop a web app that allows users to upload an image and then find the correspondence between that image and the pitch template. The pitch template is a basic image of the pitch, including lines and goals.</p>
+
+<h2 id="the-result">The result</h2>
+
+<p>Here’s the result for you to explore directly. Make sure to read the following sections for a deeper understanding of how it all works (or just in case you need to understand what to do with these buttons).</p>
+
+<link rel="stylesheet" type="text/css" href="/libs/custom/homography.css" />
+
+<div class="app-container">
+    <div>
+        <div id="button-container" class="button-container">
+            <div>
+                <input type="file" id="imageLoader" name="imageLoader" />
+            </div>
+            <div>
+                <button id="removeLastPoint">Remove Last Point</button>
+                <button id="computeHomography">Compute Homography</button>
+            </div>
+        </div>
+        <div id="template-container" class="container">
+            <div id="templateContainer" class="templateContainer">
+                <canvas id="templateCanvas" class="templateCanvas"></canvas>
+                <canvas id="pointsTemplateCanvas" class="pointsTemplateCanvas"></canvas>
+            </div>
+            <div id="canvasContainer" class="canvasContainer">
+                <canvas id="imageCanvas" class="imageCanvas"></canvas>
+                <canvas id="pointsImageCanvas" class="pointsImageCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="https://docs.opencv.org/master/opencv.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/libs/custom/homography.js"></script>
+</div>
+
+<h2 id="the-details">The details</h2>
+
+<h3 id="pitch-template">Pitch template</h3>
+
+<p>The pitch template is a controlled image we use to model the real-world pitch. By creating a template that accurately represents the real-world pitch, we can directly measure distances and angles within that image. This is crucial for extracting meaningful information later, such as ball position, player location, and player speed.</p>
+
+<p>The starting point is to understand how are the dimensions of an American football pitch and <a href="https://turftank.com/us/academy/how-big-is-a-football-field/">this</a> page is an excellent resource. It’s worth noting that we focused solely on NFL dimensions, as NCAA fields differ slightly.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-800-d46bc69a9.png" alt="AMF Pitch dimensions example" srcset="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-400-fe42e0bc7.webp 400w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-600-fe42e0bc7.webp 600w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-800-fe42e0bc7.webp 800w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-1000-fe42e0bc7.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1024" height="527" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>NFL Pitch dimensions obtained from <a href="https://turftank.com/us/academy/how-big-is-a-football-field/">https://turftank.com/us/academy/how-big-is-a-football-field/</a></em></p>
+
+<p>What I did is to create a simple image which resolution is the same as the NFL pitch, <em>120 x 53.3</em>. So as you can imagine by now, one pixel in this image is equivalent to 1 yard in the real world. Then we need to add the endzones, hashmarks, yards numbers and all the elements to that image located at their expected position. I have to reckon that even this is a quite simple and mechanical task, it took me a while until I got to a decent result. Be sure to check the real code but this is a small example where I (and copilot) show how to create the starting pitch with endzones and sidelines:</p>
+
+<p>I created a simple image with the same resolution as the NFL pitch, <em>120 x 53.3 px</em>. This means one pixel in the image equals one yard in the real world. Next, I added endzones, hash marks, yard numbers, and all necessary elements, each positioned accurately. I have to reckon that even this is a quite simple and mechanical task, it took me a while until I got to a decent result. Be sure to check the real code but this is a small example where I (and copilot) show how to create the starting pitch with endzones and sidelines:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// Define the pitch dimensions and other constants</span>
+    <span class="kd">const</span> <span class="nx">pitchHeight</span> <span class="o">=</span> <span class="mi">53</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">pitchWidth</span> <span class="o">=</span> <span class="mi">120</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> 
+    <span class="kd">const</span> <span class="nx">ctxTemplate</span> <span class="o">=</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nf">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="c1">// Set size and color of template canvas</span>
+    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">black</span><span class="dl">"</span><span class="p">;</span>
+    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nf">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    
+    <span class="c1">// Translate to avoid cropping the sidelines</span>
+    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="nx">lineWidth</span><span class="p">;</span>
+    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nf">translate</span><span class="p">(</span><span class="nx">lineWidth</span><span class="p">,</span> <span class="nx">lineWidth</span><span class="p">);</span>
+
+    <span class="c1">// Side lines</span>
+    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
+    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
+
+    <span class="c1">// End lines</span>
+    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">});</span>
+    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
+</code></pre></div></div>
+
+<p>I repeated this process for all pitch elements, resulting in the image below:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-800-cf747f767.png" alt="NFL resulting pitch template image" srcset="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-400-fb2e1d535.webp 400w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-600-fb2e1d535.webp 600w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-800-fb2e1d535.webp 800w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-1000-fb2e1d535.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1645" height="824" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>NFL resulting pitch template image</em></p>
+
+<p>In reality, you see a scaled-up version of a <em>120 x 53.3 px</em> image in the web app, adjusted to match your screen size.</p>
+
+<h3 id="recovering-the-homography">Recovering the homography</h3>
+
+<p>The homography is just a mapping that relates the pitch template with the image we upload. This is, that given a point in one of the images, we can find the corresponding point in the other image. There is a lot of cool theory behind this that I do not think I can cover in this post and I also could not improve the work the my colleague Iñaki Rabanillo has done in its own blog. So I will just refer you to his <a href="https://iraban.github.io/2021/12/03/homography.html">post</a>, be sure to check it out since it is a briliant piece of work.</p>
+
+<p>Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post’s scope. To be fair I can’t do better than what my colleague Iñaki Rabanillo has done in its own blog. So I will just refer you to his <a href="https://iraban.github.io/2021/12/03/homography.html">post</a>, be sure to check it out since it is a briliant piece of work.</p>
+
+<p>Summarizing a lot the problem we need to solve, we need to find an homography transformation that is represented by a 3x3 matrix. This will allow us to go from pixel coordinates of real image $p_i$, multiply them by the homography matrix $H$ and obtain the coordinates of point in the template image $p_t$.</p>
+
+\[p_iH=p_t\]
+
+<p>The homography matrix $H$ is a 3x3 matrix that has 8 degrees of freedom. This means that we need at least 4 points in the real image and their corresponding points in the template image to solve for the homography. This is a simple problem to solve and there are a lot of libraries that can do it for you. I used OpenCV library because it is the one I am most familiar with in python and to be honest I do not know if there is any other library that can do it in javascript.</p>
+
+<p>The work I need to add in the webapp is the following:</p>
+
+<ol>
+  <li>Enable users to mark points on both images.</li>
+  <li>Display corresponding points in both images using the same color scheme for easy identification.</li>
+  <li>Provide a simple (very simple) method for removing points in case of errors.</li>
+  <li>Include a button to compute the homography using the listed points and the <code class="language-plaintext highlighter-rouge">cv2.findHomography</code> function.</li>
+  <li>Display the warped template image overlaid on the uploaded image using the calculated homography.</li>
+</ol>
+
+<p>This is the code that retrieves the homography matrix from the list of points and applies it to the template image:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">function</span> <span class="nf">computeHomography</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Check that both lists of points have the same size and that their size is at least 4</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">Both lists of points must have the same size and contain at least 4 points</span><span class="dl">'</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Convert points to cv.Mat format</span>
+        <span class="kd">let</span> <span class="nx">imagePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
+        <span class="kd">let</span> <span class="nx">templatePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
+
+        <span class="c1">// Compute homography</span>
+        <span class="kd">let</span> <span class="nx">homography</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">findHomography</span><span class="p">(</span><span class="nx">templatePoints</span><span class="p">,</span> <span class="nx">imagePoints</span><span class="p">);</span>
+
+        <span class="c1">// Check if homography is none because of colinear points</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">homography</span><span class="p">.</span><span class="nf">empty</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Could not found any homography for these sets of points. Be sure they are not colinear.</span><span class="dl">"</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Warp the template image using the homography</span>
+        <span class="kd">let</span> <span class="nx">warpedTemplate</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">cv</span><span class="p">.</span><span class="nc">Mat</span><span class="p">();</span>
+        <span class="nx">cv</span><span class="p">.</span><span class="nf">warpPerspective</span><span class="p">(</span><span class="nx">templateImage</span><span class="p">,</span> <span class="nx">warpedTemplate</span><span class="p">,</span> <span class="nx">homography</span><span class="p">,</span> <span class="nx">sourceImage</span><span class="p">.</span><span class="nf">size</span><span class="p">());</span>
+
+        <span class="c1">// Add the warped template to the source image</span>
+        <span class="kd">let</span> <span class="nx">resultWeighted</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">cv</span><span class="p">.</span><span class="nc">Mat</span><span class="p">();</span>
+        <span class="nx">cv</span><span class="p">.</span><span class="nf">addWeighted</span><span class="p">(</span><span class="nx">sourceImage</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">warpedTemplate</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">resultWeighted</span><span class="p">);</span>
+        <span class="nx">cv</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="dl">'</span><span class="s1">imageCanvas</span><span class="dl">'</span><span class="p">,</span> <span class="nx">resultWeighted</span><span class="p">);</span>
+
+        <span class="c1">// Clean up memory</span>
+        <span class="nx">imagePoints</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+        <span class="nx">templatePoints</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+        <span class="nx">warpedTemplate</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="nx">homography</span><span class="p">;</span>
+    <span class="p">}</span>
+
+</code></pre></div></div>
+
+  
+</div>
+
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+</body>
+
+</html>
