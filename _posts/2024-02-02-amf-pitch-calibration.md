@@ -8,17 +8,17 @@ selected: n
 mathjax: n
 ---
 
-I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying "sports analytics" is a good way to make it sound more interesting. My team goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, we must be able to pinpoint the real world location of the objects observed in the video feed. In other words, we need to map pixels in the video feed to real world coordinates. That mapping is what we refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out [here](https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/).
+I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying "sports analytics" is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, I need to map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out [here](https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/).
 
-In this post, I've decided to challenge myself by attempting to write some JavaScript code with the assistance of Copilot. So, be kind and withhold judgement on any of the code you see. After all, I'm no JavaScript developer, I'm essentially in GPT-4's hands here 😎.
+In this post, I've decided to challenge myself by attempting to write some JavaScript code with the assistance of Copilot. So, be kind and withhold judgement on any of the code you see. After all, I'm no JavaScript developer; I'm essentially in GPT-4's hands here 😎.
 
 ## todo:
 
-goals of post are use gpt, be sure i can do this simple thing and I understand the whole process end to end
+goals of post are use gpt, be sure I can do this simple thing and I understand the whole process end to end
 
 ## The goal
 
-The goal is straightforward: for any given American football NFL event video feed, I want to map the pixels in the video to their corresponding real-world coordinates. Essentially, we want to pinpoint the location of the ball, the players, the goal, etc. The simplest approach to tackle this problem consists of working at the frame level and figuring out how to match each image to a predefined pitch template.
+The goal is straightforward: for any given American football NFL event video feed, I want to map the pixels in the video to their corresponding real-world coordinates. Essentially, I want to pinpoint the location of the ball, the players, the goal, etc. The simplest approach to tackle this problem consists of working at the frame level and figuring out how to match each image to a predefined pitch template.
 
 My plan was to develop a web app that allows users to upload an image and then find the correspondence between that image and the pitch template. The pitch template is a basic image of the pitch, including lines and goalposts.
 
@@ -33,19 +33,17 @@ Here’s the result for you to explore directly. Make sure to read the following
 
 ### Pitch template
 
-The pitch template is a controlled image we use to model the real-world pitch. By mapping image objects to it, we can directly measure their distances and angles. This is crucial for extracting meaningful information later on, such as ball position, player location, and player speed.
+The pitch template is a controlled image I use to model the real-world pitch. By mapping image objects to it, I can directly measure their distances and angles. This is crucial for extracting meaningful information later on, such as ball position, player location, and player speed.
 
-First, we must understand how the dimensions of an American football pitch are defined. [This](https://turftank.com/us/academy/how-big-is-a-football-field/) page is an excellent resource. It's worth noting that we solely focused on NFL dimensions, as NCAA fields differ slightly.
+First, I must understand how the dimensions of an American football pitch are defined. [This](https://turftank.com/us/academy/how-big-is-a-football-field/) page is an excellent resource. It's worth noting that I solely focused on NFL dimensions, as NCAA fields differ slightly.
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims.png --alt AMF Pitch dimensions example %}
 </div>
 
-{:refdef: class="image-caption"}
 *NFL Pitch dimensions obtained from [https://turftank.com/us/academy/how-big-is-a-football-field/](https://turftank.com/us/academy/how-big-is-a-football-field/)*
-{: refdef}
 
-I created a simple image with the same resolution as the NFL pitch, *120 x 53.3 px*. This means one pixel in the image equals one yard in the real world. Next, I added endzones, hash marks, yard numbers, and all necessary elements, each positioned accurately. I have to admit that even though this task should be relatively simple and mechanical, it took me a while to get a decent result. Be sure to check the real code but this is a small example where I (and copilot) show how to create the starting pitch with endzones and sidelines:
+I created a simple image with the same resolution as the NFL pitch, *120 x 53.3 px*. This means one pixel in the image equals one yard in the real world. Next, I added endzones, hash marks, yard numbers, and all necessary elements, each positioned accurately. I have to admit that even though this task should be relatively simple and mechanical, it took me a while to get a decent result. Be sure to check the real code but this is a small example where I (and Copilot) show how to create the starting pitch with endzones and sidelines:
 
 ```javascript
     // Define the pitch dimensions and other constants
@@ -86,9 +84,9 @@ Bear in mind though that you are observing a scaled-up version of a *120 x 53.3 
 
 ### Recovering the homography
 
-Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post's scope. To be fair I can't do better than what my colleague Iñaki Rabanillo has done in its own blog. So I will just refer you to his [post](https://iraban.github.io/2021/12/03/homography.html), be sure to check it out since it is a brilliant piece of work.
+Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post's scope. To be fair, I can't do better than what my colleague Iñaki Rabanillo has done in his own blog. So, I will just refer you to his [post](https://iraban.github.io/2021/12/03/homography.html), be sure to check it out since it is a brilliant piece of work.
 
-To sum it up, the problem we need to solve consists mostly of finding a homography transformation that is represented by a 3x3 matrix. This will allow us to go from pixel coordinates $p_i$ in the image to real world coordinates $p_t$ in the template image. To do so, we just need carry out a matrix multiplication:
+To sum it up, the problem we need to solve consists mostly of finding a homography transformation that is represented by a 3x3 matrix. This will allow us to go from pixel coordinates $p_i$ in the image to real world coordinates $p_t$ in the template image. To do so, we just need to carry out a matrix multiplication:
 
 $$p_iH=p_t$$
 
