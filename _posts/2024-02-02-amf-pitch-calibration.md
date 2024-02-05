@@ -4,30 +4,27 @@ title: "A demo on sport field registration"
 subtitle: "Extract the homography that maps the sport field to the image"
 description: ""
 image: "/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail.jpg"
-selected: n
+selected: y
 mathjax: n
 ---
 
 I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying "sports analytics" is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, I need to map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out [here](https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/).
 
-In this post, I've decided to challenge myself by attempting to write some JavaScript code with the assistance of Copilot. So, be kind and withhold judgement on any of the code you see. After all, I'm no JavaScript developer; I'm essentially in GPT-4's hands here 😎.
-
-## todo:
-
-goals of post are use gpt, be sure I can do this simple thing and I understand the whole process end to end
+Lately, I've been inspired by the incredible projects people have been creating with the help of Copilot. This sparked my curiosity to explore firsthand the experience of coding with a heavy reliance on this tool. I've decided to challenge myself by attempting to write some JavaScript code. So, be kind and withhold judgement on any of the code you see. After all, I'm no JavaScript developer; I'm essentially in GPT-4's hands here 😎.
 
 ## The goal
 
 The goal is straightforward: for any given American football NFL event video feed, I want to map the pixels in the video to their corresponding real-world coordinates. Essentially, I want to pinpoint the location of the ball, the players, the goal, etc. The simplest approach to tackle this problem consists of working at the frame level and figuring out how to match each image to a predefined pitch template.
 
-My plan was to develop a web app that allows users to upload an image and then find the correspondence between that image and the pitch template. The pitch template is a basic image of the pitch, including lines and goalposts.
+My plan was to develop a web app that allows users to upload an image and then find the correspondence between that image and the pitch template. The pitch template is a basic image of the pitch, including lines and goalposts. The project was also a personal challenge to show myself that I completely understand the entire process, from crafting a simple pitch template to calibrating the homography.
 
 ## The result
 
-Here’s the result for you to explore directly. Make sure to read the following sections for a deeper understanding of how it all works (or just in case you need to understand what to do with these buttons).
+Here’s the result for you to explore directly. Make sure to read the following sections for a deeper understanding of how it all works. Basically you need to upload an image and then select four or more corresponding points in the image and the pitch template. Once you have done that, you can compute the homography and see the warped pitch template overlaid on the uploaded image.
 
 {% include homography.html %}
 
+You can find all javascript code in [this file](https://github.com/mmeendez8/mmeendez8.github.io/blob/main/libs/custom/homography.js).
 
 ## The details
 
@@ -142,3 +139,6 @@ This is the code that retrieves the homography matrix from the list of points an
     }
 
 ```
+
+
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}*
