@@ -8,7 +8,7 @@ selected: y
 mathjax: n
 ---
 
-I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying "sports analytics" is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, I need to map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out [here](https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/).
+I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying "sports analytics" is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, I need to map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out [here](https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/){:target="_blank"}{:rel="noopener noreferrer"}.
 
 Lately, I've been inspired by the incredible projects people have been creating with the help of Copilot. This sparked my curiosity to explore firsthand the experience of coding with a heavy reliance on this tool. I've decided to challenge myself by attempting to write some JavaScript code. So, be kind and withhold judgement on any of the code you see. After all, I'm no JavaScript developer; I'm essentially in GPT-4's hands here 😎.
 
@@ -24,7 +24,7 @@ Here’s the result for you to explore directly. Make sure to read the following
 
 {% include homography.html %}
 
-You can find all javascript code in [this file](https://github.com/mmeendez8/mmeendez8.github.io/blob/main/libs/custom/homography.js).
+You can find all javascript code in [this file](https://github.com/mmeendez8/mmeendez8.github.io/blob/main/libs/custom/homography.js){:target="_blank"}{:rel="noopener noreferrer"}.
 
 ## The details
 
@@ -32,13 +32,13 @@ You can find all javascript code in [this file](https://github.com/mmeendez8/mme
 
 The pitch template is a controlled image I use to model the real-world pitch. By mapping image objects to it, I can directly measure their distances and angles. This is crucial for extracting meaningful information later on, such as ball position, player location, and player speed.
 
-First, I must understand how the dimensions of an American football pitch are defined. [This](https://turftank.com/us/academy/how-big-is-a-football-field/) page is an excellent resource. It's worth noting that I solely focused on NFL dimensions, as NCAA fields differ slightly.
+First, I must understand how the dimensions of an American football pitch are defined. [This](https://turftank.com/us/academy/how-big-is-a-football-field/){:target="_blank"}{:rel="noopener noreferrer"} page is an excellent resource. It's worth noting that I solely focused on NFL dimensions, as NCAA fields differ slightly.
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims.png --alt AMF Pitch dimensions example %}
 </div>
 
-*NFL Pitch dimensions obtained from [https://turftank.com/us/academy/how-big-is-a-football-field/](https://turftank.com/us/academy/how-big-is-a-football-field/)*
+*NFL Pitch dimensions obtained from [https://turftank.com/us/academy/how-big-is-a-football-field/](https://turftank.com/us/academy/how-big-is-a-football-field/){:target="_blank"}{:rel="noopener noreferrer"}*
 
 I created a simple image with the same resolution as the NFL pitch, *120 x 53.3 px*. This means one pixel in the image equals one yard in the real world. Next, I added endzones, hash marks, yard numbers, and all necessary elements, each positioned accurately. I have to admit that even though this task should be relatively simple and mechanical, it took me a while to get a decent result. Be sure to check the real code but this is a small example where I (and Copilot) show how to create the starting pitch with endzones and sidelines:
 
@@ -81,7 +81,7 @@ Bear in mind though that you are observing a scaled-up version of a *120 x 53.3 
 
 ### Recovering the homography
 
-Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post's scope. To be fair, I can't do better than what my colleague Iñaki Rabanillo has done in his own blog. So, I will just refer you to his [post](https://iraban.github.io/2021/12/03/homography.html), be sure to check it out since it is a brilliant piece of work.
+Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post's scope. To be fair, I can't do better than what my colleague Iñaki Rabanillo has done in his own blog. So, I will just refer you to his [post](https://iraban.github.io/2021/12/03/homography.html){:target="_blank"}{:rel="noopener noreferrer"}, be sure to check it out since it is a brilliant piece of work.
 
 To sum it up, the problem we need to solve consists mostly of finding a homography transformation that is represented by a 3x3 matrix. This will allow us to go from pixel coordinates $p_i$ in the image to real world coordinates $p_t$ in the template image. To do so, we just need to carry out a matrix multiplication:
 
