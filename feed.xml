@@ -1,20 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-02-02T13:35:22+00:00</updated><id>/feed.xml</id><entry><title type="html">A demo on sport field registration</title><link href="/2024/02/02/amf-pitch-calibration.html" rel="alternate" type="text/html" title="A demo on sport field registration" /><published>2024-02-02T00:00:00+00:00</published><updated>2024-02-02T00:00:00+00:00</updated><id>/2024/02/02/amf-pitch-calibration</id><content type="html" xml:base="/2024/02/02/amf-pitch-calibration.html"><![CDATA[<p>I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My team goal is simple: extract as much information as possible from sports event video feeds, ensuring the data is high-quality. In order to achieve this, the starting point is to be able to know what are you seeing in the video. This is, to be able to relate the pixels in the video feed to the real world coordinates. That relation is called the homography. I have already written a post in the company blog about this, you if you are interested in why this is so important and all applications that it has, you can check it out <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/">here</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-02-07T09:25:04+00:00</updated><id>/feed.xml</id><entry><title type="html">NFL Field Mapping: A Journey Through Sports Analytics and Homography</title><link href="/2024/02/07/nfl-field-mapping.html" rel="alternate" type="text/html" title="NFL Field Mapping: A Journey Through Sports Analytics and Homography" /><published>2024-02-07T00:00:00+00:00</published><updated>2024-02-07T00:00:00+00:00</updated><id>/2024/02/07/nfl-field-mapping</id><content type="html" xml:base="/2024/02/07/nfl-field-mapping.html"><![CDATA[<p>I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target="_blank" rel="noopener noreferrer">here</a>.</p>
 
-<p>In this post, I decided to challenge myself withto write simple JavaScript code with the assistance of Copilot. So, be kind and withhold judgment on any of the code you see. After all, I’m no JavaScript developer, and I’m essentially in GPT-4’s hands here 😎.</p>
-
-<h2 id="todo">todo:</h2>
-
-<p>goals of post are use gpt, be sure i can do this simple thing and I understand the whole process end to end</p>
+<p>Lately, I’ve been inspired by the incredible projects people have been creating with the help of Copilot. This sparked my curiosity to explore firsthand the experience of coding with a heavy reliance on this tool. I’ve decided to challenge myself by attempting to write some JavaScript code. So, be kind and withhold judgement on any of the code you see. After all, I’m no JavaScript developer; I’m essentially in GPT-4’s hands here 😎.</p>
 
 <h2 id="the-goal">The goal</h2>
 
-<p>The goal is straightforward: for any given American football NFL event video feed, I want to map the pixels in the video to their corresponding real-world coordinates. Essentially, we want to pinpoint the location of the ball, the players, the goal, etc. The simplest approach to start tackling this problem is to work at the frame level and figure out how to match each image to a predefined pitch template.</p>
+<p>The goal is straightforward: for any given American football NFL event video feed, I want to map the pixels in the video to their corresponding real-world coordinates. Essentially, I want to pinpoint the location of the ball, the players, the goal, etc. The simplest approach to tackle this problem consists of working at the frame level and figuring out how to match each image to a predefined pitch template.</p>
 
-<p>My plan was to develop a web app that allows users to upload an image and then find the correspondence between that image and the pitch template. The pitch template is a basic image of the pitch, including lines and goals.</p>
+<p>When I joined <a href="https://statsbomb.com/" target="_blank" rel="noopener noreferrer">StatsBomb</a>, there was a similar and more advanced tool already developed. My goal here was just to be sure I could replicate the entire process from scratch and have a complete understanding of it. So I wanted to develop a simple web app that allows users to upload an image and then find the correspondence between that image and the pitch template. The pitch template is a basic image of the pitch, including lines and goalposts.</p>
 
 <h2 id="the-result">The result</h2>
 
-<p>Here’s the result for you to explore directly. Make sure to read the following sections for a deeper understanding of how it all works (or just in case you need to understand what to do with these buttons).</p>
+<p>Here’s the result for you to explore directly. There are just a few steps to follow:</p>
+
+<ol>
+  <li>Upload image of a NFL game</li>
+  <li>Select at least four points in the image and the pitch template. Be sure to select the same points in both images.</li>
+  <li>Click on the “Compute homography” button to see the warped pitch template overlaid on the uploaded image.</li>
+</ol>
+
+<p>Make sure to read the following sections for a deeper understanding of how it all works.</p>
 
 <link rel="stylesheet" type="text/css" href="/libs/custom/homography.css" />
 
@@ -44,26 +48,26 @@
     <script type="text/javascript" src="/libs/custom/homography.js"></script>
 </div>
 
-<h2 id="the-details">The details</h2>
+<p>You can find all javascript code in <a href="https://github.com/mmeendez8/mmeendez8.github.io/blob/main/libs/custom/homography.js" target="_blank" rel="noopener noreferrer">this file</a>.</p>
+
+<h2 id="some-extra-details">Some extra details</h2>
 
 <h3 id="pitch-template">Pitch template</h3>
 
-<p>The pitch template is a controlled image we use to model the real-world pitch. By creating a template that accurately represents the real-world pitch, we can directly measure distances and angles within that image. This is crucial for extracting meaningful information later, such as ball position, player location, and player speed.</p>
+<p>The pitch template is a controlled image I use to model the real-world pitch. By mapping image objects to it, I can directly measure their distances and angles. This is crucial for extracting meaningful information later on, such as ball position, player location, and player speed.</p>
 
-<p>The starting point is to understand how are the dimensions of an American football pitch and <a href="https://turftank.com/us/academy/how-big-is-a-football-field/">this</a> page is an excellent resource. It’s worth noting that we focused solely on NFL dimensions, as NCAA fields differ slightly.</p>
+<p>First, I must understand how the dimensions of an American football pitch are defined. <a href="https://turftank.com/us/academy/how-big-is-a-football-field/" target="_blank" rel="noopener noreferrer">This</a> page is an excellent resource. It’s worth noting that I solely focused on NFL dimensions, as NCAA fields differ slightly.</p>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-800-d46bc69a9.png" alt="AMF Pitch dimensions example" srcset="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-400-fe42e0bc7.webp 400w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-600-fe42e0bc7.webp 600w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-800-fe42e0bc7.webp 800w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchdims-1000-fe42e0bc7.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1024" height="527" />
+    <a href="/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-800-d46bc69a9.png" alt="Diagram showing NFL pitch dimensions including length and width in yards." srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-400-fe42e0bc7.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-600-fe42e0bc7.webp 600w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-800-fe42e0bc7.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-1000-fe42e0bc7.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1024" height="527" />
 </a>
 
 </div>
 
-<p class="image-caption"><em>NFL Pitch dimensions obtained from <a href="https://turftank.com/us/academy/how-big-is-a-football-field/">https://turftank.com/us/academy/how-big-is-a-football-field/</a></em></p>
+<p><em>NFL Pitch dimensions obtained from <a href="https://turftank.com/us/academy/how-big-is-a-football-field/" target="_blank" rel="noopener noreferrer">https://turftank.com/us/academy/how-big-is-a-football-field/</a></em></p>
 
-<p>What I did is to create a simple image which resolution is the same as the NFL pitch, <em>120 x 53.3</em>. So as you can imagine by now, one pixel in this image is equivalent to 1 yard in the real world. Then we need to add the endzones, hashmarks, yards numbers and all the elements to that image located at their expected position. I have to reckon that even this is a quite simple and mechanical task, it took me a while until I got to a decent result. Be sure to check the real code but this is a small example where I (and copilot) show how to create the starting pitch with endzones and sidelines:</p>
-
-<p>I created a simple image with the same resolution as the NFL pitch, <em>120 x 53.3 px</em>. This means one pixel in the image equals one yard in the real world. Next, I added endzones, hash marks, yard numbers, and all necessary elements, each positioned accurately. I have to reckon that even this is a quite simple and mechanical task, it took me a while until I got to a decent result. Be sure to check the real code but this is a small example where I (and copilot) show how to create the starting pitch with endzones and sidelines:</p>
+<p>I created a simple image with the same resolution as the NFL pitch, <em>120 x 53.3 px</em>. This means one pixel in the image equals one yard in the real world. Next, I added end zones, hash marks, yard numbers, and all the necessary elements, each positioned accurately. I have to admit that although this task should be relatively simple and mechanical, it took me a while to achieve a decent result. Be sure to check the real code, but see below a small example that can help you realize the amount of handcrafting needed to create a good template:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// Define the pitch dimensions and other constants</span>
     <span class="kd">const</span> <span class="nx">pitchHeight</span> <span class="o">=</span> <span class="mi">53</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">;</span>
@@ -92,37 +96,27 @@
 <p>I repeated this process for all pitch elements, resulting in the image below:</p>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-800-cf747f767.png" alt="NFL resulting pitch template image" srcset="/generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-400-fb2e1d535.webp 400w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-600-fb2e1d535.webp 600w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-800-fb2e1d535.webp 800w, /generated/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/pitchtemplate-1000-fb2e1d535.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1645" height="824" />
+    <a href="/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-800-cf747f767.png" alt="NFL resulting pitch template image" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-400-fb2e1d535.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-600-fb2e1d535.webp 600w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-800-fb2e1d535.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-1000-fb2e1d535.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1645" height="824" />
 </a>
 
 </div>
 
 <p class="image-caption"><em>NFL resulting pitch template image</em></p>
 
-<p>In reality, you see a scaled-up version of a <em>120 x 53.3 px</em> image in the web app, adjusted to match your screen size.</p>
+<p>Bear in mind though that you are observing a scaled-up version of a <em>120 x 53.3 px</em> image in the web app, adjusted to match your screen size.</p>
 
 <h3 id="recovering-the-homography">Recovering the homography</h3>
 
-<p>The homography is just a mapping that relates the pitch template with the image we upload. This is, that given a point in one of the images, we can find the corresponding point in the other image. There is a lot of cool theory behind this that I do not think I can cover in this post and I also could not improve the work the my colleague Iñaki Rabanillo has done in its own blog. So I will just refer you to his <a href="https://iraban.github.io/2021/12/03/homography.html">post</a>, be sure to check it out since it is a briliant piece of work.</p>
+<p>Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post’s scope. To be fair, I can’t do better than what my colleague Iñaki Rabanillo has done in his own blog. So, I will just refer you to his <a href="https://inakiraba91.github.io/projective-geometry-estimating-the-homography-matrix.html" target="_blank" rel="noopener noreferrer">post</a>, be sure to check it out since it is a brilliant piece of work.</p>
 
-<p>Homography maps the pitch template to the uploaded image, allowing for corresponding points between the two. The theory behind this is extensive and beyond this post’s scope. To be fair I can’t do better than what my colleague Iñaki Rabanillo has done in its own blog. So I will just refer you to his <a href="https://iraban.github.io/2021/12/03/homography.html">post</a>, be sure to check it out since it is a briliant piece of work.</p>
+<p>To sum it up, the problem we need to solve consists mostly of finding a homography transformation that is represented by a 3x3 matrix. This will allow us to go from pixel coordinates $p_i$ in the image to real world coordinates $p_t$ in the template image. To do so, we just need to carry out a matrix multiplication:</p>
 
-<p>Summarizing a lot the problem we need to solve, we need to find an homography transformation that is represented by a 3x3 matrix. This will allow us to go from pixel coordinates of real image $p_i$, multiply them by the homography matrix $H$ and obtain the coordinates of point in the template image $p_t$.</p>
+\[p_t = H \cdot p_i\]
 
-\[p_iH=p_t\]
+<p>If you are now wondering how can you multiply a 3x3 matrix by a 2x1 vector, you are right. We need to add a 1 to the vector to make it a 3x1 vector. This is a common trick in computer vision and it is called homogeneous coordinates. It is a way to represent points in a way that makes it easier to perform transformations on them. Be sure to check <a href="https://inakiraba91.github.io/projective-geometry-building-the-homography-matrix-from-scratch.html" target="_blank" rel="noopener noreferrer">Iñaki’s post</a> for a deeper understanding of this.</p>
 
-<p>The homography matrix $H$ is a 3x3 matrix that has 8 degrees of freedom. This means that we need at least 4 points in the real image and their corresponding points in the template image to solve for the homography. This is a simple problem to solve and there are a lot of libraries that can do it for you. I used OpenCV library because it is the one I am most familiar with in python and to be honest I do not know if there is any other library that can do it in javascript.</p>
-
-<p>The work I need to add in the webapp is the following:</p>
-
-<ol>
-  <li>Enable users to mark points on both images.</li>
-  <li>Display corresponding points in both images using the same color scheme for easy identification.</li>
-  <li>Provide a simple (very simple) method for removing points in case of errors.</li>
-  <li>Include a button to compute the homography using the listed points and the <code class="language-plaintext highlighter-rouge">cv2.findHomography</code> function.</li>
-  <li>Display the warped template image overlaid on the uploaded image using the calculated homography.</li>
-</ol>
+<p>The homography matrix $H$ is a 3x3 matrix that has 8 degrees of freedom. This means that we need at least 4 points in the real image and their corresponding pairs in the template image to solve for the homography. This is a simple problem to solve and there are a lot of libraries that can do it for you. I used OpenCV library although you could just create the system of equations and solve it using any linear algebra library (specially if you are used to work with Javascript more than me).</p>
 
 <p>This is the code that retrieves the homography matrix from the list of points and applies it to the template image:</p>
 
@@ -134,8 +128,8 @@
         <span class="p">}</span>
 
         <span class="c1">// Convert points to cv.Mat format</span>
-        <span class="kd">let</span> <span class="nx">imagePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
-        <span class="kd">let</span> <span class="nx">templatePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
+        <span class="kd">let</span> <span class="nx">imagePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
+        <span class="kd">let</span> <span class="nx">templatePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
 
         <span class="c1">// Compute homography</span>
         <span class="kd">let</span> <span class="nx">homography</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">findHomography</span><span class="p">(</span><span class="nx">templatePoints</span><span class="p">,</span> <span class="nx">imagePoints</span><span class="p">);</span>
@@ -163,8 +157,25 @@
 
         <span class="k">return</span> <span class="nx">homography</span><span class="p">;</span>
     <span class="p">}</span>
+</code></pre></div></div>
 
-</code></pre></div></div>]]></content><author><name></name></author><summary type="html"><![CDATA[I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My team goal is simple: extract as much information as possible from sports event video feeds, ensuring the data is high-quality. In order to achieve this, the starting point is to be able to know what are you seeing in the video. This is, to be able to relate the pixels in the video feed to the real world coordinates. That relation is called the homography. I have already written a post in the company blog about this, you if you are interested in why this is so important and all applications that it has, you can check it out here.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail.jpg" /><media:content medium="image" url="/assets/images/fullsize/posts/2024-02-02-amf-pitch-calibration/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Deploying MLFlow in AWS with Terraform</title><link href="/2023/11/22/deploy-mlflow-terraform.html" rel="alternate" type="text/html" title="Deploying MLFlow in AWS with Terraform" /><published>2023-11-22T00:00:00+00:00</published><updated>2023-11-22T00:00:00+00:00</updated><id>/2023/11/22/deploy-mlflow-terraform</id><content type="html" xml:base="/2023/11/22/deploy-mlflow-terraform.html"><![CDATA[<p>Training and deploying machine learning models is a complex process. There are lots of steps involved – think data prep, model training, evaluating how good your model is, and then deploying it. Especially when it comes to training and evaluation, it’s super important to have a tool that makes life easier, something that lets us compare different experiments and track their performance (like losses, hyperparameters, metrics, etc.).</p>
+<h3 id="projecting-between-image-and-template">Projecting between image and template</h3>
+
+<p>Once we have the homography matrix, we can project any point in the image to the template (and viceversa). This just requires us to do a simple matrix multiplication. As it was mentioned before:</p>
+
+\[p_t = H \cdot p_i\]
+
+<p>It is also possible to do the opposite, projecting a point in the template to the image:</p>
+
+\[p_i = H^{-1} \cdot p_t\]
+
+<p>Quite simple, right?</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I hope you enjoyed this post and the web app. I have been using python for a long time and seeing things coming to life in the browser feels like something new now. I also had time to revisit some of the theory behind the homography and I am always happy to do so. I hope you found it interesting and that you can use it as a starting point for your own projects. I am sure there are a lot of improvements that can be done to this code and I would love to hear your thoughts on it.</p>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Dive into the world of sports analytics with a hands-on guide to mapping NFL fields to real-world coordinates using homography. Discover how computer vision techniques can transform video feed data into actionable insights, and explore the development of a web app for image calibration with the help of Copilot. Whether you're a sports enthusiast or a developer curious about the intersection of technology and sports, join to this journey through the fascinating process of sports field registration.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail.jpg" /><media:content medium="image" url="/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Deploying MLFlow in AWS with Terraform</title><link href="/2023/11/22/deploy-mlflow-terraform.html" rel="alternate" type="text/html" title="Deploying MLFlow in AWS with Terraform" /><published>2023-11-22T00:00:00+00:00</published><updated>2023-11-22T00:00:00+00:00</updated><id>/2023/11/22/deploy-mlflow-terraform</id><content type="html" xml:base="/2023/11/22/deploy-mlflow-terraform.html"><![CDATA[<p>Training and deploying machine learning models is a complex process. There are lots of steps involved – think data prep, model training, evaluating how good your model is, and then deploying it. Especially when it comes to training and evaluation, it’s super important to have a tool that makes life easier, something that lets us compare different experiments and track their performance (like losses, hyperparameters, metrics, etc.).</p>
 
 <p>There are a bunch of tools out there for this, but we’re going to focus on one: <a href="https://mlflow.org/" target="_blank" rel="noopener noreferrer">MLFlow</a>. The goal of this post is to learn how to set up MLFlow in AWS, and we’re going to use Terraform for that. <a href="https://www.terraform.io/" target="_blank" rel="noopener noreferrer">Terraform</a> is awesome because (disclaimer: I hate its syntax) it lets you define all your infrastructure as code so you will never ever forget what button did you click to set up that AWS instance.</p>
 
