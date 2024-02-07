@@ -261,8 +261,8 @@ function computeHomography() {
     }
 
     // Convert points to cv.Mat format
-    let imagePoints = cv.matFromArray(pointsImage.length * 2, 1, cv.CV_32FC2, pointsImage.flatMap(point => [Math.round(point.x), Math.round(point.y)]));
-    let templatePoints = cv.matFromArray(pointsTemplate.length * 2, 1, cv.CV_32FC2, pointsTemplate.flatMap(point => [Math.round(point.x), Math.round(point.y)]));
+    let imagePoints = cv.matFromArray(pointsImage.length, 1, cv.CV_32FC2, pointsImage.flatMap(point => [Math.round(point.x), Math.round(point.y)]));
+    let templatePoints = cv.matFromArray(pointsTemplate.length, 1, cv.CV_32FC2, pointsTemplate.flatMap(point => [Math.round(point.x), Math.round(point.y)]));
 
     // Compute homography
     let homography = cv.findHomography(templatePoints, imagePoints);

@@ -227,6 +227,6 @@ The differences between this response and the one provided by Torchserve are cle
 If you're using Torchserve to serve computer vision models, it's recommended to steer clear of gRPC. Our findings show that there are no performance benefits to using gRPC. Moreover, it adds code complexity while hindering debugging due to its non-human-readable messages. Since REST is more commonly used, most developers are already familiar with it. Switching to gRPC in this scenario comes with a learning curve that doesn't offer any significant advantages.
 
 
-*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}{:target="_blank"}{:rel="noopener noreferrer"}*
+*Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via [Twitter](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"} or [Github](https://github.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"}*
 
 
