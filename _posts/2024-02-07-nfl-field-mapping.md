@@ -3,7 +3,7 @@ layout: post
 title: "NFL Field Mapping: A Journey Through Sports Analytics and Homography"
 subtitle: "A Computer Vision webapp to map NFL game images to their real-world coordinates"
 description: "Dive into the world of sports analytics with a hands-on guide to mapping NFL fields to real-world coordinates using homography. Discover how computer vision techniques can transform video feed data into actionable insights, and explore the development of a web app for image calibration with the help of Copilot. Whether you're a sports enthusiast or a developer curious about the intersection of technology and sports, join to this journey through the fascinating process of sports field registration."
-image: "/assets/images/fullsize/posts/2024-02-07-amf-field-mapping/thumbnail.jpg"
+image: "/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail.jpg"
 selected: n
 mathjax: y
 ---
@@ -41,7 +41,7 @@ The pitch template is a controlled image I use to model the real-world pitch. By
 First, I must understand how the dimensions of an American football pitch are defined. [This](https://turftank.com/us/academy/how-big-is-a-football-field/){:target="_blank"}{:rel="noopener noreferrer"} page is an excellent resource. It's worth noting that I solely focused on NFL dimensions, as NCAA fields differ slightly.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-02-07-amf-field-mapping/pitchdims.png --alt Diagram showing NFL pitch dimensions including length and width in yards. %}
+    {% picture pimage /assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims.png --alt Diagram showing NFL pitch dimensions including length and width in yards. %}
 </div>
 
 *NFL Pitch dimensions obtained from [https://turftank.com/us/academy/how-big-is-a-football-field/](https://turftank.com/us/academy/how-big-is-a-football-field/){:target="_blank"}{:rel="noopener noreferrer"}*
@@ -76,7 +76,7 @@ I created a simple image with the same resolution as the NFL pitch, *120 x 53.3 
 I repeated this process for all pitch elements, resulting in the image below:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-02-07-amf-field-mapping/pitchtemplate.png --alt NFL resulting pitch template image %}
+    {% picture pimage /assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate.png --alt NFL resulting pitch template image %}
 </div>
 
 {:refdef: class="image-caption"}
