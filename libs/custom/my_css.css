@@ -623,7 +623,7 @@ table thead {
   display: flex;
   flex-direction: column;
   min-height: 459px;
-  margin-bottom: 7rem;
+  margin-bottom: 4.5rem;
 }
 
 @media (min-width: 768px) {
@@ -631,7 +631,8 @@ table thead {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     flex-direction: row;
-  }
+    margin-bottom: 7rem;
+  } 
 }
 
 .the-post-title{
@@ -726,6 +727,7 @@ table thead {
 .share-button {
   text-align: center;
   height: 60px;
+  margin-bottom: 2rem;
 }
 
 /*  ================ Code  ================ */
