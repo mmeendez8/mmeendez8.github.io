@@ -98,8 +98,7 @@
   // Define our custom event handlers
   function clickEventToAnalytics (intentEvent) {
     if (!intentEvent) return;
-    var label = intentEvent.region;
-    gtag('event', 'share_twitter_click', {
+    gtag('event', 'Twitter Share', {
       'event_category': 'twitter_share',
       'event_label': label
     });
@@ -110,6 +109,7 @@
     // Now bind our custom intent events
     twttr.events.bind('click', clickEventToAnalytics);
   });
+  
 </script>
 
   <!-- Twitter cards -->
