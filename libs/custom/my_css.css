@@ -742,3 +742,9 @@ code, pre {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
 } 
+
+/*  ================ Comments  ================ */
+
+.comments {
+  margin: 100px 0 40px 0;
+}
