@@ -62,7 +62,25 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- Twitter cards -->
+    <!-- From https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites -->
+  <script>window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+      t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+
+    return t;
+  }(document, "script", "twitter-wjs"));</script>
+
+  <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
   <meta name="twitter:title" content="Creating Better Data: AI & Homography Estimation">
   
@@ -120,6 +138,12 @@
     <img src="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ecf6e2541.jpg" alt="Creating Better Data: AI & Homography Estimation" srcset="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-400-ef622fa41.webp 400w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-600-ef622fa41.webp 600w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ef622fa41.webp 800w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1000-ef622fa41.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1500" height="1145">
 
   </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="Creating Better Data: AI & Homography Estimation" , data-via="mmeendez8" , data-url="/2023/09/22/homography-estimation.html">
+  </a>
 </div>
 
 <div class="container the-post-content">

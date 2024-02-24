@@ -62,7 +62,25 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- Twitter cards -->
+    <!-- From https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites -->
+  <script>window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+      t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+
+    return t;
+  }(document, "script", "twitter-wjs"));</script>
+
+  <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
   <meta name="twitter:title" content="Reduce Actions time with Docker and Github Cache">
   
@@ -111,6 +129,12 @@
     <img src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Reduce Actions time with Docker and Github Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-1000-4b8e5649b.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1992" height="1440">
 
   </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="Reduce Actions time with Docker and Github Cache" , data-via="mmeendez8" , data-url="/2021/04/23/cache-docker.html">
+  </a>
 </div>
 
 <div class="container the-post-content">

@@ -62,7 +62,25 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- Twitter cards -->
+    <!-- From https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites -->
+  <script>window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+      t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+
+    return t;
+  }(document, "script", "twitter-wjs"));</script>
+
+  <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
   <meta name="twitter:title" content="CNNs & Transformers Explainability: What do they see?">
   
@@ -120,6 +138,12 @@
     <img src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-3fbd1fc19.jpg" alt="CNNs & Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-eccb3b6b6.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-eccb3b6b6.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-eccb3b6b6.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1000-eccb3b6b6.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1092" height="772">
 
   </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="CNNs & Transformers Explainability: What do they see?" , data-via="mmeendez8" , data-url="/2021/12/09/cnn-vs-transformers.html">
+  </a>
 </div>
 
 <div class="container the-post-content">
