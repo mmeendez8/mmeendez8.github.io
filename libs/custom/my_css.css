@@ -723,6 +723,11 @@ table thead {
   font-size: 16px;
 }
 
+.share-button {
+  text-align: center;
+  height: 60px;
+}
+
 /*  ================ Code  ================ */
 
 code {
