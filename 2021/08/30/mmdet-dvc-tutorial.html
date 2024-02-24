@@ -99,8 +99,7 @@
   function clickEventToAnalytics (intentEvent) {
     if (!intentEvent) return;
     var label = intentEvent.region;
-    // pageTracker._trackEvent('twitter_web_intents', intentEvent.type, label);
-    gtag('event', 'click', {
+    gtag('event', 'share_twitter_click', {
       'event_category': 'twitter_share',
       'event_label': label
     });
