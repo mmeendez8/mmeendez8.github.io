@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Building an Efficient Docker Image with Poetry and PyTorch</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  <meta name="description" property="og:description" content="Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects.">
+  
+
+  
+  <meta name="image" property="og:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PTDG7548');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- From https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites -->
+  <script>
+  // Log any kind of Web Intent event to Google Analytics
+  // Category: "twitter_web_intents"
+  // Action: Intent Event Type
+  // Label: Identifier for action taken: tweet_id, screen_name/user_id, click region
+
+  // First, load the widgets.js file asynchronously
+  window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+      t = window.twttr || {};
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+
+    return t;
+  }(document, "script", "twitter-wjs"));
+
+  // Define our custom event handlers
+  function clickEventToAnalytics (intentEvent) {
+    if (!intentEvent) return;
+    console.log("hole")
+    gtag('event', 'share', {
+      'event_category': 'twitter_share',
+    });
+  }
+
+  // Wait for the asynchronous resources to load
+  twttr.ready(function (twttr) {
+    // Now bind our custom intent events
+    twttr.events.bind('click', clickEventToAnalytics);
+  });
+  
+</script>
+
+  <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Building an Efficient Docker Image with Poetry and PyTorch">
+  
+  
+  <meta name="twitter:description" content="Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://mmeendez8.github.io/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+</head>
+
+<body>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTDG7548"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">March 12, 2024 </span>
+      <h1 class="the-post-title">Building an Efficient Docker Image with Poetry and PyTorch</h1>
+      <p>A guide for your Deep Learning environment setup</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-24020353f.jpg" alt="Building an Efficient Docker Image with Poetry and PyTorch" srcset="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-400-3e0bc6e32.webp 400w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-600-3e0bc6e32.webp 600w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-3e0bc6e32.webp 800w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1000-3e0bc6e32.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="2048" height="1365">
+
+  </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="Building an Efficient Docker Image with Poetry and PyTorch" , data-via="mmeendez8" , data-url="https://mmeendez8.github.io/2024/03/12/poetry-torch-docker.html">
+  </a>
+</div>
+
+<div class="container the-post-content">
+
+  <p>The goal of this post is straightforward: to guide you through the creation of a Docker image equipped with Poetry for dependency management and Torch for running deep learning models, specifically utilizing Python 3.11. While the task may seem simple at first glance, it involves several tricks that I believe can be very useful to share. This guide will utilize Docker Buildx, a powerful feature that might be unfamiliar to some, yet it is enabled by default in newer Docker releases.</p>
+
+<h2 id="docker-ubuntu-and-python-311">Docker, Ubuntu, and Python 3.11</h2>
+
+<p>I was surprised by the scarcity of information available on creating a Docker image with Python 3.11 as the system’s default Python version. While one could use the official Python images, I personally prefer to have complete control over and understanding of my Docker images. This practice helps avoid unnecessary dependencies and can be particularly beneficial when addressing issues as unknown environment variables or extra packages that may be set in the base images.</p>
+
+<p>Note that for building our images we will use Docker Buildx, which is a Docker CLI plugin that extends the capabilities of the Docker CLI. There are two different ways of building images with Docker Buildx: using the <code class="language-plaintext highlighter-rouge">docker buildx build</code> command or setting up the <code class="language-plaintext highlighter-rouge">DOCKER_BUILDKIT</code> environment variable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using the docker buildx build command</span>
+docker buildx build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
+
+<span class="c"># Setting up the DOCKER_BUILDKIT environment variable</span>
+<span class="nb">export </span><span class="nv">DOCKER_BUILDKIT</span><span class="o">=</span>1
+docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Let’s begin by configuring our Dockerfile:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="c"># Set non-interactive mode to avoid prompts during build</span>
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+    apt-get install -y software-properties-common &amp;&amp; \
+    # Add the Deadsnakes PPA for Python 3.11
+    add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
+    apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+        curl \
+        build-essential \
+        python3.11 \
+        python3-pip \
+        python3.11-venv \
+        python3.11-dev &amp;&amp; \
+    # Clean up to keep the image size small
+    rm -rf /var/lib/apt/lists/*  &amp;&amp; \
+    # Set Python 3.11 as the default Python version
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python3 /usr/bin/python3.11 &amp;&amp; \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python /usr/bin/python3.11
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
+
+<p>This Dockerfile is relatively standard. We are utilizing Ubuntu 22.04 as our base image and installing Python 3.11 from the Deadsnakes PPA. Moreover, we’re setting Python 3.11 as our default Python version using update-alternatives.</p>
+
+<p>For those curious about the <code class="language-plaintext highlighter-rouge">--mount</code> flag, it’s a Docker Buildx feature that caches downloaded packages, preventing them from being downloaded again when adding new packages. This feature can significantly reduce the time required to build your images.</p>
+
+<h2 id="poetry">Poetry</h2>
+
+<p>Next, let’s install Poetry using the official installer, which I like because it’s simple and straightforward. What I usually do is prevent Poetry from creating a new virtual environment. Instead, I manage the environment manually, giving me greater control over my project’s configuration.</p>
+
+<p>If you’re curious about the need for a virtual environment in our Docker image, there are a couple of reasons. Firstly, isolating your project’s dependencies from the system Python ensures a clean, conflict-free environment. Secondly, you might consider using a multi-stage build. This means first installing everything needed in an initial stage and then copying the final virtual environment to the second clean stage. This would make our image smaller and faster to build. However, this is not the focus of this post and I will not cover it here.</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="c"># Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.7.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
+
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+    apt-get install -y software-properties-common &amp;&amp; \
+    # Add the Deadsnakes PPA for Python 3.11
+    add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
+    apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+        curl \
+        build-essential \
+        python3.11 \
+        python3-pip \
+        python3.11-venv \
+        python3.11-dev &amp;&amp; \
+    # Clean up to keep the image size small
+    rm -rf /var/lib/apt/lists/*  &amp;&amp; \
+    # Set Python 3.11 as the default Python version
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python3 /usr/bin/python3.11 &amp;&amp; \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python /usr/bin/python3.11
+
+<span class="c"># Set PATH to include Poetry and custom venv</span>
+<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
+
+<span class="c"># Install poetry</span>
+<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
+
+<span class="c"># Create and prepare the virtual environment</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
+    
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
+
+<p>I’ve set <code class="language-plaintext highlighter-rouge">VENV_PATH</code> to <code class="language-plaintext highlighter-rouge">{project-dir}/.venv</code>. This is because Poetry might not follow the environment variable we set earlier, as mentioned in the <a href="https://python-poetry.org/docs/configuration/#virtualenvscreate" target="_blank" rel="noopener noreferrer">official docs</a>, and instead creates its own environment. Everything else in the setup is quite standard. If you have any questions, please feel free to ask.</p>
+
+<h2 id="pytorch">Pytorch</h2>
+
+<p>Installing Torch with Poetry can be tricky because Torch can be installed with or without GPU support, making it challenging to support both CPU and GPU versions in your pyproject.toml file. For example, you might use the CPU version for Continuous Integration (CI) and the GPU version for running your models in production. Many issues related to this are discussed on the <a href="https://github.com/python-poetry/poetry/issues/6409" target="_blank" rel="noopener noreferrer">Poetry GitHub</a>. After trying different methods, my preferred solution is to install dependencies using Poetry and then install Torch using pip. We need to ensure Torch is installed inside our virtual environment (venv), which requires setting the correct paths in advance (apologies if you were expecting a more complex solution 😑). Here’s what you need to add:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Copy dependency files to the app directory</span>
+<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
+
+<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
+</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="c"># Install torch GPU</span>
+    pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html 
+
+<span class="c"># Copy the entire project code to the container</span>
+<span class="k">COPY</span><span class="s"> ./ /source/</span>
+</code></pre></div></div>
+
+<p>Note that we first copy the <code class="language-plaintext highlighter-rouge">poetry.lock</code> and <code class="language-plaintext highlighter-rouge">pyproject.toml</code> to the image and then we run <code class="language-plaintext highlighter-rouge">poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code class="language-plaintext highlighter-rouge">--mount</code> flag to cache the downloaded packages.</p>
+
+<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code class="language-plaintext highlighter-rouge">cu118</code> in the installation command to ensure compatibility.</p>
+
+<h2 id="final-solution">Final solution</h2>
+
+<p>Here’s the final Dockerfile that puts everything we’ve talked about into action, hope this can help you to build your own image.</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="c"># Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.7.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
+
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+    apt-get install -y software-properties-common &amp;&amp; \
+    # Add the Deadsnakes PPA for Python 3.11
+    add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
+    apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+        curl \
+        build-essential \
+        python3.11 \
+        python3-pip \
+        python3.11-venv \
+        python3.11-dev &amp;&amp; \
+    # Clean up to keep the image size small
+    rm -rf /var/lib/apt/lists/*  &amp;&amp; \
+    # Set Python 3.11 as the default Python version
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python3 /usr/bin/python3.11 &amp;&amp; \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python /usr/bin/python3.11
+
+<span class="c"># Set PATH to include Poetry and custom venv</span>
+<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
+
+<span class="c"># Install poetry</span>
+<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
+
+<span class="c"># Create and prepare the virtual environment</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
+    
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Copy dependency files to the app directory</span>
+<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
+
+<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
+</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install </span><span class="nv">torch</span><span class="o">==</span>2.0.1+cu118 <span class="nv">torchvision</span><span class="o">==</span>0.15.2+cu118 <span class="nt">-f</span> https://download.pytorch.org/whl/torch_stable.html 
+
+<span class="c"># Copy the entire project code to the container</span>
+<span class="k">COPY</span><span class="s"> ./ /source/</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
+
+  
+</div>
+
+<div class="comments">
+  <script src="https://utteranc.es/client.js"
+        repo="mmeendez8/mmeendez8.github.io"
+        issue-term="url"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+</div>
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+</body>
+
+</html>

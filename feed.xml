@@ -1,4 +1,204 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://mmeendez8.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mmeendez8.github.io/" rel="alternate" type="text/html" /><updated>2024-03-04T10:45:49+00:00</updated><id>https://mmeendez8.github.io/feed.xml</id><entry><title type="html">NFL Field Mapping: A Journey Through Sports Analytics and Homography</title><link href="https://mmeendez8.github.io/2024/02/07/nfl-field-mapping.html" rel="alternate" type="text/html" title="NFL Field Mapping: A Journey Through Sports Analytics and Homography" /><published>2024-02-07T00:00:00+00:00</published><updated>2024-02-07T00:00:00+00:00</updated><id>https://mmeendez8.github.io/2024/02/07/nfl-field-mapping</id><content type="html" xml:base="https://mmeendez8.github.io/2024/02/07/nfl-field-mapping.html"><![CDATA[<p>I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target="_blank" rel="noopener noreferrer">here</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://mmeendez8.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mmeendez8.github.io/" rel="alternate" type="text/html" /><updated>2024-03-12T09:08:15+00:00</updated><id>https://mmeendez8.github.io/feed.xml</id><entry><title type="html">Building an Efficient Docker Image with Poetry and PyTorch</title><link href="https://mmeendez8.github.io/2024/03/12/poetry-torch-docker.html" rel="alternate" type="text/html" title="Building an Efficient Docker Image with Poetry and PyTorch" /><published>2024-03-12T00:00:00+00:00</published><updated>2024-03-12T00:00:00+00:00</updated><id>https://mmeendez8.github.io/2024/03/12/poetry-torch-docker</id><content type="html" xml:base="https://mmeendez8.github.io/2024/03/12/poetry-torch-docker.html"><![CDATA[<p>The goal of this post is straightforward: to guide you through the creation of a Docker image equipped with Poetry for dependency management and Torch for running deep learning models, specifically utilizing Python 3.11. While the task may seem simple at first glance, it involves several tricks that I believe can be very useful to share. This guide will utilize Docker Buildx, a powerful feature that might be unfamiliar to some, yet it is enabled by default in newer Docker releases.</p>
+
+<h2 id="docker-ubuntu-and-python-311">Docker, Ubuntu, and Python 3.11</h2>
+
+<p>I was surprised by the scarcity of information available on creating a Docker image with Python 3.11 as the system’s default Python version. While one could use the official Python images, I personally prefer to have complete control over and understanding of my Docker images. This practice helps avoid unnecessary dependencies and can be particularly beneficial when addressing issues as unknown environment variables or extra packages that may be set in the base images.</p>
+
+<p>Note that for building our images we will use Docker Buildx, which is a Docker CLI plugin that extends the capabilities of the Docker CLI. There are two different ways of building images with Docker Buildx: using the <code class="language-plaintext highlighter-rouge">docker buildx build</code> command or setting up the <code class="language-plaintext highlighter-rouge">DOCKER_BUILDKIT</code> environment variable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using the docker buildx build command</span>
+docker buildx build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
+
+<span class="c"># Setting up the DOCKER_BUILDKIT environment variable</span>
+<span class="nb">export </span><span class="nv">DOCKER_BUILDKIT</span><span class="o">=</span>1
+docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Let’s begin by configuring our Dockerfile:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="c"># Set non-interactive mode to avoid prompts during build</span>
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+    apt-get install -y software-properties-common &amp;&amp; \
+    # Add the Deadsnakes PPA for Python 3.11
+    add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
+    apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+        curl \
+        build-essential \
+        python3.11 \
+        python3-pip \
+        python3.11-venv \
+        python3.11-dev &amp;&amp; \
+    # Clean up to keep the image size small
+    rm -rf /var/lib/apt/lists/*  &amp;&amp; \
+    # Set Python 3.11 as the default Python version
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python3 /usr/bin/python3.11 &amp;&amp; \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python /usr/bin/python3.11
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
+
+<p>This Dockerfile is relatively standard. We are utilizing Ubuntu 22.04 as our base image and installing Python 3.11 from the Deadsnakes PPA. Moreover, we’re setting Python 3.11 as our default Python version using update-alternatives.</p>
+
+<p>For those curious about the <code class="language-plaintext highlighter-rouge">--mount</code> flag, it’s a Docker Buildx feature that caches downloaded packages, preventing them from being downloaded again when adding new packages. This feature can significantly reduce the time required to build your images.</p>
+
+<h2 id="poetry">Poetry</h2>
+
+<p>Next, let’s install Poetry using the official installer, which I like because it’s simple and straightforward. What I usually do is prevent Poetry from creating a new virtual environment. Instead, I manage the environment manually, giving me greater control over my project’s configuration.</p>
+
+<p>If you’re curious about the need for a virtual environment in our Docker image, there are a couple of reasons. Firstly, isolating your project’s dependencies from the system Python ensures a clean, conflict-free environment. Secondly, you might consider using a multi-stage build. This means first installing everything needed in an initial stage and then copying the final virtual environment to the second clean stage. This would make our image smaller and faster to build. However, this is not the focus of this post and I will not cover it here.</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="c"># Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.7.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
+
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+    apt-get install -y software-properties-common &amp;&amp; \
+    # Add the Deadsnakes PPA for Python 3.11
+    add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
+    apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+        curl \
+        build-essential \
+        python3.11 \
+        python3-pip \
+        python3.11-venv \
+        python3.11-dev &amp;&amp; \
+    # Clean up to keep the image size small
+    rm -rf /var/lib/apt/lists/*  &amp;&amp; \
+    # Set Python 3.11 as the default Python version
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python3 /usr/bin/python3.11 &amp;&amp; \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python /usr/bin/python3.11
+
+<span class="c"># Set PATH to include Poetry and custom venv</span>
+<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
+
+<span class="c"># Install poetry</span>
+<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
+
+<span class="c"># Create and prepare the virtual environment</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
+    
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
+
+<p>I’ve set <code class="language-plaintext highlighter-rouge">VENV_PATH</code> to <code class="language-plaintext highlighter-rouge">{project-dir}/.venv</code>. This is because Poetry might not follow the environment variable we set earlier, as mentioned in the <a href="https://python-poetry.org/docs/configuration/#virtualenvscreate" target="_blank" rel="noopener noreferrer">official docs</a>, and instead creates its own environment. Everything else in the setup is quite standard. If you have any questions, please feel free to ask.</p>
+
+<h2 id="pytorch">Pytorch</h2>
+
+<p>Installing Torch with Poetry can be tricky because Torch can be installed with or without GPU support, making it challenging to support both CPU and GPU versions in your pyproject.toml file. For example, you might use the CPU version for Continuous Integration (CI) and the GPU version for running your models in production. Many issues related to this are discussed on the <a href="https://github.com/python-poetry/poetry/issues/6409" target="_blank" rel="noopener noreferrer">Poetry GitHub</a>. After trying different methods, my preferred solution is to install dependencies using Poetry and then install Torch using pip. We need to ensure Torch is installed inside our virtual environment (venv), which requires setting the correct paths in advance (apologies if you were expecting a more complex solution 😑). Here’s what you need to add:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Copy dependency files to the app directory</span>
+<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
+
+<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
+</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="c"># Install torch GPU</span>
+    pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html 
+
+<span class="c"># Copy the entire project code to the container</span>
+<span class="k">COPY</span><span class="s"> ./ /source/</span>
+</code></pre></div></div>
+
+<p>Note that we first copy the <code class="language-plaintext highlighter-rouge">poetry.lock</code> and <code class="language-plaintext highlighter-rouge">pyproject.toml</code> to the image and then we run <code class="language-plaintext highlighter-rouge">poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code class="language-plaintext highlighter-rouge">--mount</code> flag to cache the downloaded packages.</p>
+
+<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code class="language-plaintext highlighter-rouge">cu118</code> in the installation command to ensure compatibility.</p>
+
+<h2 id="final-solution">Final solution</h2>
+
+<p>Here’s the final Dockerfile that puts everything we’ve talked about into action, hope this can help you to build your own image.</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="c"># Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.7.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
+
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+    apt-get install -y software-properties-common &amp;&amp; \
+    # Add the Deadsnakes PPA for Python 3.11
+    add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
+    apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+        curl \
+        build-essential \
+        python3.11 \
+        python3-pip \
+        python3.11-venv \
+        python3.11-dev &amp;&amp; \
+    # Clean up to keep the image size small
+    rm -rf /var/lib/apt/lists/*  &amp;&amp; \
+    # Set Python 3.11 as the default Python version
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python3 /usr/bin/python3.11 &amp;&amp; \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
+    update-alternatives --set python /usr/bin/python3.11
+
+<span class="c"># Set PATH to include Poetry and custom venv</span>
+<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
+
+<span class="c"># Install poetry</span>
+<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
+
+<span class="c"># Create and prepare the virtual environment</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
+    
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Copy dependency files to the app directory</span>
+<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
+
+<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
+</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install </span><span class="nv">torch</span><span class="o">==</span>2.0.1+cu118 <span class="nv">torchvision</span><span class="o">==</span>0.15.2+cu118 <span class="nt">-f</span> https://download.pytorch.org/whl/torch_stable.html 
+
+<span class="c"># Copy the entire project code to the container</span>
+<span class="k">COPY</span><span class="s"> ./ /source/</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
+
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg" /><media:content medium="image" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">NFL Field Mapping: A Journey Through Sports Analytics and Homography</title><link href="https://mmeendez8.github.io/2024/02/07/nfl-field-mapping.html" rel="alternate" type="text/html" title="NFL Field Mapping: A Journey Through Sports Analytics and Homography" /><published>2024-02-07T00:00:00+00:00</published><updated>2024-02-07T00:00:00+00:00</updated><id>https://mmeendez8.github.io/2024/02/07/nfl-field-mapping</id><content type="html" xml:base="https://mmeendez8.github.io/2024/02/07/nfl-field-mapping.html"><![CDATA[<p>I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target="_blank" rel="noopener noreferrer">here</a>.</p>
 
 <p>Lately, I’ve been inspired by the incredible projects people have been creating with the help of Copilot. This sparked my curiosity to explore firsthand the experience of coding with a heavy reliance on this tool. I’ve decided to challenge myself by attempting to write some JavaScript code. So, be kind and withhold judgement on any of the code you see. After all, I’m no JavaScript developer; I’m essentially in GPT-4’s hands here 😎.</p>
 
@@ -1871,275 +2071,4 @@ git push
   </li>
 </ul>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg" /><media:content medium="image" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Version control your dataset with DVC</title><link href="https://mmeendez8.github.io/2021/07/01/dvc-tutorial.html" rel="alternate" type="text/html" title="Version control your dataset with DVC" /><published>2021-07-01T00:00:00+00:00</published><updated>2021-07-01T00:00:00+00:00</updated><id>https://mmeendez8.github.io/2021/07/01/dvc-tutorial</id><content type="html" xml:base="https://mmeendez8.github.io/2021/07/01/dvc-tutorial.html"><![CDATA[<p><a href="https://dvc.org/" target="_blank" rel="noopener noreferrer">Data Version Control (DVC)</a> is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.</p>
-
-<p>In this post I will try to show how to configure DVC and how it can help us to maintain version of our datasets that can be easily integrated with Github.</p>
-
-<h2 id="why-dvc">Why DVC?</h2>
-
-<p>The first thing we should do is understanding how DVC works, we can check its <a href="https://dvc.org/" target="_blank" rel="noopener noreferrer">landing page</a> which contains some intuitive explanations:</p>
-
-<ul>
-  <li>Machine Learning projects are defined by code and data</li>
-  <li>We know how to track code using git</li>
-  <li>DVC main target is to built something similar to git for tracking data and models. It must be:
-    <ul>
-      <li>Flexible</li>
-      <li>Easy to learn</li>
-      <li>Work with any ML framework</li>
-    </ul>
-  </li>
-</ul>
-
-<p>I always recommend to watch this introduction video that greatly summarizes the main idea behind this tool.</p>
-
-<center>
-    <iframe loading="lazy" width="560" height="315" src="https://www.youtube.com/embed/UbL7VUpv1Bs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-    </iframe>
-</center>
-
-<p>If you paid attention, you will probably have a general idea of how this large files are tracked. Light-weight files (.dvc files) are used as “pointers” to large files, so we can use git to track those pointers and then retrieve the associated large files in our local filesystem with dvc. In other words, you do not need to worry anymore about uploading large files to git (forget about LFS), DVC will handle everything for you once it is properly configured. That’s pretty cool isn’t it?</p>
-
-<h2 id="setting-up-the-environment">Setting up the environment</h2>
-
-<p>I have pushed all changes to a <a href="https://github.com/mmeendez8/coco_sample/" target="_blank" rel="noopener noreferrer">Github repository</a> that you can consult in case you need.</p>
-
-<h3 id="install-dvc">Install DVC</h3>
-
-<p>Let’s setup DVC for our experiment. If you check their <a href="https://dvc.org/doc/install/linux#installation-on-linux" target="_blank" rel="noopener noreferrer">installation guide</a>, you will realize that depending on the type of remote storage you plan to use, it might be necessary to install additional deps. For this tutorial we are going to use Google Drive because it is probably the most accesible to everyone. I always use Conda environment for Python package management, do the following for creating a new environment and installing dvc on it:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda  create <span class="nt">-n</span> coco_sample <span class="nv">python</span><span class="o">=</span>3.8 <span class="nt">-y</span>
-conda activate coco_sample
-pip <span class="nb">install </span>dvc[gdrive]
-</code></pre></div></div>
-
-<h3 id="get-the-data">Get the data</h3>
-
-<p>We are going to use a <a href="https://course.fast.ai/datasets#coco" target="_blank" rel="noopener noreferrer">subset of the COCO dataset created by fast.ai</a>. The fast.ai subset contains all images that contain one of five selected categories, restricting objects to just those five categories; the categories are: chair couch tv remote book vase. You can download and extract it using the following commands:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://s3.amazonaws.com/fast-ai-coco/coco_sample.tgz <span class="nt">-P</span> data
-<span class="nb">tar </span>zxvf data/coco_sample.tgz <span class="nt">-C</span> data
-<span class="nb">rm  </span>data/coco_sample.tgz
-</code></pre></div></div>
-
-<p>You should now have all images in <code class="language-plaintext highlighter-rouge">data/coco_sample/train_sample</code> and their corresponding annotations in <code class="language-plaintext highlighter-rouge">data/coco_sample/annotations/train_sample.json</code></p>
-
-<h3 id="visualize-our-data">Visualize our data</h3>
-
-<p>It is always good to take a look at the data to get an idea of what kind of images we are dealing with. We are going to use our tool <a href="https://github.com/Gradiant/pyodi" target="_blank" rel="noopener noreferrer">pyodi</a>, which allows us to retrieve annotations from a COCO formatted file and paint then over the corresponding image. We can install it using pip and run the paint-annotations script pointing to our data and annotations folder:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>pyodi
-pyodi paint-annotations data/coco_sample/annotations/train_sample.json data/coco_sample/train_sample output/painted_images <span class="nt">--first_n</span> 10
-</code></pre></div></div>
-
-<p>This will paint the first 10 images of the dataset and save them into <code class="language-plaintext highlighter-rouge">output/painted_images</code> folder.</p>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-666-8250e9564.jpg" alt="Coco image with painted detections" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-400-6775c1de5.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-600-6775c1de5.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-666-6775c1de5.webp 666w" sizes="(max-width: 767px) 100vw, 80vw" width="666" height="500" />
-</a>
-
-</div>
-
-<h2 id="version-the-data">Version the data</h2>
-
-<p>If we follow <a href="https://dvc.org/doc/start" target="_blank" rel="noopener noreferrer">DVC get started page</a>, we need to initialize the project running <code class="language-plaintext highlighter-rouge">dvc init</code> so let’s run that first and commit those internal files to github.com</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
-dvc init
-git commit <span class="nt">-m</span> <span class="s2">"Initialize DVC"</span>
-</code></pre></div></div>
-
-<p>Let’s now add our data and annotations to DVC.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc add data
-</code></pre></div></div>
-
-<p>This may take a while since it needs to compute hashes for all files in our data directory. Two files are generated, the <code class="language-plaintext highlighter-rouge">.gitignore</code> that will inform git that it must ignore the <code class="language-plaintext highlighter-rouge">data</code>/ directory and <code class="language-plaintext highlighter-rouge">data.dvc</code>, a small text file in a human-readable format used by dvc to track changes that we can upload to git. Let’s add can add this files and commit the new changes.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .gitignore data.dvc 
-git commit <span class="nt">-m</span> <span class="s2">"Added data to dvc"</span>
-</code></pre></div></div>
-
-<p>Last step will be to configure our Google Drive remote. For this, I created a new folder in my personal gdrive called <code class="language-plaintext highlighter-rouge">dvc_data</code> so you should do the same in your own gdrive. After that I will add that folder as a dvc remote and I will need to grant DVC the necessary permissions to access my gdrive account. This can be easily done after running <code class="language-plaintext highlighter-rouge">dvc push</code> following the link that promts when running the command. Have in mind that the push step may take a while to complete depending on your internet connection.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc remote add <span class="nt">-d</span> gdrive-remote gdrive://root/dvc_data
-git commit .dvc/config <span class="nt">-m</span> <span class="s2">"Configure local remote"</span> <span class="c"># Commit changes to git</span>
-dvc push <span class="c"># Upload data to gdrive</span>
-</code></pre></div></div>
-
-<p>We are now tracking our images and annotations with DVC and have pushed it to our google drive remote storage.</p>
-
-<h2 id="split-the-data">Split the data</h2>
-
-<p>We have a file <code class="language-plaintext highlighter-rouge">train_sample.json</code> that contains all our annotations. We need to split this file in training and validation subsets so we can properly train our model in a near future. We are going to use pyodi’s <a href="https://gradiant.github.io/pyodi/reference/apps/coco-split/" target="_blank" rel="noopener noreferrer">coco random-split</a> app for this task, since it is very easy to execute.
-Let’s reserve a 20% of the total data for validation:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split <span class="nt">--val-percentage</span> 0.2
-</code></pre></div></div>
-
-<p>This creates two new files <code class="language-plaintext highlighter-rouge">split_train.json</code>and <code class="language-plaintext highlighter-rouge">split_val.json</code>. Let’s add them to dvc, that will magically recognize that we have only added two new files, and commit changes to git:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc add data/
-git commit data.dvc <span class="nt">-m</span> <span class="s2">"Add dataset splits"</span>
-dvc push
-</code></pre></div></div>
-
-<h2 id="tag-our-data-with-versions">Tag our data with versions</h2>
-
-<p>You must bear in mind that if we now move through our git history, we can also retrieve the state of our data in that commit or specific moment thanks to DVC. Anyway, I always like to tag the versions of my dataset so that I can easily understand what the state was at all times. Let’s do this now and tag the initial version of our dataset and push our changes to github.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git tag <span class="nt">-a</span> <span class="s2">"v1.0"</span> <span class="nt">-m</span> <span class="s2">"Initial version, fast.ai COCO subset. 0.2 validation split"</span>
-git push <span class="nt">--tags</span>
-</code></pre></div></div>
-
-<p>Let’s imagine that for any reason we need to create a new version of our dataset saving only ten percent of our data as validation. We could simply run pyodi, override our actual annotations and push the new changes without fear to loose any data. Let’s try that:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split <span class="nt">--val-percentage</span> 0.1
-dvc add data/
-git commit data.dvc <span class="nt">-m</span> <span class="s2">"New split with 0.1 validation"</span>
-dvc push
-git tag <span class="nt">-a</span> <span class="s2">"v2.0"</span> <span class="nt">-m</span> <span class="s2">"0.2 Validation split"</span>
-git push <span class="nt">--tags</span>
-</code></pre></div></div>
-
-<p>That’s it we now have two version of our dataset. If we want to move to our previous version we can simply run:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v1.0
-dvc checkout
-</code></pre></div></div>
-
-<h2 id="continuous-integration-for-data">Continuous Integration for data</h2>
-
-<p>We have used DVC for track and save data the same way we do with code. So we can also add some test to our data to make sure that we do not commit any error that can harm our training. Since we have used Google Drive as a remote storage for our data, we can configure our CI pipeline to download our data from there and run our tests.</p>
-
-<p>First of all we need to store our gdrive credentials as a Github secret. You can go to you repository settings in Github and create a new secret named <code class="language-plaintext highlighter-rouge">GDRIVE_CREDENTIALS_DATA</code>, and paste there the contents of your <code class="language-plaintext highlighter-rouge">.dvc/tmp/gdrive-user-credentials.json</code>. This file should have been automatically created after you give DVC permissions to your Google Drive account. You can read more about this in <a href="https://dvc.org/doc/user-guide/setup-google-drive-remote#authorization" target="_blank" rel="noopener noreferrer">DVC documentation</a>.</p>
-
-<p>Let’s create an example test in charge of checking that our annotations follow COCO format guidelines. We can use pydantic for data validation defining how annotation should be using python type annotations. We now for example that categories or our dataset can only take six different values and bounding boxes must be a list of four integers. Pydantic allows us to define this rules in a very efficient an flexible manner.</p>
-
-<p>Create a new file <code class="language-plaintext highlighter-rouge">tests/test_annotations.py</code> and paste the following content:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">json</span>
-<span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="n">pytest</span>
-
-<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
-<span class="kn">from</span> <span class="n">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span><span class="p">,</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
-
-<span class="n">CATEGORY_NAMES</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="sh">"</span><span class="s">chair</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">couch</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tv</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">remote</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">book</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">vase</span><span class="sh">"</span><span class="p">]</span> 
-
-<span class="k">class</span> <span class="nc">COCOCategory</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">CATEGORY_NAMES</span>
-
-
-<span class="k">class</span> <span class="nc">COCOImage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="k">class</span> <span class="nc">COCOAnnotation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">image_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">bbox</span><span class="p">:</span> <span class="nf">conlist</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-    <span class="n">category_id</span><span class="p">:</span> <span class="nb">int</span>
-
-
-<span class="k">class</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOImage</span><span class="p">]</span>
-    <span class="n">annotations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOAnnotation</span><span class="p">]</span>
-    <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOCategory</span><span class="p">]</span>
-
-
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="sh">"</span><span class="s">split</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="sh">"</span><span class="s">train</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">val</span><span class="sh">"</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">test_coco_format</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
-
-    <span class="n">annotations_file</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">data/coco_sample/annotations/split_</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s">.json</span><span class="sh">"</span>
-    
-    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-
-    <span class="c1"># Check image ids are unique
-</span>    <span class="n">image_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">images</span><span class="p">]</span>
-    <span class="n">image_ids_set</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nf">len</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">image_ids_set</span><span class="p">)</span>
-
-    <span class="c1"># Check annotation ids are unique
-</span>    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">categories</span><span class="p">]</span>
-    <span class="n">categories_set</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nf">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">categories_set</span><span class="p">)</span>
-
-    <span class="c1"># Check each annotation corresponds with existent image
-</span>    <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">annotations</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">annotation</span><span class="p">.</span><span class="n">image_id</span> <span class="ow">in</span> <span class="n">image_ids_set</span>
-</code></pre></div></div>
-
-<p>Note we added a test that will ensure that:</p>
-
-<ul>
-  <li>Loaded data is validated with pydantic</li>
-  <li>Image ids are unique</li>
-  <li>Category ids are unique</li>
-  <li>All annotations are associated with an existent image id</li>
-</ul>
-
-<p>We have the test so we need to define a workflow that automatically runs this when we push some changes to our main branch. Create a new file <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yaml</code> and paste the following code:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
-
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">push</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
-
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">test</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">iterative/setup-dvc@v1</span> 
-
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Get annotations from dvc remote</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">dvc pull data/coco_sample/annotations</span> 
-        <span class="na">env</span><span class="pi">:</span>
-          <span class="na">GDRIVE_CREDENTIALS_DATA</span><span class="pi">:</span> <span class="s">$</span>
-
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pip install pytest pydantic</span>
-          <span class="s">pytest tests</span>
-</code></pre></div></div>
-
-<p>This script is very intuitive. First we checkout our repo and setup DVC. After that we pull just the annotation files using using the command <code class="language-plaintext highlighter-rouge">dvc pull data/coco_sample/annotations</code>. Think that if we run <code class="language-plaintext highlighter-rouge">dvc pull</code> without extra argument we would have to wait before all images are downloaded and we do not need them for this type of test.</p>
-
-<p>If we add, commit and push all this changes to Github we can see how our workflow triggers and runs the associated job:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .github tests
-git commit <span class="nt">-m</span> <span class="s2">"Add tests"</span>
-git push
-</code></pre></div></div>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-800-4fd35c01c.jpg" alt="Github CI results caption" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-400-58e8b520e.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-600-58e8b520e.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-800-58e8b520e.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-917-58e8b520e.webp 917w" sizes="(max-width: 767px) 100vw, 80vw" width="917" height="472" />
-</a>
-
-</div>
-
-<p>That’s it! Our test completed successfully!</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>DVC help us to keep version of our data and models. In this short post we have learnt a few things:</p>
-
-<ul>
-  <li>
-    <p>We have learned how to setup DVC and add a Google Drive remote</p>
-  </li>
-  <li>
-    <p>We have pushed our data to the DVC remote and tagged different versions of it</p>
-  </li>
-  <li>
-    <p>We have added some simple tests for our data and how to set up a CI worflow that runs on Github servers.</p>
-  </li>
-</ul>
-
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail.jpg" /><media:content medium="image" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg" /><media:content medium="image" url="https://mmeendez8.github.io/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

@@ -98,9 +98,9 @@
   // Define our custom event handlers
   function clickEventToAnalytics (intentEvent) {
     if (!intentEvent) return;
-    gtag('event', 'Twitter Share', {
+    console.log("hole")
+    gtag('event', 'share', {
       'event_category': 'twitter_share',
-      'event_label': label
     });
   }
 

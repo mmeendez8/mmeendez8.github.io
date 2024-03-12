@@ -98,9 +98,9 @@
   // Define our custom event handlers
   function clickEventToAnalytics (intentEvent) {
     if (!intentEvent) return;
-    gtag('event', 'Twitter Share', {
+    console.log("hole")
+    gtag('event', 'share', {
       'event_category': 'twitter_share',
-      'event_label': label
     });
   }
 
@@ -252,6 +252,28 @@
         <li class="post ">
 
           
+            <a href="/2024/03/12/poetry-torch-docker.html">
+          
+
+            <div class="post-image-placeholder">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-24020353f.jpg" alt="Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects." srcset="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-400-3e0bc6e32.webp 400w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-600-3e0bc6e32.webp 600w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-3e0bc6e32.webp 800w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2048" height="1365">
+
+            </div>
+            <h3 class="post-title">Building an Efficient Docker Image with Poetry and PyTorch</h3>
+            <p class="post-description"> A guide for your Deep Learning environment setup </p> 
+          </a>    
+        </li>
+        
+        <!-- increment post counter -->
+        
+        
+        <!-- add see more link and set next posts to class hidden -->
+        
+
+      
+        <li class="post ">
+
+          
             <a href="/2024/02/07/nfl-field-mapping.html">
           
 
@@ -357,9 +379,12 @@
         
         <!-- add see more link and set next posts to class hidden -->
         
+          <a href="#" class="see-more-link">See more posts</a>
+          
+        
 
       
-        <li class="post ">
+        <li class="post hidden">
 
           
             <a href="/2021/12/09/cnn-vs-transformers.html">
@@ -378,9 +403,6 @@
         
         
         <!-- add see more link and set next posts to class hidden -->
-        
-          <a href="#" class="see-more-link">See more posts</a>
-          
         
 
       
