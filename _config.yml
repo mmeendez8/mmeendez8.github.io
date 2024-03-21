@@ -2,8 +2,8 @@ source: .
 destination: ./_site
 includes: ./_includes
 baseurl: null
-relative_url: "https://miguel-mendez-ai"
-url: "https://miguel-mendez-ai"
+relative_url: "https://miguel-mendez-ai.com"
+url: "https://miguel-mendez-ai.com"
 
 markdown: kramdown
 highlighter: rouge
