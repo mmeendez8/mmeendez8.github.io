@@ -316,7 +316,7 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <p>Note that we first copy the <code class="language-plaintext highlighter-rouge">poetry.lock</code> and <code class="language-plaintext highlighter-rouge">pyproject.toml</code> to the image and then we run <code class="language-plaintext highlighter-rouge">poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code class="language-plaintext highlighter-rouge">--mount</code> flag to cache the downloaded packages.</p>
 
-<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code class="language-plaintext highlighter-rouge">cu118</code> in the installation command to ensure compatibility.</p>
+<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code class="language-plaintext highlighter-rouge">cu118</code> in the installation command to ensure compatibility. This is what makes the torch wheel huge, because it includes code for multiple CUDA architectures so the same binary can be used on different GPUs. If you want to obtain a smaller image, you can build torch from source and only specify the architecture you need for your GPU. <a href="https://github.com/pytorch/pytorch/issues/17621" target="_blank" rel="noopener noreferrer">This</a> is a good thread about this topic.</p>
 
 <h2 id="final-solution">Final solution</h2>
 
