@@ -145,7 +145,8 @@ COPY ./ /source/
 
 Note that we first copy the `poetry.lock` and `pyproject.toml` to the image and then we run `poetry install --without dev`. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the `--mount` flag to cache the downloaded packages.
 
-Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify `cu118` in the installation command to ensure compatibility.
+Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify `cu118` in the installation command to ensure compatibility. This is what makes the torch wheel huge, because it includes code for multiple CUDA architectures so the same binary can be used on different GPUs. If you want to obtain a smaller image, you can build torch from source and only specify the architecture you need for your GPU. [This](https://github.com/pytorch/pytorch/issues/17621){:target="_blank"}{:rel="noopener noreferrer"} is a good thread about this topic.
+
 
 ## Final solution
 
