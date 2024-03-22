@@ -623,7 +623,7 @@ table thead {
   display: flex;
   flex-direction: column;
   min-height: 459px;
-  margin-bottom: 7rem;
+  margin-bottom: 4.5rem;
 }
 
 @media (min-width: 768px) {
@@ -631,7 +631,8 @@ table thead {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     flex-direction: row;
-  }
+    margin-bottom: 7rem;
+  } 
 }
 
 .the-post-title{
@@ -723,6 +724,12 @@ table thead {
   font-size: 16px;
 }
 
+.share-button {
+  text-align: center;
+  height: 60px;
+  margin-bottom: 2rem;
+}
+
 /*  ================ Code  ================ */
 
 code {
@@ -742,3 +749,9 @@ code, pre {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
 } 
+
+/*  ================ Comments  ================ */
+
+.comments {
+  margin: 100px 0 40px 0;
+}
