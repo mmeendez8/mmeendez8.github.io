@@ -54,15 +54,7 @@
   <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
 
   <!-- Google Analytics -->
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-PTDG7548');</script>
-<!-- End Google Tag Manager -->
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -71,49 +63,7 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- From https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites -->
-  <script>
-  // Log any kind of Web Intent event to Google Analytics
-  // Category: "twitter_web_intents"
-  // Action: Intent Event Type
-  // Label: Identifier for action taken: tweet_id, screen_name/user_id, click region
-
-  // First, load the widgets.js file asynchronously
-  window.twttr = (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0],
-      t = window.twttr || {};
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "https://platform.twitter.com/widgets.js";
-    fjs.parentNode.insertBefore(js, fjs);
-
-    t._e = [];
-    t.ready = function(f) {
-      t._e.push(f);
-    };
-
-    return t;
-  }(document, "script", "twitter-wjs"));
-
-  // Define our custom event handlers
-  function clickEventToAnalytics (intentEvent) {
-    if (!intentEvent) return;
-    console.log("hole")
-    gtag('event', 'share', {
-      'event_category': 'twitter_share',
-    });
-  }
-
-  // Wait for the asynchronous resources to load
-  twttr.ready(function (twttr) {
-    // Now bind our custom intent events
-    twttr.events.bind('click', clickEventToAnalytics);
-  });
-  
-</script>
-
-  <!-- Twitter cards -->
+    <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
   <meta name="twitter:title" content="Export to Github Cache with Docker Buildx">
   
