@@ -8,6 +8,11 @@ selected: y
 mathjax: n
 ---
 
+## todo:
+
+tevit says its faster but fps in table do not report that
+also table 2 and 3 of tevit, show ap is very low for youtube 2021, this is because video lenght so mentioned it (it is mentioned in tevir conclusion section of paper)
+
 I found myself visiting the most recent literature on Video Segmentation and I found surpised about the publication rate in this field. If you are related with this topic you probably are familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not then you will probably find yourself as lost as I was when I started reading about this topic.
 
 My intention in here is to focus on a single topic which was the one I was interested in. This is Video instance Segmentation (VIS) which extends the image instance segmentation task from the image domain to the video domain. Goal is to segment object instances from a predefined category set in videos and associate the instance identities across frames. It can be seen as a combination of instance segmentation and object tracking in videos.
@@ -20,24 +25,21 @@ I will be updating this post with the most recent papers and code implementation
 Video segmentation is a topic that condenses a lot of different tasks which can have multiple names. I personaly like the taxonomy used in the [Youtube-VOS Dataset](https://youtube-vos.org/dataset/) which is one of the main benchmarks in this field so I will stick with it through this post. The different tasks are:
 
 - **Video Object Segmentation (VOS)**: Semi-supervised video object segmentation targets at segmenting a particular object instance throughout the entire video sequence given only the object mask of the first frame.
-- **Video Instance Segmentation (VOS)**: Video Instance Segmentation (VIS) extends image instance segmentation to videos, aiming to segment and track object instances across frames.
+- **Video Instance Segmentation (VIS)**: Video Instance Segmentation (VIS) extends image instance segmentation to videos, aiming to segment and track object instances across frames.
 - **Referring Video Object Segmentation (RVOS)**: Referring Video Object Segmentation (RVOS) is a task that requires to segment a particular object instance in a video given a natural language expression that refers to the object instance.
 
 [maybe add figure explaining the difference between them]
 
-## Dataset section? 
-hello
 
 ## Key concepts
 
 ### Input sequence length
 
-The input sequence length or clip(aka the number of frames a model can process in parallel) is key in video instance segmentation. This is a very similar issue to the one faced by LLMs. Longer sequences offer more temporal context, helping in accurately segmenting objects across frames, especially in scenarios of occlusion and appearance variation.  However, they also demand higher computational resources and extend training and inference times. Think that transformers have a quadratic complexity with respect to the sequence length. Thus, balancing sequence length with computational feasibility and model capability is essential for optimizing performance and efficiency in video instance segmentation tasks.
+The input sequence length, or clip, is crucial for VIS. Longer sequences provide more context for accurately segmenting objects, even during occlusion and appearance changes. However, they require more computational power and increase training and inference times. Thus, it's vital to balance sequence length with computational efficiency and model capability to optimize performance in VIS tasks. Think that transformers have a quadratic complexity with respect to the sequence length so most of the models we are going to discuss are trained with very short clips (mostly between 2 and 8 frames).
 
-### Offline vs Onlne
+### Offline vs Online
 
-Many video instance segmentation approaches are categorized as offline, where the entire video is analyzed as a single input. This method is particularly feasible for datasets composed of short clips, with the primary requirement being the model's capacity to handle the longest clip in the dataset. On the other hand, online methods handle video frames as they arrive, requiring immediate predictions without seeing future frames. This can complicate maintaining consistency over time. They typically use shorter input sequences to balance accuracy with the demands of instant processing.
-
+Many VIS approaches are categorized as offline, analyzing the entire video in one go, ideal for short clips and dependent on the model's capacity for the longest clip. On the other hand,, online methods process video frames sequentially, without access to future frames. For online processing, videos are divided into overlapping chunks, and results from these segments are merged using a rule-based post-tracking method. This approach ensures continuous tracking across the video by analyzing and linking instances from overlapping segments.
 
 ### Stride
 
@@ -47,26 +49,52 @@ The input sequence length defines the number of frames processed in parallel. Th
 
 From now on I will exclusively focus on Video Instance Segmentation (VIS) since it is the topic I was interested in. Most of papers before 2020 were based on either:
 
-- **Top-down approach**: following tracking-by-detection methods (you can check [this other post]({% post_url 2023-11-08-tracking-by-detection-overview %}) for more information on this topic)
-- **Bottom-up approach**: clustering embedding of pixels into objects
+- *Top-down approach*: following tracking-by-detection methods (you can check [this other post]({% post_url 2023-11-08-tracking-by-detection-overview %}) for more information on this topic)
+- *Bottom-up approach*: clustering embedding of pixels into objects
 
-This methods suffered of different issues and around 2020 transformer-based methods started to appear and most of research focused on how to throw a transformer into this problem that could equal the state-of-the-art. 
+
+This method encountered of different issues, and around 2020, transformer-based approaches began to appear. Most of research focused on how to throw a transformer into this problem that could equal the state-of-the-art. 
+
+### Datasets
+
+The most common dataset used for VIS is called [YouTube-VIS](https://youtube-vos.org/dataset/vis/). There a total of three diferent versions:
+
+- *YouTube-VIS-2019*: 2,883 high-resolution YouTube videos with 40 object categories. Longest video is 1,000 frames. Longest video only contains 36 frames so it is easy to execute on offline mode.
+- *YouTube-VIS-2021*: 3,859 high-resolution YouTube video with an improved 40-category label set by merging some and adding new ones. Longer video lengths force to use a near-online approach.
+- *YouTube-VIS-2022*: not considered in this post since it more recent than the papers that are included.
+
+The following table summarizes the papers I will be discussing in this post and its performance on the YouTube-VIS-2019 dataset.
 
 <div class="table-wrapper" markdown="block">
 
-| Method | Backbone   | MST | FPS   | AP   |
-|--------|------------|-----|-------|------|
-| VisTR  | ResNet-50  | ❌   | 51.1  | 36.2 |
-| VisTR  | ResNet-101 | ❌   | 43.5  | 40.1 |
-| IFC    | ResNet-50  | ✅   | 107.1 | 41.2 |
-| IFC    | ResNet-101 | ✅   | 89.4  | 42.6 |
-| TeViT  | MsgShifT   | ❌   | 68.9  | 45.9 |
-| TeViT  | MsgShifT   | ✅   | 68.9  | 46.6 |
+| Method | Backbone   | MST | FPS       | AP       |
+|--------|------------|-----|-----------|----------|
+| VisTR  | ResNet-50  | ❌   | 51.1      | 36.2     |
+| VisTR  | ResNet-101 | ❌   | 43.5      | 40.1     |
+| IFC    | ResNet-50  | ✅   | **107.1** | 41.2     |
+| IFC    | ResNet-101 | ✅   | 89.4      | 42.6     |
+| TeViT  | MsgShifT   | ❌   | 68.9      | 45.9     |
+| TeViT  | MsgShifT   | ✅   | 68.9      | **46.6** |
 
 </div>
 
 {:refdef: class="image-caption"}
-*Comparisons on YouTube-VIS-2019 dataset from TeViT paper. MST indicates multi-scale training strategy. FPS measured with a single TESLA V100.*
+*Table 1. Comparisons on YouTube-VIS-2019 dataset from TeViT paper [5]. MST indicates multi-scale training strategy. FPS measured with a single TESLA V100. Note all methods used offline evaluation for reporting metrics.*
+{: refdef}
+
+Note the differences in precission with reported results in Youtube-VIS-2021 dataset. This is due to the increase in video size which forces to use online evaluation:
+
+<div class="table-wrapper" markdown="block">
+
+| Method | Backbone   | AP                           |
+|--------|------------|------------------------------|
+| IFC    | ResNet-101 | 35.2  (36.6 reported in [4]) |
+| TeViT  | MsgShifT   | **37.9**                     |
+
+</div>
+
+{:refdef: class="image-caption"}
+*Table 2. Comparisons on YouTube-VIS-2021 dataset from TeViT paper [5].*
 {: refdef}
 
 ### VisTR (2021)
@@ -105,8 +133,8 @@ Inter-frame Communication Transformers (IFC) leverage the idea that since humans
 {: refdef}
 
 The architecture integrates Transformer encoders with ResNet feature maps and learnable memory tokens. Encoder blocks are composed of:
-- <u>Encode-Receive ($\xi$) </u>: fuses frame features and memory tokens, blending frame and temporal data.
-- <u>Gather-Communicate ($\zeta$)</u>: processes memory tokens across frames for inter-frame communication.
+- *Encode-Receive ($\xi$)*: fuses frame features and memory tokens, blending frame and temporal data.
+- *Gather-Communicate ($\zeta$)*: processes memory tokens across frames for inter-frame communication.
 
 The decoder used a fixed number of object queries ($N_q$) that is indepentent on the number of input frames. It features two heads:
 
@@ -126,12 +154,11 @@ The Temporally Efficient Vision Transformer (TeViT) advances the ideas from IFC 
 *TeViT architecture diagram*
 {: refdef}
 
-At its core, TeViT employs a pyramid vision transformer[5] structure and innovates by replacing IFC's memory tokens with temporal messenger tokens. These tokens are periodically shifted along the temporal axis within each block to merge information from distinct frames. This shift operation is straightforward yet remarkably effective, adding no extra parameters to the system.
+At its core, TeViT employs a pyramid vision transformer [6] structure and innovates by replacing IFC's memory tokens with temporal messenger tokens. These tokens are periodically shifted along the temporal axis within each block to merge information from distinct frames. This shift operation is straightforward yet remarkably effective, adding no extra parameters to the system.
 
-The head implementation emphasizes modeling temporal relations at the instance level, drawing on the principles of QueryInst[6]. As illustrated in the diagram, the same instance query is applied across every frame. These queries are processed through a parameter-shared multi-head self-attention (MHSA) mechanism and a dynamic convolutional layer, which integrates the data with instance region features from the backbone. Finally, task-specific heads (such as classification, box, and mask heads) generate predictions for a sequence of video instances.
+The head implementation emphasizes modeling temporal relations at the instance level, drawing on the principles of QueryInst [7]. As illustrated in the diagram, the same instances queries are initially applied across every frame. These queries are processed through a parameter-shared multi-head self-attention (MHSA) mechanism and a dynamic convolutional layer [8], which integrates the data with instance region features from the backbone. Finally, task-specific heads (such as classification, box, and mask heads) generate predictions for a sequence of video instances.
 
 The loss computation incorporates the Hungarian algorithm alongside a combination of box, mask, and class prediction errors (details provided in the paper).
-
 
 
 ## References
@@ -140,5 +167,7 @@ The loss computation incorporates the Hungarian algorithm alongside a combinatio
 - [[2](https://arxiv.org/pdf/2011.14503.pdf)] Wang, Y., Xu, Z., Wang, X., Shen, C., Cheng, B., Shen, H., & Xia, H. (2021). End-to-end video instance segmentation with transformers. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 8741-8750).
 - [[3](https://arxiv.org/pdf/2005.12872.pdf)] Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., & Zagoruyko, S. (2020, August). End-to-end object detection with transformers. In European conference on computer vision (pp. 213-229). Cham: Springer International Publishing.
 - [[4](https://arxiv.org/pdf/2106.03299.pdf)] Hwang, S., Heo, M., Oh, S. W., & Kim, S. J. (2021). Video instance segmentation using inter-frame communication transformers. Advances in Neural Information Processing Systems, 34, 13352-13363.
-- [[5](https://openaccess.thecvf.com/content/ICCV2021/papers/Wang_Pyramid_Vision_Transformer_A_Versatile_Backbone_for_Dense_Prediction_Without_ICCV_2021_paper.pdf)] Wang, W., Xie, E., Li, X., Fan, D. P., Song, K., Liang, D., ... & Shao, L. (2021). Pyramid vision transformer: A versatile backbone for dense prediction without convolutions. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 568-578).
-- [[6](https://openaccess.thecvf.com/content/ICCV2021/papers/Fang_Instances_As_Queries_ICCV_2021_paper.pdf)] Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., ... & Liu, W. (2021). Instances as queries. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6910-6919).
+- [[5](https://arxiv.org/abs/2204.08412)] Yang, S., Wang, X., Li, Y., Fang, Y., Fang, J., Liu, W., ... & Shan, Y. (2022). Temporally efficient vision transformer for video instance segmentation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 2885-2895).
+- [[6](https://openaccess.thecvf.com/content/ICCV2021/papers/Wang_Pyramid_Vision_Transformer_A_Versatile_Backbone_for_Dense_Prediction_Without_ICCV_2021_paper.pdf)] Wang, W., Xie, E., Li, X., Fan, D. P., Song, K., Liang, D., ... & Shao, L. (2021). Pyramid vision transformer: A versatile backbone for dense prediction without convolutions. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 568-578).
+- [[7](https://openaccess.thecvf.com/content/ICCV2021/papers/Fang_Instances_As_Queries_ICCV_2021_paper.pdf)] Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., ... & Liu, W. (2021). Instances as queries. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6910-6919).
+- [[8](https://arxiv.org/pdf/1912.03458.pdf)] Chen, Y., Dai, X., Liu, M., Chen, D., Yuan, L., & Liu, Z. (2020). Dynamic convolution: Attention over convolution kernels. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 11030-11039).
