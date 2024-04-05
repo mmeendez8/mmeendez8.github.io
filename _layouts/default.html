@@ -28,8 +28,6 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="canonical" href="{{ site.relative_url }}" />
-
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
@@ -63,18 +61,9 @@
   {% include google_analytics.html %}
   {% include twitter_card.html %}
 
-  <!-- Mathjax -->
-  {% if page.mathjax %}
-    {% include mathjax.html %}
-  {% endif %}
 </head>
 
 <body>
-
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTDG7548"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
   {{ content}}
 
@@ -119,6 +108,12 @@
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script type="text/javascript" src={{ "/libs/external/lightbox/lightbox.js" | prepend: site.baseurl }} defer></script>
+  
+  <!-- Mathjax -->
+  {% if page.mathjax %}
+    {% include mathjax.html %}
+  {% endif %}
+
 </body>
 
 </html>
