@@ -47,7 +47,9 @@ They employ two classical methods:
 - **Hungarian method:** used in the data association step to match new predictions with tracks based on IoU metric.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort.jpg --alt SORT architecture diagram %}
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" loading="lazy" alt="SORT architecture diagram">
+</a>
 </div>
 
 {:refdef: class="image-caption"}
@@ -72,7 +74,9 @@ DeepSORT is an extension of SORT that uses appearance features. It enhances SORT
 Each track maintains a gallery of the last $$n$$ appearance descriptors, enabling cosine distance calculations between new detections and descriptors. Track age, determined by frames since the last association, plays a crucial role in the association process. DeepSORT adopts a cascade approach, prioritizing tracks with lower ages over a single-step association between predicted Kalman states and new measurements.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort.jpg --alt DeepSORT architecture diagram  %}
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" loading="lazy" alt="DeepSORT architecture diagram">
+</a>
 </div>
 
 {:refdef: class="image-caption"}
@@ -101,7 +105,9 @@ ByteTrack addresses this problem by using all detections, regardless of their co
 2. **Low-confidence detections**: Low-confidence detections are associated with tracks using only IoU. This is because low-confidence detections are more likely to be spurious or inaccurate, so it is important to be more conservative when associating them with tracks.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack.jpg --alt ByteTrack architecture diagram  %}
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" loading="lazy" alt="ByteTrack architecture diagram">
+</a>
 </div>
 
 {:refdef: class="image-caption"}
@@ -152,11 +158,13 @@ I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines
     The appearence distance is recomputed as shown in the first equation. The idea is to filter out pairs with large iou or large appearance distance (two different thresholds are used here).  Then, the cost matrix element is updated as the minimum between the IoU and the new appearance distance. This method seems to be handcrafted, and the authors likely spent a significant amount of time evaluating different thresholds on the MOT17 dataset to arrive at this formulation. Note thresholds are callibrated using MOT17 validation set. 
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort.jpg --alt BoT-SORT architecture diagram  %}
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" loading="lazy" alt="BoT-SORT architecture diagram">
+</a>
 </div>
 
 {:refdef: class="image-caption"}
-*ByteTrack architecture diagram*
+*BoT-SORT architecture diagram*
 {: refdef}
 
 
