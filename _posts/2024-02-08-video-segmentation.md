@@ -28,7 +28,15 @@ Video segmentation is a topic that condenses a lot of different tasks which can 
 - **Video Instance Segmentation (VIS)**: Video Instance Segmentation (VIS) extends image instance segmentation to videos, aiming to segment and track object instances across frames.
 - **Referring Video Object Segmentation (RVOS)**: Referring Video Object Segmentation (RVOS) is a task that requires to segment a particular object instance in a video given a natural language expression that refers to the object instance.
 
-[maybe add figure explaining the difference between them]
+<div class="post-center-image">
+<a href="/assets/svg/posts/2024-02-08-video-segmentation/video-segmentation-types-diagram.svg" class="lightbox-image" title="vistr">
+ <img src="/assets/svg/posts/2024-02-08-video-segmentation/video-segmentation-types-diagram.svg" alt="Different video segmentation methods">
+</a>
+</div>
+
+{:refdef: class="image-caption"}
+*Diagram with the different video segmentation methods*
+{: refdef}
 
 
 ## Key concepts
