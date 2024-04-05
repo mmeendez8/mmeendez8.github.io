@@ -61,10 +61,6 @@
   {% include google_analytics.html %}
   {% include twitter_card.html %}
 
-  <!-- Mathjax -->
-  {% if page.mathjax %}
-    {% include mathjax.html %}
-  {% endif %}
 </head>
 
 <body>
@@ -112,6 +108,12 @@
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script type="text/javascript" src={{ "/libs/external/lightbox/lightbox.js" | prepend: site.baseurl }} defer></script>
+  
+  <!-- Mathjax -->
+  {% if page.mathjax %}
+    {% include mathjax.html %}
+  {% endif %}
+
 </body>
 
 </html>
