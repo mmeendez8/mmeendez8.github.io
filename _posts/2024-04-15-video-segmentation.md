@@ -37,11 +37,11 @@ Video segmentation condenses a lot of different tasks which can have multiple na
 
 ### Input sequence length
 
-The input sequence length is crucial in video segmentation. Longer sequences provide more context for accurately segmenting objects, even during occlusion and appearance changes. However, they require more computational power and increase training and inference times. Think that transformers have a quadratic complexity with respect to the sequence length so most of the models we are going to discuss are trained with very short clips (mostly between 2 and 8 frames).
+The input sequence length is crucial in video segmentation. Longer sequences provide more context for accurately segmenting objects, even through occlusions or appearance changes. However, they require more computational power and they cause an increase in training and inference times. Bear in mind that transformers have a quadratic complexity with respect to the sequence length. That's the reason why most of the models we are going to discuss here are trained with very short clips (mostly between 2 and 8 frames).
 
 ### Stride
 
-The input sequence length defines the number of frames processed in parallel. The stride is the one that determines the temporal distance between frames in the input sequence. A stride of 1 means that the input sequence is a continuous sequence of frames, while a stride of 2 means that every other frame is skipped. By increasing the stride the system can work faster because it's looking at fewer frames.
+The input sequence length defines the number of frames processed in parallel. The stride is the one that determines the temporal distance between adjacent frames in the input sequence. A stride of 1 means that the input sequence is a continuous sequence of frames, while a stride of 2 means that every other frame is skipped. By increasing the stride, the system can work faster because even though it will be looking at the same amount of frames at once, it will need to process fewer frames in total.
 
 ### Offline vs Online
 
@@ -50,20 +50,20 @@ Many video segmentation approaches are categorized as offline, analyzing the ent
 
 ## Video Instance Segmentation
 
-From now on I will exclusively focus on Video Instance Segmentation (VIS). Most of papers before 2020 were based on either:
+From now on I will exclusively focus on Video Instance Segmentation (VIS). Most papers before 2020 were based on either:
 
 - **Top-down approach**: following tracking-by-detection methods (you can check [this other post]({% post_url 2023-11-08-tracking-by-detection-overview %}) for more information on this topic)
-- **Bottom-up approach**: clustering embedding of pixels into objects
+- **Bottom-up approach**: clustering pixel embeddings into objects.
 
-These method suffered from different issues, and around 2020, transformer-based approaches began to appear. Most of research focused on how to throw a transformer into this problem that could equal the state-of-the-art. 
+These method suffered from different issues, and around 2020, transformer-based approaches began to appear. Most of the research focused on how to throw a transformer into this problem that could hold up to the state-of-the-art. 
 
 ### Datasets
 
-The most common dataset used for VIS is called [YouTube-VIS](https://youtube-vos.org/dataset/vis/). There a total of three diferent versions:
+The most common dataset used for VIS is called [YouTube-VIS](https://youtube-vos.org/dataset/vis/). It comprises three different versions:
 
 - **YouTube-VIS-2019**: 2,883 high-resolution YouTube videos with 40 object categories. Longest video is 1,000 frames. Longest video only contains 36 frames so it is easy to execute on offline mode.
 - **YouTube-VIS-2021**: 3,859 high-resolution YouTube video with an improved 40-category label set by merging some and adding new ones. Longer video lengths force to use a near-online approach.
-- **YouTube-VIS-2022**: not considered in this post since it more recent than the papers that are included.
+- **YouTube-VIS-2022**: not considered in this post since it is more recent than the papers that are covered.
 
 The following table summarizes the papers I will be discussing in this post and its performance on the YouTube-VIS-2019 dataset.
 
@@ -84,7 +84,7 @@ The following table summarizes the papers I will be discussing in this post and 
 *Table 1. Comparisons on YouTube-VIS-2019 dataset from TeViT paper [5]. MST indicates multi-scale training strategy. FPS measured with a single TESLA V100. Note all methods used offline evaluation for reporting metrics.*
 {: refdef}
 
-Note the differences in precision when comparing with the reported results in Youtube-VIS-2021 dataset. This is due to the increase in video sizes, which forces the mode to work in online model, processing chunks of the video that then need to be merged.
+Note the differences in precision when comparing with the reported results in Youtube-VIS-2021 dataset. This is due to the increase in video sizes, which forces the model to work in online mode, processing chunks of the video that then need to be merged.
 
 <div class="table-wrapper" markdown="block">
 
@@ -101,7 +101,7 @@ Note the differences in precision when comparing with the reported results in Yo
 
 ### VisTR (2021)
 
-VisTR, short for VIS Transformer, emerged as one of the initial transformer-based VIS methods to achieve notable accuracy on the YouTube-VIS dataset, thanks to an effective adaptation of DETR [2] for segmentation. This framework processes a fixed sequence of video frames using a ResNet backbone to independently extract features from each image. These extracted features are then concatenated, enriched with a 3D positional encoding, and inputted into an encoder-decoder transformer architecture, which outputs a sequence of object predictions in order.
+VisTR, short for VIS Transformer, emerged as one of the initial transformer-based VIS methods to achieve notable accuracy on the YouTube-VIS dataset, thanks to an effective adaptation of DETR [2] for segmentation. This framework processes a fixed sequence of video frames using a ResNet backbone to independently extract features from each image. These extracted features are then concatenated, enriched with a 3D positional encoding, and injected into an encoder-decoder transformer architecture, which outputs a sequence of object predictions in order.
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr.png --alt VisTR architecture diagram  %}
@@ -111,7 +111,7 @@ VisTR, short for VIS Transformer, emerged as one of the initial transformer-base
 *VisTR architecture diagram*
 {: refdef}
 
-Things we need to highlight about this method:
+Key ideas we need to highlight about this method:
 
 1. Instance queries are fixed, learnable parameters that determine the number of instances that can be predicted (input of decoder in the diagram).
 2. Training involves instance sequence prediction over $N$ frames that requires ground truth matching to compute the loss.
@@ -124,7 +124,7 @@ Things we need to highlight about this method:
 
 ### IFC
 
-Inter-frame Communication Transformers (IFC) leverage the idea that since humans can summarize scenes briefly and consecutive frames often share similarities, it's feasible to communicate frame differences with minimal data. To reduce computational load, IFC utilizes a number of 'memory tokens' to exchange information between frames, thus lowering the complexity of space-time attention.
+Inter-frame Communication Transformers (IFC) leverages the idea that, since humans can summarize scenes briefly and consecutive frames often share similarities, it's feasible to communicate frame differences with minimal data. To reduce computational load, IFC utilizes a number of 'memory tokens' to exchange information between frames, thus lowering the complexity of space-time attention.
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc.png --alt IFC architecture diagram  %}
@@ -157,9 +157,9 @@ The Temporally Efficient Vision Transformer (TeViT) advances the ideas from IFC 
 *TeViT architecture diagram*
 {: refdef}
 
-At its core, TeViT employs a pyramid vision transformer [6] structure and innovates by replacing IFC's memory tokens with temporal messenger tokens. These tokens are periodically shifted along the temporal axis within each block to merge information from distinct frames. This shift operation is straightforward yet remarkably effective, adding no extra parameters to the system.
+At its core, TeViT employs a pyramid vision transformer [6] structure and innovates by replacing IFC's memory tokens with temporal messenger tokens. These tokens are periodically shifted along the temporal axis within each block to merge information from distinct frames. This shift operation is straightforward, yet remarkably effective, adding no extra parameters to the system.
 
-The head implementation emphasizes modeling temporal relations at the instance level, drawing on the principles of QueryInst [7]. As illustrated in the diagram, the same instances queries are initially applied across every frame. These queries are processed through a parameter-shared multi-head self-attention (MHSA) mechanism and a dynamic convolutional layer [8], which integrates the data with instance region features from the backbone. Finally, task-specific heads (such as classification, box, and mask heads) generate predictions for a sequence of video instances.
+The head implementation emphasizes modeling temporal relations at the instance level, drawing on the principles of QueryInst [7]. As illustrated in the diagram, the same instance queries are initially applied across every frame. These queries are processed through a parameter-shared multi-head self-attention (MHSA) mechanism and a dynamic convolutional layer [8], which integrates the data with instance region features from the backbone. Finally, task-specific heads (such as classification, box, and mask heads) generate predictions for a sequence of video instances.
 
 The loss computation incorporates the Hungarian algorithm alongside a combination of box, mask, and class prediction errors (details provided in the paper).
 
