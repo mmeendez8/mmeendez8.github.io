@@ -10,7 +10,7 @@ mathjax: n
 
 I had recently visited the most recent literature on Video Segmentation and I was startled by how lost I found myself. If you are versed in this field, you are probably familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not, then you will probably find yourself as lost as I was a few weeks ago.
 
-My main intention was to focus solely on the specific topic I was interested in. This is Video instance Segmentation (VIS) which extends the image instance segmentation task from the image domain to the video domain. The goal is to segment object instances from a predefined category set in videos and associate the instance identities across frames. It can also be seen as a combination of instance segmentation and object tracking in videos.
+My main intention was to focus solely on the specific topic I was interested in. This is Video instance Segmentation (VIS), which extends the image instance segmentation task from the image domain to the video domain. The goal is to segment object instances from a predefined category set in videos, then associate the instance identities across frames. It can also be seen as a combination of instance segmentation and object tracking in videos.
 
 As usually I will be trying to update this post with the most recent papers and code implementations I find interesting.
 
