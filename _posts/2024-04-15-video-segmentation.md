@@ -16,7 +16,7 @@ As usually I will be trying to update this post with the most recent papers and 
 
 ## Introduction to Video Segmentation
 
-Video segmentation condenses a lot of different tasks which can have multiple names. I personaly like the taxonomy used in the [Youtube-VOS Dataset](https://youtube-vos.org/dataset/) which is one of the main benchmarks in this field so I will stick with it through this post. The different tasks are:
+Video segmentation condenses a lot of different tasks which can have multiple names. I personaly like the taxonomy used in the [Youtube-VOS Dataset](https://youtube-vos.org/dataset/), which is one of the main benchmarks in this field, so I will stick with it through this post. The different tasks are:
 
 - **Video Object Segmentation (VOS)**: targets at segmenting a particular object instance throughout the entire video sequence given only the object mask of the first frame.
 - **Video Instance Segmentation (VIS)**: extends image instance segmentation to videos, aiming to segment and track object instances across frames.
@@ -45,7 +45,7 @@ The input sequence length defines the number of frames processed in parallel. Th
 
 ### Offline vs Online
 
-Many video segmentation approaches are categorized as offline, analyzing the entire video in one go, ideal for short videos and dependent on the model's capacity for the longest clip. On the other hand online methods divide videos into overlapping chunks, and results from these segments are merged using a rule-based post-tracking method. This approach ensures continuous tracking across the video by analyzing and linking instances from overlapping segments.
+Many video segmentation approaches are categorized as offline. They process the entire video in one go, which is ideal for short videos and limited by the maximum length the model can process. On the other hand online methods divide videos into overlapping chunks, and results from these segments are merged using a rule-based post-tracking method. This approach ensures continuous tracking across the video by processing and linking instances from overlapping segments.
 
 
 ## Video Instance Segmentation
