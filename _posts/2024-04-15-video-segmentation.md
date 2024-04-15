@@ -1,17 +1,12 @@
 ---
 layout: post
-title: "Video Instance Segmentation guide"
-subtitle: "A review on the most recent transformer based papers on Video Instance Segmentation"
-description: ""
+title: "Exploring Transformer-Based Methods in Video Instance Segmentation"
+subtitle: "A comparison of the latest research and innovations in Video Instance Segmentation"
+description: "Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT."
 image: "/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg"
 selected: y
 mathjax: n
 ---
-<!-- 
-## todo:
-
-tevit says its faster but fps in table do not report that
-also table 2 and 3 of tevit, show ap is very low for youtube 2021, this is because video lenght so mentioned it (it is mentioned in tevir conclusion section of paper) -->
 
 I had recently visited the most recent literature on Video Segmentation and I found surpised about how lost I was. If you are related with it you probably are familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not then you will probably find yourself as lost as I was a few weeks ago.
 
