@@ -163,6 +163,11 @@ The head implementation emphasizes modeling temporal relations at the instance l
 
 The loss computation incorporates the Hungarian algorithm alongside a combination of box, mask, and class prediction errors (details provided in the paper).
 
+## Conclusion
+
+Exploring the literature around video instance segmentation (VIS) has been a fun experience. Transformers are now showing up in most of the research in this area. It is quite fascinating to observe ongoing efforts aimed at reducing the complexities associated with video processing, such as minimizing the number of parameters needed to merge time-related features effectively. The influence of the DETR paper on all the methods discussed is also noteworthy.
+
+I will keep updating this post with new and relevant research findings. Feel free to share your thoughts in the comments below or suggest any papers you would like me to explore next.
 
 ## References
 
@@ -174,3 +179,4 @@ The loss computation incorporates the Hungarian algorithm alongside a combinatio
 - [[6](https://openaccess.thecvf.com/content/ICCV2021/papers/Wang_Pyramid_Vision_Transformer_A_Versatile_Backbone_for_Dense_Prediction_Without_ICCV_2021_paper.pdf)] Wang, W., Xie, E., Li, X., Fan, D. P., Song, K., Liang, D., ... & Shao, L. (2021). Pyramid vision transformer: A versatile backbone for dense prediction without convolutions. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 568-578).
 - [[7](https://openaccess.thecvf.com/content/ICCV2021/papers/Fang_Instances_As_Queries_ICCV_2021_paper.pdf)] Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., ... & Liu, W. (2021). Instances as queries. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6910-6919).
 - [[8](https://arxiv.org/pdf/1912.03458.pdf)] Chen, Y., Dai, X., Liu, M., Chen, D., Yuan, L., & Liu, Z. (2020). Dynamic convolution: Attention over convolution kernels. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 11030-11039).
+
