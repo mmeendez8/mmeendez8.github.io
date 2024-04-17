@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Exploring Transformer-Based Methods in Video Instance Segmentation</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  
+  <meta name="description" property="og:description" content="Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT.">
+  
+
+  
+  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Exploring Transformer-Based Methods in Video Instance Segmentation">
+  
+  
+  <meta name="twitter:description" content="Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">April 15, 2024 </span>
+      <h1 class="the-post-title">Exploring Transformer-Based Methods in Video Instance Segmentation</h1>
+      <p>A comparison of the latest research and innovations in Video Instance Segmentation</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-4e0de4c5d.jpg" alt="Exploring Transformer-Based Methods in Video Instance Segmentation" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-400-8c96cc2ae.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-600-8c96cc2ae.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-8c96cc2ae.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1000-8c96cc2ae.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1500" height="875">
+
+  </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="Exploring Transformer-Based Methods in Video Instance Segmentation" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/04/15/video-segmentation.html">
+  </a>
+</div>
+
+<div class="container the-post-content">
+
+  <p>I had recently visited the most recent literature on Video Segmentation and I was startled by how lost I found myself. If you are versed in this field, you are probably familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not, then you will probably find yourself as lost as I was a few weeks ago.</p>
+
+<p>My main intention was to focus solely on the specific topic I was interested in. This is Video instance Segmentation (VIS), which extends the image instance segmentation task from the image domain to the video domain. The goal is to segment object instances from a predefined category set in videos, then associate the instance identities across frames. It can also be seen as a combination of instance segmentation and object tracking in videos.</p>
+
+<p>As usually I will be trying to update this post with the most recent papers and code implementations I find interesting.</p>
+
+<h2 id="introduction-to-video-segmentation">Introduction to Video Segmentation</h2>
+
+<p>Video segmentation condenses a lot of different tasks which can have multiple names. I personaly like the taxonomy used in the <a href="https://youtube-vos.org/dataset/">Youtube-VOS Dataset</a>, which is one of the main benchmarks in this field, so I will stick with it through this post. The different tasks are:</p>
+
+<ul>
+  <li><strong>Video Object Segmentation (VOS)</strong>: targets at segmenting a particular object instance throughout the entire video sequence given only the object mask of the first frame.</li>
+  <li><strong>Video Instance Segmentation (VIS)</strong>: extends image instance segmentation to videos, aiming to segment and track object instances across frames.</li>
+  <li><strong>Referring Video Object Segmentation (RVOS)</strong>: is a task that requires to segment a particular object instance in a video given a natural language expression that refers to the object instance.</li>
+</ul>
+
+<div class="post-center-image">
+<a href="/assets/svg/posts/2024-04-15-video-segmentation/video-segmentation-types-diagram.svg" class="lightbox-image" title="Diagram with the different video segmentation methods">
+ <img src="/assets/svg/posts/2024-04-15-video-segmentation/video-segmentation-types-diagram.svg" loading="lazy" alt="Diagram with the different video segmentation methods" />
+</a>
+</div>
+
+<p class="image-caption"><em>Diagram with the different video segmentation methods</em></p>
+
+<h2 id="key-concepts">Key concepts</h2>
+
+<h3 id="input-sequence-length">Input sequence length</h3>
+
+<p>The input sequence length is crucial in video segmentation. Longer sequences provide more context for accurately segmenting objects, even through occlusions or appearance changes. However, they require more computational power and they cause an increase in training and inference times. Bear in mind that transformers have a quadratic complexity with respect to the sequence length. That’s the reason why most of the models we are going to discuss here are trained with very short clips (mostly between 2 and 8 frames).</p>
+
+<h3 id="stride">Stride</h3>
+
+<p>The input sequence length defines the number of frames processed in parallel. The stride is the one that determines the temporal distance between adjacent frames in the input sequence. A stride of 1 means that the input sequence is a continuous sequence of frames, while a stride of 2 means that every other frame is skipped. By increasing the stride, the system can work faster because even though it will be looking at the same amount of frames at once, it will need to process fewer frames in total.</p>
+
+<h3 id="offline-vs-online">Offline vs Online</h3>
+
+<p>Many video segmentation approaches are categorized as offline. They process the entire video in one go, which is ideal for short videos and limited by the maximum length the model can process. On the other hand online methods divide videos into overlapping chunks, and results from these segments are merged using a rule-based post-tracking method. This approach ensures continuous tracking across the video by processing and linking instances from overlapping segments.</p>
+
+<h2 id="video-instance-segmentation">Video Instance Segmentation</h2>
+
+<p>From now on I will exclusively focus on Video Instance Segmentation (VIS). Most papers before 2020 were based on either:</p>
+
+<ul>
+  <li><strong>Top-down approach</strong>: following tracking-by-detection methods (you can check <a href="/2023/11/08/tracking-by-detection-overview.html">this other post</a> for more information on this topic)</li>
+  <li><strong>Bottom-up approach</strong>: clustering pixel embeddings into objects.</li>
+</ul>
+
+<p>These method suffered from different issues, and around 2020, transformer-based approaches began to appear. Most of the research focused on how to throw a transformer into this problem that could hold up to the state-of-the-art.</p>
+
+<h3 id="datasets">Datasets</h3>
+
+<p>The most common dataset used for VIS is called <a href="https://youtube-vos.org/dataset/vis/">YouTube-VIS</a>. It comprises three different versions:</p>
+
+<ul>
+  <li><strong>YouTube-VIS-2019</strong>: 2,883 high-resolution YouTube videos with 40 object categories. Longest video is 1,000 frames. Longest video only contains 36 frames so it is easy to execute on offline mode.</li>
+  <li><strong>YouTube-VIS-2021</strong>: 3,859 high-resolution YouTube video with an improved 40-category label set by merging some and adding new ones. Longer video lengths force to use a near-online approach.</li>
+  <li><strong>YouTube-VIS-2022</strong>: not considered in this post since it is more recent than the papers that are covered.</li>
+</ul>
+
+<p>The following table summarizes the papers I will be discussing in this post and its performance on the YouTube-VIS-2019 dataset.</p>
+
+<div class="table-wrapper">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Backbone</th>
+        <th>MST</th>
+        <th>FPS</th>
+        <th>AP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>VisTR</td>
+        <td>ResNet-50</td>
+        <td>❌</td>
+        <td>51.1</td>
+        <td>36.2</td>
+      </tr>
+      <tr>
+        <td>VisTR</td>
+        <td>ResNet-101</td>
+        <td>❌</td>
+        <td>43.5</td>
+        <td>40.1</td>
+      </tr>
+      <tr>
+        <td>IFC</td>
+        <td>ResNet-50</td>
+        <td>✅</td>
+        <td><strong>107.1</strong></td>
+        <td>41.2</td>
+      </tr>
+      <tr>
+        <td>IFC</td>
+        <td>ResNet-101</td>
+        <td>✅</td>
+        <td>89.4</td>
+        <td>42.6</td>
+      </tr>
+      <tr>
+        <td>TeViT</td>
+        <td>MsgShifT</td>
+        <td>❌</td>
+        <td>68.9</td>
+        <td>45.9</td>
+      </tr>
+      <tr>
+        <td>TeViT</td>
+        <td>MsgShifT</td>
+        <td>✅</td>
+        <td>68.9</td>
+        <td><strong>46.6</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<p class="image-caption"><em>Table 1. Comparisons on YouTube-VIS-2019 dataset from TeViT paper [5]. MST indicates multi-scale training strategy. FPS measured with a single TESLA V100. Note all methods used offline evaluation for reporting metrics.</em></p>
+
+<p>Note the differences in precision when comparing with the reported results in Youtube-VIS-2021 dataset. This is due to the increase in video sizes, which forces the model to work in online mode, processing chunks of the video that then need to be merged.</p>
+
+<div class="table-wrapper">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Backbone</th>
+        <th>AP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>IFC</td>
+        <td>ResNet-101</td>
+        <td>35.2  (36.6 reported in [4])</td>
+      </tr>
+      <tr>
+        <td>TeViT</td>
+        <td>MsgShifT</td>
+        <td><strong>37.9</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<p class="image-caption"><em>Table 2. Comparisons on YouTube-VIS-2021 dataset from TeViT paper [5].</em></p>
+
+<h3 id="vistr-2021">VisTR (2021)</h3>
+
+<p>VisTR, short for VIS Transformer, emerged as one of the initial transformer-based VIS methods to achieve notable accuracy on the YouTube-VIS dataset, thanks to an effective adaptation of DETR [2] for segmentation. This framework processes a fixed sequence of video frames using a ResNet backbone to independently extract features from each image. These extracted features are then concatenated, enriched with a 3D positional encoding, and injected into an encoder-decoder transformer architecture, which outputs a sequence of object predictions in order.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-32d23dc52.png" alt="VisTR architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-400-9bdfeb185.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-600-9bdfeb185.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-9bdfeb185.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-1000-9bdfeb185.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1366" height="470" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>VisTR architecture diagram</em></p>
+
+<p>Key ideas we need to highlight about this method:</p>
+
+<ol>
+  <li>Instance queries are fixed, learnable parameters that determine the number of instances that can be predicted (input of decoder in the diagram).</li>
+  <li>Training involves instance sequence prediction over $N$ frames that requires ground truth matching to compute the loss.</li>
+  <li>The Hungarian algorithm is used to find a bipartite matching between ground-truth and prediction (as in DETR [2]).</li>
+  <li>Solving 3 using masks is very expensive. A module is added to obtain bounding boxes from instance predictions and solve the matching efficiently.</li>
+  <li>The loss consists on a combination of the bounding box, the mask and the class prediction errors.</li>
+  <li>A 3D conv module fuses temporal information before masks are obtained.</li>
+</ol>
+
+<p><strong>Drawbacks</strong>: The models are trained on 8 V100 GPUs of 32G RAM, with 1 video clip per GPU. Either low resolution or short clips are used to fit in memory. VisTR remains as a complete offline strategy because it takes the entire video as an input (from IFC paper).</p>
+
+<h3 id="ifc">IFC</h3>
+
+<p>Inter-frame Communication Transformers (IFC) leverages the idea that, since humans can summarize scenes briefly and consecutive frames often share similarities, it’s feasible to communicate frame differences with minimal data. To reduce computational load, IFC utilizes a number of ‘memory tokens’ to exchange information between frames, thus lowering the complexity of space-time attention.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-f24fde520.png" alt="IFC architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-400-691dbc6bb.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-600-691dbc6bb.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-691dbc6bb.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-1000-691dbc6bb.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1065" height="477" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>IFC architecture diagram</em></p>
+
+<p>The architecture integrates Transformer encoders with ResNet feature maps and learnable memory tokens. Encoder blocks are composed of:</p>
+<ul>
+  <li><strong>Encode-Receive ($\xi$)</strong>: fuses frame features and memory tokens, blending frame and temporal data.</li>
+  <li><strong>Gather-Communicate ($\zeta$)</strong>: processes memory tokens across frames for inter-frame communication.</li>
+</ul>
+
+<p>The decoder used a fixed number of object queries ($N_q$) that is indepentent on the number of input frames. It features two heads:</p>
+
+<ul>
+  <li>A class head for class probability distribution of instances $p(c) \in \mathbb{R}^{N_q \times |\mathbb{C}|}$.</li>
+  <li>A segmentation head producing $N_q$ conditional convolutional weights $w \in \mathbb{R}^{N_q \times C}$, convolved with the output of the spatial decoder (reshaped encoder output and upscaled à la FPN).</li>
+</ul>
+
+<p>Loss calculation also follows DETR incorporating the Hungarian algorithm, applying it directly to the masks.</p>
+
+<h3 id="tevit">TeViT</h3>
+
+<p>The Temporally Efficient Vision Transformer (TeViT) advances the ideas from IFC by using fewer parameters to fuse information across video frames and including a fully transformer backbone. It also introduces minor improvements in its head stage for more efficient processing.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-21694f269.png" alt="TeViT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-400-fd261f96c.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-600-fd261f96c.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-fd261f96c.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1000-fd261f96c.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1546" height="736" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>TeViT architecture diagram</em></p>
+
+<p>At its core, TeViT employs a pyramid vision transformer [6] structure and innovates by replacing IFC’s memory tokens with temporal messenger tokens. These tokens are periodically shifted along the temporal axis within each block to merge information from distinct frames. This shift operation is straightforward, yet remarkably effective, adding no extra parameters to the system.</p>
+
+<p>The head implementation emphasizes modeling temporal relations at the instance level, drawing on the principles of QueryInst [7]. As illustrated in the diagram, the same instance queries are initially applied across every frame. These queries are processed through a parameter-shared multi-head self-attention (MHSA) mechanism and a dynamic convolutional layer [8], which integrates the data with instance region features from the backbone. Finally, task-specific heads (such as classification, box, and mask heads) generate predictions for a sequence of video instances.</p>
+
+<p>The loss computation incorporates the Hungarian algorithm alongside a combination of box, mask, and class prediction errors (details provided in the paper).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Exploring the literature around video instance segmentation (VIS) has been a fun experience. Transformers are now showing up in most of the research in this area. It is quite fascinating to observe ongoing efforts aimed at reducing the complexities associated with video processing, such as minimizing the number of parameters needed to merge time-related features effectively. The influence of the DETR paper on all the methods discussed is also noteworthy.</p>
+
+<p>I will keep updating this post with new and relevant research findings. Feel free to share your thoughts in the comments below or suggest any papers you would like me to explore next.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>[<a href="https://arxiv.org/pdf/1905.04804.pdf">1</a>] Yang, L., Fan, Y., &amp; Xu, N. (2019). Video instance segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp. 5188-5197).</li>
+  <li>[<a href="https://arxiv.org/pdf/2011.14503.pdf">2</a>] Wang, Y., Xu, Z., Wang, X., Shen, C., Cheng, B., Shen, H., &amp; Xia, H. (2021). End-to-end video instance segmentation with transformers. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 8741-8750).</li>
+  <li>[<a href="https://arxiv.org/pdf/2005.12872.pdf">3</a>] Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., &amp; Zagoruyko, S. (2020, August). End-to-end object detection with transformers. In European conference on computer vision (pp. 213-229). Cham: Springer International Publishing.</li>
+  <li>[<a href="https://arxiv.org/pdf/2106.03299.pdf">4</a>] Hwang, S., Heo, M., Oh, S. W., &amp; Kim, S. J. (2021). Video instance segmentation using inter-frame communication transformers. Advances in Neural Information Processing Systems, 34, 13352-13363.</li>
+  <li>[<a href="https://arxiv.org/abs/2204.08412">5</a>] Yang, S., Wang, X., Li, Y., Fang, Y., Fang, J., Liu, W., … &amp; Shan, Y. (2022). Temporally efficient vision transformer for video instance segmentation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 2885-2895).</li>
+  <li>[<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Wang_Pyramid_Vision_Transformer_A_Versatile_Backbone_for_Dense_Prediction_Without_ICCV_2021_paper.pdf">6</a>] Wang, W., Xie, E., Li, X., Fan, D. P., Song, K., Liang, D., … &amp; Shao, L. (2021). Pyramid vision transformer: A versatile backbone for dense prediction without convolutions. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 568-578).</li>
+  <li>[<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Fang_Instances_As_Queries_ICCV_2021_paper.pdf">7</a>] Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., … &amp; Liu, W. (2021). Instances as queries. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6910-6919).</li>
+  <li>[<a href="https://arxiv.org/pdf/1912.03458.pdf">8</a>] Chen, Y., Dai, X., Liu, M., Chen, D., Yuan, L., &amp; Liu, Z. (2020). Dynamic convolution: Attention over convolution kernels. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 11030-11039).</li>
+</ul>
+
+
+  
+</div>
+
+<div class="comments">
+  <script src="https://utteranc.es/client.js"
+        repo="mmeendez8/mmeendez8.github.io"
+        issue-term="url"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+</div>
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+
+</body>
+
+</html>

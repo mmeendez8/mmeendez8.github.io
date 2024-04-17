@@ -80,17 +80,6 @@
   <!-- end of Twitter cards -->
   
 
-  <!-- Mathjax -->
-  
-    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          processEscapes: true
-      }
-  });
-</script>
-  
 </head>
 
 <body>
@@ -219,10 +208,9 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 </ul>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort-800-ef8ea65f7.jpg" alt="SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort-400-0129c6d0c.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort-600-0129c6d0c.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort-800-0129c6d0c.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/sort-1000-0129c6d0c.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1352" height="739" />
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" loading="lazy" alt="SORT architecture diagram" />
 </a>
-
 </div>
 
 <p class="image-caption"><em>SORT architecture diagram</em></p>
@@ -246,10 +234,9 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 <p>Each track maintains a gallery of the last \(n\) appearance descriptors, enabling cosine distance calculations between new detections and descriptors. Track age, determined by frames since the last association, plays a crucial role in the association process. DeepSORT adopts a cascade approach, prioritizing tracks with lower ages over a single-step association between predicted Kalman states and new measurements.</p>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort-800-58a403e1a.jpg" alt="DeepSORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort-400-d49ec61a3.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort-600-d49ec61a3.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort-800-d49ec61a3.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/deepsort-1000-d49ec61a3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1378" height="725" />
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" loading="lazy" alt="DeepSORT architecture diagram" />
 </a>
-
 </div>
 
 <p class="image-caption"><em>DeepSORT architecture diagram</em></p>
@@ -276,10 +263,9 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 </ol>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack-800-eb704f5e3.jpg" alt="ByteTrack architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack-400-1a0b7d0b3.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack-600-1a0b7d0b3.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack-800-1a0b7d0b3.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/bytetrack-1000-1a0b7d0b3.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1311" height="762" />
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" loading="lazy" alt="ByteTrack architecture diagram" />
 </a>
-
 </div>
 
 <p class="image-caption"><em>ByteTrack architecture diagram</em></p>
@@ -330,13 +316,12 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 </ol>
 
 <div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort-800-ed3f0f9ff.jpg" alt="BoT-SORT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort-400-f1cf4e2c5.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort-600-f1cf4e2c5.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort-800-f1cf4e2c5.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/botsort-1000-f1cf4e2c5.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1329" height="752" />
+<a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" class="lightbox-image">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" loading="lazy" alt="BoT-SORT architecture diagram" />
 </a>
-
 </div>
 
-<p class="image-caption"><em>ByteTrack architecture diagram</em></p>
+<p class="image-caption"><em>BoT-SORT architecture diagram</em></p>
 
 <h2 id="smiletrack">SMILEtrack</h2>
 
@@ -418,6 +403,19 @@ There is camera motion correction in the code but not in the paper!!!!
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+
 </body>
 
 </html>
