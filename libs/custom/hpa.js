@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const currentReplicasInput = document.getElementById('current_replicas');
     const currentMetricValueInput = document.getElementById('current_metric_value');
     const targetMetricValueInput = document.getElementById('target_metric_value');
     const xAxisSelect = document.getElementById('xAxisSelect');
     const ctx = document.getElementById('replicasChart').getContext('2d');
-    const chart = createChart(ctx); 
+    const chart = createChart(ctx);
 
 
     const formElements = [currentReplicasInput, currentMetricValueInput, targetMetricValueInput, xAxisSelect];
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     formElements.forEach(element => {
         element.addEventListener('change', () => updateChart(chart, currentReplicasInput, currentMetricValueInput, targetMetricValueInput, xAxisSelect));
     });
-    
+
     updateChart(chart, currentReplicasInput, currentMetricValueInput, targetMetricValueInput, xAxisSelect)
 });
 
@@ -39,7 +39,7 @@ function createChart(ctx) {
                 pointRadius: 0,
                 showLine: true
             }
-        ]
+            ]
         },
         options: {
             scales: {
@@ -52,6 +52,23 @@ function createChart(ctx) {
                     title: {
                         display: true,
                         text: 'Desired Replicas'
+                    }
+                }
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy'
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy',
                     }
                 }
             }
@@ -69,7 +86,7 @@ function updateChart(chart, currentReplicasInput, currentMetricValueInput, targe
     let yValues = [];
 
     let start = 0
-    switch(x_axis) {
+    switch (x_axis) {
         case 'current_metric':
             x_axis_label = 'Current Metric Value';
             x_axis_metric = current_metric_value;
@@ -88,18 +105,31 @@ function updateChart(chart, currentReplicasInput, currentMetricValueInput, targe
             break;
     }
 
+    let xMax = x_axis_metric * 5;
+
     // Generate values for plotting
-    for (let x = start; x <= Math.min(2 * x_axis_metric, 10); x += x_axis_metric / 1000) {
+    for (let x = start; x <= xMax; x += x_axis_metric / 1000) {
         xValues.push(x);
         let replicas = calculateReplicas(x);
         yValues.push(replicas);
     }
-    
-    let maxYValue = Math.max(...yValues.filter(val => val !== Infinity));
+
+
+    let yMax = Math.max(...yValues.filter(val => val !== Infinity));
+    let yMin = 0
+    let xMin = Math.min(x_axis_metric - 1 / 2 * x_axis_metric, start)
+
     chart.data.labels = xValues;
     chart.data.datasets[0].data = yValues;
-    chart.data.datasets[1].data = [{x: x_axis_metric, y: 0}, {x: x_axis_metric, y: maxYValue}],
-    // chart.options.scales.y.title.text = x_axis_label;
+    chart.data.datasets[1].data = [{ x: x_axis_metric, y: yMin }, { x: x_axis_metric, y: yMax }],
+
+        chart.resetZoom();
+
+    chart.options.scales.x.min = x_axis_metric - 1 / 2 * x_axis_metric;
+    chart.options.scales.x.max = x_axis_metric + 1 / 2 * x_axis_metric;
+    chart.options.scales.y.max = calculateReplicas(x_axis_metric) + 2;
+
+
     chart.update();
 }
 
