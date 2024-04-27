@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Practical Guide to Horizontal Pod Autoscaler"
+title: "A Guide to Horizontal Pod Autoscaler"
 subtitle: "Understand and visualize how Kubernetes HPA works with a real world example"
 description: "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool."
 image: "/assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/test.jpg"
