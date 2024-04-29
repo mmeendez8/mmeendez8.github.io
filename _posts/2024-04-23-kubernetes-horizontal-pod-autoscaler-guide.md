@@ -155,11 +155,11 @@ With the current memory usage, the HPA behaves like the function $f(x) = x$, pre
 
 ## What can we do?
 
-We have a couple of options to address this problem. For instance, we could change the memory and CPU targets in the HPA settings. Increasing the CPU requirements could help us to avoid the initial spike in replicas and prevent the staircase pattern. On the other hand if we increase the memory requirements we could avoid the bottleneck and scale down the number of replicas. However, this isn't a permanent solution because if our application's memory use fluctuates, we could encounter the same issue again. Instead, we should tackle the root cause and for this we need to differentiate between the fixed and variable usage of our metrics.
+We have a couple of options to address this problem. For instance, we could change the memory and CPU targets in the HPA settings. Increasing the CPU requirements could help us avoid the initial spike in replicas and prevent the staircase pattern. On the other hand, if we increase the memory requirements, we could avoid the bottleneck and scale down the number of replicas. However, this isn't a permanent solution because if our application's memory use fluctuates, we could encounter the same issue again. Instead, we should tackle the root cause and for this we need to differentiate between the fixed and variable usage of our metrics.
 
 The initial spike in CPU usage was due to the startup process, which is a fixed usage. As we could see before, adding more replicas doesn't alleviate the problem because the usage is related with the startup process and not the traffic. Conversely, when requests arrive at our service, the CPU usage can change, allowing the HPA to scale up or scale down the number of replicas. This represents variable usage.
 
-The memory usage always stays the same, no matter how many pods are running or how much traffic there is. This is called fixed usage. Because of this, the HPA behaves like a function where $f(x) = x$. Therefore, adjusting the number of pods based on memory usage doesn't work well because the memory doesn't vary with the traffic. The best strategy is to **remove the memory metric from the HPA** settings and scale only based on the CPU metric.
+The memory usage always stays the same, no matter how many pods are running. It is another example of fixed usage. Because of this, the HPA behaves like a function where $f(x) = x$. Therefore, adjusting the number of pods based on memory usage doesn't work well because the memory doesn't vary with the traffic. The best strategy is to **remove the memory metric from the HPA** settings and scale only based on the CPU metric.
 
 ## Conclusion
 
