@@ -3,7 +3,7 @@ layout: post
 title: "A Guide to Horizontal Pod Autoscaler"
 subtitle: "Understand and visualize how Kubernetes HPA works with a real world example"
 description: "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool."
-image: "/assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/test.jpg"
+image: "/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg"
 selected: y
 mathjax: y
 ---
@@ -84,7 +84,7 @@ Where:
 So let's see what I observed in Grafana that day.
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu.png --alt Grafana plot showing memory and CPU usages %}
+    {% picture pimage /assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu.png --alt Grafana plot showing memory and CPU usages %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -105,7 +105,7 @@ Before moving forward with the debbuging I would like to introduce the visualiza
 Let's start by inspecting what has happened to our application step by step using our visualization tool using previous metrics. First, let's check the memory usage at 12:18:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_init.png --alt HPA Memory expected replicas %}
+    {% picture pimage /assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init.png --alt HPA Memory expected replicas %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -115,7 +115,7 @@ Let's start by inspecting what has happened to our application step by step usin
 The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let's do the same for the CPU usage assuming a value of `600m` at that time:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png --alt HPA CPU expected replicas %}
+    {% picture pimage /assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png --alt HPA CPU expected replicas %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -126,7 +126,7 @@ The memory usage seems to be below the 90% so the number of replicas would be se
 At startup, the CPU usage for the pod exceeded the target value of `450m`. This means that the `currentMetricValue / desiredMetricValue` ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png --alt HPA CPU expected replicas showing stairs pattern %}
+    {% picture pimage /assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png --alt HPA CPU expected replicas showing stairs pattern %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -144,7 +144,7 @@ Although CPU usage spiked at startup, it quickly returned to low levels. So why 
 This indicates that the issue now lies with memory usage. Grafana shows us that memory usage has remained constant after the scaling. According to *Figure 2*, the expected number of replicas should be just 1. However, since the HPA previously increased our replicas to 3, when we view the same plot with the number of replicas on the x-axis, it reveals the following:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs.png --alt HPA memory current replicas vs expected replicas %}
+    {% picture pimage /assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs.png --alt HPA memory current replicas vs expected replicas %}
 </div>
 
 {:refdef: class="image-caption"}
