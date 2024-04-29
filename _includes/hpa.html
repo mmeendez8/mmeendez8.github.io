@@ -1,4 +1,4 @@
-<div class="app-container">
+<div class="app-container" id="vistool">
 
     <style>
         .form-select {
@@ -72,7 +72,7 @@
             <input type="number" id="current_metric_value" class="form-input" value="1100" step="1">
         </div>
         <div class="form-item">
-            <label for="target_metric_value">Target Metric:</label>
+            <label for="target_metric_value">Desired Metric:</label>
             <input type="number" id="target_metric_value" class="form-input" value="1200" step="1">
         </div>
     </div>
@@ -84,7 +84,7 @@
         <select id="xAxisSelect" class="form-select">
             <option value="current_metric">Current Metric</option>
             <option value="replicas">Current Replicas</option>
-            <option value="target_metric">Target Metric</option>
+            <option value="target_metric">Desired Metric</option>
         </select>
     </form>
     <script type="text/javascript" src="{{ '/libs/custom/hpa.js' | prepend: site.baseurl }}"></script>

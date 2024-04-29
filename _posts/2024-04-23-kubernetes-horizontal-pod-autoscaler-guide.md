@@ -8,20 +8,7 @@ selected: y
 mathjax: y
 ---
 
-A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I'll discuss the issues I encountered with HPA and demonstrate how a simple visualization tool can help anticipate the number of replicas needed.
-
-## Visualization tool
-
-Before we explore how HPA works, I want to showcase the visualization tool. It simplifies understanding the HPA formula used to calculate the desired number of replicas:
-
-```
-desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
-```
-
-You can interact with this tool to see how changes in the metrics affect the number of replicas.
-
-{% include hpa.html %}
-
+A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I'll discuss the issues I encountered with HPA and demonstrate how a simple [visualization tool](#visualization-tool)    can help anticipate the number of replicas needed.
 
 ## What is HPA?
 
@@ -29,7 +16,7 @@ The [Horizontal Pod Autoscaler (HPA)](https://kubernetes.io/docs/tasks/run-appli
 
 For example Statsbomb can use HPA to handle increased traffic during a weekend when there are more games being played. The HPA can automatically scale up the number of web server pods to maintain performance, and scale down during off-peak hours to reduce costs. This dynamic adjustment helps ensure that the application consistently meets performance targets without manual intervention.
 
-In next sections I will briefly explain how HPA works and how to use this simple tool to ease your scaling decisions.
+In next sections I will briefly explain how HPA works and how to use [this simple tool](#visualization-tool) to ease your scaling decisions.
 
 ## How does HPA work?
 
@@ -81,7 +68,7 @@ spec:
         averageUtilization: 90
 ```
 
-So what does this mean? Well if you are a proper engineer what you would do is check the official docs and try to carefully understand this. But if you are like me... you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅). 
+So what does this mean? Well if you are a proper engineer what you would do is check the [official docs](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details) and try to carefully understand this. But if you are like me... you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅). 
 
 My first guess was that this would configure HPA to scale up the number of pods when memory or CPU usage exceeded 90%. However, I overlooked a crucial detail: the calculation also needs to include the current number of replicas. Here’s how HPA actually works:
 
@@ -104,13 +91,18 @@ So let's see what I observed in Grafana that day.
 *Figure 1. Grafana plot showing memory and CPU usages*
 {: refdef}
 
-What I observed was that at 13:10, we had three pods running with memory usage around `1100 MB` and CPU usage less than `100m`. Both metrics appeared to be below the target values: 1215 MB (=0.9*1350 MB) for memory and 450m (=0.9*500m) for CPU. So, why were there three pods running?
+What I observed was that at 13:10, we had three pods running with memory usage around `1100 MB` and CPU usage less than `100m`. Both metrics appeared to be below the target values: `1215 MB (=0.9*1350 MB)` for memory and `450m (=0.9*500m)` for CPU. So, why were there three pods running?
+
+
+## Visualization tool 
+
+Before moving forward with the debbuging I would like to introduce the visualization tool I have built. It allows you to enter the specific details of your current/target metrics, as well as the current number of replicas. Based on those inputs, it computes and displays the desired number replicas using the scaling formula above.
+  
+{% include hpa.html %}
 
 ## Debugging HPA
 
-Let's start by inspecting what has happened to our application step by step. For that purpose, I've built a visualization tool that allows you to enter the specific details of your current/target metrics, as well as the current number of replicas. Based on those inputs, it computes and displays the desired number replicas using the scaling formula above.
-
- First, let's check the memory usage:
+Let's start by inspecting what has happened to our application step by step using our visualization tool using previous metrics. First, let's check the memory usage:
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_init.png --alt HPA Memory expected replicas %}
@@ -145,9 +137,11 @@ There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1
 
 ## Why is HPA not scaling down?
 
-Although CPU usage spiked at startup, it quickly returned to low levels. So why isn't the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of `450m`, as illustrated in Figure 1. However, the bottleneck now is memory usage.
+Although CPU usage spiked at startup, it quickly returned to low levels. So why isn't the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of `450m`, as illustrated in Figure 1. According to the official HPA documentation:
 
-As shown by Grafana, memory usage remains constant. Figure 2 indicated that the expected number of replicas should be 1. However, since the HPA previously scaled up our replicas to 3, visualizing the same plot with the number of replicas on the x-axis reveals the following:
+> "If multiple metrics are specified in a HorizontalPodAutoscaler, this calculation is done for each metric, and then the largest of the desired replica counts is chosen."
+
+This indicates that the issue now lies with memory usage. Grafana shows us that memory usage has remained constant after the scaling. According to Figure 2, the expected number of replicas should be just 1. However, since the HPA previously increased our replicas to 3, when we view the same plot with the number of replicas on the x-axis, it reveals the following:
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs.png --alt HPA memory current replicas vs expected replicas %}
@@ -158,6 +152,12 @@ As shown by Grafana, memory usage remains constant. Figure 2 indicated that the 
 {: refdef}
 
 With the current memory usage, the HPA behaves like the function $f(x) = x$, preventing the number of replicas from scaling down. This is why we continuously see three pods running, even though the pods are not receiving much traffic.
+
+## What can we do?
+
+We have a couple of options to fix this problem. For instance, we could change the memory and CPU targets in the HPA settings. But this isn't a lasting solution because if our application's memory use changes, we could face the same issue again. Instead, we should look at the main cause: the constant memory usage.
+
+Our application's memory use stays the same no matter how many pods are running or how much traffic we have. Because of this, the HPA acts like a function where $f(x) = x$. This means adjusting the number of pods based on memory doesn't help since the memory doesn’t change with the traffic. The best approach is to stop using the memory metric in the HPA settings and rely only on the CPU metric.
 
 ## Conclusion
 
