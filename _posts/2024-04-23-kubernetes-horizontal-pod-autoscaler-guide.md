@@ -157,7 +157,7 @@ With the current memory usage, the HPA behaves like the function $f(x) = x$, pre
 
 We have a couple of options to address this problem. For instance, we could change the memory and CPU targets in the HPA settings. However, this isn't a permanent solution because if our application's memory use fluctuates, we could encounter the same issue again. Instead, we should tackle the root cause: the constant memory usage.
 
-Our application's memory consumption remains unchanged regardless of the number of pods running or the volume of traffic. As a result, the HPA acts like a function where $f(x) = x$. This means adjusting the number of pods based on memory usage is ineffective since the memory doesn’t vary with the traffic. The best strategy is to remove the memory metric from the HPA settings and rely solely on the CPU metric.
+Our application's memory consumption remains unchanged regardless of the number of pods running or the volume of traffic. As a result, the HPA acts like a function where $f(x) = x$. This means adjusting the number of pods based on memory usage is ineffective since the memory doesn’t vary with the traffic. The best strategy is to **remove the memory metric from the HPA** settings and rely solely on the CPU metric.
 
 ## Conclusion
 
