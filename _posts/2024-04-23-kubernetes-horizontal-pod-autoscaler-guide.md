@@ -163,4 +163,8 @@ Our application's memory use stays the same no matter how many pods are running 
 
 In this post, we looked at how the Horizontal Pod Autoscaler (HPA) in Kubernetes helps manage the number of pods based on CPU and memory usage. This is very important for keeping applications running smoothly as demands change over time. However, we also learned that it's crucial to keep an eye on the HPA settings and adjust according to your real-world scenario.
 
+We have learnt how different metric patterns can affect the HPA's behaviour and on deciding on which metrics to use. We should only use HPA with those metrics which values fluctuate with the traffic or with the number of pods running.
+
+Through an example, we've seen how crucial it is to choose the right metrics for HPA. Effective HPA deployment relies on using metrics that genuinely reflect changes in workload and resource needs. Metrics that do not vary with traffic levels or pod count might not be suitable for making scaling decisions.
+
 For anyone using Kubernetes, understanding how to manage these settings is key, whether you're in a small startup or a large company. It's all about understanding your systems well and making the right adjustments.
