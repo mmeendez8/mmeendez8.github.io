@@ -88,10 +88,10 @@ So let's see what I observed in Grafana that day.
 </div>
 
 {:refdef: class="image-caption"}
-*Figure 1. Grafana plot showing memory and CPU usages*
+*Figure 1. Grafana plot showing memory and CPU usages. Note pod colors differ between CPU and Memory usage*
 {: refdef}
 
-What I observed was that at 13:10, we had three pods running with memory usage around `1100 MB` and CPU usage less than `100m`. Both metrics appeared to be below the target values: `1215 MB (=0.9*1350 MB)` for memory and `450m (=0.9*500m)` for CPU. So, why were there three pods running?
+What I observed was that at 12:20, we had three pods running with memory usage around `1100 MB` and CPU usage less than `100m`. Both metrics appeared to be below the target values: `1215 MB (=0.9*1350 MB)` for memory and `450m (=0.9*500m)` for CPU. So, why were there three pods running?
 
 
 ## Visualization tool 
@@ -102,7 +102,7 @@ Before moving forward with the debbuging I would like to introduce the visualiza
 
 ## Debugging HPA
 
-Let's start by inspecting what has happened to our application step by step using our visualization tool using previous metrics. First, let's check the memory usage:
+Let's start by inspecting what has happened to our application step by step using our visualization tool using previous metrics. First, let's check the memory usage at 12:18:
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_init.png --alt HPA Memory expected replicas %}
@@ -112,7 +112,7 @@ Let's start by inspecting what has happened to our application step by step usin
 *Figure 2. HPA memory expected replica*
 {: refdef}
 
-The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let's check the CPU usage now:
+The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let's do the same for the CPU usage assuming a value of `600m` at that time:
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png --alt HPA CPU expected replicas %}
@@ -123,7 +123,7 @@ The memory usage seems to be below the 90% so the number of replicas would be se
 {: refdef}
 
 
-At startup, the CPU usage exceeded the target value of `450m`. This means that the 'currentMetricValue / desiredMetricValue' ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:
+At startup, the CPU usage for the pod exceeded the target value of `450m`. This means that the `currentMetricValue / desiredMetricValue` ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png --alt HPA CPU expected replicas showing stairs pattern %}
@@ -133,15 +133,15 @@ At startup, the CPU usage exceeded the target value of `450m`. This means that t
 *Figure 4. HPA CPU current replicas vs expected replicas*
 {: refdef}
 
-There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the 'currentMetricValue / desiredMetricValue' ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, maxReplicas was set to 3. Thus, we have identified the root of the problem!
+There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the `currentMetricValue / desiredMetricValue` ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, `maxReplicas` was set to 3. Thus, we have identified the root of the problem!
 
 ## Why is HPA not scaling down?
 
-Although CPU usage spiked at startup, it quickly returned to low levels. So why isn't the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of `450m`, as illustrated in Figure 1. According to the official HPA documentation:
+Although CPU usage spiked at startup, it quickly returned to low levels. So why isn't the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of `450m`, as illustrated in *Figure 1*. According to the official HPA documentation:
 
 > "If multiple metrics are specified in a HorizontalPodAutoscaler, this calculation is done for each metric, and then the largest of the desired replica counts is chosen."
 
-This indicates that the issue now lies with memory usage. Grafana shows us that memory usage has remained constant after the scaling. According to Figure 2, the expected number of replicas should be just 1. However, since the HPA previously increased our replicas to 3, when we view the same plot with the number of replicas on the x-axis, it reveals the following:
+This indicates that the issue now lies with memory usage. Grafana shows us that memory usage has remained constant after the scaling. According to *Figure 2*, the expected number of replicas should be just 1. However, since the HPA previously increased our replicas to 3, when we view the same plot with the number of replicas on the x-axis, it reveals the following:
 
 <div class="post-center-image">
     {% picture pimage /assets/images/fullsize/posts/2024-04-23-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs.png --alt HPA memory current replicas vs expected replicas %}
@@ -155,9 +155,11 @@ With the current memory usage, the HPA behaves like the function $f(x) = x$, pre
 
 ## What can we do?
 
-We have a couple of options to address this problem. For instance, we could change the memory and CPU targets in the HPA settings. However, this isn't a permanent solution because if our application's memory use fluctuates, we could encounter the same issue again. Instead, we should tackle the root cause: the constant memory usage.
+We have a couple of options to address this problem. For instance, we could change the memory and CPU targets in the HPA settings. Increasing the CPU requirements could help us to avoid the initial spike in replicas and prevent the staircase pattern. On the other hand if we increase the memory requirements we could avoid the bottleneck and scale down the number of replicas. However, this isn't a permanent solution because if our application's memory use fluctuates, we could encounter the same issue again. Instead, we should tackle the root cause and for this we need to differentiate between the fixed and variable usage of our metrics.
 
-Our application's memory consumption remains unchanged regardless of the number of pods running or the volume of traffic. As a result, the HPA acts like a function where $f(x) = x$. This means adjusting the number of pods based on memory usage is ineffective since the memory doesn’t vary with the traffic. The best strategy is to **remove the memory metric from the HPA** settings and rely solely on the CPU metric.
+The initial spike in CPU usage was due to the startup process, which is a fixed usage. As we could see before, adding more replicas doesn't alleviate the problem because the usage is related with the startup process and not the traffic. Conversely, when requests arrive at our service, the CPU usage can change, allowing the HPA to scale up or scale down the number of replicas. This represents variable usage.
+
+The memory usage always stays the same, no matter how many pods are running or how much traffic there is. This is called fixed usage. Because of this, the HPA behaves like a function where $f(x) = x$. Therefore, adjusting the number of pods based on memory usage doesn't work well because the memory doesn't vary with the traffic. The best strategy is to **remove the memory metric from the HPA** settings and scale only based on the CPU metric.
 
 ## Conclusion
 
