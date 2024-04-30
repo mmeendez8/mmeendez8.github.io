@@ -16,7 +16,7 @@ As usually I will be trying to update this post with the most recent papers and 
 
 ## Introduction to Video Segmentation
 
-Video segmentation condenses a lot of different tasks which can have multiple names. I personaly like the taxonomy used in the [Youtube-VOS Dataset](https://youtube-vos.org/dataset/), which is one of the main benchmarks in this field, so I will stick with it through this post. The different tasks are:
+Video segmentation condenses a lot of different tasks which can have multiple names. I personaly like the taxonomy used in the [Youtube-VOS Dataset](https://youtube-vos.org/dataset/){:target="_blank"}{:rel="noopener noreferrer"}, which is one of the main benchmarks in this field, so I will stick with it through this post. The different tasks are:
 
 - **Video Object Segmentation (VOS)**: targets at segmenting a particular object instance throughout the entire video sequence given only the object mask of the first frame.
 - **Video Instance Segmentation (VIS)**: extends image instance segmentation to videos, aiming to segment and track object instances across frames.
@@ -59,7 +59,7 @@ These method suffered from different issues, and around 2020, transformer-based 
 
 ### Datasets
 
-The most common dataset used for VIS is called [YouTube-VIS](https://youtube-vos.org/dataset/vis/). It comprises three different versions:
+The most common dataset used for VIS is called [YouTube-VIS](https://youtube-vos.org/dataset/vis/){:target="_blank"}{:rel="noopener noreferrer"}. It comprises three different versions:
 
 - **YouTube-VIS-2019**: 2,883 high-resolution YouTube videos with 40 object categories. Longest video is 1,000 frames. Longest video only contains 36 frames so it is easy to execute on offline mode.
 - **YouTube-VIS-2021**: 3,859 high-resolution YouTube video with an improved 40-category label set by merging some and adding new ones. Longer video lengths force to use a near-online approach.

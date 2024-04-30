@@ -8,11 +8,11 @@ selected: y
 mathjax: y
 ---
 
-A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I'll discuss the issues I encountered with HPA and demonstrate how a simple [visualization tool](#visualization-tool)    can help anticipate the number of replicas needed.
+A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I'll discuss the issues I encountered with HPA and demonstrate how a simple [visualization tool](#visualization-tool) can help anticipate the number of replicas needed.
 
 ## What is HPA?
 
-The [Horizontal Pod Autoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) in Kubernetes automatically adjusts the number of pod replicas in a deployment, replicaset, or statefulset based on observed CPU utilization or other select metrics. This feature is very useful for managing application scalability and resource efficiency, particularly in environments with variable workloads.
+The [Horizontal Pod Autoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/){:target="_blank"}{:rel="noopener noreferrer"} in Kubernetes automatically adjusts the number of pod replicas in a deployment, replicaset, or statefulset based on observed CPU utilization or other select metrics. This feature is very useful for managing application scalability and resource efficiency, particularly in environments with variable workloads.
 
 For example Statsbomb can use HPA to handle increased traffic during a weekend when there are more games being played. The HPA can automatically scale up the number of web server pods to maintain performance, and scale down during off-peak hours to reduce costs. This dynamic adjustment helps ensure that the application consistently meets performance targets without manual intervention.
 
@@ -68,7 +68,7 @@ spec:
         averageUtilization: 90
 ```
 
-So what does this mean? Well if you are a proper engineer what you would do is check the [official docs](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details) and try to carefully understand this. But if you are like me... you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅). 
+So what does this mean? Well if you are a proper engineer what you would do is check the [official docs](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details){:target="_blank"}{:rel="noopener noreferrer"} and try to carefully understand this. But if you are like me... you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅). 
 
 My first guess was that this would configure HPA to scale up the number of pods when memory or CPU usage exceeded 90%. However, I overlooked a crucial detail: the calculation also needs to include the current number of replicas. Here’s how HPA actually works:
 
