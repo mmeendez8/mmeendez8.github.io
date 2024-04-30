@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | A Guide to Horizontal Pod Autoscaler</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  
+  
+  
+  <meta name="description" property="og:description" content="Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool.">
+  
+
+  
+  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="A Guide to Horizontal Pod Autoscaler">
+  
+  
+  <meta name="twitter:description" content="Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">April 28, 2024 </span>
+      <h1 class="the-post-title">A Guide to Horizontal Pod Autoscaler</h1>
+      <p>Understand and visualize how Kubernetes HPA works with a real world example</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-800-412a1b1ec.jpg" alt="A Guide to Horizontal Pod Autoscaler" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-400-9bbf0e735.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-600-9bbf0e735.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-800-9bbf0e735.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-1000-9bbf0e735.webp 1000w" sizes="(max-width: 767px) 100vw, 50vw" width="1841" height="1500">
+
+  </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="A Guide to Horizontal Pod Autoscaler" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html">
+  </a>
+</div>
+
+<div class="container the-post-content">
+
+  <p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a>    can help anticipate the number of replicas needed.</p>
+
+<h2 id="what-is-hpa">What is HPA?</h2>
+
+<p>The <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">Horizontal Pod Autoscaler (HPA)</a> in Kubernetes automatically adjusts the number of pod replicas in a deployment, replicaset, or statefulset based on observed CPU utilization or other select metrics. This feature is very useful for managing application scalability and resource efficiency, particularly in environments with variable workloads.</p>
+
+<p>For example Statsbomb can use HPA to handle increased traffic during a weekend when there are more games being played. The HPA can automatically scale up the number of web server pods to maintain performance, and scale down during off-peak hours to reduce costs. This dynamic adjustment helps ensure that the application consistently meets performance targets without manual intervention.</p>
+
+<p>In next sections I will briefly explain how HPA works and how to use <a href="#visualization-tool">this simple tool</a> to ease your scaling decisions.</p>
+
+<h2 id="how-does-hpa-work">How does HPA work?</h2>
+
+<p>First of all we need to make sure we understand the concepts of <code class="language-plaintext highlighter-rouge">requests</code> and <code class="language-plaintext highlighter-rouge">limits</code> since they are fundamental to how resources are allocated and managed across the pods in a cluster.</p>
+
+<ul>
+  <li><strong>Requests</strong>: This value specifies the amount of CPU or memory that Kubernetes guarantees to a pod. When a pod is scheduled, the Kubernetes scheduler uses this request value to decide on which node the pod can fit. So this number ensures the pod has the resources it needs to run.</li>
+  <li><strong>Limits</strong>: This value specifies the maximum amount of CPU or memory that a pod can use. If a pod exceeds this limit, Kubernetes will throttle the pod or kill it. This is how k8s ensures that a single pod does not consume all the resources in a node.</li>
+</ul>
+
+<p>Imagine our deployment has the following setup:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># deployment.yaml</span>
+<span class="na">resources</span><span class="pi">:</span>
+  <span class="na">limits</span><span class="pi">:</span>
+    <span class="na">memory</span><span class="pi">:</span> <span class="s">2000Mi</span>
+    <span class="na">cpu</span><span class="pi">:</span> <span class="s">1500m</span>
+  <span class="na">requests</span><span class="pi">:</span>
+    <span class="na">memory</span><span class="pi">:</span> <span class="s">1350Mi</span>
+    <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
+    
+</code></pre></div></div>
+
+<p>And our HPA is configured in the following manner:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">autoscaling/v2</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">HorizontalPodAutoscaler</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">autoscaler-name</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">scaleTargetRef</span><span class="pi">:</span>
+    <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">autoscaler-name</span>
+  <span class="na">minReplicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">maxReplicas</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">metrics</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Resource</span>
+    <span class="na">resource</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cpu</span>
+      <span class="na">target</span><span class="pi">:</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">Utilization</span>
+        <span class="na">averageUtilization</span><span class="pi">:</span> <span class="m">90</span>
+  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Resource</span>
+    <span class="na">resource</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">memory</span>
+      <span class="na">target</span><span class="pi">:</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">Utilization</span>
+        <span class="na">averageUtilization</span><span class="pi">:</span> <span class="m">90</span>
+</code></pre></div></div>
+
+<p>So what does this mean? Well if you are a proper engineer what you would do is check the <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details">official docs</a> and try to carefully understand this. But if you are like me… you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅).</p>
+
+<p>My first guess was that this would configure HPA to scale up the number of pods when memory or CPU usage exceeded 90%. However, I overlooked a crucial detail: the calculation also needs to include the current number of replicas. Here’s how HPA actually works:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
+</code></pre></div></div>
+
+<p>Where:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">currentReplicas</code> is the number of replicas the deployment is currently running.</li>
+  <li><code class="language-plaintext highlighter-rouge">currentMetricValue</code> is the current value of the metric we are monitoring (e.g. CPU usage).</li>
+  <li><code class="language-plaintext highlighter-rouge">desiredMetricValue</code> is the target value for the metric we are monitoring (e.g. 90% requested CPU usage).</li>
+</ul>
+
+<p>So let’s see what I observed in Grafana that day.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-800-e6106cc03.png" alt="Grafana plot showing memory and CPU usages" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-400-6e4143c17.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-600-6e4143c17.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-800-6e4143c17.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-1000-6e4143c17.webp 1000w" sizes="(max-width: 767px) 100vw, 80vw" width="1248" height="742" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 1. Grafana plot showing memory and CPU usages. Note pod colors differ between CPU and Memory usage</em></p>
+
+<p>What I observed was that at 12:20, we had three pods running with memory usage around <code class="language-plaintext highlighter-rouge">1100 MB</code> and CPU usage less than <code class="language-plaintext highlighter-rouge">100m</code>. Both metrics appeared to be below the target values: <code class="language-plaintext highlighter-rouge">1215 MB (=0.9*1350 MB)</code> for memory and <code class="language-plaintext highlighter-rouge">450m (=0.9*500m)</code> for CPU. So, why were there three pods running?</p>
+
+<h2 id="visualization-tool">Visualization tool</h2>
+
+<p>Before moving forward with the debbuging I would like to introduce the visualization tool I have built. It allows you to enter the specific details of your current/target metrics, as well as the current number of replicas. Based on those inputs, it computes and displays the desired number replicas using the scaling formula above.</p>
+
+<div class="app-container" id="vistool">
+
+    <style>
+        .form-select {
+            font-family: Graphik, Arial, sans-serif;
+        }
+
+        .form-input {
+            width: 15%;
+        }
+
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-item {
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .form-container {
+                flex-direction: row;
+            }
+
+            .form-item {
+                max-width: 30%;
+            }
+        }
+
+        .form-item > label {
+            flex: 0;
+            white-space: nowrap;
+            margin-right: 10px;
+        }
+
+        .form-item > .form-input,
+        .form-item > .form-select {
+            flex: 2;
+            max-width: 70%;
+        }
+
+        .axis-form {
+            margin-top: 20px;
+            min-width: fit-content;
+            max-width: 30%;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .axis-form .form-select {
+            width: 100%;
+        }
+    </style>
+
+    <div class="form-container">
+
+        <div class="form-item">
+            <label for="current_replicas">Current Replicas:</label>
+            <input type="number" id="current_replicas" class="form-input" value="1" min="1" />
+        </div>
+        <div class="form-item">
+            <label for="current_metric_value">Current Metric:</label>
+            <input type="number" id="current_metric_value" class="form-input" value="1100" step="1" />
+        </div>
+        <div class="form-item">
+            <label for="target_metric_value">Desired Metric:</label>
+            <input type="number" id="target_metric_value" class="form-input" value="1200" step="1" />
+        </div>
+    </div>
+    <div>
+        <canvas id="replicasChart"></canvas>
+    </div>
+    <form class="axis-form">
+        <label for="xAxisSelect"></label>
+        <select id="xAxisSelect" class="form-select">
+            <option value="current_metric">Current Metric</option>
+            <option value="replicas">Current Replicas</option>
+            <option value="target_metric">Desired Metric</option>
+        </select>
+    </form>
+    <script type="text/javascript" src="/libs/custom/hpa.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+</div>
+
+<h2 id="debugging-hpa">Debugging HPA</h2>
+
+<p>Let’s start by inspecting what has happened to our application step by step using our visualization tool using previous metrics. First, let’s check the memory usage at 12:18:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-800-b2ed377f4.png" alt="HPA Memory expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-400-10c77e3a0.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-600-10c77e3a0.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-800-10c77e3a0.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-973-10c77e3a0.webp 973w" sizes="(max-width: 767px) 100vw, 80vw" width="973" height="562" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 2. HPA memory expected replica</em></p>
+
+<p>The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let’s do the same for the CPU usage assuming a value of <code class="language-plaintext highlighter-rouge">600m</code> at that time:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-800-54edac61a.png" alt="HPA CPU expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-400-640475e30.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-600-640475e30.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-800-640475e30.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-972-640475e30.webp 972w" sizes="(max-width: 767px) 100vw, 80vw" width="972" height="562" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 3. HPA CPU expected replica</em></p>
+
+<p>At startup, the CPU usage for the pod exceeded the target value of <code class="language-plaintext highlighter-rouge">450m</code>. This means that the <code class="language-plaintext highlighter-rouge">currentMetricValue / desiredMetricValue</code> ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-800-919de227e.png" alt="HPA CPU expected replicas showing stairs pattern" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-400-b615656dc.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-600-b615656dc.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-800-b615656dc.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-998-b615656dc.webp 998w" sizes="(max-width: 767px) 100vw, 80vw" width="998" height="572" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 4. HPA CPU current replicas vs expected replicas</em></p>
+
+<p>There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the <code class="language-plaintext highlighter-rouge">currentMetricValue / desiredMetricValue</code> ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, <code class="language-plaintext highlighter-rouge">maxReplicas</code> was set to 3. Thus, we have identified the root of the problem!</p>
+
+<h2 id="why-is-hpa-not-scaling-down">Why is HPA not scaling down?</h2>
+
+<p>Although CPU usage spiked at startup, it quickly returned to low levels. So why isn’t the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of <code class="language-plaintext highlighter-rouge">450m</code>, as illustrated in <em>Figure 1</em>. According to the official HPA documentation:</p>
+
+<blockquote>
+  <p>“If multiple metrics are specified in a HorizontalPodAutoscaler, this calculation is done for each metric, and then the largest of the desired replica counts is chosen.”</p>
+</blockquote>
+
+<p>This indicates that the issue now lies with memory usage. Grafana shows us that memory usage has remained constant after the scaling. According to <em>Figure 2</em>, the expected number of replicas should be just 1. However, since the HPA previously increased our replicas to 3, when we view the same plot with the number of replicas on the x-axis, it reveals the following:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-800-78d16daf5.png" alt="HPA memory current replicas vs expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-400-d4bea4075.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-600-d4bea4075.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-800-d4bea4075.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-973-d4bea4075.webp 973w" sizes="(max-width: 767px) 100vw, 80vw" width="973" height="567" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 5. HPA memory current replicas vs expected replicas</em></p>
+
+<p>With the current memory usage, the HPA behaves like the function $f(x) = x$, preventing the number of replicas from scaling down. This is why we continuously see three pods running, even though the pods are not receiving much traffic.</p>
+
+<h2 id="what-can-we-do">What can we do?</h2>
+
+<p>We have a couple of options to address this problem. For instance, we could change the memory and CPU targets in the HPA settings. Increasing the CPU requirements could help us avoid the initial spike in replicas and prevent the staircase pattern. On the other hand, if we increase the memory requirements, we could avoid the bottleneck and scale down the number of replicas. However, this isn’t a permanent solution because if our application’s memory use fluctuates, we could encounter the same issue again. Instead, we should tackle the root cause and for this we need to differentiate between the fixed and variable usage of our metrics.</p>
+
+<p>The initial spike in CPU usage was due to the startup process, which is a fixed usage. As we could see before, adding more replicas doesn’t alleviate the problem because the usage is related with the startup process and not the traffic. Conversely, when requests arrive at our service, the CPU usage can change, allowing the HPA to scale up or scale down the number of replicas. This represents variable usage.</p>
+
+<p>The memory usage always stays the same, no matter how many pods are running. It is another example of fixed usage. Because of this, the HPA behaves like a function where $f(x) = x$. Therefore, adjusting the number of pods based on memory usage doesn’t work well because the memory doesn’t vary with the traffic. The best strategy is to <strong>remove the memory metric from the HPA</strong> settings and scale only based on the CPU metric.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post, we explored how the Horizontal Pod Autoscaler (HPA) in Kubernetes manages the number of pods based on CPU and memory usage. This is very important for keeping applications running smoothly as demands fluctuate. However, we learned the importance of monitoring HPA settings and adjusting them to fit real-world scenarios.</p>
+
+<p>Through an example, we’ve discovered how various metric patterns can influence the HPA’s behavior and the importance of selecting appropriate metrics. Metrics that do not adjust with traffic levels or pod count may not be appropriate for making scaling decisions.</p>
+
+<p>For anyone using Kubernetes, whether in a small startup or a large company, understanding how to properly manage these settings is essential. It’s all about deeply knowing your systems and making the right adjustments to maintain efficiency and responsiveness.</p>
+
+  
+</div>
+
+<div class="comments">
+  <script src="https://utteranc.es/client.js"
+        repo="mmeendez8/mmeendez8.github.io"
+        issue-term="url"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+</div>
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+
+</body>
+
+</html>
