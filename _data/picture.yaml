@@ -27,10 +27,9 @@ presets:
     attributes:
       img: 'loading="lazy"' 
 
-
   thumbnail:
     formats: [webp]
-    widths: [400, 600, 800, 1000]
+    widths: [400, 600, 800, 1500]
     dimension_attributes: true
     sizes:
       mobile: 100vw
@@ -38,7 +37,7 @@ presets:
 
   pimage:
     formats: [webp]
-    widths: [400, 600, 800, 1000]
+    widths: [400, 600, 800, 1500]
     dimension_attributes: true
     attributes:
       img: 'loading="lazy"' 
