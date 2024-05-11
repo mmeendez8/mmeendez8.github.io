@@ -48,7 +48,7 @@ They employ two classical methods:
 
 <div class="post-center-image">
 <a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" class="lightbox-image">
- <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" loading="lazy" alt="SORT architecture diagram">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/sort.svg" width="850" loading="lazy" alt="SORT architecture diagram">
 </a>
 </div>
 
@@ -75,7 +75,7 @@ Each track maintains a gallery of the last $$n$$ appearance descriptors, enablin
 
 <div class="post-center-image">
 <a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" class="lightbox-image">
- <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" loading="lazy" alt="DeepSORT architecture diagram">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/deepsort.svg" width="850" loading="lazy" alt="DeepSORT architecture diagram">
 </a>
 </div>
 
@@ -106,7 +106,7 @@ ByteTrack addresses this problem by using all detections, regardless of their co
 
 <div class="post-center-image">
 <a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" class="lightbox-image">
- <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" loading="lazy" alt="ByteTrack architecture diagram">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/bytetrack.svg" width="850" loading="lazy" alt="ByteTrack architecture diagram">
 </a>
 </div>
 
@@ -159,7 +159,7 @@ I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines
 
 <div class="post-center-image">
 <a href="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" class="lightbox-image">
- <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" loading="lazy" alt="BoT-SORT architecture diagram">
+ <img src="/assets/svg/posts/2023-11-08-tracking-by-detection-overview/botsort.svg" width="850" loading="lazy" alt="BoT-SORT architecture diagram">
 </a>
 </div>
 
