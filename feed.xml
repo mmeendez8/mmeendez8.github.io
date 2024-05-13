@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-05-11T09:11:51+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">A Guide to Horizontal Pod Autoscaler</title><link href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html" rel="alternate" type="text/html" title="A Guide to Horizontal Pod Autoscaler" /><published>2024-04-28T00:00:00+00:00</published><updated>2024-04-28T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html"><![CDATA[<p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a> can help anticipate the number of replicas needed.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-05-13T13:49:49+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">A Guide to Horizontal Pod Autoscaler</title><link href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html" rel="alternate" type="text/html" title="A Guide to Horizontal Pod Autoscaler" /><published>2024-04-28T00:00:00+00:00</published><updated>2024-04-28T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html"><![CDATA[<p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a> can help anticipate the number of replicas needed.</p>
 
 <h2 id="what-is-hpa">What is HPA?</h2>
 
@@ -76,7 +76,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-800-e6106cc03.png" alt="Grafana plot showing memory and CPU usages" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-400-6e4143c17.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-600-6e4143c17.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-800-6e4143c17.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-1248-6e4143c17.webp 1248w" sizes="(max-width: 767px) 100vw, 80vw" width="1248" height="742" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-800-e6106cc03.png" alt="Grafana plot showing memory and CPU usages" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-400-6e4143c17.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-800-6e4143c17.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_cpu-1248-6e4143c17.webp 1248w" sizes="(max-width: 767px) 100vw, 80vw" width="1248" height="742" />
 </a>
 
 </div>
@@ -191,7 +191,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-800-b2ed377f4.png" alt="HPA Memory expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-400-10c77e3a0.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-600-10c77e3a0.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-800-10c77e3a0.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-973-10c77e3a0.webp 973w" sizes="(max-width: 767px) 100vw, 80vw" width="973" height="562" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-800-b2ed377f4.png" alt="HPA Memory expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-400-10c77e3a0.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-800-10c77e3a0.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_init-973-10c77e3a0.webp 973w" sizes="(max-width: 767px) 100vw, 80vw" width="973" height="562" />
 </a>
 
 </div>
@@ -202,7 +202,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-800-54edac61a.png" alt="HPA CPU expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-400-640475e30.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-600-640475e30.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-800-640475e30.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-972-640475e30.webp 972w" sizes="(max-width: 767px) 100vw, 80vw" width="972" height="562" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-800-54edac61a.png" alt="HPA CPU expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-400-640475e30.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-800-640475e30.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init-972-640475e30.webp 972w" sizes="(max-width: 767px) 100vw, 80vw" width="972" height="562" />
 </a>
 
 </div>
@@ -213,7 +213,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-800-919de227e.png" alt="HPA CPU expected replicas showing stairs pattern" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-400-b615656dc.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-600-b615656dc.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-800-b615656dc.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-998-b615656dc.webp 998w" sizes="(max-width: 767px) 100vw, 80vw" width="998" height="572" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-800-919de227e.png" alt="HPA CPU expected replicas showing stairs pattern" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-400-b615656dc.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-800-b615656dc.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs-998-b615656dc.webp 998w" sizes="(max-width: 767px) 100vw, 80vw" width="998" height="572" />
 </a>
 
 </div>
@@ -234,7 +234,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-800-78d16daf5.png" alt="HPA memory current replicas vs expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-400-d4bea4075.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-600-d4bea4075.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-800-d4bea4075.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-973-d4bea4075.webp 973w" sizes="(max-width: 767px) 100vw, 80vw" width="973" height="567" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-800-78d16daf5.png" alt="HPA memory current replicas vs expected replicas" srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-400-d4bea4075.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-800-d4bea4075.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/memory_stairs-973-d4bea4075.webp 973w" sizes="(max-width: 767px) 100vw, 80vw" width="973" height="567" />
 </a>
 
 </div>
@@ -416,7 +416,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-32d23dc52.png" alt="VisTR architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-400-9bdfeb185.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-600-9bdfeb185.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-9bdfeb185.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-1366-9bdfeb185.webp 1366w" sizes="(max-width: 767px) 100vw, 80vw" width="1366" height="470" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-32d23dc52.png" alt="VisTR architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-400-9bdfeb185.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-9bdfeb185.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-1366-9bdfeb185.webp 1366w" sizes="(max-width: 767px) 100vw, 80vw" width="1366" height="470" />
 </a>
 
 </div>
@@ -442,7 +442,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-f24fde520.png" alt="IFC architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-400-691dbc6bb.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-600-691dbc6bb.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-691dbc6bb.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-1065-691dbc6bb.webp 1065w" sizes="(max-width: 767px) 100vw, 80vw" width="1065" height="477" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-f24fde520.png" alt="IFC architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-400-691dbc6bb.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-691dbc6bb.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-1065-691dbc6bb.webp 1065w" sizes="(max-width: 767px) 100vw, 80vw" width="1065" height="477" />
 </a>
 
 </div>
@@ -470,7 +470,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-21694f269.png" alt="TeViT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-400-fd261f96c.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-600-fd261f96c.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-fd261f96c.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1500-fd261f96c.webp 1500w" sizes="(max-width: 767px) 100vw, 80vw" width="1546" height="736" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-21694f269.png" alt="TeViT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-400-fd261f96c.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-fd261f96c.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1500-fd261f96c.webp 1500w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1546-fd261f96c.webp 1546w" sizes="(max-width: 767px) 100vw, 80vw" width="1546" height="736" />
 </a>
 
 </div>
@@ -762,7 +762,7 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-800-d46bc69a9.png" alt="Diagram showing NFL pitch dimensions including length and width in yards." srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-400-fe42e0bc7.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-600-fe42e0bc7.webp 600w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-800-fe42e0bc7.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-1024-fe42e0bc7.webp 1024w" sizes="(max-width: 767px) 100vw, 80vw" width="1024" height="527" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-800-d46bc69a9.png" alt="Diagram showing NFL pitch dimensions including length and width in yards." srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-400-fe42e0bc7.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-800-fe42e0bc7.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchdims-1024-fe42e0bc7.webp 1024w" sizes="(max-width: 767px) 100vw, 80vw" width="1024" height="527" />
 </a>
 
 </div>
@@ -799,7 +799,7 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-800-cf747f767.png" alt="NFL resulting pitch template image" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-400-fb2e1d535.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-600-fb2e1d535.webp 600w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-800-fb2e1d535.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-1500-fb2e1d535.webp 1500w" sizes="(max-width: 767px) 100vw, 80vw" width="1645" height="824" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-800-cf747f767.png" alt="NFL resulting pitch template image" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-400-fb2e1d535.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-800-fb2e1d535.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-1500-fb2e1d535.webp 1500w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/pitchtemplate-1645-fb2e1d535.webp 1645w" sizes="(max-width: 767px) 100vw, 80vw" width="1645" height="824" />
 </a>
 
 </div>
@@ -1416,7 +1416,7 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 
     <div class="post-center-image">
      <a href="/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-600-ed5e82503.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-1152-ed5e82503.webp 1152w" sizes="(max-width: 767px) 100vw, 80vw" width="1152" height="1296" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-1152-ed5e82503.webp 1152w" sizes="(max-width: 767px) 100vw, 80vw" width="1152" height="1296" />
 </a>
 
  </div>
@@ -1529,7 +1529,7 @@ The gRPC server has been implemented using <a href="https://grpc.io/docs/languag
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-768-253323f5f.png" alt="Cat being compressed to bytes" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-400-b0be83dae.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-600-b0be83dae.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-768-b0be83dae.webp 768w" sizes="(max-width: 767px) 100vw, 80vw" width="768" height="768" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-768-253323f5f.png" alt="Cat being compressed to bytes" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-400-b0be83dae.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-768-b0be83dae.webp 768w" sizes="(max-width: 767px) 100vw, 80vw" width="768" height="768" />
 </a>
 
 </div>
@@ -1821,7 +1821,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 <p>In <a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:</p>
 
 <p><a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-600-c0f0bfcc7.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1002-c0f0bfcc7.webp 1002w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1002-c0f0bfcc7.webp 1002w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" />
 </a></p>
 
 <p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code class="language-plaintext highlighter-rouge">n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code class="language-plaintext highlighter-rouge">n_filters</code> x <code class="language-plaintext highlighter-rouge">n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
@@ -1868,7 +1868,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-333ec12b6.jpg" alt="CAM" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-400-d5f6fcf29.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-600-d5f6fcf29.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-d5f6fcf29.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-1100-d5f6fcf29.webp 1100w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-333ec12b6.jpg" alt="CAM" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-400-d5f6fcf29.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-d5f6fcf29.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-1100-d5f6fcf29.webp 1100w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
 </a>
 
 </div>
@@ -1881,7 +1881,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-da40c3cdb.jpg" alt="Vision Transformer" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-400-23824f5be.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-600-23824f5be.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-23824f5be.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-879-23824f5be.webp 879w" sizes="(max-width: 767px) 100vw, 80vw" width="879" height="470" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-da40c3cdb.jpg" alt="Vision Transformer" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-400-23824f5be.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-23824f5be.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-879-23824f5be.webp 879w" sizes="(max-width: 767px) 100vw, 80vw" width="879" height="470" />
 </a>
 
 </div>
@@ -1908,7 +1908,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-2f6a36848.jpg" alt="Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-400-d83342cea.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-600-d83342cea.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-d83342cea.webp 774w" sizes="(max-width: 767px) 100vw, 80vw" width="774" height="658" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-2f6a36848.jpg" alt="Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-400-d83342cea.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-d83342cea.webp 774w" sizes="(max-width: 767px) 100vw, 80vw" width="774" height="658" />
 </a>
 
 </div>
@@ -1959,7 +1959,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-62565fb71.jpg" alt="Rollout Transform" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-400-c56709655.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-600-c56709655.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-c56709655.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-1100-c56709655.webp 1100w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-62565fb71.jpg" alt="Rollout Transform" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-400-c56709655.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-c56709655.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-1100-c56709655.webp 1100w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
 </a>
 
 </div>
