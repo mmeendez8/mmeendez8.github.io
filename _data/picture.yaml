@@ -6,12 +6,12 @@ presets:
 
   profile:
     formats: [webp]
-    widths: [300]
+    widths: [400, 600, 800, 1500]
     dimension_attributes: true
 
   posts-grid:
     formats: [webp]
-    widths: [400, 600, 800]
+    widths: [400, 600, 800, 1500]
     dimension_attributes: true
     attributes:
       img: 'loading="lazy"' 
@@ -29,7 +29,7 @@ presets:
 
   thumbnail:
     formats: [webp]
-    widths: [400, 600, 800, 1500]
+    widths: [400, 800, 1500, 2000]
     dimension_attributes: true
     sizes:
       mobile: 100vw
@@ -37,7 +37,7 @@ presets:
 
   pimage:
     formats: [webp]
-    widths: [400, 600, 800, 1500]
+    widths: [400, 800, 1500, 2000]
     dimension_attributes: true
     attributes:
       img: 'loading="lazy"' 
