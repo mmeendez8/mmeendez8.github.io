@@ -13,7 +13,7 @@ news:
     text: "We have open sourced <a href='https://github.com/Gradiant/pyodi/' target='_blank' rel='noopener noreferrer'>Pyodi</a> our Python Object Detecion Insights library."
   - month: "September"
     year: "2020"
-    text: "We have won Drone vs Bird Detection Challenge. More info <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank' rel='noopener noreferrer'>here</a>."
+    text: "We have won <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank' rel='noopener noreferrer'>2020 Drone vs Bird Detection Challenge</a>."
   - month: "September"
     year: "2019"
     text: "Paper from <a href='https://ieeexplore.ieee.org/abstract/document/8909876' target='_blank' rel='noopener noreferrer'>IEEE AVSS2019 Drone-vs-Bird Detection Challenge</a> is out."
