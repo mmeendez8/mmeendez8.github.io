@@ -21,3 +21,7 @@ bundle install
 ```
 bundle exec jekyll serve
 ```
+
+## Google Analytics
+
+If you clone this repository, make sure to update the [Google Analytics tag](_includes/google_analytics.html). For more information, refer to [this tutorial](https://support.google.com/analytics/answer/12002338?hl=en) from Google.
