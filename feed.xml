@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-05-30T08:40:37+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">A Guide to Horizontal Pod Autoscaler</title><link href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html" rel="alternate" type="text/html" title="A Guide to Horizontal Pod Autoscaler" /><published>2024-04-28T00:00:00+00:00</published><updated>2024-04-28T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html"><![CDATA[<p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a> can help anticipate the number of replicas needed.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-07-22T11:23:12+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">A Guide to Horizontal Pod Autoscaler</title><link href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html" rel="alternate" type="text/html" title="A Guide to Horizontal Pod Autoscaler" /><published>2024-04-28T00:00:00+00:00</published><updated>2024-04-28T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html"><![CDATA[<p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a> can help anticipate the number of replicas needed.</p>
 
 <h2 id="what-is-hpa">What is HPA?</h2>
 
@@ -909,8 +909,8 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Creates a random password for the database</span>
 <span class="nx">resource</span> <span class="s2">"random_password"</span> <span class="s2">"mlflow_db"</span> <span class="p">{</span>
-  <span class="nx">length</span>  <span class="p">=</span> <span class="mi">16</span>
-  <span class="nx">special</span> <span class="p">=</span> <span class="kc">false</span>
+  <span class="nx">length</span>  <span class="o">=</span> <span class="mi">16</span>
+  <span class="nx">special</span> <span class="o">=</span> <span class="kc">false</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -918,20 +918,20 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This specifies the security group for the database</span>
 <span class="nx">module</span> <span class="s2">"mlflow_db_security_group"</span> <span class="p">{</span>
-  <span class="nx">source</span>  <span class="p">=</span> <span class="s2">"terraform-aws-modules/security-group/aws"</span>
-  <span class="nx">version</span> <span class="p">=</span> <span class="s2">"~&gt; 4"</span>
+  <span class="nx">source</span>  <span class="o">=</span> <span class="s2">"terraform-aws-modules/security-group/aws"</span>
+  <span class="nx">version</span> <span class="o">=</span> <span class="s2">"~&gt; 4"</span>
 
-  <span class="nx">name</span>        <span class="p">=</span> <span class="s2">"mlflow-db-sg"</span>
-  <span class="nx">description</span> <span class="p">=</span> <span class="s2">"RDS Aurora ingress security group"</span>
-  <span class="nx">vpc_id</span>      <span class="p">=</span> <span class="nx">aws_vpc</span><span class="p">.</span><span class="nx">main</span><span class="p">.</span><span class="nx">id</span> <span class="c1"># You need to use you own vpc id here</span>
+  <span class="nx">name</span>        <span class="o">=</span> <span class="s2">"mlflow-db-sg"</span>
+  <span class="nx">description</span> <span class="o">=</span> <span class="s2">"RDS Aurora ingress security group"</span>
+  <span class="nx">vpc_id</span>      <span class="o">=</span> <span class="nx">aws_vpc</span><span class="err">.</span><span class="nx">main</span><span class="p">.</span><span class="nx">id</span> <span class="c1"># You need to use you own vpc id here</span>
 
-  <span class="nx">ingress_with_cidr_blocks</span> <span class="p">=</span> <span class="p">[</span>
+  <span class="nx">ingress_with_cidr_blocks</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-      <span class="nx">from_port</span>   <span class="p">=</span> <span class="mi">5432</span>
-      <span class="nx">to_port</span>     <span class="p">=</span> <span class="mi">5432</span>
-      <span class="nx">protocol</span>    <span class="p">=</span> <span class="s2">"tcp"</span>
-      <span class="nx">description</span> <span class="p">=</span> <span class="s2">"RDS Aurora access from within VPC"</span>
-      <span class="nx">cidr_blocks</span> <span class="p">=</span> <span class="p">[</span><span class="nx">var</span><span class="p">.</span><span class="nx">your_vpn</span><span class="p">]</span>
+      <span class="nx">from_port</span>   <span class="o">=</span> <span class="mi">5432</span>
+      <span class="nx">to_port</span>     <span class="o">=</span> <span class="mi">5432</span>
+      <span class="nx">protocol</span>    <span class="o">=</span> <span class="s2">"tcp"</span>
+      <span class="nx">description</span> <span class="o">=</span> <span class="s2">"RDS Aurora access from within VPC"</span>
+      <span class="nx">cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="nx">var</span><span class="p">.</span><span class="nx">your_vpn</span><span class="p">]</span>
     <span class="p">},</span>
   <span class="p">]</span>
 <span class="p">}</span>
@@ -941,35 +941,35 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Database configuration</span>
 <span class="nx">module</span> <span class="s2">"mlflow_cluster_db"</span> <span class="p">{</span>
-  <span class="nx">source</span>         <span class="p">=</span> <span class="s2">"terraform-aws-modules/rds-aurora/aws"</span>
-  <span class="nx">version</span>        <span class="p">=</span> <span class="s2">"6.2.0"</span>
+  <span class="nx">source</span>         <span class="o">=</span> <span class="s2">"terraform-aws-modules/rds-aurora/aws"</span>
+  <span class="nx">version</span>        <span class="o">=</span> <span class="s2">"6.2.0"</span>
 
-  <span class="nx">name</span>           <span class="p">=</span> <span class="s2">"mlflow-db"</span>
-  <span class="nx">engine</span>         <span class="p">=</span> <span class="s2">"aurora-postgresql"</span>
-  <span class="nx">engine_version</span> <span class="p">=</span> <span class="s2">"14.5"</span>
-  <span class="nx">instance_class</span> <span class="p">=</span> <span class="s2">"db.r5.large"</span>
-  <span class="nx">instances</span> <span class="p">=</span> <span class="p">{</span>
-    <span class="nx">one</span> <span class="p">=</span> <span class="p">{}</span>
+  <span class="nx">name</span>           <span class="o">=</span> <span class="s2">"mlflow-db"</span>
+  <span class="nx">engine</span>         <span class="o">=</span> <span class="s2">"aurora-postgresql"</span>
+  <span class="nx">engine_version</span> <span class="o">=</span> <span class="s2">"14.5"</span>
+  <span class="nx">instance_class</span> <span class="o">=</span> <span class="s2">"db.r5.large"</span>
+  <span class="nx">instances</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">one</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="p">}</span>
 
-  <span class="nx">database_name</span>          <span class="p">=</span> <span class="s2">"mlflow"</span>
-  <span class="nx">master_username</span>        <span class="p">=</span> <span class="s2">"mlflow"</span>
-  <span class="nx">create_random_password</span> <span class="p">=</span> <span class="kc">false</span>
-  <span class="nx">master_password</span>        <span class="p">=</span> <span class="nx">random_password</span><span class="p">.</span><span class="nx">mlflow_db</span><span class="p">.</span><span class="nx">result</span>
+  <span class="nx">database_name</span>          <span class="o">=</span> <span class="s2">"mlflow"</span>
+  <span class="nx">master_username</span>        <span class="o">=</span> <span class="s2">"mlflow"</span>
+  <span class="nx">create_random_password</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="nx">master_password</span>        <span class="o">=</span> <span class="nx">random_password</span><span class="err">.</span><span class="nx">mlflow_db</span><span class="err">.</span><span class="nx">result</span>
 
-  <span class="nx">create_security_group</span>  <span class="p">=</span> <span class="kc">false</span>
-  <span class="nx">subnets</span>                <span class="p">=</span> <span class="nx">local</span><span class="p">.</span><span class="nx">subnets_ids_database</span>
-  <span class="nx">vpc_security_group_ids</span> <span class="p">=</span> <span class="p">[</span><span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_db_security_group</span><span class="p">.</span><span class="nx">security_group_id</span><span class="p">]</span>
+  <span class="nx">create_security_group</span>  <span class="o">=</span> <span class="kc">false</span>
+  <span class="nx">subnets</span>                <span class="o">=</span> <span class="nx">local</span><span class="p">.</span><span class="nx">subnets_ids_database</span>
+  <span class="nx">vpc_security_group_ids</span> <span class="o">=</span> <span class="p">[</span><span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_db_security_group</span><span class="p">.</span><span class="nx">security_group_id</span><span class="p">]</span>
 
-  <span class="nx">storage_encrypted</span>   <span class="p">=</span> <span class="kc">true</span>
-  <span class="nx">apply_immediately</span>   <span class="p">=</span> <span class="kc">true</span>
-  <span class="nx">monitoring_interval</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="nx">storage_encrypted</span>   <span class="o">=</span> <span class="kc">true</span>
+  <span class="nx">apply_immediately</span>   <span class="o">=</span> <span class="kc">true</span>
+  <span class="nx">monitoring_interval</span> <span class="o">=</span> <span class="mi">10</span>
 
-  <span class="nx">enabled_cloudwatch_logs_exports</span> <span class="p">=</span> <span class="p">[</span><span class="s2">"postgresql"</span><span class="p">]</span>
+  <span class="nx">enabled_cloudwatch_logs_exports</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"postgresql"</span><span class="p">]</span>
 
-  <span class="nx">tags</span> <span class="p">=</span> <span class="p">{</span>
-    <span class="nx">Environment</span> <span class="p">=</span> <span class="s2">"dev"</span>
-    <span class="nx">Terraform</span>   <span class="p">=</span> <span class="s2">"true"</span>
+  <span class="nx">tags</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Environment</span> <span class="o">=</span> <span class="s2">"dev"</span>
+    <span class="nx">Terraform</span>   <span class="o">=</span> <span class="s2">"true"</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -977,30 +977,30 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 <p>That is about it for the database setup. Lastly, we need to store the DB user, password, and endpoint for later connection. I will use AWS Secrets Manager for this. How you manage secrets may vary; the only thing you really want to avoid is to store them in source code. You could also use AWS Parameter Store or Hashicorp Vault, for example. Here’s how to store the secrets in AWS Secrets Manager:</p>
 
 <div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_username_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="p">=</span> <span class="s2">"mlflow-username"</span>
+  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-username"</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_username"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="p">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_username_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="p">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_username</span>
+  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_username_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_username</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_password_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="p">=</span> <span class="s2">"mlflow-password"</span>
+  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-password"</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_password"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="p">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_password_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="p">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_password</span>
+  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_password_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_password</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_endpoint_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="p">=</span> <span class="s2">"mlflow-db-writer-endpoint"</span>
+  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-db-writer-endpoint"</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_endpoint"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="p">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_endpoint_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="p">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_endpoint</span>
+  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_endpoint_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_endpoint</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -1009,21 +1009,21 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 <p>Next up is setting up a storage bucket for all the artifacts, and we’re going to use AWS S3 for this. Here’s the Terraform configuration needed:</p>
 
 <div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_s3_bucket"</span> <span class="s2">"mlflow_artifacts_bucket"</span> <span class="p">{</span>
-  <span class="nx">bucket</span> <span class="p">=</span> <span class="s2">"mlflow-artifacts-bucket"</span>
+  <span class="nx">bucket</span> <span class="o">=</span> <span class="s2">"mlflow-artifacts-bucket"</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_s3_bucket_ownership_controls"</span> <span class="s2">"mlflow_bucket_ownership"</span> <span class="p">{</span>
-  <span class="nx">bucket</span> <span class="p">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
   <span class="nx">rule</span> <span class="p">{</span>
-    <span class="nx">object_ownership</span> <span class="p">=</span> <span class="s2">"BucketOwnerPreferred"</span>
+    <span class="nx">object_ownership</span> <span class="o">=</span> <span class="s2">"BucketOwnerPreferred"</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="nx">resource</span> <span class="s2">"aws_s3_bucket_acl"</span> <span class="s2">"mlflow_bucket_acl"</span> <span class="p">{</span>
-  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="nx">aws_s3_bucket_ownership_controls</span><span class="p">.</span><span class="nx">mlflow_bucket_ownership</span><span class="p">]</span>
+  <span class="nx">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nx">aws_s3_bucket_ownership_controls</span><span class="p">.</span><span class="nx">mlflow_bucket_ownership</span><span class="p">]</span>
 
-  <span class="nx">bucket</span> <span class="p">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">acl</span>    <span class="p">=</span> <span class="s2">"private"</span>
+  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
+  <span class="nx">acl</span>    <span class="o">=</span> <span class="s2">"private"</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -1032,16 +1032,16 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 <p>Now, MLFlow needs to access this bucket from EKS, so we’ll create an IAM Role for Service Accounts. Here’s how to do it:</p>
 
 <div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_iam_role"</span> <span class="s2">"mlflow-role"</span> <span class="p">{</span>
-  <span class="nx">name</span> <span class="p">=</span> <span class="s2">"mlflow-role"</span>
+  <span class="nx">name</span> <span class="o">=</span> <span class="s2">"mlflow-role"</span>
 
-  <span class="nx">assume_role_policy</span> <span class="p">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
-    <span class="nx">Version</span> <span class="p">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
-    <span class="nx">Statement</span> <span class="p">=</span> <span class="p">[</span>
+  <span class="nx">assume_role_policy</span> <span class="o">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
+    <span class="nx">Version</span> <span class="o">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
+    <span class="nx">Statement</span> <span class="o">=</span> <span class="p">[</span>
       <span class="p">{</span>
-        <span class="nx">Action</span> <span class="p">=</span> <span class="s2">"sts:AssumeRole"</span><span class="p">,</span>
-        <span class="nx">Effect</span> <span class="p">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
-        <span class="nx">Principal</span> <span class="p">=</span> <span class="p">{</span>
-          <span class="nx">Service</span> <span class="p">=</span> <span class="s2">"ec2.amazonaws.com"</span> 
+        <span class="nx">Action</span> <span class="o">=</span> <span class="s2">"sts:AssumeRole"</span><span class="p">,</span>
+        <span class="nx">Effect</span> <span class="o">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
+        <span class="nx">Principal</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">Service</span> <span class="o">=</span> <span class="s2">"ec2.amazonaws.com"</span> 
         <span class="p">},</span>
       <span class="p">},</span>
     <span class="p">],</span>
@@ -1050,20 +1050,20 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <span class="c1"># Custom Policy for Specific S3 Bucket Access</span>
 <span class="nx">resource</span> <span class="s2">"aws_iam_policy"</span> <span class="s2">"mlflow_s3_policy"</span> <span class="p">{</span>
-  <span class="nx">name</span>   <span class="p">=</span> <span class="s2">"mlflow_s3_policy"</span>
-  <span class="nx">policy</span> <span class="p">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
-    <span class="nx">Version</span> <span class="p">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
-    <span class="nx">Statement</span> <span class="p">=</span> <span class="p">[</span>
+  <span class="nx">name</span>   <span class="o">=</span> <span class="s2">"mlflow_s3_policy"</span>
+  <span class="nx">policy</span> <span class="o">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
+    <span class="nx">Version</span> <span class="o">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
+    <span class="nx">Statement</span> <span class="o">=</span> <span class="p">[</span>
       <span class="p">{</span>
-        <span class="nx">Action</span> <span class="p">=</span> <span class="p">[</span>
+        <span class="nx">Action</span> <span class="o">=</span> <span class="p">[</span>
           <span class="s2">"s3:GetObject"</span><span class="p">,</span>
           <span class="s2">"s3:GetObject*"</span><span class="p">,</span>
           <span class="s2">"s3:ListBucket"</span><span class="p">,</span>
           <span class="s2">"s3:PutObject"</span><span class="p">,</span>
           <span class="s2">"s3:DeleteObject"</span>
         <span class="p">],</span>
-        <span class="nx">Effect</span>   <span class="p">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
-        <span class="nx">Resource</span> <span class="p">=</span> <span class="p">[</span>
+        <span class="nx">Effect</span>   <span class="o">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
+        <span class="nx">Resource</span> <span class="o">=</span> <span class="p">[</span>
           <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket"</span><span class="p">,</span>
           <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket/*"</span>
         <span class="p">]</span>
@@ -1074,9 +1074,9 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <span class="c1"># Attach Custom Policy to the Role</span>
 <span class="nx">resource</span> <span class="s2">"aws_iam_role_policy_attachment"</span> <span class="s2">"s3_policy_attachment"</span> <span class="p">{</span>
-  <span class="nx">role</span>       <span class="p">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">mlflow-role</span><span class="p">.</span><span class="nx">name</span>
-  <span class="nx">policy_arn</span> <span class="p">=</span> <span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">.</span><span class="nx">arn</span>
-  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">]</span>
+  <span class="nx">role</span>       <span class="o">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">mlflow-role</span><span class="p">.</span><span class="nx">name</span>
+  <span class="nx">policy_arn</span> <span class="o">=</span> <span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">.</span><span class="nx">arn</span>
+  <span class="nx">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
