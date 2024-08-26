@@ -8,7 +8,7 @@ selected: y
 mathjax: y
 ---
 
-Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/) for working with me in completing the benchmarking discussed in this post.
+Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/){:target="_blank"}{:rel="noopener noreferrer"} for working with me in completing the benchmarking discussed in this post.
 
 In the past few weeks, we have been exploring the potential advantages of adopting gRPC to enhance the performance of our services. Although I have conducted extensive research on this topic, I have not been able to find relevant information that specifically addresses our use case, which involves transmitting images to a model server and receiving a response in the most efficient manner. While there are numerous benchmarks that demonstrate significant performance improvements when migrating from REST to gRPC using structured data, it has been challenging to locate a similar benchmark for image transmission... And that is the main reason behind this post!  
 
@@ -154,7 +154,7 @@ We can extract some conclussion from previous tables:
 
 ## Torchserve benchmark
 
-I have been using [TorchServe](https://pytorch.org/serve/) for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things such as batching and queing requests. 
+I have been using [TorchServe](https://pytorch.org/serve/){:target="_blank"}{:rel="noopener noreferrer"} for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things such as batching and queing requests. 
 I do not intend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers, I will leave that for a plausible future post.
 
 The documentation for Torchserve's [gRPC API](https://pytorch.org/serve/grpc_api.html){:target="_blank"}{:rel="noopener noreferrer"} could be improved, as it currently requires users to download the official repository to generate a Python gRPC client stub from the proto files. However, I have attached these files to the repository, so you can easily run the benchmark without having to worry about this step.

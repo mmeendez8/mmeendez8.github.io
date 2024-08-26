@@ -187,8 +187,8 @@ There is camera motion correction in the code but not in the paper!!!!
 
 ## References
 
-- [[1](https://arxiv.org/pdf/1602.00763.pdf)] Bewley, A., Ge, Z., Ott, L., Ramos, F., & Upcroft, B. (2016, September). Simple online and realtime tracking. In 2016 IEEE international conference on image processing (ICIP) (pp. 3464-3468). IEEE.
-- [[2](https://arxiv.org/pdf/1703.07402.pdf)] Wojke, N., Bewley, A., & Paulus, D. (2017, September). Simple online and realtime tracking with a deep association metric. In 2017 IEEE international conference on image processing (ICIP) (pp. 3645-3649). IEEE.
-- [[3](https://arxiv.org/pdf/2110.06864.pdf)] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., ... & Wang, X. (2022, October). Bytetrack: Multi-object tracking by associating every detection box. In European Conference on Computer Vision (pp. 1-21). Cham: Springer Nature Switzerland.
-- [[4](https://arxiv.org/pdf/2206.14651.pdf)] Aharon, N., Orfaig, R., & Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.
-- [[5](https://arxiv.org/pdf/2211.08824.pdf)] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.
+- [[1](https://arxiv.org/pdf/1602.00763.pdf){:target="_blank"}{:rel="noopener noreferrer"}] Bewley, A., Ge, Z., Ott, L., Ramos, F., & Upcroft, B. (2016, September). Simple online and realtime tracking. In 2016 IEEE international conference on image processing (ICIP) (pp. 3464-3468). IEEE.
+- [[2](https://arxiv.org/pdf/1703.07402.pdf){:target="_blank"}{:rel="noopener noreferrer"}] Wojke, N., Bewley, A., & Paulus, D. (2017, September). Simple online and realtime tracking with a deep association metric. In 2017 IEEE international conference on image processing (ICIP) (pp. 3645-3649). IEEE.
+- [[3](https://arxiv.org/pdf/2110.06864.pdf){:target="_blank"}{:rel="noopener noreferrer"}] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., ... & Wang, X. (2022, October). Bytetrack: Multi-object tracking by associating every detection box. In European Conference on Computer Vision (pp. 1-21). Cham: Springer Nature Switzerland.
+- [[4](https://arxiv.org/pdf/2206.14651.pdf){:target="_blank"}{:rel="noopener noreferrer"}] Aharon, N., Orfaig, R., & Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.
+- [[5](https://arxiv.org/pdf/2211.08824.pdf){:target="_blank"}{:rel="noopener noreferrer"}] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.
