@@ -160,6 +160,8 @@ HOTA drawbacks:
 - **Not Ideal for Online Tracking**: HOTA's association score depends on future associations across the entire video, making it less suitable for evaluating online tracking where future data isn't available.
 - **Doesn't Account for Fragmentation**: HOTA does not penalize fragmented tracking results, as it is designed to focus on long-term global tracking, which may not align with all application needs.
 
+If you want to learn more about HOTA, I recommend reading the blog post by [Jonathon Luiten](https://jonathonluiten.medium.com/how-to-evaluate-tracking-with-the-hota-metrics-754036d183e1){:target="_blank" rel="noopener noreferrer"}. Jonathon Luiten is one of the authors of the HOTA paper, and his post is an excellent resource for learning how to use the metric to compare different trackers.
+
 ## Conclusion
 
 In this post, we've explored three key metrics used in Multi-Object Tracking: MOTA, IDF1, and HOTA. Each metric offers unique insights into tracking performance, with its own strengths and limitations. MOTA provides a straightforward measure but can oversimplify in complex scenarios. IDF1 focuses on long-term consistency but may not fully capture detection improvements. HOTA, which attempts to balance detection and association accuracy, has emerged as the standard metric used today for benchmarking tracking algorithms.
