@@ -70,10 +70,8 @@ Where $t$ is the frame index, FN are False Negatives, FP are False Positives, ID
 While MOTA's simplicity is appealing, it has some limitations:
 
 1. It only considers the **previous frame** for IDSW, so each switch is penalized **only once**, regardless of how long the incorrect assignment persists.
-2. It **weighs all errors equally**, which may not reflect their importance in all applications. (????)
-3. It can be **dominated by FP and FN** in crowded scenes, making IDSW less impactful.
-4. **IoU is fixed** so more or less detection accuracy is not reflected on the metric
-
+2. It can be **dominated by FP and FN** in crowded scenes, making IDSW less impactful.
+3. **IoU is fixed** so more or less detection accuracy is not reflected on the metric
 
 ## IDF1
 
