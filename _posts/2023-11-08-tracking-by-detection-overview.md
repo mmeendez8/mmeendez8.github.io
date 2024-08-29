@@ -30,6 +30,8 @@ Tracking by detection is an object tracking approach that first detects objects 
 The intention of this blog is to keep myself updated with the bibliography of tracking by detection methods. My intention is to regularly update this blog with new information and resources I find interesting.
 I have included the SORT and DeepSORT papers in the list, despite being older methods, as they laid the groundwork for many of the techniques covered here.
 
+If you want to understand HOTA metric, I recommend you to read my other post about [tracking metrics]({% post_url 2024-08-25-mot-tracking-metrics %})
+
 ## SORT 
 
 It is a very good and simple work from 2016 that quickly became a standard in the field. The author's main goal was to create the fastest possible tracker relying on the quality of the object detector predictions. Appearance features of the objects are not used; the system relies solely on bounding box position and size.
