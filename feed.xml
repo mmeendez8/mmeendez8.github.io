@@ -1,4 +1,229 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-07-22T11:23:12+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">A Guide to Horizontal Pod Autoscaler</title><link href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html" rel="alternate" type="text/html" title="A Guide to Horizontal Pod Autoscaler" /><published>2024-04-28T00:00:00+00:00</published><updated>2024-04-28T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html"><![CDATA[<p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a> can help anticipate the number of replicas needed.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-09-01T10:23:31+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Understanding MOT Metrics</title><link href="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html" rel="alternate" type="text/html" title="Understanding MOT Metrics" /><published>2024-08-25T00:00:00+00:00</published><updated>2024-08-25T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html"><![CDATA[<p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
+
+<p>In this article, I’ll provide an introduction to tracking metrics, starting from the basic principles and breaking down the key differences between various metrics. I’ll focus on three popular metrics: MOTA, IDF1, and HOTA, which are widely used in the <a href="https://paperswithcode.com/sota/multi-object-tracking-on-mot20-1" target="_blank" rel="noopener noreferrer">Multi-Object Tracking (MOT) community</a>. Understanding these is crucial because the choice of metric can significantly impact how we interpret a tracker’s performance.</p>
+
+<p>Let’s get started!</p>
+
+<h2 id="the-basics">The basics</h2>
+
+<h3 id="hungarian-algorithm">Hungarian algorithm</h3>
+
+<p>The Hungarian algorithm plays a crucial role for tracking metrics, primarily used to:</p>
+
+<ol>
+  <li>Optimize bipartite matching between detections and ground truth objects per frame</li>
+  <li>Assign tracks to ground truth trajectories across the entire sequence</li>
+</ol>
+
+<p>Let’s for now focus on the first point. The algorithm matches predicted tracks to ground truth objects in each frame, maximizing overall IoU scores. This results in:</p>
+
+<ul>
+  <li><strong>TP</strong>: True Positives (matches with IoU above threshold)</li>
+  <li><strong>FP</strong>: False Positives (unmatched predictions)</li>
+  <li><strong>FN</strong>: False Negatives (unmatched ground truth objects)</li>
+</ul>
+
+<p>While a detailed explanation of the algorithm is beyond the scope of this post, understanding its basic function helps in grasping how these metrics work.
+For a more in-depth explanation of the Hungarian algorithm, check out <a href="https://www.thinkautonomous.ai/blog/hungarian-algorithm/" target="_blank" rel="noopener noreferrer">this excellent tutorial</a>.</p>
+
+<h3 id="deta">DetA</h3>
+
+<p>The Detection Accuracy (DetA) measures how well a tracker localizes objects in each frame, typically using Intersection over Union (IoU) thresholds. It essentially quantifies the spatial accuracy of detections.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou-720-056a141c9.png" alt="IoU diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou-400-cf6ad2ee9.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou-720-cf6ad2ee9.webp 720w" sizes="(max-width: 767px) 100vw, 80vw" width="720" height="342" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 1. IoU diagram <a href="https://jonathonluiten.medium.com/how-to-evaluate-tracking-with-the-hota-metrics-754036d183e1" target="_blank" rel="noopener noreferrer">from jonathanluiten</a></em></p>
+
+<p>So once we have the TP, FP, and FN, we can compute the DetA as:</p>
+
+\[\text{DetA} = \frac{\text{TP}}{\text{TP} + \text{FP} + \text{FN}}\]
+
+<h3 id="assa">AssA</h3>
+
+<p>The Association Accuracy (AssA), on the other hand, evaluates how accurately a tracker maintains object identities across frames. It focuses on the temporal consistency of ID assignments, measuring how well the tracker links detections of the same object over time. See, for example, the image below, extracted from HOTA <a href="#references">[1]</a>:</p>
+
+<div class="post-center-image" style="max-width: 300px; margin: 0 auto;">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-800-de2d31800.png" alt="AssA example from HOTA paper" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-400-805303a6a.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-800-805303a6a.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-953-805303a6a.webp 953w" sizes="(max-width: 767px) 100vw, 80vw" width="953" height="870" />
+</a>
+
+</div>
+
+<p class="image-caption"><a id="figure-2"></a>
+<em>Figure 2. Different association results example (from HOTA <a href="#references">[1]</a>)</em></p>
+
+<p>We can observe different tracking results (A, B, C) for a single ground truth object (GT):</p>
+
+<ul>
+  <li><strong>A</strong>: Detects the object 50% of the time with consistent identity</li>
+  <li><strong>B</strong>: Detects the object 70% of the time, but assigns two different identities</li>
+  <li><strong>C</strong>: Detects the object 100% of the time, but assigns up to four different identities</li>
+</ul>
+
+<p>Which result is best? This is what the Association Accuracy (AssA) metric aims to determine. Different tracking metrics like MOTA, IDF1, and HOTA approach this question in various ways, each with its own methodology and emphasis on detection accuracy versus identity consistency.</p>
+
+<h2 id="mota-multiple-object-tracking-accuracy">MOTA (Multiple Object Tracking Accuracy)</h2>
+
+<p>MOTA introduces the concept of identity tracking to object detection metrics. It incorporates identity switches (IDSW), which occur when a single ground truth (GT) object is assigned to different track predictions over time.</p>
+
+<p>The computation of MOTA involves temporal dependency, penalizing track assignment changes between consecutive frames. An IDSW is counted when a GT target $i$ matches track $j$ in the current frame but was matched to a different track $k$ ($k ≠ j$) in the previous frame.</p>
+
+<p>In practice, the Hungarian matching algorithm is modified to minimize identity switches from the previous frame. In <a href="https://github.com/JonathonLuiten/TrackEval/blob/master/trackeval/metrics/clear.py#L81" target="_blank" rel="noopener noreferrer">TrackEval code</a> this is done using a simple gating trick:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score</span> <span class="o">=</span> <span class="nc">IoU</span><span class="p">(</span><span class="n">GT</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">pred</span> <span class="o">==</span> <span class="nf">previous_assigned_id</span><span class="p">(</span><span class="n">GT</span><span class="p">):</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">*</span> <span class="mi">1000</span>
+</code></pre></div></div>
+
+<p>The MOTA metric is computed across all frames as:</p>
+
+\[\text{MOTA} = 1 - \frac{\sum_t (FN_t + FP_t + IDSW_t)}{\sum_t GT_t}\]
+
+<p>Where $t$ is the frame index, FN are False Negatives, FP are False Positives, IDSW are Identity Switches, and GT is the number of ground truth objects.</p>
+
+<p>While MOTA’s simplicity is appealing, it has some limitations:</p>
+
+<ol>
+  <li>It only considers the <strong>previous frame</strong> for IDSW, so each switch is penalized <strong>only once</strong>, regardless of how long the incorrect assignment persists.</li>
+  <li>It can be <strong>dominated by FP and FN</strong> in crowded scenes, making IDSW less impactful.</li>
+  <li><strong>IoU threshold is fixed</strong> so more or less detection accuracy is not reflected on the metric</li>
+</ol>
+
+<h2 id="idf1">IDF1</h2>
+
+<p>IDF1 addresses some of MOTA’s limitations by focusing on how long the tracker correctly identifies an object, rather than just counting errors. It’s based on the concept of Identification Precision (IDP) and Identification Recall (IDR).</p>
+
+<p>It computes the assignment between prediction and ground truth objects across the entire video, rather than frame by frame.</p>
+
+<p>The metric is simple:</p>
+
+\[\text{IDF1} = \frac{2 * \text{IDTP}}{2 * \text{IDTP} + \text{IDFP} + \text{IDFN}}\]
+
+<p>Where:</p>
+
+<ul>
+  <li><strong>IDTP</strong> (ID True Positive): The number of correctly identified detections</li>
+  <li><strong>IDFP</strong> (ID False Positive): Tracker predictions that don’t match any ground truth</li>
+  <li><strong>IDFN</strong> (ID False Negative): Ground truth trajectories that aren’t tracked</li>
+</ul>
+
+<p>The global assignment is computed using the Hungarian algorithm. It picks the best combination between prediction and ground truth that maximizes IDF1 for the whole video. It is easier to understand this by observing the image introduced in HOTA paper:</p>
+
+<div class="post-center-image" style="max-width: 800px; margin: 0 auto;">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-800-cacd2088c.png" alt="IDF1 metric diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-400-e8f603c7d.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-800-e8f603c7d.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-1109-e8f603c7d.webp 1109w" sizes="(max-width: 767px) 100vw, 80vw" width="1109" height="664" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 3. IDF1 metric diagram</em></p>
+
+<p>The main problem I see with IDF1 is finding the best one-to-one matching between predicted and ground truth trajectories for the entire sequence since it can oversimplify complex tracking scenarios:</p>
+
+<p>Imagine a corner kick in football. A tracker might correctly follow Player A running into the box, lose them in a cluster, and then mistakenly pick up Player B after the ball is cleared. IDF1 might treat this as one partially correct track for either Player A or B, ignoring that it’s correct for different players at different times.</p>
+
+<p>This simplification can misrepresent a tracker’s performance in complex situations like crowded football plays, where player interactions and occlusions are frequent.</p>
+
+<p>Key advantages of IDF1:</p>
+
+<ol>
+  <li>It’s more sensitive to <strong>long-term tracking consistency</strong>.</li>
+  <li>It balances <strong>precision and recall</strong> of identity predictions.</li>
+  <li>It’s less affected by the number of objects in the scene than MOTA.</li>
+</ol>
+
+<p>However, IDF1 also has limitations:</p>
+
+<ol>
+  <li><strong>IDF1 can decrease when improving detection</strong>. Just avoiding FP can result in a better metric (A vs C in <a href="#figure-2">Figure 2</a>)</li>
+  <li><strong>IoU threshold is fixed</strong> so more or less detection accuracy is not reflected on the metric</li>
+</ol>
+
+<p>More limitations are presented in the HOTA paper. I recommend you to have a read because it is very well explained and intuitive.</p>
+
+<h2 id="hota-higher-order-tracking-accuracy">HOTA (Higher Order Tracking Accuracy)</h2>
+
+<p>HOTA is a more recent metric designed to address the limitations of both MOTA and IDF1. It aims to provide a balanced assessment of detection and association performance. HOTA can be broken down into DetA (Detection Accuracy) and AssA (Association Accuracy), allowing separate analyses of these aspects.</p>
+
+<p>The core HOTA formula is:</p>
+
+\[\text{HOTA}_{\alpha} = \sqrt{\text{DetA}_{\alpha} \cdot \text{AssA}_{\alpha}}\]
+
+<p>In this formula, the $\alpha$ term represents the different Intersection over Union (IoU) thresholds used to compute the metric. A True Positive (TP) is only considered when the match IoU score is above the given $\alpha$ threshold. The metric uses 19 different $\alpha$ values, ranging from 0.05 to 0.95 in increments of 0.05.</p>
+
+<p>HOTA uses global alignment (high-order association) between predicted and ground truth detections, similar to IDF1, but also incorporates localization accuracy. This means that HOTA evaluates both the ability to detect objects accurately and to maintain correct associations over time.</p>
+
+<p>The HOTA algorithm can be summarized in the following steps:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">each</span> <span class="n">frame</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">each</span> <span class="n">α</span><span class="p">:</span>
+        <span class="n">matching</span> <span class="n">between</span> <span class="n">gt</span> <span class="ow">and</span> <span class="nf">preds </span><span class="p">(</span><span class="n">Hungarian</span> <span class="n">algorithm</span><span class="p">)</span>
+        <span class="n">obtain</span> <span class="n">TP</span><span class="p">,</span> <span class="n">FP</span> <span class="ow">and</span> <span class="n">FN</span> <span class="k">from</span> <span class="n">previous</span> <span class="n">matching</span>
+        <span class="n">compute</span> <span class="n">AssA</span> <span class="n">across</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">video</span> <span class="k">for</span> <span class="n">each</span> <span class="n">TP</span><span class="p">.</span>
+</code></pre></div></div>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-800-4a2b59f98.jpg" alt="HOTA metric diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-400-86dc5e9da.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-800-86dc5e9da.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-1384-86dc5e9da.webp 1384w" sizes="(max-width: 767px) 100vw, 80vw" width="1384" height="722" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 4. HOTA metric diagram</em></p>
+
+<p>In the original paper, Ass-IoU is referred to as the metric obtained by computing DetA across the entire sequence for a single true positive (TP) match in the current frame. The AssA metric can then be defined as follows:</p>
+
+\[\text{AssA} = \frac{1}{|\text{TP}|} \sum_{c \in \text{TP}} \text{Ass-IoU}(c)\]
+
+<p>HOTA drawbacks:</p>
+
+<ul>
+  <li><strong>Not Ideal for Online Tracking</strong>: HOTA’s association score depends on future associations across the entire video, making it less suitable for evaluating online tracking where future data isn’t available.</li>
+  <li><strong>Doesn’t Account for Fragmentation</strong>: HOTA does not penalize fragmented tracking results, as it is designed to focus on long-term global tracking, which may not align with all application needs.</li>
+</ul>
+
+<p>If you want to learn more about HOTA, I recommend reading the blog post by <a href="https://jonathonluiten.medium.com/how-to-evaluate-tracking-with-the-hota-metrics-754036d183e1" target="_blank" rel="noopener noreferrer">Jonathon Luiten</a>. He is one of the authors of the HOTA paper, and his post is an excellent resource for learning how to use the metric to compare different trackers.</p>
+
+<h2 id="how-do-these-metrics-compare-to-each-other">How do these metrics compare to each other?</h2>
+
+<p>We have examined how MOTA, IDF1, and HOTA function. Each metric has its own strengths and limitations. While HOTA is generally recommended for most applications, the choice of metric ultimately depends on your specific tracking scenario. The HOTA paper provides an excellent comparison that effectively captures the differences between these metrics:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-800-b92eaeabf.png" alt="Metric comparison" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-400-66584ffac.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-800-66584ffac.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-1172-66584ffac.webp 1172w" sizes="(max-width: 767px) 100vw, 80vw" width="1172" height="556" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 5. Metric comparison</em></p>
+
+<p>Having already introduced the left side of the image, let’s now focus on the right side, which displays metrics for each tracker output. The leftmost metric, DetA, exclusively evaluates detection quality. It yields the best results when the tracker accurately detects objects, regardless of their track ID.
+On the opposite end, we have AssA (derived from the HOTA definition). This metric prioritizes track ID consistency, which is why output A performs best in this category.
+The authors demonstrate how HOTA positions itself in the middle, striking a balance between detection quality and association accuracy.</p>
+
+<p>The most suitable metric depends on your specific application. For instance:</p>
+<ol>
+  <li>If you’re developing a simple camera system to count people in a room, you might prioritize detection quality (DetA).</li>
+  <li>In a criminal tracking system where maintaining consistent track IDs is crucial, you should focus on AssA.</li>
+  <li>For most applications, such as sports tracking systems, you’ll need to balance both aspects. In these scenarios, HOTA emerges as the optimal choice, providing a comprehensive evaluation of tracker performance.</li>
+</ol>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post, we’ve explored three key metrics used in Multi-Object Tracking: MOTA, IDF1, and HOTA. Each metric offers unique insights into tracking performance, with its own strengths and limitations. MOTA provides a straightforward measure but may be oversimplistic in complex scenarios. IDF1 focuses on long-term consistency but may not fully capture detection improvements. HOTA, which attempts to balance detection and association accuracy, has emerged as the standard metric used today for benchmarking tracking algorithms.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>[<a href="https://arxiv.org/pdf/1603.00831" target="_blank" rel="noopener noreferrer">1</a>] Milan, A., Leal-Taixé, L., Reid, I., Roth, S., &amp; Schindler, K. (2016). MOT16: A benchmark for multi-object tracking. arXiv preprint arXiv:1603.00831.</li>
+  <li>[<a href="https://arxiv.org/pdf/1609.01775" target="_blank" rel="noopener noreferrer">2</a>] Ristani, E., Solera, F., Zou, R., Cucchiara, R., &amp; Tomasi, C. (2016, October). Performance measures and a data set for multi-target, multi-camera tracking. In European conference on computer vision (pp. 17-35). Cham: Springer International Publishing.</li>
+  <li>[<a href="https://arxiv.org/pdf/2009.07736" target="_blank" rel="noopener noreferrer">3</a>] Luiten, J., Osep, A., Dendorfer, P., Torr, P., Geiger, A., Leal-Taixé, L., &amp; Leibe, B. (2021). Hota: A higher order metric for evaluating multi-object tracking. International journal of computer vision, 129, 548-578.</li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Explore the essential metrics in Multi-Object Tracking (MOT) with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A Guide to Horizontal Pod Autoscaler</title><link href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html" rel="alternate" type="text/html" title="A Guide to Horizontal Pod Autoscaler" /><published>2024-04-28T00:00:00+00:00</published><updated>2024-04-28T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html"><![CDATA[<p>A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I’ll discuss the issues I encountered with HPA and demonstrate how a simple <a href="#visualization-tool">visualization tool</a> can help anticipate the number of replicas needed.</p>
 
 <h2 id="what-is-hpa">What is HPA?</h2>
 
@@ -492,14 +717,14 @@
 <h2 id="references">References</h2>
 
 <ul>
-  <li>[<a href="https://arxiv.org/pdf/1905.04804.pdf">1</a>] Yang, L., Fan, Y., &amp; Xu, N. (2019). Video instance segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp. 5188-5197).</li>
-  <li>[<a href="https://arxiv.org/pdf/2011.14503.pdf">2</a>] Wang, Y., Xu, Z., Wang, X., Shen, C., Cheng, B., Shen, H., &amp; Xia, H. (2021). End-to-end video instance segmentation with transformers. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 8741-8750).</li>
-  <li>[<a href="https://arxiv.org/pdf/2005.12872.pdf">3</a>] Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., &amp; Zagoruyko, S. (2020, August). End-to-end object detection with transformers. In European conference on computer vision (pp. 213-229). Cham: Springer International Publishing.</li>
-  <li>[<a href="https://arxiv.org/pdf/2106.03299.pdf">4</a>] Hwang, S., Heo, M., Oh, S. W., &amp; Kim, S. J. (2021). Video instance segmentation using inter-frame communication transformers. Advances in Neural Information Processing Systems, 34, 13352-13363.</li>
-  <li>[<a href="https://arxiv.org/abs/2204.08412">5</a>] Yang, S., Wang, X., Li, Y., Fang, Y., Fang, J., Liu, W., … &amp; Shan, Y. (2022). Temporally efficient vision transformer for video instance segmentation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 2885-2895).</li>
-  <li>[<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Wang_Pyramid_Vision_Transformer_A_Versatile_Backbone_for_Dense_Prediction_Without_ICCV_2021_paper.pdf">6</a>] Wang, W., Xie, E., Li, X., Fan, D. P., Song, K., Liang, D., … &amp; Shao, L. (2021). Pyramid vision transformer: A versatile backbone for dense prediction without convolutions. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 568-578).</li>
-  <li>[<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Fang_Instances_As_Queries_ICCV_2021_paper.pdf">7</a>] Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., … &amp; Liu, W. (2021). Instances as queries. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6910-6919).</li>
-  <li>[<a href="https://arxiv.org/pdf/1912.03458.pdf">8</a>] Chen, Y., Dai, X., Liu, M., Chen, D., Yuan, L., &amp; Liu, Z. (2020). Dynamic convolution: Attention over convolution kernels. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 11030-11039).</li>
+  <li>[<a href="https://arxiv.org/pdf/1905.04804.pdf" target="_blank" rel="noopener noreferrer">1</a>] Yang, L., Fan, Y., &amp; Xu, N. (2019). Video instance segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp. 5188-5197).</li>
+  <li>[<a href="https://arxiv.org/pdf/2011.14503.pdf" target="_blank" rel="noopener noreferrer">2</a>] Wang, Y., Xu, Z., Wang, X., Shen, C., Cheng, B., Shen, H., &amp; Xia, H. (2021). End-to-end video instance segmentation with transformers. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 8741-8750).</li>
+  <li>[<a href="https://arxiv.org/pdf/2005.12872.pdf" target="_blank" rel="noopener noreferrer">3</a>] Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., &amp; Zagoruyko, S. (2020, August). End-to-end object detection with transformers. In European conference on computer vision (pp. 213-229). Cham: Springer International Publishing.</li>
+  <li>[<a href="https://arxiv.org/pdf/2106.03299.pdf" target="_blank" rel="noopener noreferrer">4</a>] Hwang, S., Heo, M., Oh, S. W., &amp; Kim, S. J. (2021). Video instance segmentation using inter-frame communication transformers. Advances in Neural Information Processing Systems, 34, 13352-13363.</li>
+  <li>[<a href="https://arxiv.org/abs/2204.08412" target="_blank" rel="noopener noreferrer">5</a>] Yang, S., Wang, X., Li, Y., Fang, Y., Fang, J., Liu, W., … &amp; Shan, Y. (2022). Temporally efficient vision transformer for video instance segmentation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 2885-2895).</li>
+  <li>[<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Wang_Pyramid_Vision_Transformer_A_Versatile_Backbone_for_Dense_Prediction_Without_ICCV_2021_paper.pdf" target="_blank" rel="noopener noreferrer">6</a>] Wang, W., Xie, E., Li, X., Fan, D. P., Song, K., Liang, D., … &amp; Shao, L. (2021). Pyramid vision transformer: A versatile backbone for dense prediction without convolutions. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 568-578).</li>
+  <li>[<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Fang_Instances_As_Queries_ICCV_2021_paper.pdf" target="_blank" rel="noopener noreferrer">7</a>] Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., … &amp; Liu, W. (2021). Instances as queries. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6910-6919).</li>
+  <li>[<a href="https://arxiv.org/pdf/1912.03458.pdf" target="_blank" rel="noopener noreferrer">8</a>] Chen, Y., Dai, X., Liu, M., Chen, D., Yuan, L., &amp; Liu, Z. (2020). Dynamic convolution: Attention over convolution kernels. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 11030-11039).</li>
 </ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Building an Efficient Docker Image with Poetry and PyTorch</title><link href="https://miguel-mendez-ai.com/2024/03/12/poetry-torch-docker.html" rel="alternate" type="text/html" title="Building an Efficient Docker Image with Poetry and PyTorch" /><published>2024-03-12T00:00:00+00:00</published><updated>2024-03-12T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/03/12/poetry-torch-docker</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/03/12/poetry-torch-docker.html"><![CDATA[<p>The goal of this post is straightforward: to guide you through the creation of a Docker image equipped with Poetry for dependency management and Torch for running deep learning models, specifically utilizing Python 3.11. While the task may seem simple at first glance, it involves several tricks that I believe can be very useful to share. This guide will utilize Docker Buildx, a powerful feature that might be unfamiliar to some, yet it is enabled by default in newer Docker releases.</p>
 
 <h2 id="docker-ubuntu-and-python-311">Docker, Ubuntu, and Python 3.11</h2>
@@ -1315,6 +1540,8 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 <p>The intention of this blog is to keep myself updated with the bibliography of tracking by detection methods. My intention is to regularly update this blog with new information and resources I find interesting.
 I have included the SORT and DeepSORT papers in the list, despite being older methods, as they laid the groundwork for many of the techniques covered here.</p>
 
+<p>If you want to understand HOTA metric, I recommend you to read my other post about <a href="/2024/08/25/mot-tracking-metrics.html">tracking metrics</a></p>
+
 <h2 id="sort">SORT</h2>
 
 <p>It is a very good and simple work from 2016 that quickly became a standard in the field. The author’s main goal was to create the fastest possible tracker relying on the quality of the object detector predictions. Appearance features of the objects are not used; the system relies solely on bounding box position and size.</p>
@@ -1469,12 +1696,12 @@ There is camera motion correction in the code but not in the paper!!!!
 <h2 id="references">References</h2>
 
 <ul>
-  <li>[<a href="https://arxiv.org/pdf/1602.00763.pdf">1</a>] Bewley, A., Ge, Z., Ott, L., Ramos, F., &amp; Upcroft, B. (2016, September). Simple online and realtime tracking. In 2016 IEEE international conference on image processing (ICIP) (pp. 3464-3468). IEEE.</li>
-  <li>[<a href="https://arxiv.org/pdf/1703.07402.pdf">2</a>] Wojke, N., Bewley, A., &amp; Paulus, D. (2017, September). Simple online and realtime tracking with a deep association metric. In 2017 IEEE international conference on image processing (ICIP) (pp. 3645-3649). IEEE.</li>
-  <li>[<a href="https://arxiv.org/pdf/2110.06864.pdf">3</a>] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., … &amp; Wang, X. (2022, October). Bytetrack: Multi-object tracking by associating every detection box. In European Conference on Computer Vision (pp. 1-21). Cham: Springer Nature Switzerland.</li>
-  <li>[<a href="https://arxiv.org/pdf/2206.14651.pdf">4</a>] Aharon, N., Orfaig, R., &amp; Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.</li>
-  <li>[<a href="https://arxiv.org/pdf/2211.08824.pdf">5</a>] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.</li>
-</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Creating Better Data: AI &amp;amp; Homography Estimation</title><link href="https://miguel-mendez-ai.com/2023/09/22/homography-estimation.html" rel="alternate" type="text/html" title="Creating Better Data: AI &amp;amp; Homography Estimation" /><published>2023-09-22T00:00:00+00:00</published><updated>2023-09-22T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/09/22/homography-estimation</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/09/22/homography-estimation.html"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Image Transmission for Computer Vision: A Comparison of Torchserve’s REST and gRPC</title><link href="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc.html" rel="alternate" type="text/html" title="Image Transmission for Computer Vision: A Comparison of Torchserve’s REST and gRPC" /><published>2023-02-24T00:00:00+00:00</published><updated>2023-02-24T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc.html"><![CDATA[<p>Special thanks to <a href="https://www.linkedin.com/in/jguzmanfd/">Javier Guzman</a> for working with me in completing the benchmarking discussed in this post.</p>
+  <li>[<a href="https://arxiv.org/pdf/1602.00763.pdf" target="_blank" rel="noopener noreferrer">1</a>] Bewley, A., Ge, Z., Ott, L., Ramos, F., &amp; Upcroft, B. (2016, September). Simple online and realtime tracking. In 2016 IEEE international conference on image processing (ICIP) (pp. 3464-3468). IEEE.</li>
+  <li>[<a href="https://arxiv.org/pdf/1703.07402.pdf" target="_blank" rel="noopener noreferrer">2</a>] Wojke, N., Bewley, A., &amp; Paulus, D. (2017, September). Simple online and realtime tracking with a deep association metric. In 2017 IEEE international conference on image processing (ICIP) (pp. 3645-3649). IEEE.</li>
+  <li>[<a href="https://arxiv.org/pdf/2110.06864.pdf" target="_blank" rel="noopener noreferrer">3</a>] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., … &amp; Wang, X. (2022, October). Bytetrack: Multi-object tracking by associating every detection box. In European Conference on Computer Vision (pp. 1-21). Cham: Springer Nature Switzerland.</li>
+  <li>[<a href="https://arxiv.org/pdf/2206.14651.pdf" target="_blank" rel="noopener noreferrer">4</a>] Aharon, N., Orfaig, R., &amp; Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.</li>
+  <li>[<a href="https://arxiv.org/pdf/2211.08824.pdf" target="_blank" rel="noopener noreferrer">5</a>] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.</li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Creating Better Data: AI &amp;amp; Homography Estimation</title><link href="https://miguel-mendez-ai.com/2023/09/22/homography-estimation.html" rel="alternate" type="text/html" title="Creating Better Data: AI &amp;amp; Homography Estimation" /><published>2023-09-22T00:00:00+00:00</published><updated>2023-09-22T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/09/22/homography-estimation</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/09/22/homography-estimation.html"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Image Transmission for Computer Vision: A Comparison of Torchserve’s REST and gRPC</title><link href="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc.html" rel="alternate" type="text/html" title="Image Transmission for Computer Vision: A Comparison of Torchserve’s REST and gRPC" /><published>2023-02-24T00:00:00+00:00</published><updated>2023-02-24T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc.html"><![CDATA[<p>Special thanks to <a href="https://www.linkedin.com/in/jguzmanfd/" target="_blank" rel="noopener noreferrer">Javier Guzman</a> for working with me in completing the benchmarking discussed in this post.</p>
 
 <p>In the past few weeks, we have been exploring the potential advantages of adopting gRPC to enhance the performance of our services. Although I have conducted extensive research on this topic, I have not been able to find relevant information that specifically addresses our use case, which involves transmitting images to a model server and receiving a response in the most efficient manner. While there are numerous benchmarks that demonstrate significant performance improvements when migrating from REST to gRPC using structured data, it has been challenging to locate a similar benchmark for image transmission… And that is the main reason behind this post!</p>
 
@@ -1684,7 +1911,7 @@ The gRPC server has been implemented using <a href="https://grpc.io/docs/languag
 
 <h2 id="torchserve-benchmark">Torchserve benchmark</h2>
 
-<p>I have been using <a href="https://pytorch.org/serve/">TorchServe</a> for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things such as batching and queing requests. 
+<p>I have been using <a href="https://pytorch.org/serve/" target="_blank" rel="noopener noreferrer">TorchServe</a> for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things such as batching and queing requests. 
 I do not intend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers, I will leave that for a plausible future post.</p>
 
 <p>The documentation for Torchserve’s <a href="https://pytorch.org/serve/grpc_api.html" target="_blank" rel="noopener noreferrer">gRPC API</a> could be improved, as it currently requires users to download the official repository to generate a Python gRPC client stub from the proto files. However, I have attached these files to the repository, so you can easily run the benchmark without having to worry about this step.</p>
@@ -1994,142 +2221,4 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
   <li>[4] Khan, S., Naseer, M., Hayat, M., Zamir, S. W., Khan, F. S., &amp; Shah, M. (2021). Transformers in vision: A survey. arXiv preprint arXiv:2101.01169.</li>
 </ul>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Using Ansible and Python to monitor my servers</title><link href="https://miguel-mendez-ai.com/2021/09/23/ansible-conda.html" rel="alternate" type="text/html" title="Using Ansible and Python to monitor my servers" /><published>2021-09-23T00:00:00+00:00</published><updated>2021-09-23T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2021/09/23/ansible-conda</id><content type="html" xml:base="https://miguel-mendez-ai.com/2021/09/23/ansible-conda.html"><![CDATA[<p>I have been in charge of my team’s computational servers for about a year. I am far from being an expert in this field and most of the things I know are related to having been using Linux for so many years. I needed to automate some things that were wasting me a lot of time, so I decided that instead of learning and configuring a new monitoring tool, I would use this opportunity to create my own. This may not be the best decision for you, but in my case I had a clear vision of what I needed and the amount of work it would take to do it (and I also wanted to play a little bit with all this stuff).</p>
-
-<p>Anyway, the best advice I can give and the one I learned by heart is: when it comes to a shared infrastructure, better make sure you test everything thoroughly before touching things there or you will end up with a high rate of mail blaming you.</p>
-
-<h2 id="why-ansible">Why Ansible?</h2>
-
-<p>Well, Ansible’s moto is: Ansible is Simple IT Automation. That’s what I was looking for and after checking their documentations I realized that I wouldn’t need much more than 15 minutes to set it up and that’s pretty awesome. I read a few posts such <a href="https://mtyurt.net/post/2020/good-bad-parts-of-ansible-after-two-years.html" target="_blank" rel="noopener noreferrer">this one</a> that basically supported all my initial intuitions. I was also influenced by some of my devops friends who used to say good thing about it. Summarizing:</p>
-
-<h3 id="advantages">Advantages</h3>
-
-<ul>
-  <li>Open source</li>
-  <li>Written in Python!</li>
-  <li>YAML based = Low barrier of entry</li>
-  <li>Agentless = You don’t need to install any other software on the client systems (this is super)</li>
-  <li>Many integrated modules (it hardly takes time to automate classic operations such as user creation, database operations …)</li>
-</ul>
-
-<h3 id="drawbacks">Drawbacks</h3>
-
-<p>In fact, I still didn’t find any drawbacks, although I did seek other people’s opinion, but things like lack of user interface or lack of Windows support don’t really matter to me.</p>
-
-<h2 id="my-python-monitoring-library">My Python monitoring library</h2>
-
-<p>My idea was to create a simple python library that could execute commands and communicate with our internal messaging application <a href="https://rocket.chat/" target="_blank" rel="noopener noreferrer">Rocket.chat</a>. In this way, you could receive private messages when something does not work as expected and also automate tasks such as sending welcome messages on user creation, cleaning system caches, updating packages…</p>
-
-<p>Since we use conda in all our servers, the intention was to automatically create a new environment to install there my monitoring application and all its dependencies. I cannot share this application but it is quite a simple thing, I followed a <a href="https://charlesreid1.github.io/python-patterns-the-registry.html" target="_blank" rel="noopener noreferrer">register pattern</a> since I wanted to be able to sequentially add new functionalities that could get automatically registered in my application. I recommend you to use the <a href="https://github.com/explosion/catalogue" target="_blank" rel="noopener noreferrer">catalogue</a> library from explosion guys. The provide a super simple way to register your functions or classes using a decorator. What I did was to use my library main’s <code class="language-plaintext highlighter-rouge">__init__.py</code> file to declare the register:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">catalogue</span>
-
-<span class="n">SERVICES</span> <span class="o">=</span> <span class="n">catalogue</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="sh">"</span><span class="s">my_services_app</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">services</span><span class="sh">"</span><span class="p">)</span>
-
-</code></pre></div></div>
-
-<p>And the simply register my ‘services’ with:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
-<span class="kn">from</span> <span class="n">my_services_app.services.base</span> <span class="kn">import</span> <span class="n">ServerStatus</span>
-
-
-<span class="nd">@SERVICES.register</span><span class="p">(</span><span class="sh">"</span><span class="s">PingService</span><span class="sh">"</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">PingService</span><span class="p">(</span><span class="n">BaseService</span><span class="p">):</span>
-    <span class="bp">...</span>
-</code></pre></div></div>
-
-<p>That’s all, you now would be able to instantiate your <code class="language-plaintext highlighter-rouge">PingService</code> by:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">my_services_app</span> <span class="kn">import</span> <span class="n">SERVICES</span>
-<span class="n">service</span> <span class="o">=</span> <span class="n">SERVICES</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">PingService</span><span class="sh">"</span><span class="p">)()</span>
-</code></pre></div></div>
-
-<p>So simple and so powerful! Also note that I have created a <code class="language-plaintext highlighter-rouge">BaseService</code> class, which basically has all the necessary funcionality to send messages to Rocket.chat.</p>
-
-<h2 id="conda--ansible">Conda &amp; Ansible</h2>
-
-<p>I created a super simple playbook that helps to clone the latest version of my code from Github, create a new conda environment if does not exists, install my Python monitoring library and also set up some of those services as cron jobs!</p>
-
-<p>But first we need to create a Github Personal Access Token (PAT) to let ansible to login and clone the source code. You can check the official documentation <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" target="_blank" rel="noopener noreferrer">here</a>. Once we have our token we can encrypt it with ansible add an extra security layer to our deployment. You can simply do something like:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"gh_tokeen: [YOUR-TOKEN]"</span> <span class="o">&gt;</span> gh_token.enc
-ansible-vault encrypt gh_token.enc
-</code></pre></div></div>
-
-<p>You should now have a <code class="language-plaintext highlighter-rouge">gh_token.enc</code> encrypted file and Ansible will be in charge of asking you for the password when running the playbook so it can decrypt it. Note that this is very handy since you can place encrypted content under source control and share it more safely.</p>
-
-<p>Let’s now create our Ansible playbook to deploy our monitoring library and also deploy one of our services as a cron tass than runs once hourly:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="nn">---</span>
-<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Create remote services</span>
-  <span class="na">hosts</span><span class="pi">:</span> <span class="s">all</span>
-  <span class="na">vars</span><span class="pi">:</span>
-    <span class="na">conda_path</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">Conda installation path</span><span class="pi">]</span>
-    <span class="na">conda_env</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">Conda environment name</span><span class="pi">]</span>
-    <span class="na">repo_path</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">Path where clone the repo</span><span class="pi">]</span>
-
-  <span class="na">tasks</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Clone and update repo</span>
-    <span class="na">git</span><span class="pi">:</span>
-      <span class="na">repo</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://@github.com/mmeendez8/myrepo.git"</span>
-      <span class="na">dest</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
-      <span class="na">clone</span><span class="pi">:</span> <span class="s">yes</span>
-      <span class="na">update</span><span class="pi">:</span> <span class="s">yes</span>
-  
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check conda environment exists</span>
-    <span class="na">command</span><span class="pi">:</span>
-      <span class="na">cmd</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/bin/activate</span><span class="nv"> </span><span class="s">"</span>
-    <span class="na">register</span><span class="pi">:</span> <span class="s">env_output</span>
-    <span class="na">ignore_errors</span><span class="pi">:</span> <span class="s">True</span>
-
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install conda environment if not exists</span>
-    <span class="na">command</span><span class="pi">:</span> 
-      <span class="na">cmd</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/bin/conda</span><span class="nv"> </span><span class="s">env</span><span class="nv"> </span><span class="s">create</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">/conda.yaml"</span>
-    <span class="na">when</span><span class="pi">:</span> <span class="s">env_output.failed == True</span>
-  
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install server_status package</span>
-    <span class="na">shell</span><span class="pi">:</span> 
-      <span class="na">cmd</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/envs//bin</span><span class="nv"> </span><span class="s">setup.py</span><span class="nv"> </span><span class="s">install"</span>
-      <span class="na">chdir</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
-
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check status</span>
-    <span class="na">ansible.builtin.cron</span><span class="pi">:</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">My</span><span class="nv"> </span><span class="s">Ping</span><span class="nv"> </span><span class="s">Service"</span>
-    <span class="na">special_time</span><span class="pi">:</span> <span class="s">hourly</span>
-    <span class="na">job</span><span class="pi">:</span> <span class="pi">&gt;</span>
-        <span class="s">/envs//bin/server_status --service_name=PingService</span>
-</code></pre></div></div>
-
-<p>This code is basically plain english! There are a few things we can highlight. First, see how we use `` variable inside the github repository url. We need to tell Ansible that this variable is inside our encrypted file so we should run our playbook with:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook create_services.yml <span class="nt">-e</span> @gh_token.enc <span class="nt">--ask-vault-pass</span>
-</code></pre></div></div>
-
-<p>Also see how the ‘check conda environmet’ task registers in a variable the return of activate command so the conda installation task runs only when the environment does not exist.
-You can execute this playbook as many times as you want since Ansible is pretty smart and will not create new cron tasks, it will identify this one was already created and update its values if necessary!</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>There is a very simple way to create and deploy Python code on your computational servers without spending effort and time in complex configurations. We have learned to:</p>
-
-<ul>
-  <li>
-    <p>Setup Ansible to deploy our library in all our servers</p>
-  </li>
-  <li>
-    <p>Use conda to encapsulate our library dependencies</p>
-  </li>
-  <li>
-    <p>Add a pattern registry to dinamically add modules to our Python library</p>
-  </li>
-  <li>
-    <p>Hide our secrets with Ansible built-in encription</p>
-  </li>
-  <li>
-    <p>Set cron jobs that will run automatically</p>
-  </li>
-</ul>
-
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[The best way for monitoring your server is through your own code,]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

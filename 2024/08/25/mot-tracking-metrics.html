@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+  <title>Miguel Méndez | Understanding MOT Metrics</title>
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  <meta name="robots" content="max-image-preview:large">
+  
+  
+  <meta name="description" property="og:description" content="Explore the essential metrics in Multi-Object Tracking (MOT) with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking.">
+  
+
+  
+  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg">
+  
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2"" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Understanding MOT Metrics">
+  
+  
+  <meta name="twitter:description" content="Explore the essential metrics in Multi-Object Tracking (MOT) with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+</head>
+
+<body>
+
+  <header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">August 25, 2024 </span>
+      <h1 class="the-post-title">Understanding MOT Metrics</h1>
+      <p>Comparing MOTA, IDF1, and HOTA for Multi-Object Tracking Evaluation</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-800-457596ed5.jpg" alt="Understanding MOT Metrics" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-400-2b1bacdc6.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-800-2b1bacdc6.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-1500-2b1bacdc6.webp 1500w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-2000-2b1bacdc6.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="3765" height="2448">
+
+  </div>
+</div>
+
+<div class="share-button">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
+    data-size="large" , data-text="Understanding MOT Metrics" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html">
+  </a>
+</div>
+
+<div class="container the-post-content">
+
+  <p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
+
+<p>In this article, I’ll provide an introduction to tracking metrics, starting from the basic principles and breaking down the key differences between various metrics. I’ll focus on three popular metrics: MOTA, IDF1, and HOTA, which are widely used in the <a href="https://paperswithcode.com/sota/multi-object-tracking-on-mot20-1" target="_blank" rel="noopener noreferrer">Multi-Object Tracking (MOT) community</a>. Understanding these is crucial because the choice of metric can significantly impact how we interpret a tracker’s performance.</p>
+
+<p>Let’s get started!</p>
+
+<h2 id="the-basics">The basics</h2>
+
+<h3 id="hungarian-algorithm">Hungarian algorithm</h3>
+
+<p>The Hungarian algorithm plays a crucial role for tracking metrics, primarily used to:</p>
+
+<ol>
+  <li>Optimize bipartite matching between detections and ground truth objects per frame</li>
+  <li>Assign tracks to ground truth trajectories across the entire sequence</li>
+</ol>
+
+<p>Let’s for now focus on the first point. The algorithm matches predicted tracks to ground truth objects in each frame, maximizing overall IoU scores. This results in:</p>
+
+<ul>
+  <li><strong>TP</strong>: True Positives (matches with IoU above threshold)</li>
+  <li><strong>FP</strong>: False Positives (unmatched predictions)</li>
+  <li><strong>FN</strong>: False Negatives (unmatched ground truth objects)</li>
+</ul>
+
+<p>While a detailed explanation of the algorithm is beyond the scope of this post, understanding its basic function helps in grasping how these metrics work.
+For a more in-depth explanation of the Hungarian algorithm, check out <a href="https://www.thinkautonomous.ai/blog/hungarian-algorithm/" target="_blank" rel="noopener noreferrer">this excellent tutorial</a>.</p>
+
+<h3 id="deta">DetA</h3>
+
+<p>The Detection Accuracy (DetA) measures how well a tracker localizes objects in each frame, typically using Intersection over Union (IoU) thresholds. It essentially quantifies the spatial accuracy of detections.</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou-720-056a141c9.png" alt="IoU diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou-400-cf6ad2ee9.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/iou-720-cf6ad2ee9.webp 720w" sizes="(max-width: 767px) 100vw, 80vw" width="720" height="342" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 1. IoU diagram <a href="https://jonathonluiten.medium.com/how-to-evaluate-tracking-with-the-hota-metrics-754036d183e1" target="_blank" rel="noopener noreferrer">from jonathanluiten</a></em></p>
+
+<p>So once we have the TP, FP, and FN, we can compute the DetA as:</p>
+
+\[\text{DetA} = \frac{\text{TP}}{\text{TP} + \text{FP} + \text{FN}}\]
+
+<h3 id="assa">AssA</h3>
+
+<p>The Association Accuracy (AssA), on the other hand, evaluates how accurately a tracker maintains object identities across frames. It focuses on the temporal consistency of ID assignments, measuring how well the tracker links detections of the same object over time. See, for example, the image below, extracted from HOTA <a href="#references">[1]</a>:</p>
+
+<div class="post-center-image" style="max-width: 300px; margin: 0 auto;">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-800-de2d31800.png" alt="AssA example from HOTA paper" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-400-805303a6a.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-800-805303a6a.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example-953-805303a6a.webp 953w" sizes="(max-width: 767px) 100vw, 80vw" width="953" height="870" />
+</a>
+
+</div>
+
+<p class="image-caption"><a id="figure-2"></a>
+<em>Figure 2. Different association results example (from HOTA <a href="#references">[1]</a>)</em></p>
+
+<p>We can observe different tracking results (A, B, C) for a single ground truth object (GT):</p>
+
+<ul>
+  <li><strong>A</strong>: Detects the object 50% of the time with consistent identity</li>
+  <li><strong>B</strong>: Detects the object 70% of the time, but assigns two different identities</li>
+  <li><strong>C</strong>: Detects the object 100% of the time, but assigns up to four different identities</li>
+</ul>
+
+<p>Which result is best? This is what the Association Accuracy (AssA) metric aims to determine. Different tracking metrics like MOTA, IDF1, and HOTA approach this question in various ways, each with its own methodology and emphasis on detection accuracy versus identity consistency.</p>
+
+<h2 id="mota-multiple-object-tracking-accuracy">MOTA (Multiple Object Tracking Accuracy)</h2>
+
+<p>MOTA introduces the concept of identity tracking to object detection metrics. It incorporates identity switches (IDSW), which occur when a single ground truth (GT) object is assigned to different track predictions over time.</p>
+
+<p>The computation of MOTA involves temporal dependency, penalizing track assignment changes between consecutive frames. An IDSW is counted when a GT target $i$ matches track $j$ in the current frame but was matched to a different track $k$ ($k ≠ j$) in the previous frame.</p>
+
+<p>In practice, the Hungarian matching algorithm is modified to minimize identity switches from the previous frame. In <a href="https://github.com/JonathonLuiten/TrackEval/blob/master/trackeval/metrics/clear.py#L81" target="_blank" rel="noopener noreferrer">TrackEval code</a> this is done using a simple gating trick:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score</span> <span class="o">=</span> <span class="nc">IoU</span><span class="p">(</span><span class="n">GT</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">pred</span> <span class="o">==</span> <span class="nf">previous_assigned_id</span><span class="p">(</span><span class="n">GT</span><span class="p">):</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">*</span> <span class="mi">1000</span>
+</code></pre></div></div>
+
+<p>The MOTA metric is computed across all frames as:</p>
+
+\[\text{MOTA} = 1 - \frac{\sum_t (FN_t + FP_t + IDSW_t)}{\sum_t GT_t}\]
+
+<p>Where $t$ is the frame index, FN are False Negatives, FP are False Positives, IDSW are Identity Switches, and GT is the number of ground truth objects.</p>
+
+<p>While MOTA’s simplicity is appealing, it has some limitations:</p>
+
+<ol>
+  <li>It only considers the <strong>previous frame</strong> for IDSW, so each switch is penalized <strong>only once</strong>, regardless of how long the incorrect assignment persists.</li>
+  <li>It can be <strong>dominated by FP and FN</strong> in crowded scenes, making IDSW less impactful.</li>
+  <li><strong>IoU threshold is fixed</strong> so more or less detection accuracy is not reflected on the metric</li>
+</ol>
+
+<h2 id="idf1">IDF1</h2>
+
+<p>IDF1 addresses some of MOTA’s limitations by focusing on how long the tracker correctly identifies an object, rather than just counting errors. It’s based on the concept of Identification Precision (IDP) and Identification Recall (IDR).</p>
+
+<p>It computes the assignment between prediction and ground truth objects across the entire video, rather than frame by frame.</p>
+
+<p>The metric is simple:</p>
+
+\[\text{IDF1} = \frac{2 * \text{IDTP}}{2 * \text{IDTP} + \text{IDFP} + \text{IDFN}}\]
+
+<p>Where:</p>
+
+<ul>
+  <li><strong>IDTP</strong> (ID True Positive): The number of correctly identified detections</li>
+  <li><strong>IDFP</strong> (ID False Positive): Tracker predictions that don’t match any ground truth</li>
+  <li><strong>IDFN</strong> (ID False Negative): Ground truth trajectories that aren’t tracked</li>
+</ul>
+
+<p>The global assignment is computed using the Hungarian algorithm. It picks the best combination between prediction and ground truth that maximizes IDF1 for the whole video. It is easier to understand this by observing the image introduced in HOTA paper:</p>
+
+<div class="post-center-image" style="max-width: 800px; margin: 0 auto;">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-800-cacd2088c.png" alt="IDF1 metric diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-400-e8f603c7d.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-800-e8f603c7d.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1-1109-e8f603c7d.webp 1109w" sizes="(max-width: 767px) 100vw, 80vw" width="1109" height="664" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 3. IDF1 metric diagram</em></p>
+
+<p>The main problem I see with IDF1 is finding the best one-to-one matching between predicted and ground truth trajectories for the entire sequence since it can oversimplify complex tracking scenarios:</p>
+
+<p>Imagine a corner kick in football. A tracker might correctly follow Player A running into the box, lose them in a cluster, and then mistakenly pick up Player B after the ball is cleared. IDF1 might treat this as one partially correct track for either Player A or B, ignoring that it’s correct for different players at different times.</p>
+
+<p>This simplification can misrepresent a tracker’s performance in complex situations like crowded football plays, where player interactions and occlusions are frequent.</p>
+
+<p>Key advantages of IDF1:</p>
+
+<ol>
+  <li>It’s more sensitive to <strong>long-term tracking consistency</strong>.</li>
+  <li>It balances <strong>precision and recall</strong> of identity predictions.</li>
+  <li>It’s less affected by the number of objects in the scene than MOTA.</li>
+</ol>
+
+<p>However, IDF1 also has limitations:</p>
+
+<ol>
+  <li><strong>IDF1 can decrease when improving detection</strong>. Just avoiding FP can result in a better metric (A vs C in <a href="#figure-2">Figure 2</a>)</li>
+  <li><strong>IoU threshold is fixed</strong> so more or less detection accuracy is not reflected on the metric</li>
+</ol>
+
+<p>More limitations are presented in the HOTA paper. I recommend you to have a read because it is very well explained and intuitive.</p>
+
+<h2 id="hota-higher-order-tracking-accuracy">HOTA (Higher Order Tracking Accuracy)</h2>
+
+<p>HOTA is a more recent metric designed to address the limitations of both MOTA and IDF1. It aims to provide a balanced assessment of detection and association performance. HOTA can be broken down into DetA (Detection Accuracy) and AssA (Association Accuracy), allowing separate analyses of these aspects.</p>
+
+<p>The core HOTA formula is:</p>
+
+\[\text{HOTA}_{\alpha} = \sqrt{\text{DetA}_{\alpha} \cdot \text{AssA}_{\alpha}}\]
+
+<p>In this formula, the $\alpha$ term represents the different Intersection over Union (IoU) thresholds used to compute the metric. A True Positive (TP) is only considered when the match IoU score is above the given $\alpha$ threshold. The metric uses 19 different $\alpha$ values, ranging from 0.05 to 0.95 in increments of 0.05.</p>
+
+<p>HOTA uses global alignment (high-order association) between predicted and ground truth detections, similar to IDF1, but also incorporates localization accuracy. This means that HOTA evaluates both the ability to detect objects accurately and to maintain correct associations over time.</p>
+
+<p>The HOTA algorithm can be summarized in the following steps:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">each</span> <span class="n">frame</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">each</span> <span class="n">α</span><span class="p">:</span>
+        <span class="n">matching</span> <span class="n">between</span> <span class="n">gt</span> <span class="ow">and</span> <span class="nf">preds </span><span class="p">(</span><span class="n">Hungarian</span> <span class="n">algorithm</span><span class="p">)</span>
+        <span class="n">obtain</span> <span class="n">TP</span><span class="p">,</span> <span class="n">FP</span> <span class="ow">and</span> <span class="n">FN</span> <span class="k">from</span> <span class="n">previous</span> <span class="n">matching</span>
+        <span class="n">compute</span> <span class="n">AssA</span> <span class="n">across</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">video</span> <span class="k">for</span> <span class="n">each</span> <span class="n">TP</span><span class="p">.</span>
+</code></pre></div></div>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-800-4a2b59f98.jpg" alt="HOTA metric diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-400-86dc5e9da.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-800-86dc5e9da.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-1384-86dc5e9da.webp 1384w" sizes="(max-width: 767px) 100vw, 80vw" width="1384" height="722" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 4. HOTA metric diagram</em></p>
+
+<p>In the original paper, Ass-IoU is referred to as the metric obtained by computing DetA across the entire sequence for a single true positive (TP) match in the current frame. The AssA metric can then be defined as follows:</p>
+
+\[\text{AssA} = \frac{1}{|\text{TP}|} \sum_{c \in \text{TP}} \text{Ass-IoU}(c)\]
+
+<p>HOTA drawbacks:</p>
+
+<ul>
+  <li><strong>Not Ideal for Online Tracking</strong>: HOTA’s association score depends on future associations across the entire video, making it less suitable for evaluating online tracking where future data isn’t available.</li>
+  <li><strong>Doesn’t Account for Fragmentation</strong>: HOTA does not penalize fragmented tracking results, as it is designed to focus on long-term global tracking, which may not align with all application needs.</li>
+</ul>
+
+<p>If you want to learn more about HOTA, I recommend reading the blog post by <a href="https://jonathonluiten.medium.com/how-to-evaluate-tracking-with-the-hota-metrics-754036d183e1" target="_blank" rel="noopener noreferrer">Jonathon Luiten</a>. He is one of the authors of the HOTA paper, and his post is an excellent resource for learning how to use the metric to compare different trackers.</p>
+
+<h2 id="how-do-these-metrics-compare-to-each-other">How do these metrics compare to each other?</h2>
+
+<p>We have examined how MOTA, IDF1, and HOTA function. Each metric has its own strengths and limitations. While HOTA is generally recommended for most applications, the choice of metric ultimately depends on your specific tracking scenario. The HOTA paper provides an excellent comparison that effectively captures the differences between these metrics:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-800-b92eaeabf.png" alt="Metric comparison" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-400-66584ffac.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-800-66584ffac.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/metrics-1172-66584ffac.webp 1172w" sizes="(max-width: 767px) 100vw, 80vw" width="1172" height="556" />
+</a>
+
+</div>
+
+<p class="image-caption"><em>Figure 5. Metric comparison</em></p>
+
+<p>Having already introduced the left side of the image, let’s now focus on the right side, which displays metrics for each tracker output. The leftmost metric, DetA, exclusively evaluates detection quality. It yields the best results when the tracker accurately detects objects, regardless of their track ID.
+On the opposite end, we have AssA (derived from the HOTA definition). This metric prioritizes track ID consistency, which is why output A performs best in this category.
+The authors demonstrate how HOTA positions itself in the middle, striking a balance between detection quality and association accuracy.</p>
+
+<p>The most suitable metric depends on your specific application. For instance:</p>
+<ol>
+  <li>If you’re developing a simple camera system to count people in a room, you might prioritize detection quality (DetA).</li>
+  <li>In a criminal tracking system where maintaining consistent track IDs is crucial, you should focus on AssA.</li>
+  <li>For most applications, such as sports tracking systems, you’ll need to balance both aspects. In these scenarios, HOTA emerges as the optimal choice, providing a comprehensive evaluation of tracker performance.</li>
+</ol>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post, we’ve explored three key metrics used in Multi-Object Tracking: MOTA, IDF1, and HOTA. Each metric offers unique insights into tracking performance, with its own strengths and limitations. MOTA provides a straightforward measure but may be oversimplistic in complex scenarios. IDF1 focuses on long-term consistency but may not fully capture detection improvements. HOTA, which attempts to balance detection and association accuracy, has emerged as the standard metric used today for benchmarking tracking algorithms.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>[<a href="https://arxiv.org/pdf/1603.00831" target="_blank" rel="noopener noreferrer">1</a>] Milan, A., Leal-Taixé, L., Reid, I., Roth, S., &amp; Schindler, K. (2016). MOT16: A benchmark for multi-object tracking. arXiv preprint arXiv:1603.00831.</li>
+  <li>[<a href="https://arxiv.org/pdf/1609.01775" target="_blank" rel="noopener noreferrer">2</a>] Ristani, E., Solera, F., Zou, R., Cucchiara, R., &amp; Tomasi, C. (2016, October). Performance measures and a data set for multi-target, multi-camera tracking. In European conference on computer vision (pp. 17-35). Cham: Springer International Publishing.</li>
+  <li>[<a href="https://arxiv.org/pdf/2009.07736" target="_blank" rel="noopener noreferrer">3</a>] Luiten, J., Osep, A., Dendorfer, P., Torr, P., Geiger, A., Leal-Taixé, L., &amp; Leibe, B. (2021). Hota: A higher order metric for evaluating multi-object tracking. International journal of computer vision, 129, 548-578.</li>
+</ul>
+
+  
+</div>
+
+<div class="comments">
+  <script src="https://utteranc.es/client.js"
+        repo="mmeendez8/mmeendez8.github.io"
+        issue-term="url"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+</div>
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://medium.com/@miguelmendez_' target="_blank" rel="noopener">
+          <i class="icon-medium" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://stackoverflow.com/users/8380638/m33n' target="_blank" rel="noopener">
+          <i class="icon-stackoverflow" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
+  <!-- Mathjax -->
+  
+    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          processEscapes: true
+      }
+  });
+</script>
+  
+
+</body>
+
+</html>
