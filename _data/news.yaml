@@ -1,4 +1,7 @@
 news:
+  - month: "August"
+    year: "2024"
+    text: "<a href='https://x.com/mmeendez8/status/1823003417670762904' target='_blank' rel='noopener noreferrer'> Statsbomb have been acquired by Hudl!</a> I am excited to continue working on the future of sports analytics with the Hudl team."
   - month: "September"
     year: "2023"
     text: "Published a blog post about homography estimation in Statsbomb blog [<a href='https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/' target='_blank' rel='noopener noreferrer'>English</a>, <a href='https://statsbomb.com/es/articulos/futbol/nuevas-tecnologias/ia-y-los-datos-deportivos-la-estimacion-de-homografia/' target='_blank' rel='noopener noreferrer'>Spanish</a>]."
