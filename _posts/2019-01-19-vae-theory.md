@@ -8,8 +8,10 @@ selected: y
 mathjax: y
 ---
 
-Generative models are one of the cooler branches of Deep Learning. During last weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of post I will try to transmit and also to provide useful resources which I have found and I feel in the need of transmit!
+Generative models are one of the cooler branches of Deep Learning. During last weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of posts, I will try to transmit and also provide useful resources which I have found and feel the need to share! You can read the other posts in this series here:
 
+- [Post 2: VAEs! Generating images with Tensorflow]({% post_url 2019-01-24-vae-tensorflow %})
+- [Post 3: Generating FIFA 19 players with VAEs and Tensorflow]({% post_url 2019-02-06-vae-fifa %})
 
 ## What are VAEs?
 

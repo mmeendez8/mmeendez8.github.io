@@ -8,9 +8,14 @@ selected: y
 mathjax: y
 ---
 
-In my previous post I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!
+In [my previous post]({% post_url 2019-01-19-vae-theory %}) I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!
 
-**Note**: All code in here can be found on my [Github](https://github.com/mmeendez8/Autoencoder){:target="_blank"}{:rel="noopener noreferrer"} account
+**Note**: All code in here can be found on my [Github](https://github.com/mmeendez8/Autoencoder){:target="_blank"}{:rel="noopener noreferrer"} account.
+
+You can read the other posts in this series here:
+
+- [Post 1: The theory behind Variational Autoencoders]({% post_url 2019-01-19-vae-theory %})
+- [Post 3: Generating FIFA 19 players with VAEs and Tensorflow]({% post_url 2019-02-06-vae-fifa %})
 
 ## Get the data
 
