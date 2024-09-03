@@ -131,13 +131,20 @@
 
 </div>
 
-<p><em>Note: All code in here can be found on my <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a> account</em></p>
+<p><strong>Note</strong>: All code in here can be found on my <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a> account</p>
+
+<p>You can read the other posts in this series here:</p>
+
+<ul>
+  <li><a href="/2019/01/19/vae-theory.html">Post 1: The theory behind Variational Autoencoders</a></li>
+  <li><a href="/2019/01/24/vae-tensorflow.html">Post 2: VAEs! Generating images with Tensorflow</a></li>
+</ul>
 
 <h2 id="1-introduction">1. Introduction</h2>
 
 <p>I spent a few hours thinking about which dataset could I use to apply all the knowledge and lines of code I acquire learning about VAEs.</p>
 
-<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f" target="_blank" rel="noopener noreferrer">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
+<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="/2019/01/24/vae-tensorflow.html">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
 
 <p>Finally I found a dataset that fitted all my requirements and at the same time was interesting and funny for me, so I could not resist.</p>
 
@@ -216,7 +223,7 @@
 
 <h2 id="4-define-the-network">4. Define the network</h2>
 
-<p>In my <a href="https://towardsdatascience.com/vaes-generating-images-with-tensorflow-61de08e82f1f" target="_blank" rel="noopener noreferrer">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
+<p>In my <a href="/2019/01/24/vae-tensorflow.html">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
 
 <p>So now, I have created a new class which will allow me to create the network in a very simple and intuitive manner. I must thank to <a href="https://danijar.com/structuring-your-tensorflow-models/" target="_blank" rel="noopener noreferrer">this amazing post</a> from <a href="https://danijar.com/" target="_blank" rel="noopener noreferrer">Danijar Hafner</a> where I found a way to combine decorators with Tensorflow’s Graph intuition. I won’t explain this code in here, otherwise the post would be too long but feel free to ask below about anything you want.</p>
 
