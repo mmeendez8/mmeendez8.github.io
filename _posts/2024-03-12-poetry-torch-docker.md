@@ -27,7 +27,7 @@ docker build -t my-image:latest -f my-file .
 
 Let's begin by configuring our Dockerfile:
 
-```Dockerfile
+```dockerfile
 FROM ubuntu:22.04
 
 # Set non-interactive mode to avoid prompts during build
@@ -69,7 +69,7 @@ Next, let's install Poetry using the official installer, which I like because it
 
 If you're curious about the need for a virtual environment in our Docker image, there are a couple of reasons. Firstly, isolating your project's dependencies from the system Python ensures a clean, conflict-free environment. Secondly, you might consider using a multi-stage build. This means first installing everything needed in an initial stage and then copying the final virtual environment to the second clean stage. This would make our image smaller and faster to build. However, this is not the focus of this post and I will not cover it here.
 
-```Dockerfile
+```dockerfile
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -129,7 +129,7 @@ I've set `VENV_PATH` to `{project-dir}/.venv`. This is because Poetry might not 
 Installing Torch with Poetry can be tricky because Torch can be installed with or without GPU support, making it challenging to support both CPU and GPU versions in your pyproject.toml file. For example, you might use the CPU version for Continuous Integration (CI) and the GPU version for running your models in production. Many issues related to this are discussed on the [Poetry GitHub](https://github.com/python-poetry/poetry/issues/6409){:target="_blank"}{:rel="noopener noreferrer"}. After trying different methods, my preferred solution is to install dependencies using Poetry and then install Torch using pip. We need to ensure Torch is installed inside our virtual environment (venv), which requires setting the correct paths in advance (apologies if you were expecting a more complex solution 😑). Here’s what you need to add:
 
 
-```Dockerfile
+```dockerfile
 # Copy dependency files to the app directory
 COPY poetry.lock pyproject.toml /app
 
@@ -152,7 +152,7 @@ Although we install Torch with GPU support, we do not install the CUDA toolkit s
 
 Here's the final Dockerfile that puts everything we've talked about into action, hope this can help you to build your own image.
 
-```Dockerfile
+```dockerfile
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive

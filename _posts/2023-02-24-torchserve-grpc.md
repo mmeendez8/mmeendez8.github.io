@@ -203,7 +203,7 @@ Two factors contribute to the similar performance results for gRPC and REST. Fir
 
 Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve's `.proto` definition for [prediction response](https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23){:target="_blank"}{:rel="noopener noreferrer"} is too generic and it cannot be personalized with your model specifics.
 
-```python
+```json
 message PredictionResponse {
     // Response content for prediction
     bytes prediction = 1;
@@ -212,7 +212,7 @@ message PredictionResponse {
 
 This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the `.proto` file for our response could be something like:
 
-```python
+```json
 message PredictionResponse {
     repeated float scores = 1;
     repeated int32 scores = 2;

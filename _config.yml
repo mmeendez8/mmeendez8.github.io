@@ -6,7 +6,7 @@ relative_url: "https://miguel-mendez-ai.com"
 url: "https://miguel-mendez-ai.com"
 
 markdown: kramdown
-highlighter: rouge
+highlighter: none
 kramdown:
   input: GFM
 
