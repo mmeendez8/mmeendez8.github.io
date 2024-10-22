@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -132,115 +148,115 @@
 
 <p>I’ve set up a very simple and straightforward <a href="https://github.com/mmeendez8/cache_docker" target="_blank" rel="noopener noreferrer">Github repository</a> that follows this approach so that we can easily visualize the different pipelines that we’re going to use. So a simple CI pipeline that uses Anaconda Action for Python package management might look like this:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
+<pre><code class="language-yaml">name: Continuous Integration
 
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">push</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
-  <span class="na">pull_request</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Conda environment</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">conda-incubator/setup-miniconda@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">activate-environment</span><span class="pi">:</span> <span class="s">my_environment</span>
-          <span class="na">environment-file</span><span class="pi">:</span> <span class="s">conda.yml</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span> 
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pre-commit install</span>
-          <span class="s">pre-commit run</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
-</code></pre></div></div>
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Conda environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: my_environment
+          environment-file: conda.yml
+      - name: Lint code 
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
+</code></pre>
 
-<p>This workflow needs to configure the conda environment each time it runs, although <code class="language-plaintext highlighter-rouge">conda.yaml</code> has not changed. This is far from efficient as we spend time doing the same. There must be a better way to speed this up … and as usual these days, Docker is involved!</p>
+<p>This workflow needs to configure the conda environment each time it runs, although <code>conda.yaml</code> has not changed. This is far from efficient as we spend time doing the same. There must be a better way to speed this up … and as usual these days, Docker is involved!</p>
 <h2 id="2-adding-docker-into-the-equation">2. Adding Docker into the equation</h2>
 
 <p>Docker is great and we should take advantage of it. I don’t intend to cover the basics of Docker in this post, so I assume the reader is used to struggling with it. Anyway, if there is anything in this post that is not clear to you, feel free to reach out to me via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a>.</p>
 
 <p>We can build our Docker image based on Conda in multiple different ways. I just recently discover <a href="https://pythonspeed.com/" target="_blank" rel="noopener noreferrer">this amazing blog</a> which actually covers an important topic when building this kind of images: <strong>their size</strong>. In <a href="https://pythonspeed.com/articles/conda-docker-image-size/" target="_blank" rel="noopener noreferrer">here</a> you can understand why is necessary to <strong>shrink your conda Docker images</strong> as much as you can and the different possibilities you can use. For this case we will stick with the classic approach and build a single stage image over miniconda. I have also used some old tricks to clean conda cache and python bytecode files.</p>
 
-<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> continuumio/miniconda3</span>
+<pre><code class="language-docker">FROM continuumio/miniconda3
 
-<span class="k">ENV</span><span class="s"> PYTHONDONTWRITEBYTECODE=true</span>
+ENV PYTHONDONTWRITEBYTECODE=true
 
-<span class="k">COPY</span><span class="s"> conda.yml .</span>
+COPY conda.yml .
 
-<span class="k">RUN </span>conda <span class="nb">env </span>create <span class="nt">-f</span> conda.yaml <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    conda clean <span class="nt">-afy</span> <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    find /opt/conda/ <span class="nt">-follow</span> <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s1">'*.a'</span> <span class="nt">-delete</span> <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    find /opt/conda/ <span class="nt">-follow</span> <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s1">'*.pyc'</span> <span class="nt">-delete</span> <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    find /opt/conda/ <span class="nt">-follow</span> <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s1">'*.js.map'</span> <span class="nt">-delete</span>
+RUN conda env create -f conda.yaml &amp;&amp; \
+    conda clean -afy &amp;&amp; \
+    find /opt/conda/ -follow -type f -name '*.a' -delete &amp;&amp; \
+    find /opt/conda/ -follow -type f -name '*.pyc' -delete &amp;&amp; \
+    find /opt/conda/ -follow -type f -name '*.js.map' -delete
 
-<span class="c"># Add environment to path</span>
-<span class="k">ENV</span><span class="s"> PATH /opt/conda/envs/my_environment/bin:$PATH</span>
+# Add environment to path
+ENV PATH /opt/conda/envs/my_environment/bin:$PATH
 
-<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
-</code></pre></div></div>
+ENTRYPOINT [ "/bin/bash" ]
+</code></pre>
 
 <p>We can build the image with all our dependencies installed and push it to some public image registry. In this case I am going to use the new <a href="https://docs.github.com/en/packages/guides/container-guides-for-github-packages" target="_blank" rel="noopener noreferrer">Github container registry</a>. I have created an access token (check <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank" rel="noopener noreferrer">this</a> for knowing more about creating personal access tokens) for my account so I can login and push images for this repository. You can do the same on your computer by:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">export</span> <span class="nv">$MY_TOKEN</span><span class="o">=[</span>INTRODUCE_YOUR_TOKEN_HERE]
-<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$MY_TOKEN</span> | docker login ghcr.io <span class="nt">-u</span> USERNAME <span class="nt">--password-stdin</span>
-<span class="nv">$ </span>docker build <span class="nt">-f</span> Dockerfile <span class="nt">-t</span> ghcr.io/USERNAME/REPO/IMAGE_NAME:VERSION
-<span class="nv">$ </span>docker push ghcr.io/USERNAME/REPO/IMAGE_NAME:VERSION
-</code></pre></div></div>
+<pre><code class="language-bash">$ export $MY_TOKEN=[INTRODUCE_YOUR_TOKEN_HERE]
+$ echo $MY_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+$ docker build -f Dockerfile -t ghcr.io/USERNAME/REPO/IMAGE_NAME:VERSION
+$ docker push ghcr.io/USERNAME/REPO/IMAGE_NAME:VERSION
+</code></pre>
 
 <p>So now we can update our CI workflow to use our Docker images using the container tag. I will keep the old Anaconda based job to easily compare running times of each one. Our pipeline would look like this now:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
+<pre><code class="language-yaml">name: Continuous Integration
 
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">push</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
-  <span class="na">pull_request</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build_with_conda_action</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">container</span><span class="pi">:</span>
-      <span class="na">image</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci:latest</span>
-      <span class="na">credentials</span><span class="pi">:</span>
-        <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-        <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.MY_TOKEN }}</span>
+jobs:
+  build_with_conda_action:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mmeendez8/cache_docker/ci:latest
+      credentials:
+        username: mmeendez8
+        password: ${{ secrets.MY_TOKEN }}
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Conda environment</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">conda-incubator/setup-miniconda@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">activate-environment</span><span class="pi">:</span> <span class="s">my_environment</span>
-          <span class="na">environment-file</span><span class="pi">:</span> <span class="s">conda.yml</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pre-commit install</span>
-          <span class="s">pre-commit run</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Conda environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: my_environment
+          environment-file: conda.yml
+      - name: Lint code
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
 
-  <span class="na">build_with_docker</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">container</span><span class="pi">:</span>
-      <span class="na">image</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci:latest</span>
-      <span class="na">credentials</span><span class="pi">:</span>
-        <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-        <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.MY_TOKEN }}</span>
+  build_with_docker:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mmeendez8/cache_docker/ci:latest
+      credentials:
+        username: mmeendez8
+        password: ${{ secrets.MY_TOKEN }}
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pre-commit install</span>
-          <span class="s">pre-commit run</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
-</code></pre></div></div>
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint code
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
+</code></pre>
 
 <p>If we check the execution times of these two jobs, we see that the Docker action took less than two minutes, while Conda’s job lasted up to ~ 8 minutes. Well now we know how to use our own image for continuous integrations on Github Actions. But … we need to <strong>manually build and load</strong> our docker image when we want to add a new dependency to our conda environment or when we want to modify our Dockerfile. This is bad and this was the main motivation that led me to write this article, so let’s see how we can avoid it.</p>
 
@@ -259,70 +275,70 @@
 
 <p>The new pipeline would look a little bit more complicated. It has been adapted from the example on <a href="https://evilmartians.com/chroniclesuild-images-on-github-actions-with-docker-layer-caching" target="_blank" rel="noopener noreferrer">evilmartians post</a> so refer to there in case you have any doubt.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration with layer caching</span>
+<pre><code class="language-yaml">name: Continuous Integration with layer caching
 
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">push</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
-  <span class="na">pull_request</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build_docker</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
-        <span class="na">id</span><span class="pi">:</span> <span class="s">buildx</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@master</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">install</span><span class="pi">:</span> <span class="kc">true</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Cache Docker layers</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/cache@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/.buildx-cache</span>
-          <span class="na">key</span><span class="pi">:</span> <span class="s">${{ runner.os }}-multi-buildx-${{ github.sha }}</span>
-          <span class="na">restore-keys</span><span class="pi">:</span> <span class="pi">|</span>
-            <span class="s">${{ runner.os }}-multi-buildx</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Login to GitHub Container Registry</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">registry</span><span class="pi">:</span> <span class="s">ghcr.io</span>
-          <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-          <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.MY_TOKEN }}</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build production image</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
-          <span class="na">builder</span><span class="pi">:</span> <span class="s">${{ steps.buildx.outputs.name }}</span>
-          <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
-          <span class="na">push</span><span class="pi">:</span> <span class="kc">true</span>
-          <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
-          <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=local,src=/tmp/.buildx-cache</span>
-          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=local,mode=max,dest=/tmp/.buildx-cache-new</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Move cache</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">rm -rf /tmp/.buildx-cache</span>
-          <span class="s">mv /tmp/.buildx-cache-new /tmp/.buildx-cache</span>
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-multi-buildx
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: mmeendez8
+          password: ${{ secrets.MY_TOKEN }}
+      - name: Build production image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          file: Dockerfile
+          push: true
+          tags: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  <span class="na">lint_and_test</span><span class="pi">:</span>
-    <span class="na">needs</span><span class="pi">:</span> <span class="s">build_docker</span> <span class="c1"># Wait for build step to finish</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">container</span><span class="pi">:</span>
-      <span class="na">image</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
-      <span class="na">credentials</span><span class="pi">:</span>
-        <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-        <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.MY_TOKEN }}</span>
+  lint_and_test:
+    needs: build_docker # Wait for build step to finish
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+      credentials:
+        username: mmeendez8
+        password: ${{ secrets.MY_TOKEN }}
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pre-commit install</span>
-          <span class="s">pre-commit run</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
-</code></pre></div></div>
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint code
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
+</code></pre>
 
 <p>The first time we run this job, our cache is empty, so it will create the docker image from scratch, and that takes about 15 minutes!</p>
 
@@ -348,92 +364,92 @@
 
 <p>As we have seen before, our Docker image is built whether our Dockerfile or Conda environment file is modified. So what if we just <strong>skip the build step</strong> when this has not occurred? We can do this in a very simple manner using taking advantage once again from Github Actions! We can track both files, calculating a hash from their content, so the build step only triggers when this hash changes. We just need to add a few lines to our pipeline.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration full caching</span>
+<pre><code class="language-yaml">name: Continuous Integration full caching
 
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">push</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
-  <span class="na">pull_request</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build_docker</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check Cached environment</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/cache@v2</span>
-        <span class="na">id</span><span class="pi">:</span> <span class="s">cache</span>
-        <span class="na">env</span><span class="pi">:</span>
-          <span class="c1"># Increase this value to force docker build</span>
-          <span class="na">CACHE_NUMBER</span><span class="pi">:</span> <span class="m">0</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">path</span><span class="pi">:</span> <span class="s">env.yml</span>
-          <span class="na">key</span><span class="pi">:</span> <span class="s">${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}</span>
-            <span class="s">-${{hashFiles('Dockerfile')}}-${{hashFiles('conda.yaml')}}</span>
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Cached environment
+        uses: actions/cache@v2
+        id: cache
+        env:
+          # Increase this value to force docker build
+          CACHE_NUMBER: 0
+        with:
+          path: env.yml
+          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}
+            -${{hashFiles('Dockerfile')}}-${{hashFiles('conda.yaml')}}
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
-        <span class="na">id</span><span class="pi">:</span> <span class="s">buildx</span>
-        <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span> <span class="c1"># Condition to skip step when cache hit</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@master</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">install</span><span class="pi">:</span> <span class="kc">true</span>
+      - name: Set up Docker Buildx
+        id: buildx
+        if: steps.cache.outputs.cache-hit != 'true' # Condition to skip step when cache hit
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Cache Docker layers</span>
-        <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/cache@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/.buildx-cache</span>
-          <span class="na">key</span><span class="pi">:</span> <span class="s">${{ runner.os }}-multi-buildx-${{ github.sha }}</span>
-          <span class="na">restore-keys</span><span class="pi">:</span> <span class="pi">|</span>
-            <span class="s">${{ runner.os }}-multi-buildx</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Login to GitHub Container Registry</span>
-        <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">registry</span><span class="pi">:</span> <span class="s">ghcr.io</span>
-          <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-          <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.MY_TOKEN }}</span>
+      - name: Cache Docker layers
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-multi-buildx
+      - name: Login to GitHub Container Registry
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: mmeendez8
+          password: ${{ secrets.MY_TOKEN }}
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build production image</span>
-        <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
-          <span class="na">builder</span><span class="pi">:</span> <span class="s">${{ steps.buildx.outputs.name }}</span>
-          <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
-          <span class="na">push</span><span class="pi">:</span> <span class="kc">true</span>
-          <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
-          <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=local,src=/tmp/.buildx-cache</span>
-          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=local,mode=max,dest=/tmp/.buildx-cache-new</span>
+      - name: Build production image
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          file: Dockerfile
+          push: true
+          tags: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Move cache</span>
-        <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cache.outputs.cache-hit != 'true'</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">rm -rf /tmp/.buildx-cache</span>
-          <span class="s">mv /tmp/.buildx-cache-new /tmp/.buildx-cache</span>
+      - name: Move cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  <span class="na">lint_and_test</span><span class="pi">:</span>
-    <span class="na">needs</span><span class="pi">:</span> <span class="s">build_docker</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">container</span><span class="pi">:</span>
-      <span class="na">image</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
-      <span class="na">credentials</span><span class="pi">:</span>
-        <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-        <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.MY_TOKEN }}</span>
+  lint_and_test:
+    needs: build_docker
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+      credentials:
+        username: mmeendez8
+        password: ${{ secrets.MY_TOKEN }}
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pre-commit install</span>
-          <span class="s">pre-commit run</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
-</code></pre></div></div>
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint code
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
+</code></pre>
 
-<p>Note how I have also added some if conditionals <code class="language-plaintext highlighter-rouge">if: steps.cache.outputs.cache-hit != 'true'</code> to those steps that come after the cache step to skip them when necessary. I have also added a <code class="language-plaintext highlighter-rouge">CACHE_NUMBER</code> variable that we can modify when we need to force the docker build.</p>
+<p>Note how I have also added some if conditionals <code>if: steps.cache.outputs.cache-hit != 'true'</code> to those steps that come after the cache step to skip them when necessary. I have also added a <code>CACHE_NUMBER</code> variable that we can modify when we need to force the docker build.</p>
 
 <p>We can now push our changes and Github will compute that hash and save it in the cache.. If we later commit some changes to our repository, like adding a new test function or some new feature to our source code, the compile time will look like this:</p>
 
@@ -524,6 +540,13 @@
   
   <!-- Mathjax -->
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

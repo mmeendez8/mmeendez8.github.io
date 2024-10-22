@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -126,34 +142,34 @@
 
 <h2 id="1-setup-the-environment">1. Setup the environment</h2>
 
-<p>We are gonna need a few packages to get our project up and running. I have created a <code class="language-plaintext highlighter-rouge">conda.yml</code> that you can find in the root of the repository, this is going to install pytorch and cudatoolkit since we are going to train our models using a GPU. You can create the environment by:</p>
+<p>We are gonna need a few packages to get our project up and running. I have created a <code>conda.yml</code> that you can find in the root of the repository, this is going to install pytorch and cudatoolkit since we are going to train our models using a GPU. You can create the environment by:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda <span class="nb">env </span>create <span class="nt">-f</span> conda.yaml
+<pre><code class="language-bash">conda env create -f conda.yaml
 conda activate mmdetection_dvc
-</code></pre></div></div>
+</code></pre>
 
 <h2 id="2-import-our-dataset">2. Import our dataset</h2>
 
 <p>In the previous post we used a subset of the COCO dataset created by fast.ai. We push all data to a Google Drive remote storage using DVC and keep all metada files in a Github repository. We need now to import this dataset in our repo and that’s exactly what <a href="https://dvc.org/doc/command-reference/import" target="_blank" rel="noopener noreferrer">dvc import</a> can do for us!</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc init
-dvc import <span class="s2">"git@github.com:mmeendez8/coco_sample.git"</span> <span class="s2">"data/"</span> <span class="nt">-o</span> <span class="s2">"data/"</span>
-</code></pre></div></div>
+<pre><code class="language-bash">dvc init
+dvc import "git@github.com:mmeendez8/coco_sample.git" "data/" -o "data/"
+</code></pre>
 
-<p>Note that we are importing <code class="language-plaintext highlighter-rouge">/data</code> folder of the remote repository into the <code class="language-plaintext highlighter-rouge">data/</code> directory of our project where all our data will be stored. This may take a while since we need to download all images and annotations from the remote gdrive storage. Let’s now publish the changes on git:</p>
+<p>Note that we are importing <code>/data</code> folder of the remote repository into the <code>data/</code> directory of our project where all our data will be stored. This may take a while since we need to download all images and annotations from the remote gdrive storage. Let’s now publish the changes on git:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add <span class="nb">.</span> 
-git commit <span class="nt">-m</span> <span class="s2">"Import coco_sample dataset"</span> 
+<pre><code class="language-bash">git add . 
+git commit -m "Import coco_sample dataset" 
 git push
-</code></pre></div></div>
+</code></pre>
 
 <p>Once it is downloaded, we can move between different <a href="https://github.com/mmeendez8/coco_sample/releases" target="_blank" rel="noopener noreferrer">versions of the dataset</a> with the <a href="https://dvc.org/doc/command-reference/update" target="_blank" rel="noopener noreferrer">dvc update</a> command. If we would go back to v1.0 of our dataset and push our changes to git:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc update <span class="nt">--rev</span> v1.0 data.dvc
+<pre><code class="language-bash">dvc update --rev v1.0 data.dvc
 git add data.dvc
-git commit <span class="nt">-m</span> <span class="s2">"Get version 1.0 of coco_sample"</span>
+git commit -m "Get version 1.0 of coco_sample"
 git push
-</code></pre></div></div>
+</code></pre>
 
 <p>That’s it! We have imported our dataset and we know how to move between different versions so let’s create a script that will train our model!</p>
 
@@ -165,14 +181,14 @@ git push
 
 <h3 id="31-model-config">3.1. Model config</h3>
 
-<p>First thing we need to do is to find the config file for our model, so let’s explore mmdet model zoo and more specifically <a href="https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet" target="_blank" rel="noopener noreferrer">RetinaNet section</a>. There’s a bunch of different RetinaNet models there but let’s stick with the base config from the <a href="https://arxiv.org/pdf/1708.02002.pdf" target="_blank" rel="noopener noreferrer">original paper</a>. I have already downloaded this file to my repo and you can find it under <code class="language-plaintext highlighter-rouge">configs/retinanet_r50_fpn.py</code>. There are three main sections there:</p>
+<p>First thing we need to do is to find the config file for our model, so let’s explore mmdet model zoo and more specifically <a href="https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet" target="_blank" rel="noopener noreferrer">RetinaNet section</a>. There’s a bunch of different RetinaNet models there but let’s stick with the base config from the <a href="https://arxiv.org/pdf/1708.02002.pdf" target="_blank" rel="noopener noreferrer">original paper</a>. I have already downloaded this file to my repo and you can find it under <code>configs/retinanet_r50_fpn.py</code>. There are three main sections there:</p>
 
 <ul>
   <li>The backbone definition, which in our case is a ResNet50. Its weights come from some torchvision checkpoint specified at:</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">init_cfg</span><span class="o">=</span><span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sh">'</span><span class="s">Pretrained</span><span class="sh">'</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="sh">'</span><span class="s">torchvision://resnet50</span><span class="sh">'</span><span class="p">))</span><span class="err">`</span>
-</code></pre></div></div>
+<pre><code class="language-python">init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'))`
+</code></pre>
 
 <p>As a curious fact, I checked out <a href="https://pytorch.org/vision/stable/models.html" target="_blank" rel="noopener noreferrer">official torchvision documentation</a> and it seems this network has been trained with some dataset that is currently lost so there is no chance to reproduce this results…</p>
 
@@ -195,33 +211,33 @@ git push
 
 <ul>
   <li>I removed the test set since we are not going to use one for this tutorial.</li>
-  <li>I added a <code class="language-plaintext highlighter-rouge">CLASSES</code> variable with our reduced set of labels.</li>
+  <li>I added a <code>CLASSES</code> variable with our reduced set of labels.</li>
 </ul>
 
-<p>You can check the dataset config file in <code class="language-plaintext highlighter-rouge">configs/coco_sample.py</code></p>
+<p>You can check the dataset config file in <code>configs/coco_sample.py</code></p>
 
 <h3 id="33-train-configuration">3.3 Train configuration</h3>
 
-<p>There are multiple training parameters we can configure using mmdetection. For this simple demo we are going to use the default scheduler (see <code class="language-plaintext highlighter-rouge">configs/scheduler.py</code>). It uses SGD and a dynamic learning rate policy and that’s mostly what we need to know for now.</p>
+<p>There are multiple training parameters we can configure using mmdetection. For this simple demo we are going to use the default scheduler (see <code>configs/scheduler.py</code>). It uses SGD and a dynamic learning rate policy and that’s mostly what we need to know for now.</p>
 
-<p>Our runtime definition is under <code class="language-plaintext highlighter-rouge">configs/runtime.py</code> and we are going to specify a few interesting things there:</p>
+<p>Our runtime definition is under <code>configs/runtime.py</code> and we are going to specify a few interesting things there:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">checkpoint_config</code>: specifies the checkpoint saving frequency</li>
-  <li><code class="language-plaintext highlighter-rouge">log_config</code>: allows us to select a specific logger for our training</li>
-  <li><code class="language-plaintext highlighter-rouge">custom_hooks</code>: extra hooks that we can insert or create for retrieving or adding functionalities to our training</li>
-  <li><code class="language-plaintext highlighter-rouge">workflow</code>: it defines training workflow, this is, how many training epochs do we want to run before a validation one.</li>
+  <li><code>checkpoint_config</code>: specifies the checkpoint saving frequency</li>
+  <li><code>log_config</code>: allows us to select a specific logger for our training</li>
+  <li><code>custom_hooks</code>: extra hooks that we can insert or create for retrieving or adding functionalities to our training</li>
+  <li><code>workflow</code>: it defines training workflow, this is, how many training epochs do we want to run before a validation one.</li>
 </ul>
 
 <p>Since we are using DVC, we are also going to use the <a href="https://dvc.org/doc/dvclive" target="_blank" rel="noopener noreferrer">DVCLive</a> hook. DVCLive is an open-source Python library for monitoring the progress of metrics during training of machine learning models. It is a recent and super cool library with git integration and that’s all I need! See how simple is to add this hook:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">log_config</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">(</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">hooks</span><span class="o">=</span><span class="p">[</span>
-        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sh">'</span><span class="s">TextLoggerHook</span><span class="sh">'</span><span class="p">),</span>
-        <span class="nf">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sh">"</span><span class="s">DvcliveLoggerHook</span><span class="sh">"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="sh">"</span><span class="s">training/metrics</span><span class="sh">"</span><span class="p">),</span>
-    <span class="p">])</span>
-</code></pre></div></div>
+<pre><code class="language-python">log_config = dict(
+    interval=50,
+    hooks=[
+        dict(type='TextLoggerHook'),
+        dict(type="DvcliveLoggerHook", path="training/metrics"),
+    ])
+</code></pre>
 
 <h2 id="4-data-pipeline">4. Data pipeline</h2>
 
@@ -229,59 +245,59 @@ git push
 
 <h3 id="41-prepare-the-data">4.1 Prepare the data</h3>
 
-<p>Our COCO annotations are missing a few fields because fast.ai guys considered them unnecessary (they actually are) so they removed all extra fields to reduce the final size of the json. That’s fair enough, but mmdetection needs them so I created a very simple script that will prepare the data for us, you can find it in <code class="language-plaintext highlighter-rouge">src/prepare_data.py</code>.</p>
+<p>Our COCO annotations are missing a few fields because fast.ai guys considered them unnecessary (they actually are) so they removed all extra fields to reduce the final size of the json. That’s fair enough, but mmdetection needs them so I created a very simple script that will prepare the data for us, you can find it in <code>src/prepare_data.py</code>.</p>
 
-<p>The first step of our data pipeline will prepare our annotation file and save the modified COCO files into prepare_data. You can simply add the following to your <code class="language-plaintext highlighter-rouge">dvc.yaml</code>:</p>
+<p>The first step of our data pipeline will prepare our annotation file and save the modified COCO files into prepare_data. You can simply add the following to your <code>dvc.yaml</code>:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">stages</span><span class="pi">:</span>
-  <span class="na">prepare_data</span><span class="pi">:</span>
-    <span class="na">foreach</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">train</span>
-      <span class="pi">-</span> <span class="s">val</span>
-    <span class="na">do</span><span class="pi">:</span>
-      <span class="na">cmd</span><span class="pi">:</span> <span class="s">python src/prepare_data.py</span>
-        <span class="s">--coco_file data/coco_sample/annotations/split_${item}.json</span>
-        <span class="s">--output_file processed_data/${item}_split_with_ann_id.json</span>
-      <span class="na">deps</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">data/coco_sample/annotations/split_${item}.json</span>
-      <span class="na">outs</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">processed_data/${item}_split_with_ann_id.json</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">stages:
+  prepare_data:
+    foreach:
+      - train
+      - val
+    do:
+      cmd: python src/prepare_data.py
+        --coco_file data/coco_sample/annotations/split_${item}.json
+        --output_file processed_data/${item}_split_with_ann_id.json
+      deps:
+        - data/coco_sample/annotations/split_${item}.json
+      outs:
+        - processed_data/${item}_split_with_ann_id.json
+</code></pre>
 
-<p>There’s a stage called called prepare_data that run a small for loop over values <code class="language-plaintext highlighter-rouge">[train, val]</code> and calls the prepare_data script. See how I have specified the original json files as dependencies and the new one as outputs so DVC knows how to track them.</p>
+<p>There’s a stage called called prepare_data that run a small for loop over values <code>[train, val]</code> and calls the prepare_data script. See how I have specified the original json files as dependencies and the new one as outputs so DVC knows how to track them.</p>
 
-<p>You can now call run the pipeline with <code class="language-plaintext highlighter-rouge">dvc repro</code> and the new annotations file should appear!</p>
+<p>You can now call run the pipeline with <code>dvc repro</code> and the new annotations file should appear!</p>
 
 <h3 id="42-train-the-model">4.2 Train the model</h3>
 
-<p>I have created a simple training script in <code class="language-plaintext highlighter-rouge">src/train.py</code> that adjusts to our needs. You could also use <a href="https://github.com/open-mmlab/mmdetection/blob/master/tools/train.py" target="_blank" rel="noopener noreferrer">mmdetection train tool</a> since I just applied some minor modifications to it that will allow us to use dvc params.</p>
+<p>I have created a simple training script in <code>src/train.py</code> that adjusts to our needs. You could also use <a href="https://github.com/open-mmlab/mmdetection/blob/master/tools/train.py" target="_blank" rel="noopener noreferrer">mmdetection train tool</a> since I just applied some minor modifications to it that will allow us to use dvc params.</p>
 
 <p>We can add a new step to our data pipeline that executes our training step. For example this would be enough for running an experiment with our actual configs:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">train</span><span class="pi">:</span>
-  <span class="na">cmd</span><span class="pi">:</span> <span class="s">python src/train.py</span>
-    <span class="s">--dataset configs/coco_sample.py</span>
-    <span class="s">--model configs/retinanet_r50_fpn.py</span>
-    <span class="s">--schedule configs/schedule_1x.py</span>
-    <span class="s">--runtime configs/runtime.py</span>
-    <span class="s">--work_dir training/checkpoints</span>
-  <span class="na">deps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">configs/</span>
-    <span class="pi">-</span> <span class="s">processed_data</span>
-    <span class="pi">-</span> <span class="s">src/train.py</span>
-  <span class="na">outs</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">training/checkpoints</span>
-  <span class="na">live</span><span class="pi">:</span>
-    <span class="na">training/metrics</span><span class="pi">:</span>
-      <span class="na">summary</span><span class="pi">:</span> <span class="kc">true</span>
-      <span class="na">html</span><span class="pi">:</span> <span class="kc">true</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">train:
+  cmd: python src/train.py
+    --dataset configs/coco_sample.py
+    --model configs/retinanet_r50_fpn.py
+    --schedule configs/schedule_1x.py
+    --runtime configs/runtime.py
+    --work_dir training/checkpoints
+  deps:
+    - configs/
+    - processed_data
+    - src/train.py
+  outs:
+    - training/checkpoints
+  live:
+    training/metrics:
+      summary: true
+      html: true
+</code></pre>
 
-<p>Note how I have added the <code class="language-plaintext highlighter-rouge">live</code> key to notify DVC that our script will be saving metrics in the <code class="language-plaintext highlighter-rouge">training/metrics</code> folder. Also, this will generate a html file that we can use to visualize in real time our train progress. So simple!</p>
+<p>Note how I have added the <code>live</code> key to notify DVC that our script will be saving metrics in the <code>training/metrics</code> folder. Also, this will generate a html file that we can use to visualize in real time our train progress. So simple!</p>
 
 <p>We can run again DVC repro as many times as we want changing our config files as needed for trying different hyperparameters or model configurations. Nevertheless, DVC guys recommend yo to use <a href="https://dvc.org/doc/start/experiments" target="_blank" rel="noopener noreferrer">DVC experiments</a> when you are tryining different configurations. So that’s what we are going to do! Note this is a recent feature and I had to open a couple issues since I found a couple “bugs” or unexpected behavior such <a href="https://github.com/iterative/dvc/issues/6465">[1]</a>, <a href="https://github.com/iterative/dvc/issues/5477?notification_referrer_id=MDE4Ok5vdGlmaWNhdGlvblRocmVhZDE1OTA3ODE1MTM6MTU5Njk2Njc%3D#issuecomment-905234950">[2]</a>.</p>
 
-<p>Let’s do our first training by running <code class="language-plaintext highlighter-rouge">dvc exp run</code>! You can monitor training progress by opening your <code class="language-plaintext highlighter-rouge">training/metrics.html</code> file:</p>
+<p>Let’s do our first training by running <code>dvc exp run</code>! You can monitor training progress by opening your <code>training/metrics.html</code> file:</p>
 
 <table>
   <tbody>
@@ -294,20 +310,20 @@ git push
 
 <p>Training will be done soon (depening on your GPU and machine) and we can check our results by running:</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>dvc exp show
-<span class="go">┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━
+<pre><code class="language-console">$ dvc exp show
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━
 ┃ Experiment              ┃ Created  ┃  step ┃ learning_rate ┃ momentum ┃ val.bbox_mAP ┃ val.bbox_mAP_50 ┃ val.bbox_mAP_75 ┃ val.bbox_mAP_s ┃ val.bbox_mAP_m ┃ val.bbox
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━
 │ workspace               │ -        │ 13057 │         1e-05 │      0.9 │        0.198 │           0.368 │           0.194 │          0.008 │          0.142 │         
 │ main                    │ 11:24 AM │     - │             - │        - │            - │               - │               - │              - │              - │         
 │ └── cefe59e [exp-acc34] │ 01:20 PM │ 13057 │         1e-05 │      0.9 │        0.198 │           0.368 │           0.194 │          0.008 │          0.142 │         
 └─────────────────────────┴──────────┴───────┴───────────────┴──────────┴──────────────┴─────────────────┴─────────────────┴────────────────┴────────────────┴─────────
-</span></code></pre></div></div>
+</code></pre>
 
 <p>The possibilty of tracking your hyperparameters is what I most like about experiments. We can change one hyperparameter for a experiment, DVC will remember this for you and will help you to compare different experiments. This is nice but there is room for improvement since at this moment for running an experiment with a different parameter we need to:</p>
 
 <ol>
-  <li>Add our parameter to our <code class="language-plaintext highlighter-rouge">params.yaml</code></li>
+  <li>Add our parameter to our <code>params.yaml</code></li>
   <li>Specify that our train step depends on this parameter</li>
   <li>Run experiment with -S flag updating the parameter value.</li>
 </ol>
@@ -316,42 +332,42 @@ git push
 
 <p>Let’s increase our L2 regularization or weight decay to see how it affects our results:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># dvc.yaml</span>
-<span class="na">train</span><span class="pi">:</span>
-  <span class="na">cmd</span><span class="pi">:</span> <span class="s">python src/train.py</span>
-    <span class="s">--dataset configs/coco_sample.py</span>
-    <span class="s">--model configs/retinanet_r50_fpn.py</span>
-    <span class="s">--schedule configs/schedule_1x.py</span>
-    <span class="s">--runtime configs/runtime.py</span>
-    <span class="s">--work_dir training/checkpoints</span>
-  <span class="na">deps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">configs/</span>
-    <span class="pi">-</span> <span class="s">processed_data</span>
-    <span class="pi">-</span> <span class="s">src/train.py</span>
-  <span class="na">outs</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">training/checkpoints</span>
-  <span class="na">live</span><span class="pi">:</span>
-    <span class="na">training/metrics</span><span class="pi">:</span>
-      <span class="na">summary</span><span class="pi">:</span> <span class="kc">true</span>
-      <span class="na">html</span><span class="pi">:</span> <span class="kc">true</span>
-  <span class="na">params</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">optimizer.weight_decay</span>
-</code></pre></div></div>
+<pre><code class="language-yaml"># dvc.yaml
+train:
+  cmd: python src/train.py
+    --dataset configs/coco_sample.py
+    --model configs/retinanet_r50_fpn.py
+    --schedule configs/schedule_1x.py
+    --runtime configs/runtime.py
+    --work_dir training/checkpoints
+  deps:
+    - configs/
+    - processed_data
+    - src/train.py
+  outs:
+    - training/checkpoints
+  live:
+    training/metrics:
+      summary: true
+      html: true
+  params:
+    - optimizer.weight_decay
+</code></pre>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># params.yaml</span>
-<span class="na">optimizer</span><span class="pi">:</span>
-  <span class="na">weight_decay</span><span class="pi">:</span> <span class="m">0.001</span> <span class="c1"># this is the same value we have in configs/schedule_1x.py</span>
-</code></pre></div></div>
+<pre><code class="language-yaml"># params.yaml
+optimizer:
+  weight_decay: 0.001 # this is the same value we have in configs/schedule_1x.py
+</code></pre>
 
-<p>Now we run the experiment with our new value for <code class="language-plaintext highlighter-rouge">weight_decay</code></p>
+<p>Now we run the experiment with our new value for <code>weight_decay</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc exp run <span class="nt">-S</span> optimizer.weight_decay<span class="o">=</span>0.001
-</code></pre></div></div>
+<pre><code class="language-bash">dvc exp run -S optimizer.weight_decay=0.001
+</code></pre>
 
 <p>Experiment will start running and once is finished we can compare our results by running:</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>dvc exp show <span class="nt">--no-timestamp</span> <span class="nt">--include-metrics</span> val.bbox_mAP <span class="nt">--include-metrics</span> val.bbox_mAP_50
-<span class="go">┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+<pre><code class="language-console">$ dvc exp show --no-timestamp --include-metrics val.bbox_mAP --include-metrics val.bbox_mAP_50
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Experiment              ┃ val.bbox_mAP ┃ val.bbox_mAP_50 ┃ optimizer.weight_decay ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
 │ workspace               │          0.2 │           0.371 │ 0.001                  │
@@ -359,43 +375,43 @@ git push
 │ ├── cefe59e [exp-acc34] │        0.198 │           0.368 │ 0.0001                 │
 │ └── 36da522 [exp-6d4ed] │          0.2 │           0.371 │ 0.001                  │
 └─────────────────────────┴──────────────┴─────────────────┴────────────────────────┘
-</span></code></pre></div></div>
+</code></pre>
 
-<p>Note I have filtered some of the metrics using <code class="language-plaintext highlighter-rouge">--include-metrics</code> flag so can easily see the most important ones. It seems that the ‘weight_decay` parameter has an impact on results, and we have been to increase our mAP by 0.01. For this, let’s keep this experiment and commit our changes:</p>
+<p>Note I have filtered some of the metrics using <code>--include-metrics</code> flag so can easily see the most important ones. It seems that the ‘weight_decay` parameter has an impact on results, and we have been to increase our mAP by 0.01. For this, let’s keep this experiment and commit our changes:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc exp apply exp-6d4ed 
+<pre><code class="language-bash">dvc exp apply exp-6d4ed 
 git add src/train.py dvc.lock params.yaml dvc.yaml configs processed_data training/metrics.json
-git commit <span class="nt">-a</span> <span class="nt">-m</span> <span class="s2">"Save experiment with </span><span class="sb">`</span><span class="nv">weight_decay</span><span class="o">=</span>.001<span class="sb">`</span><span class="s2">"</span>
-</code></pre></div></div>
+git commit -a -m "Save experiment with `weight_decay=.001`"
+</code></pre>
 
 <p>And finally we can send all our results to respective remotes! These are Github and our Gdrive:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push
+<pre><code class="language-bash">git push
 dvc push
-</code></pre></div></div>
+</code></pre>
 
 <p>We have covered most of the step of the official <a href="https://dvc.org/doc/start/experiments" target="_blank" rel="noopener noreferrer">DVC experiments tutorial</a>. You can go there and check more info about how cleaning up your experiments and how to pull specific ones.</p>
 
 <h3 id="43-results-visualization">4.3 Results Visualization</h3>
 
-<p>We have trained our model and we have an idea of how it performs thanks to the mAP metrics but we all like to the the bounding boxes over our images so we can get a fully understanding of how the model performs! I have create a simple eval script in <code class="language-plaintext highlighter-rouge">src/eval.py</code> that will latest model and paint a subset of validation images. We simply need to add a new step to our <code class="language-plaintext highlighter-rouge">dvc.yaml</code>:</p>
+<p>We have trained our model and we have an idea of how it performs thanks to the mAP metrics but we all like to the the bounding boxes over our images so we can get a fully understanding of how the model performs! I have create a simple eval script in <code>src/eval.py</code> that will latest model and paint a subset of validation images. We simply need to add a new step to our <code>dvc.yaml</code>:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">eval</span><span class="pi">:</span> 
-  <span class="na">cmd</span><span class="pi">:</span> <span class="s">python src/eval.py</span>
-    <span class="s">--dataset configs/coco_sample.py</span>
-    <span class="s">--model configs/retinanet_r50_fpn.py</span>
-    <span class="s">--checkpoint_file training/checkpoints/latest.pth</span>
-    <span class="s">--output_dir eval/</span>  
-    <span class="s">--n_samples </span><span class="m">20</span>
-    <span class="s">--score_threshold .5</span>
-  <span class="na">deps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">src/eval.py</span>
-    <span class="pi">-</span> <span class="s">training/checkpoints/latest.pth</span>
-  <span class="na">outs</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">eval/</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">eval: 
+  cmd: python src/eval.py
+    --dataset configs/coco_sample.py
+    --model configs/retinanet_r50_fpn.py
+    --checkpoint_file training/checkpoints/latest.pth
+    --output_dir eval/  
+    --n_samples 20
+    --score_threshold .5
+  deps:
+    - src/eval.py
+    - training/checkpoints/latest.pth
+  outs:
+    - eval/
+</code></pre>
 
-<p>I am going to run <code class="language-plaintext highlighter-rouge">dvc repro</code> since I have already commit and pushed my changes from last experiment. This is going to create the <code class="language-plaintext highlighter-rouge">eval</code> folder which contains the painted images, see a few examples below:</p>
+<p>I am going to run <code>dvc repro</code> since I have already commit and pushed my changes from last experiment. This is going to create the <code>eval</code> folder which contains the painted images, see a few examples below:</p>
 
 <table>
   <tbody>
@@ -414,28 +430,28 @@ dvc push
 
 <p>Once we have evaluated our model we can commit and push these results!</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add dvc.lock .gitignore 
-git commit <span class="nt">-m</span> <span class="s2">"Run dvc repro eval"</span>
+<pre><code class="language-bash">git add dvc.lock .gitignore 
+git commit -m "Run dvc repro eval"
 git push
 dvc push
-</code></pre></div></div>
+</code></pre>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>We can use <code class="language-plaintext highlighter-rouge">DVC</code> combined with <code class="language-plaintext highlighter-rouge">mmdetection</code> to easily train object detection models, compare them and save different versions and experiments. Summarizing this post we have:</p>
+<p>We can use <code>DVC</code> combined with <code>mmdetection</code> to easily train object detection models, compare them and save different versions and experiments. Summarizing this post we have:</p>
 
 <ul>
   <li>
-    <p>Import a dataset into our repository using <code class="language-plaintext highlighter-rouge">dvc import</code></p>
+    <p>Import a dataset into our repository using <code>dvc import</code></p>
   </li>
   <li>
-    <p>Setup a <code class="language-plaintext highlighter-rouge">DVC</code> data pipeline and understand how it works</p>
+    <p>Setup a <code>DVC</code> data pipeline and understand how it works</p>
   </li>
-  <li>Train a model using <code class="language-plaintext highlighter-rouge">mmdetection</code>:
+  <li>Train a model using <code>mmdetection</code>:
     <ul>
-      <li>Understand <code class="language-plaintext highlighter-rouge">mmdetection</code> config files</li>
+      <li>Understand <code>mmdetection</code> config files</li>
       <li>Take advantage of DVC metrics to configure our trainings and compare experiments</li>
-      <li>Use <code class="language-plaintext highlighter-rouge">dvclive</code> to monitor the training progress</li>
+      <li>Use <code>dvclive</code> to monitor the training progress</li>
     </ul>
   </li>
   <li>Obtain bbox predictions and paint them over our validation set</li>
@@ -500,6 +516,13 @@ dvc push
   
   <!-- Mathjax -->
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

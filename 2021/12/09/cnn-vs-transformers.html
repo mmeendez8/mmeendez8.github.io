@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -122,7 +138,7 @@
 
   <p><em>I created a small demo in <a href="https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability" target="_blank" rel="noopener noreferrer">Hugging Face Spaces</a> to play with the code</em></p>
 
-<p>A couple of weeks ago I saw a very interesting <a href="https://pytorch.org/blog/FX-feature-extraction-torchvision/" target="_blank" rel="noopener noreferrer">post by Alexander Soare and Francisco Massa</a> on Pytorch Blog. The authors explained that the latest version of Torchivision  <a href="https://github.com/pytorch/vision/releases/tag/v0.11.0" target="_blank" rel="noopener noreferrer"><code class="language-plaintext highlighter-rouge">v0.11.0</code></a> included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don’t need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.</p>
+<p>A couple of weeks ago I saw a very interesting <a href="https://pytorch.org/blog/FX-feature-extraction-torchvision/" target="_blank" rel="noopener noreferrer">post by Alexander Soare and Francisco Massa</a> on Pytorch Blog. The authors explained that the latest version of Torchivision  <a href="https://github.com/pytorch/vision/releases/tag/v0.11.0" target="_blank" rel="noopener noreferrer"><code>v0.11.0</code></a> included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don’t need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.</p>
 
 <p>So … I couldn’t resist, I really wanted to try this and see how it works! I’ve been thinking about the differences between Transformer and CNN when classifying images and was wondering if I could compare them. So I rechecked the Class Activation Map paper<a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> from 2015. This is a classic job that shows how to paint activation maps from your last conv layer, conditioned on your model output label. For the case of transformers, I based my experiments on Attention Flow <a href="https://arxiv.org/pdf/2005.00928.pdf" target="_blank" rel="noopener noreferrer">[2]</a> which seems to be the standard method in the community.</p>
 
@@ -140,7 +156,7 @@
   <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1002-c0f0bfcc7.webp 1002w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" />
 </a></p>
 
-<p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code class="language-plaintext highlighter-rouge">n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code class="language-plaintext highlighter-rouge">n_filters</code> x <code class="language-plaintext highlighter-rouge">n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
+<p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code>n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code>n_filters</code> x <code>n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
 
 \[M_c(x,y) = \sum_{k}w_k^c f_k(x,y)\]
 
@@ -152,33 +168,33 @@
 
 <h3 id="code">Code</h3>
 
-<p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code class="language-plaintext highlighter-rouge">get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code class="language-plaintext highlighter-rouge">layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code class="language-plaintext highlighter-rouge">layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
+<p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code>get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code>layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code>layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="n">torchvision.models.feature_extraction</span> <span class="kn">import</span> <span class="n">create_feature_extractor</span>
+<pre><code class="language-python">from torchvision import models
+from torchvision.models.feature_extraction import create_feature_extractor
 
-<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nf">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">resnet50</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
+resnet50 = models.resnet50(pretrained=True).to("cuda")
+resnet50.eval()
 
-<span class="n">feature_extractor</span> <span class="o">=</span> <span class="nf">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">layer4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">fc</span><span class="sh">'</span><span class="p">])</span>
-</code></pre></div></div>
+feature_extractor = create_feature_extractor(resnet50, return_nodes=['layer4', 'fc'])
+</code></pre>
 
 <p>For computing the CAM we just need to apply the previous formula. First we need to get linear layer weight matrix, select the row that relates with the predicted output class and multiply it by the extracted features, then we can apply min-max normalization so that the CAM is between 0 and 1.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fc_layer_weights</span> <span class="o">=</span> <span class="n">resnet50</span><span class="p">.</span><span class="n">fc</span><span class="p">.</span><span class="n">weight</span>
+<pre><code class="language-python">fc_layer_weights = resnet50.fc.weight
 
-<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
-    <span class="c1"># Extract features and remove batch dim
-</span>    <span class="n">output</span> <span class="o">=</span> <span class="nf">feature_extractor</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
-    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="sh">"</span><span class="s">layer4</span><span class="sh">"</span><span class="p">].</span><span class="nf">squeeze</span><span class="p">()</span>
-    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="sh">"</span><span class="s">fc</span><span class="sh">"</span><span class="p">].</span><span class="nf">argmax</span><span class="p">()</span>
+with torch.no_grad():
+    # Extract features and remove batch dim
+    output = feature_extractor(img_tensor)
+    cnn_features = output["layer4"].squeeze()
+    class_id = output["fc"].argmax()
 
-    <span class="c1"># Linear combination of class weights and cnn features
-</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">fc_layer_weights</span><span class="p">[</span><span class="n">class_id</span><span class="p">].</span><span class="nf">matmul</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    # Linear combination of class weights and cnn features
+    cam = fc_layer_weights[class_id].matmul(cnn_features.flatten(1))
 
-<span class="c1"># Reshape back to 2D
-</span><span class="n">cam</span> <span class="o">=</span> <span class="n">cam</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-</code></pre></div></div>
+# Reshape back to 2D
+cam = cam.reshape(cnn_features.shape[1], cnn_features.shape[2])
+</code></pre>
 
 <p>That’s all! Just a few lines, let’s see a few simple examples:</p>
 
@@ -210,11 +226,11 @@
 
 <p>At the very first attention layer, the input vectors are the linear projections of the flattened patches:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Pseudocode simplification from HF implementation
-</span><span class="n">patch_embeddings</span> <span class="o">=</span> <span class="nc">PatchEmbeddings</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">flat_patch_embeddings</span> <span class="o">=</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">linear_projections</span> <span class="o">=</span> <span class="nc">Linear</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python"># Pseudocode simplification from HF implementation
+patch_embeddings = PatchEmbeddings(image, patch_size=16)
+flat_patch_embeddings = Flatten(patch_embeddings, dim=-1)
+linear_projections = Linear(patch_embeddings, out_features=embedding_size)
+</code></pre>
 
 <p>So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In <a href="https://arxiv.org/abs/2005.00928" target="_blank" rel="noopener noreferrer">[2]</a> two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.</p>
 
@@ -237,39 +253,39 @@
 
 <h3 id="code-1">Code</h3>
 
-<p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code class="language-plaintext highlighter-rouge">0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
+<p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code>0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">transformers</span> <span class="kn">import</span> <span class="n">ViTForImageClassification</span>
-<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="sh">"</span><span class="s">google/vit-base-patch16-224</span><span class="sh">"</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">vit</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
-</code></pre></div></div>
+<pre><code class="language-python">from transformers import ViTForImageClassification
+vit = ViTForImageClassification.from_pretrained("google/vit-base-patch16-224").to("cuda")
+vit.eval()
+</code></pre>
 
-<p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code class="language-plaintext highlighter-rouge">output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
+<p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code>output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Inference
-</span><span class="n">result</span> <span class="o">=</span> <span class="nf">vit</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="c1"># Stack all layers attention
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nf">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># Average the attention at each layer over all heads
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># Add residual and re-normalize
-</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">attention_probs</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">attention_probs</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">residual</span>
+<pre><code class="language-python"># Inference
+result = vit(img_tensor, output_attentions=True)
+# Stack all layers attention
+attention_probs = torch.stack(result[1]).squeeze(1)
+# Average the attention at each layer over all heads
+attention_probs = torch.mean(attention_probs, dim=1)
+# Add residual and re-normalize
+residual = torch.eye(attention_probs.size(-1)).to("cuda")
+attention_probs = 0.5 * attention_probs + 0.5 * residual
 
-<span class="c1"># Normalize by layer
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">attention_probs</span> <span class="o">/</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="nf">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+# Normalize by layer
+attention_probs = attention_probs / attention_probs.sum(dim=-1).unsqueeze(-1)
 
-<span class="c1"># Compute rollout
-</span><span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">attention_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
-    <span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">matmul</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">attention_rollout</span><span class="p">)</span>
+# Compute rollout
+attention_rollout = attention_probs[0]
+for i in range(1, attention_probs.size(0)):
+    attention_rollout = torch.matmul(attention_probs[i], attention_rollout)
 
-<span class="c1"># Attentions between CLS token and patches
-</span><span class="n">mask</span> <span class="o">=</span> <span class="n">attention_rollout</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
-<span class="c1"># Reshape back to 2D
-</span><span class="n">mask_size</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">mask</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nf">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="n">mask_size</span><span class="p">,</span> <span class="n">mask_size</span><span class="p">)</span>
-</code></pre></div></div>
+# Attentions between CLS token and patches
+mask = attention_rollout[0, 1:]
+# Reshape back to 2D
+mask_size = np.sqrt(mask.size(0)).astype(int)
+mask = mask.reshape(mask_size, mask_size)
+</code></pre>
 
 <p>Pretty simple, let’s see a few examples:</p>
 
@@ -378,6 +394,13 @@
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

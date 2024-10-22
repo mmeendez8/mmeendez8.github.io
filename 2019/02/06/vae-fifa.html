@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -237,7 +253,7 @@
 
 <script src="https://gist.github.com/mmeendez8/3b6bb54507b77cde55bf84031168795f.js" charset="utf-8"></script>
 
-<p>As you can see above, the network class constructor receives the <em>input batch</em> tensor, an iterator that moves through our bank of images. Also, <code class="language-plaintext highlighter-rouge">filenames</code> variable corresponds with the previously mentioned placeholder. It has a default value returned by the <code class="language-plaintext highlighter-rouge">get_files</code> function which simply lists all filenames that are contained in the directory <code class="language-plaintext highlighter-rouge">data_path</code>.</p>
+<p>As you can see above, the network class constructor receives the <em>input batch</em> tensor, an iterator that moves through our bank of images. Also, <code>filenames</code> variable corresponds with the previously mentioned placeholder. It has a default value returned by the <code>get_files</code> function which simply lists all filenames that are contained in the directory <code>data_path</code>.</p>
 
 <p>How does this look in TensorBoard? Pretty cool!</p>
 
@@ -256,7 +272,7 @@
 
 <h3 id="2d-latent-space">2D Latent Space</h3>
 
-<p>One of the coolest things with VAEs, is that if you reduce the latent space to just two dimensions, you will be able to deal with data in a 2 dimensional space. So you move your data from a <code class="language-plaintext highlighter-rouge">48x48x3</code> dimensional space to just 2! This allows you to get visual insights about how is the model distributing the data around the space. I did this for a total of 500 epochs and I force the net to return both input images and the reconstructed ones, in order to see, if the network was able to reconstruct the original inputs.</p>
+<p>One of the coolest things with VAEs, is that if you reduce the latent space to just two dimensions, you will be able to deal with data in a 2 dimensional space. So you move your data from a <code>48x48x3</code> dimensional space to just 2! This allows you to get visual insights about how is the model distributing the data around the space. I did this for a total of 500 epochs and I force the net to return both input images and the reconstructed ones, in order to see, if the network was able to reconstruct the original inputs.</p>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-02-06-vae-fifa/reconstruction_2.jpg">
@@ -287,7 +303,7 @@
 
 </div>
 
-<p>This is what we got! Interesting result… but we already knew this was going to happen isn’t it?. The network is too simple, so this ‘standard faces’ that we see are made of similar football players profiles. This means that our encoder is doing a good job, placing similar faces in close regions in the space BUT the decoder is not able to reconstruct a <code class="language-plaintext highlighter-rouge">48x48x3</code> image from just 2 points (which is, in fact, a super hard task). This is why the decoder is always outputting similar countenances.</p>
+<p>This is what we got! Interesting result… but we already knew this was going to happen isn’t it?. The network is too simple, so this ‘standard faces’ that we see are made of similar football players profiles. This means that our encoder is doing a good job, placing similar faces in close regions in the space BUT the decoder is not able to reconstruct a <code>48x48x3</code> image from just 2 points (which is, in fact, a super hard task). This is why the decoder is always outputting similar countenances.</p>
 
 <p>What could we do? Well, we can increase the complexity of our model and add some extra dimensions to our latent space!</p>
 
@@ -422,6 +438,13 @@
   
   <!-- Mathjax -->
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

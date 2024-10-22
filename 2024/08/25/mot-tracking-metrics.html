@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -197,10 +213,10 @@ For a more in-depth explanation of the Hungarian algorithm, check out <a href="h
 
 <p>In practice, the Hungarian matching algorithm is modified to minimize identity switches from the previous frame. In <a href="https://github.com/JonathonLuiten/TrackEval/blob/master/trackeval/metrics/clear.py#L81" target="_blank" rel="noopener noreferrer">TrackEval code</a> this is done using a simple gating trick:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score</span> <span class="o">=</span> <span class="nc">IoU</span><span class="p">(</span><span class="n">GT</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">pred</span> <span class="o">==</span> <span class="nf">previous_assigned_id</span><span class="p">(</span><span class="n">GT</span><span class="p">):</span>
-    <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">*</span> <span class="mi">1000</span>
-</code></pre></div></div>
+<pre><code class="language-python">score = IoU(GT, pred)
+if pred == previous_assigned_id(GT):
+    score = score * 1000
+</code></pre>
 
 <p>The MOTA metric is computed across all frames as:</p>
 
@@ -282,12 +298,12 @@ For a more in-depth explanation of the Hungarian algorithm, check out <a href="h
 
 <p>The HOTA algorithm can be summarized in the following steps:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">each</span> <span class="n">frame</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">each</span> <span class="n">α</span><span class="p">:</span>
-        <span class="n">matching</span> <span class="n">between</span> <span class="n">gt</span> <span class="ow">and</span> <span class="nf">preds </span><span class="p">(</span><span class="n">Hungarian</span> <span class="n">algorithm</span><span class="p">)</span>
-        <span class="n">obtain</span> <span class="n">TP</span><span class="p">,</span> <span class="n">FP</span> <span class="ow">and</span> <span class="n">FN</span> <span class="k">from</span> <span class="n">previous</span> <span class="n">matching</span>
-        <span class="n">compute</span> <span class="n">AssA</span> <span class="n">across</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">video</span> <span class="k">for</span> <span class="n">each</span> <span class="n">TP</span><span class="p">.</span>
-</code></pre></div></div>
+<pre><code class="language-python">for each frame:
+    for each α:
+        matching between gt and preds (Hungarian algorithm)
+        obtain TP, FP and FN from previous matching
+        compute AssA across the entire video for each TP.
+</code></pre>
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota.jpg">
@@ -413,6 +429,13 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

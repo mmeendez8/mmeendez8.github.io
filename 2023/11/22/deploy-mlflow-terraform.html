@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -150,337 +166,337 @@
 
 <p>First, we create a random password without special characters:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Creates a random password for the database</span>
-<span class="nx">resource</span> <span class="s2">"random_password"</span> <span class="s2">"mlflow_db"</span> <span class="p">{</span>
-  <span class="nx">length</span>  <span class="o">=</span> <span class="mi">16</span>
-  <span class="nx">special</span> <span class="o">=</span> <span class="kc">false</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<pre><code class="language-hcl"># Creates a random password for the database
+resource "random_password" "mlflow_db" {
+  length  = 16
+  special = false
+}
+</code></pre>
 
 <p>Next, we set up a security group for the database that allows TCP traffic on port 5432 (typical for PostgreSQL databases). We are limiting incoming traffic to only our VPN. If you are not looking to restrict traffic, you can skip this step.</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This specifies the security group for the database</span>
-<span class="nx">module</span> <span class="s2">"mlflow_db_security_group"</span> <span class="p">{</span>
-  <span class="nx">source</span>  <span class="o">=</span> <span class="s2">"terraform-aws-modules/security-group/aws"</span>
-  <span class="nx">version</span> <span class="o">=</span> <span class="s2">"~&gt; 4"</span>
+<pre><code class="language-hcl"># This specifies the security group for the database
+module "mlflow_db_security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~&gt; 4"
 
-  <span class="nx">name</span>        <span class="o">=</span> <span class="s2">"mlflow-db-sg"</span>
-  <span class="nx">description</span> <span class="o">=</span> <span class="s2">"RDS Aurora ingress security group"</span>
-  <span class="nx">vpc_id</span>      <span class="o">=</span> <span class="nx">aws_vpc</span><span class="err">.</span><span class="nx">main</span><span class="p">.</span><span class="nx">id</span> <span class="c1"># You need to use you own vpc id here</span>
+  name        = "mlflow-db-sg"
+  description = "RDS Aurora ingress security group"
+  vpc_id      = aws_vpc.main.id # You need to use you own vpc id here
 
-  <span class="nx">ingress_with_cidr_blocks</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="nx">from_port</span>   <span class="o">=</span> <span class="mi">5432</span>
-      <span class="nx">to_port</span>     <span class="o">=</span> <span class="mi">5432</span>
-      <span class="nx">protocol</span>    <span class="o">=</span> <span class="s2">"tcp"</span>
-      <span class="nx">description</span> <span class="o">=</span> <span class="s2">"RDS Aurora access from within VPC"</span>
-      <span class="nx">cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="nx">var</span><span class="p">.</span><span class="nx">your_vpn</span><span class="p">]</span>
-    <span class="p">},</span>
-  <span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div></div>
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "RDS Aurora access from within VPC"
+      cidr_blocks = [var.your_vpn]
+    },
+  ]
+}
+</code></pre>
 
 <p>Finally, we create a RDS Aurora cluster for the MLFlow database. The setup is straightforward, but you can always refer to the <a href="https://registry.terraform.io/modules/terraform-aws-modules/rds-aurora/aws/latest" target="_blank" rel="noopener noreferrer">official documentation</a> for more details. Notice how we use the earlier created password and security group to restrict access. We are creating a single writer instance, assuming limited traffic. If you expect more, consider adding a read replica in the instances map.</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Database configuration</span>
-<span class="nx">module</span> <span class="s2">"mlflow_cluster_db"</span> <span class="p">{</span>
-  <span class="nx">source</span>         <span class="o">=</span> <span class="s2">"terraform-aws-modules/rds-aurora/aws"</span>
-  <span class="nx">version</span>        <span class="o">=</span> <span class="s2">"6.2.0"</span>
+<pre><code class="language-hcl"># Database configuration
+module "mlflow_cluster_db" {
+  source         = "terraform-aws-modules/rds-aurora/aws"
+  version        = "6.2.0"
 
-  <span class="nx">name</span>           <span class="o">=</span> <span class="s2">"mlflow-db"</span>
-  <span class="nx">engine</span>         <span class="o">=</span> <span class="s2">"aurora-postgresql"</span>
-  <span class="nx">engine_version</span> <span class="o">=</span> <span class="s2">"14.5"</span>
-  <span class="nx">instance_class</span> <span class="o">=</span> <span class="s2">"db.r5.large"</span>
-  <span class="nx">instances</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nx">one</span> <span class="o">=</span> <span class="p">{}</span>
-  <span class="p">}</span>
+  name           = "mlflow-db"
+  engine         = "aurora-postgresql"
+  engine_version = "14.5"
+  instance_class = "db.r5.large"
+  instances = {
+    one = {}
+  }
 
-  <span class="nx">database_name</span>          <span class="o">=</span> <span class="s2">"mlflow"</span>
-  <span class="nx">master_username</span>        <span class="o">=</span> <span class="s2">"mlflow"</span>
-  <span class="nx">create_random_password</span> <span class="o">=</span> <span class="kc">false</span>
-  <span class="nx">master_password</span>        <span class="o">=</span> <span class="nx">random_password</span><span class="err">.</span><span class="nx">mlflow_db</span><span class="err">.</span><span class="nx">result</span>
+  database_name          = "mlflow"
+  master_username        = "mlflow"
+  create_random_password = false
+  master_password        = random_password.mlflow_db.result
 
-  <span class="nx">create_security_group</span>  <span class="o">=</span> <span class="kc">false</span>
-  <span class="nx">subnets</span>                <span class="o">=</span> <span class="nx">local</span><span class="p">.</span><span class="nx">subnets_ids_database</span>
-  <span class="nx">vpc_security_group_ids</span> <span class="o">=</span> <span class="p">[</span><span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_db_security_group</span><span class="p">.</span><span class="nx">security_group_id</span><span class="p">]</span>
+  create_security_group  = false
+  subnets                = local.subnets_ids_database
+  vpc_security_group_ids = [module.mlflow_db_security_group.security_group_id]
 
-  <span class="nx">storage_encrypted</span>   <span class="o">=</span> <span class="kc">true</span>
-  <span class="nx">apply_immediately</span>   <span class="o">=</span> <span class="kc">true</span>
-  <span class="nx">monitoring_interval</span> <span class="o">=</span> <span class="mi">10</span>
+  storage_encrypted   = true
+  apply_immediately   = true
+  monitoring_interval = 10
 
-  <span class="nx">enabled_cloudwatch_logs_exports</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"postgresql"</span><span class="p">]</span>
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 
-  <span class="nx">tags</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nx">Environment</span> <span class="o">=</span> <span class="s2">"dev"</span>
-    <span class="nx">Terraform</span>   <span class="o">=</span> <span class="s2">"true"</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+  }
+}
+</code></pre>
 
 <p>That is about it for the database setup. Lastly, we need to store the DB user, password, and endpoint for later connection. I will use AWS Secrets Manager for this. How you manage secrets may vary; the only thing you really want to avoid is to store them in source code. You could also use AWS Parameter Store or Hashicorp Vault, for example. Here’s how to store the secrets in AWS Secrets Manager:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_username_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-username"</span>
-<span class="p">}</span>
+<pre><code class="language-hcl">resource "aws_secretsmanager_secret" "mlflow_db_master_username_id" {
+  name  = "mlflow-username"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_username"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_username_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_username</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret_version" "mlflow_db_master_username" {
+  secret_id     = aws_secretsmanager_secret.mlflow_db_master_username_id[0].id
+  secret_string = module.mlflow_cluster_db.cluster_master_username
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_password_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-password"</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret" "mlflow_db_master_password_id" {
+  name  = "mlflow-password"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_password"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_password_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_password</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret_version" "mlflow_db_master_password" {
+  secret_id     = aws_secretsmanager_secret.mlflow_db_master_password_id[0].id
+  secret_string = module.mlflow_cluster_db.cluster_master_password
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_endpoint_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-db-writer-endpoint"</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret" "mlflow_db_endpoint_id" {
+  name  = "mlflow-db-writer-endpoint"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_endpoint"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_endpoint_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_endpoint</span>
-<span class="p">}</span>
-</code></pre></div></div>
+resource "aws_secretsmanager_secret_version" "mlflow_db_endpoint" {
+  secret_id     = aws_secretsmanager_secret.mlflow_db_endpoint_id[0].id
+  secret_string = module.mlflow_cluster_db.cluster_endpoint
+}
+</code></pre>
 
 <h2 id="storage-bucket-and-iam-role">Storage bucket and IAM Role</h2>
 
 <p>Next up is setting up a storage bucket for all the artifacts, and we’re going to use AWS S3 for this. Here’s the Terraform configuration needed:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_s3_bucket"</span> <span class="s2">"mlflow_artifacts_bucket"</span> <span class="p">{</span>
-  <span class="nx">bucket</span> <span class="o">=</span> <span class="s2">"mlflow-artifacts-bucket"</span>
-<span class="p">}</span>
+<pre><code class="language-hcl">resource "aws_s3_bucket" "mlflow_artifacts_bucket" {
+  bucket = "mlflow-artifacts-bucket"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_s3_bucket_ownership_controls"</span> <span class="s2">"mlflow_bucket_ownership"</span> <span class="p">{</span>
-  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">rule</span> <span class="p">{</span>
-    <span class="nx">object_ownership</span> <span class="o">=</span> <span class="s2">"BucketOwnerPreferred"</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+resource "aws_s3_bucket_ownership_controls" "mlflow_bucket_ownership" {
+  bucket = aws_s3_bucket.mlflow_artifacts_bucket[0].id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_s3_bucket_acl"</span> <span class="s2">"mlflow_bucket_acl"</span> <span class="p">{</span>
-  <span class="nx">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nx">aws_s3_bucket_ownership_controls</span><span class="p">.</span><span class="nx">mlflow_bucket_ownership</span><span class="p">]</span>
+resource "aws_s3_bucket_acl" "mlflow_bucket_acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.mlflow_bucket_ownership]
 
-  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">acl</span>    <span class="o">=</span> <span class="s2">"private"</span>
-<span class="p">}</span>
-</code></pre></div></div>
+  bucket = aws_s3_bucket.mlflow_artifacts_bucket[0].id
+  acl    = "private"
+}
+</code></pre>
 
 <p>This configuration creates an S3 bucket named ‘mlflow-artifacts-bucket’. It also sets up ownership controls, ensuring new objects uploaded without an ACL are owned by the bucket owner. Additionally, it enforces a private ACL for the bucket, securing the stored data.</p>
 
 <p>Now, MLFlow needs to access this bucket from EKS, so we’ll create an IAM Role for Service Accounts. Here’s how to do it:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_iam_role"</span> <span class="s2">"mlflow-role"</span> <span class="p">{</span>
-  <span class="nx">name</span> <span class="o">=</span> <span class="s2">"mlflow-role"</span>
+<pre><code class="language-hcl">resource "aws_iam_role" "mlflow-role" {
+  name = "mlflow-role"
 
-  <span class="nx">assume_role_policy</span> <span class="o">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
-    <span class="nx">Version</span> <span class="o">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
-    <span class="nx">Statement</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="nx">Action</span> <span class="o">=</span> <span class="s2">"sts:AssumeRole"</span><span class="p">,</span>
-        <span class="nx">Effect</span> <span class="o">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
-        <span class="nx">Principal</span> <span class="o">=</span> <span class="p">{</span>
-          <span class="nx">Service</span> <span class="o">=</span> <span class="s2">"ec2.amazonaws.com"</span> 
-        <span class="p">},</span>
-      <span class="p">},</span>
-    <span class="p">],</span>
-  <span class="p">})</span>
-<span class="p">}</span>
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com" 
+        },
+      },
+    ],
+  })
+}
 
-<span class="c1"># Custom Policy for Specific S3 Bucket Access</span>
-<span class="nx">resource</span> <span class="s2">"aws_iam_policy"</span> <span class="s2">"mlflow_s3_policy"</span> <span class="p">{</span>
-  <span class="nx">name</span>   <span class="o">=</span> <span class="s2">"mlflow_s3_policy"</span>
-  <span class="nx">policy</span> <span class="o">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
-    <span class="nx">Version</span> <span class="o">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
-    <span class="nx">Statement</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="nx">Action</span> <span class="o">=</span> <span class="p">[</span>
-          <span class="s2">"s3:GetObject"</span><span class="p">,</span>
-          <span class="s2">"s3:GetObject*"</span><span class="p">,</span>
-          <span class="s2">"s3:ListBucket"</span><span class="p">,</span>
-          <span class="s2">"s3:PutObject"</span><span class="p">,</span>
-          <span class="s2">"s3:DeleteObject"</span>
-        <span class="p">],</span>
-        <span class="nx">Effect</span>   <span class="o">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
-        <span class="nx">Resource</span> <span class="o">=</span> <span class="p">[</span>
-          <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket"</span><span class="p">,</span>
-          <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket/*"</span>
-        <span class="p">]</span>
-      <span class="p">}</span>
-    <span class="p">]</span>
-  <span class="p">})</span>
-<span class="p">}</span>
+# Custom Policy for Specific S3 Bucket Access
+resource "aws_iam_policy" "mlflow_s3_policy" {
+  name   = "mlflow_s3_policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:GetObject*",
+          "s3:ListBucket",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ],
+        Effect   = "Allow",
+        Resource = [
+          "arn:aws:s3:::mlflow-artifacts-bucket",
+          "arn:aws:s3:::mlflow-artifacts-bucket/*"
+        ]
+      }
+    ]
+  })
+}
 
-<span class="c1"># Attach Custom Policy to the Role</span>
-<span class="nx">resource</span> <span class="s2">"aws_iam_role_policy_attachment"</span> <span class="s2">"s3_policy_attachment"</span> <span class="p">{</span>
-  <span class="nx">role</span>       <span class="o">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">mlflow-role</span><span class="p">.</span><span class="nx">name</span>
-  <span class="nx">policy_arn</span> <span class="o">=</span> <span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">.</span><span class="nx">arn</span>
-  <span class="nx">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div></div>
+# Attach Custom Policy to the Role
+resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
+  role       = aws_iam_role.mlflow-role.name
+  policy_arn = aws_iam_policy.mlflow_s3_policy.arn
+  depends_on = [aws_iam_policy.mlflow_s3_policy]
+}
+</code></pre>
 
-<p>This code sets up a new role, <code class="language-plaintext highlighter-rouge">mlflow-role</code>, and attaches a custom policy, <code class="language-plaintext highlighter-rouge">mlflow_s3_policy</code>, to it. This policy grants specific permissions to access the S3 bucket we created earlier.</p>
+<p>This code sets up a new role, <code>mlflow-role</code>, and attaches a custom policy, <code>mlflow_s3_policy</code>, to it. This policy grants specific permissions to access the S3 bucket we created earlier.</p>
 
 <h2 id="docker">Docker</h2>
 
 <p>Before we proceed, it’s important to note that the official MLFlow Docker image doesn’t include the necessary libraries for connecting with AWS S3 and Postgres. To address this, we’ll need to create a custom image that includes these libraries. This is done by crafting a Dockerfile like the one below:</p>
 
-<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ghcr.io/mlflow/mlflow:v2.7.1</span>
+<pre><code class="language-dockerfile">FROM ghcr.io/mlflow/mlflow:v2.7.1
 
-<span class="k">RUN </span>apt-get <span class="nt">-y</span> update <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    apt-get <span class="nt">-y</span> <span class="nb">install </span>python3-dev build-essential pkg-config <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip <span class="nb">install </span>psycopg2-binary boto3
+RUN apt-get -y update &amp;&amp; \
+    apt-get -y install python3-dev build-essential pkg-config &amp;&amp; \
+    pip install --upgrade pip &amp;&amp; \
+    pip install psycopg2-binary boto3
 
-<span class="k">CMD</span><span class="s"> ["bash"]</span>
-</code></pre></div></div>
+CMD ["bash"]
+</code></pre>
 
 <p>This Dockerfile starts with the official MLFlow image and adds the required libraries. After crafting this file, you can build the image and push it to your ECR repository, or any other repository you prefer to use.</p>
 
 <h2 id="deployment">Deployment</h2>
 
-<p>Finally, we’ll set up the server to run the MLflow tracking server on AWS EKS. We typically use Flux for deploying services in Kubernetes, so we’ll create a <code class="language-plaintext highlighter-rouge">kustomization.yaml</code> file containing all the necessary resources. Alternatively, you could also deploy using Terraform, although I am less familiar with this method as we primarily utilize Flux for our deployments.</p>
+<p>Finally, we’ll set up the server to run the MLflow tracking server on AWS EKS. We typically use Flux for deploying services in Kubernetes, so we’ll create a <code>kustomization.yaml</code> file containing all the necessary resources. Alternatively, you could also deploy using Terraform, although I am less familiar with this method as we primarily utilize Flux for our deployments.</p>
 
-<p>We will begin with defining secrets. Our secrets are stored in AWS Secrets Manager and accessed from Kubernetes. We use the <a href="https://github.com/external-secrets/kubernetes-external-secrets" target="_blank" rel="noopener noreferrer">External Secrets</a> package for simplicity. Here is what our <code class="language-plaintext highlighter-rouge">secrets.yaml</code> file looks like:</p>
+<p>We will begin with defining secrets. Our secrets are stored in AWS Secrets Manager and accessed from Kubernetes. We use the <a href="https://github.com/external-secrets/kubernetes-external-secrets" target="_blank" rel="noopener noreferrer">External Secrets</a> package for simplicity. Here is what our <code>secrets.yaml</code> file looks like:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes-client.io/v1"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ExternalSecret</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-secrets</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">backendType</span><span class="pi">:</span> <span class="s">secretsManager</span>
-  <span class="na">data</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span>  <span class="s">mlflow-username</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_USERNAME</span>
-    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">mlflow-password</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_PASSWORD</span>
-    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">mlflow-db-writer-endpoint</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_HOST</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: "kubernetes-client.io/v1"
+kind: ExternalSecret
+metadata:
+  name: mlflow-secrets
+  namespace: monitoring
+spec:
+  backendType: secretsManager
+  data:
+    - key:  mlflow-username
+      name: AWS_SECRET_MLFLOW_USERNAME
+    - key: mlflow-password
+      name: AWS_SECRET_MLFLOW_PASSWORD
+    - key: mlflow-db-writer-endpoint
+      name: AWS_SECRET_MLFLOW_HOST
+</code></pre>
 
-<p>Next, we need a service account for our deployment, defined in <code class="language-plaintext highlighter-rouge">service-account.yaml</code>:</p>
+<p>Next, we need a service account for our deployment, defined in <code>service-account.yaml</code>:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-sa</span>
-  <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">eks.amazonaws.com/role-arn</span><span class="pi">:</span> <span class="s">arn:aws:iam::941819254007:role/mlflow-role</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mlflow-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::941819254007:role/mlflow-role
+</code></pre>
 
 <p>This configuration uses the earlier created IAM role for accessing the S3 bucket.</p>
 
-<p>We also need a service for our deployment, specified in <code class="language-plaintext highlighter-rouge">service.yaml</code> file:</p>
+<p>We also need a service for our deployment, specified in <code>service.yaml</code> file:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ports</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-      <span class="na">targetPort</span><span class="pi">:</span> <span class="s">http</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app.kubernetes.io/name</span><span class="pi">:</span> <span class="s">mlflow</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow
+spec:
+  ports:
+    - port: 8080
+      name: http
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: mlflow
+</code></pre>
 
-<p>This is a very simple service definition that just exposes port 8080 and targets all pods with the label <code class="language-plaintext highlighter-rouge">app.kubernetes.io/name: mlflow</code>.</p>
+<p>This is a very simple service definition that just exposes port 8080 and targets all pods with the label <code>app.kubernetes.io/name: mlflow</code>.</p>
 
-<p>Next, we need an ingress to expose our service to the outside world. We use AWS ALB Ingress Controller for this. Here’s what our <code class="language-plaintext highlighter-rouge">ingress.yaml</code> file looks like:</p>
+<p>Next, we need an ingress to expose our service to the outside world. We use AWS ALB Ingress Controller for this. Here’s what our <code>ingress.yaml</code> file looks like:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-  <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s">alb</span>
-    <span class="na">alb.ingress.kubernetes.io/scheme</span><span class="pi">:</span> <span class="s">internal</span>
-    <span class="na">alb.ingress.kubernetes.io/target-type</span><span class="pi">:</span> <span class="s">ip</span>
-    <span class="na">alb.ingress.kubernetes.io/ssl-redirect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">443"</span>
-    <span class="na">alb.ingress.kubernetes.io/listen-ports</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[{"HTTPS":</span><span class="nv"> </span><span class="s">443}]'</span>
-    <span class="na">alb.ingress.kubernetes.io/healthcheck-path</span><span class="pi">:</span> <span class="s">/</span>
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mlflow
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /
 
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">rules</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">host-url</span>
-    <span class="na">http</span><span class="pi">:</span>
-      <span class="na">paths</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-          <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
-          <span class="na">backend</span><span class="pi">:</span>
-            <span class="na">service</span><span class="pi">:</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-              <span class="na">port</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-</code></pre></div></div>
+spec:
+  rules:
+  - host: host-url
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mlflow
+              port:
+                name: http
+</code></pre>
 
-<p>This Ingress configuration sets up access for our MLFlow tracking server. It is very simple, the configuration ensures SSL redirection to HTTPS on port 443 and that is is only accessible from within the VPC (internal). The rule specified routes traffic for the <code class="language-plaintext highlighter-rouge">host-url</code> to the MLflow service on the HTTP port.</p>
+<p>This Ingress configuration sets up access for our MLFlow tracking server. It is very simple, the configuration ensures SSL redirection to HTTPS on port 443 and that is is only accessible from within the VPC (internal). The rule specified routes traffic for the <code>host-url</code> to the MLflow service on the HTTP port.</p>
 
-<p>Lastly, the deployment itself, outlined in <code class="language-plaintext highlighter-rouge">deployment.yaml</code> file:</p>
+<p>Lastly, the deployment itself, outlined in <code>deployment.yaml</code> file:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">mlflow</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">mlflow</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">serviceAccount</span><span class="pi">:</span> <span class="s">mlflow-sa</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">app</span>
-        <span class="na">image</span><span class="pi">:</span> <span class="s">add-your-image-here</span>
-        <span class="na">command</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">mlflow"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">server"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--host=0.0.0.0"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--backend-store-uri=postgresql://$(AWS_SECRET_MLFLOW_USERNAME):$(AWS_SECRET_MLFLOW_PASSWORD)@$(AWS_SECRET_MLFLOW_HOST):5432/mlflow"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--default-artifact-root=s3://mlflow-artifacts-bucket"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--port=8080"</span>
-        <span class="na">ports</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-          <span class="na">containerPort</span><span class="pi">:</span> <span class="m">8080</span>
-        <span class="na">envFrom</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
-            <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-secrets</span>
-        <span class="na">readinessProbe</span><span class="pi">:</span>
-          <span class="na">httpGet</span><span class="pi">:</span>
-            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-        <span class="na">startupProbe</span><span class="pi">:</span>
-          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">10</span>
-          <span class="na">httpGet</span><span class="pi">:</span>
-            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-        <span class="na">resources</span><span class="pi">:</span>
-          <span class="na">requests</span><span class="pi">:</span>
-            <span class="na">memory</span><span class="pi">:</span> <span class="s">1G</span>
-            <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
-          <span class="na">limits</span><span class="pi">:</span>
-            <span class="na">memory</span><span class="pi">:</span> <span class="s">1G</span>
-            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: mlflow
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      serviceAccount: mlflow-sa
+      containers:
+      - name: app
+        image: add-your-image-here
+        command:
+        - "mlflow"
+        - "server"
+        - "--host=0.0.0.0"
+        - "--backend-store-uri=postgresql://$(AWS_SECRET_MLFLOW_USERNAME):$(AWS_SECRET_MLFLOW_PASSWORD)@$(AWS_SECRET_MLFLOW_HOST):5432/mlflow"
+        - "--default-artifact-root=s3://mlflow-artifacts-bucket"
+        - "--port=8080"
+        ports:
+        - name: http
+          containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: mlflow-secrets
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        startupProbe:
+          initialDelaySeconds: 10
+          httpGet:
+            path: /
+            port: 8080
+        resources:
+          requests:
+            memory: 1G
+            cpu: 500m
+          limits:
+            memory: 1G
+            cpu: "1"
+</code></pre>
 
 <p>Key takeaways from this setup:</p>
 
 <ol>
   <li>We deploy a single replica of the MLFlow pod.</li>
-  <li>Replace <code class="language-plaintext highlighter-rouge">add-your-image-here</code> with the image we created earlier.</li>
-  <li>Secrets created earlier are passed as environment variables in the <code class="language-plaintext highlighter-rouge">envFrom</code> section.</li>
-  <li>Entrypoint is set to <code class="language-plaintext highlighter-rouge">mlflow server</code> and we pass the required arguments to connect to the database and the S3 bucket.</li>
+  <li>Replace <code>add-your-image-here</code> with the image we created earlier.</li>
+  <li>Secrets created earlier are passed as environment variables in the <code>envFrom</code> section.</li>
+  <li>Entrypoint is set to <code>mlflow server</code> and we pass the required arguments to connect to the database and the S3 bucket.</li>
   <li>Readiness and startup probes ensure the pod is fully operational before receiving requests.</li>
 </ol>
 
@@ -559,6 +575,13 @@
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

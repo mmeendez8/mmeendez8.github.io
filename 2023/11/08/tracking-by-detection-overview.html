@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -247,11 +263,11 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 
 <p>The cascade association step would look like this:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">track_age</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">maximum_age</span><span class="p">):</span>
-    <span class="n">tracks_to_associate</span> <span class="o">=</span> <span class="nf">get_tracks_with_age</span><span class="p">(</span><span class="n">tracks</span><span class="p">,</span> <span class="n">track_age</span><span class="p">)</span>
-    <span class="nf">associate</span><span class="p">(</span><span class="n">tracks_to_associate</span><span class="p">,</span> <span class="n">detections</span><span class="p">)</span>
-    <span class="nf">remove_associated_detections</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python">for track_age in range(1, maximum_age):
+    tracks_to_associate = get_tracks_with_age(tracks, track_age)
+    associate(tracks_to_associate, detections)
+    remove_associated_detections(detections)
+</code></pre>
 
 <h2 id="bytetrack">ByteTrack</h2>
 
@@ -417,6 +433,13 @@ There is camera motion correction in the code but not in the paper!!!!
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

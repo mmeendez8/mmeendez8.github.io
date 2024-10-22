@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -148,7 +164,7 @@
 <p>Protocol Buffers, also known as Protobuf, is a language-agnostic binary serialization format developed by Google. It is used for efficient data <strong>serialization of structured data</strong> and communication between applications. It is faster than JSON for two reasons:</p>
 
 <ul>
-  <li><strong>Messages are shorter</strong>. In Protobuf messages do not contain any metadata or extra information such as field names and data types. This is not needed since the data schema has been strictly predefined in the <code class="language-plaintext highlighter-rouge">.proto</code> file. It also uses a compact binary representation, variable-length encoding, which means that the number of bytes required to represent a value depends on its size.</li>
+  <li><strong>Messages are shorter</strong>. In Protobuf messages do not contain any metadata or extra information such as field names and data types. This is not needed since the data schema has been strictly predefined in the <code>.proto</code> file. It also uses a compact binary representation, variable-length encoding, which means that the number of bytes required to represent a value depends on its size.</li>
   <li><strong>Serialization is faster</strong>. Converting messages to and from bytes is faster than in JSON because of its binary format and predefined schema. Decoding can be optimized and parallelized.</li>
 </ul>
 
@@ -158,13 +174,13 @@
 
 <p>Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. However, images do not fall under the category of structured text. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG… In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create random 100x100 rgb image
-</span><span class="n">image</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
-<span class="c1"># serialize image to jpg using opencv
-</span><span class="n">encoded_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imencode</span><span class="p">(</span><span class="sh">"</span><span class="s">.jpg</span><span class="sh">"</span><span class="p">,</span> <span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">tobytes</span><span class="p">()</span>
-<span class="c1"># fake send with grpc
-</span><span class="n">grpc</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">encoded_image</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python"># create random 100x100 rgb image
+image = numpy.random.rand(100, 100, 3) * 255
+# serialize image to jpg using opencv
+encoded_image = cv2.imencode(".jpg", image)[1].tobytes()
+# fake send with grpc
+grpc.send(encoded_image)
+</code></pre>
 
 <p>The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here… Let’s check this with real numbers:</p>
 
@@ -182,47 +198,47 @@ The gRPC server has been implemented using <a href="https://grpc.io/docs/languag
 
 <p class="image-caption"><em>This is what Stable Diffusion creates with the prompt “an image of a cat is being encoded into a chunk of bytes”</em></p>
 
-<p>We decided to measure three different requests and using a single response for all of them. The gRPC <code class="language-plaintext highlighter-rouge">.proto</code> file for those requests looks like the following:</p>
+<p>We decided to measure three different requests and using a single response for all of them. The gRPC <code>.proto</code> file for those requests looks like the following:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BasicRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
+<pre><code class="language-python">class BasicRequest(BaseModel):
+    """
     Structured data request, we expect to match online benchmarks with this
-    </span><span class="sh">"""</span>
-    <span class="n">field1</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">field2</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">field3</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">field4</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    """
+    field1: str
+    field2: str
+    field3: int
+    field4: Dict[str, int]
 
-<span class="k">class</span> <span class="nc">ImageBase64Request</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
+class ImageBase64Request(BaseModel):
+    """
     Encode image as a string using Base64 encoding. 
     This is a very bad solution (but simple to do) that should always be avoided
-    </span><span class="sh">"""</span>
-    <span class="n">image</span><span class="p">:</span> <span class="nb">str</span>
+    """
+    image: str
 
-<span class="k">class</span> <span class="nc">ImageBinaryRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
+class ImageBinaryRequest(BaseModel):
+    """
     Contains an image encoded as bytes.
-    </span><span class="sh">"""</span>
-    <span class="n">image</span><span class="p">:</span> <span class="nb">bytes</span>
+    """
+    image: bytes
 
-<span class="k">class</span> <span class="nc">BasicResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">prediction1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
-    <span class="n">prediction2</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
-</code></pre></div></div>
+class BasicResponse(BaseModel):
+    prediction1: List[float]
+    prediction2: Dict[str, int]
+</code></pre>
 
 <p>Note REST’s requests and responses are identical to these so we can make a fair comparison.</p>
 
 <p>Our client does a very simple thing, sends twenty concurrent requests to each server and waits for a response. It repeats this ten times for then computing the average time it took. Pseudocode for the client it is shown below:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">start</span><span class="o">=</span> <span class="nf">time</span><span class="p">()</span>
-    <span class="nf">send_concurrent_request_to_specific_server</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">times</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="nf">start</span><span class="p">())</span>
+<pre><code class="language-python">times = []
+for _ in range(10):
+    start= time()
+    send_concurrent_request_to_specific_server(n=20)
+    times.append(time() - start())
 
-<span class="n">average_time</span> <span class="o">=</span> <span class="nf">mean</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
-</code></pre></div></div>
+average_time = mean(times)
+</code></pre>
 
 <p>We tested this for three different image sizes. Results are collected below:</p>
 
@@ -427,24 +443,24 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <p>Two factors contribute to the similar performance results for gRPC and REST. Firstly, the model’s inference time is considerably longer than the networking time, making it difficult to discern the small gains obtained by changing the transmission protocol. For example, sending 20 large images concurrently in the simple base case (Table 3) took roughly 0.19s, whereas we are now spending approximately 1.4 seconds (Table 6), highlighting the significant impact of model inference time on the comparison.</p>
 
-<p>Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve’s <code class="language-plaintext highlighter-rouge">.proto</code> definition for <a href="https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23" target="_blank" rel="noopener noreferrer">prediction response</a> is too generic and it cannot be personalized with your model specifics.</p>
+<p>Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve’s <code>.proto</code> definition for <a href="https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23" target="_blank" rel="noopener noreferrer">prediction response</a> is too generic and it cannot be personalized with your model specifics.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span> <span class="n">PredictionResponse</span> <span class="p">{</span>
-    <span class="o">//</span> <span class="n">Response</span> <span class="n">content</span> <span class="k">for</span> <span class="n">prediction</span>
-    <span class="nb">bytes</span> <span class="n">prediction</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<pre><code class="language-json">message PredictionResponse {
+    // Response content for prediction
+    bytes prediction = 1;
+}
+</code></pre>
 
-<p>This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the <code class="language-plaintext highlighter-rouge">.proto</code> file for our response could be something like:</p>
+<p>This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the <code>.proto</code> file for our response could be something like:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span> <span class="n">PredictionResponse</span> <span class="p">{</span>
-    <span class="n">repeated</span> <span class="nb">float</span> <span class="n">scores</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="n">repeated</span> <span class="n">int32</span> <span class="n">scores</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="n">repeated</span> <span class="n">repeated</span> <span class="n">int32</span> <span class="n">bboxes</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<pre><code class="language-json">message PredictionResponse {
+    repeated float scores = 1;
+    repeated int32 scores = 2;
+    repeated repeated int32 bboxes = 3;
+}
+</code></pre>
 
-<p>The differences between this response and the one provided by Torchserve are clear. You do not get any of the Protobuf advantage since the Torchserve schema definition is too general. A better or more customizable definition such as the one provided by Tfserving, of the <code class="language-plaintext highlighter-rouge">.proto</code> file could help boost performance.</p>
+<p>The differences between this response and the one provided by Torchserve are clear. You do not get any of the Protobuf advantage since the Torchserve schema definition is too general. A better or more customizable definition such as the one provided by Tfserving, of the <code>.proto</code> file could help boost performance.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -519,6 +535,13 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

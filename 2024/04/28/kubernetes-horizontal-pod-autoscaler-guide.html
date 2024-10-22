@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -132,7 +148,7 @@
 
 <h2 id="how-does-hpa-work">How does HPA work?</h2>
 
-<p>First of all we need to make sure we understand the concepts of <code class="language-plaintext highlighter-rouge">requests</code> and <code class="language-plaintext highlighter-rouge">limits</code> since they are fundamental to how resources are allocated and managed across the pods in a cluster.</p>
+<p>First of all we need to make sure we understand the concepts of <code>requests</code> and <code>limits</code> since they are fundamental to how resources are allocated and managed across the pods in a cluster.</p>
 
 <ul>
   <li><strong>Requests</strong>: This value specifies the amount of CPU or memory that Kubernetes guarantees to a pod. When a pod is scheduled, the Kubernetes scheduler uses this request value to decide on which node the pod can fit. So this number ensures the pod has the resources it needs to run.</li>
@@ -141,57 +157,57 @@
 
 <p>Imagine our deployment has the following setup:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># deployment.yaml</span>
-<span class="na">resources</span><span class="pi">:</span>
-  <span class="na">limits</span><span class="pi">:</span>
-    <span class="na">memory</span><span class="pi">:</span> <span class="s">2000Mi</span>
-    <span class="na">cpu</span><span class="pi">:</span> <span class="s">1500m</span>
-  <span class="na">requests</span><span class="pi">:</span>
-    <span class="na">memory</span><span class="pi">:</span> <span class="s">1350Mi</span>
-    <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
+<pre><code class="language-yaml"># deployment.yaml
+resources:
+  limits:
+    memory: 2000Mi
+    cpu: 1500m
+  requests:
+    memory: 1350Mi
+    cpu: 500m
     
-</code></pre></div></div>
+</code></pre>
 
 <p>And our HPA is configured in the following manner:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">autoscaling/v2</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">HorizontalPodAutoscaler</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">autoscaler-name</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">scaleTargetRef</span><span class="pi">:</span>
-    <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
-    <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s">autoscaler-name</span>
-  <span class="na">minReplicas</span><span class="pi">:</span> <span class="m">1</span>
-  <span class="na">maxReplicas</span><span class="pi">:</span> <span class="m">3</span>
-  <span class="na">metrics</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Resource</span>
-    <span class="na">resource</span><span class="pi">:</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">cpu</span>
-      <span class="na">target</span><span class="pi">:</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">Utilization</span>
-        <span class="na">averageUtilization</span><span class="pi">:</span> <span class="m">90</span>
-  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Resource</span>
-    <span class="na">resource</span><span class="pi">:</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">memory</span>
-      <span class="na">target</span><span class="pi">:</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">Utilization</span>
-        <span class="na">averageUtilization</span><span class="pi">:</span> <span class="m">90</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: autoscaler-name
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: autoscaler-name
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 90
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 90
+</code></pre>
 
 <p>So what does this mean? Well if you are a proper engineer what you would do is check the <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details" target="_blank" rel="noopener noreferrer">official docs</a> and try to carefully understand this. But if you are like me… you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅).</p>
 
 <p>My first guess was that this would configure HPA to scale up the number of pods when memory or CPU usage exceeded 90%. However, I overlooked a crucial detail: the calculation also needs to include the current number of replicas. Here’s how HPA actually works:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
-</code></pre></div></div>
+<pre><code>desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
+</code></pre>
 
 <p>Where:</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">currentReplicas</code> is the number of replicas the deployment is currently running.</li>
-  <li><code class="language-plaintext highlighter-rouge">currentMetricValue</code> is the current value of the metric we are monitoring (e.g. CPU usage).</li>
-  <li><code class="language-plaintext highlighter-rouge">desiredMetricValue</code> is the target value for the metric we are monitoring (e.g. 90% requested CPU usage).</li>
+  <li><code>currentReplicas</code> is the number of replicas the deployment is currently running.</li>
+  <li><code>currentMetricValue</code> is the current value of the metric we are monitoring (e.g. CPU usage).</li>
+  <li><code>desiredMetricValue</code> is the target value for the metric we are monitoring (e.g. 90% requested CPU usage).</li>
 </ul>
 
 <p>So let’s see what I observed in Grafana that day.</p>
@@ -205,7 +221,7 @@
 
 <p class="image-caption"><em>Figure 1. Grafana plot showing memory and CPU usages. Note pod colors differ between CPU and Memory usage</em></p>
 
-<p>What I observed was that at 12:20, we had three pods running with memory usage around <code class="language-plaintext highlighter-rouge">1100 MB</code> and CPU usage less than <code class="language-plaintext highlighter-rouge">100m</code>. Both metrics appeared to be below the target values: <code class="language-plaintext highlighter-rouge">1215 MB (=0.9*1350 MB)</code> for memory and <code class="language-plaintext highlighter-rouge">450m (=0.9*500m)</code> for CPU. So, why were there three pods running?</p>
+<p>What I observed was that at 12:20, we had three pods running with memory usage around <code>1100 MB</code> and CPU usage less than <code>100m</code>. Both metrics appeared to be below the target values: <code>1215 MB (=0.9*1350 MB)</code> for memory and <code>450m (=0.9*500m)</code> for CPU. So, why were there three pods running?</p>
 
 <h2 id="visualization-tool">Visualization tool</h2>
 
@@ -320,7 +336,7 @@
 
 <p class="image-caption"><em>Figure 2. HPA memory expected replica</em></p>
 
-<p>The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let’s do the same for the CPU usage assuming a value of <code class="language-plaintext highlighter-rouge">600m</code> at that time:</p>
+<p>The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let’s do the same for the CPU usage assuming a value of <code>600m</code> at that time:</p>
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png">
@@ -331,7 +347,7 @@
 
 <p class="image-caption"><em>Figure 3. HPA CPU expected replica</em></p>
 
-<p>At startup, the CPU usage for the pod exceeded the target value of <code class="language-plaintext highlighter-rouge">450m</code>. This means that the <code class="language-plaintext highlighter-rouge">currentMetricValue / desiredMetricValue</code> ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:</p>
+<p>At startup, the CPU usage for the pod exceeded the target value of <code>450m</code>. This means that the <code>currentMetricValue / desiredMetricValue</code> ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:</p>
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png">
@@ -342,11 +358,11 @@
 
 <p class="image-caption"><em>Figure 4. HPA CPU current replicas vs expected replicas</em></p>
 
-<p>There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the <code class="language-plaintext highlighter-rouge">currentMetricValue / desiredMetricValue</code> ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, <code class="language-plaintext highlighter-rouge">maxReplicas</code> was set to 3. Thus, we have identified the root of the problem!</p>
+<p>There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the <code>currentMetricValue / desiredMetricValue</code> ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, <code>maxReplicas</code> was set to 3. Thus, we have identified the root of the problem!</p>
 
 <h2 id="why-is-hpa-not-scaling-down">Why is HPA not scaling down?</h2>
 
-<p>Although CPU usage spiked at startup, it quickly returned to low levels. So why isn’t the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of <code class="language-plaintext highlighter-rouge">450m</code>, as illustrated in <em>Figure 1</em>. According to the official HPA documentation:</p>
+<p>Although CPU usage spiked at startup, it quickly returned to low levels. So why isn’t the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of <code>450m</code>, as illustrated in <em>Figure 1</em>. According to the official HPA documentation:</p>
 
 <blockquote>
   <p>“If multiple metrics are specified in a HorizontalPodAutoscaler, this calculation is done for each metric, and then the largest of the desired replica counts is chosen.”</p>
@@ -447,6 +463,13 @@
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

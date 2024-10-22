@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -191,29 +207,29 @@
 
 <p>I created a simple image with the same resolution as the NFL pitch, <em>120 x 53.3 px</em>. This means one pixel in the image equals one yard in the real world. Next, I added end zones, hash marks, yard numbers, and all the necessary elements, each positioned accurately. I have to admit that although this task should be relatively simple and mechanical, it took me a while to achieve a decent result. Be sure to check the real code, but see below a small example that can help you realize the amount of handcrafting needed to create a good template:</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// Define the pitch dimensions and other constants</span>
-    <span class="kd">const</span> <span class="nx">pitchHeight</span> <span class="o">=</span> <span class="mi">53</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">pitchWidth</span> <span class="o">=</span> <span class="mi">120</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> 
-    <span class="kd">const</span> <span class="nx">ctxTemplate</span> <span class="o">=</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nf">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+<pre><code class="language-javascript">    // Define the pitch dimensions and other constants
+    const pitchHeight = 53 + 1/3;
+    const pitchWidth = 120;
+    const lineWidth = 2; 
+    const ctxTemplate = templateCanvas.getContext('2d');
 
-    <span class="c1">// Set size and color of template canvas</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">;</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">black</span><span class="dl">"</span><span class="p">;</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nf">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    // Set size and color of template canvas
+    ctxTemplate.strokeStyle = 'red';
+    ctxTemplate.fillStyle = "black";
+    ctxTemplate.fillRect(0, 0, templateCanvas.width, templateCanvas.height);
     
-    <span class="c1">// Translate to avoid cropping the sidelines</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="nx">lineWidth</span><span class="p">;</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nf">translate</span><span class="p">(</span><span class="nx">lineWidth</span><span class="p">,</span> <span class="nx">lineWidth</span><span class="p">);</span>
+    // Translate to avoid cropping the sidelines
+    ctxTemplate.lineWidth = lineWidth;
+    ctxTemplate.translate(lineWidth, lineWidth);
 
-    <span class="c1">// Side lines</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
+    // Side lines
+    addLine({ x: 0, y: 0 }, { x: 0, y: pitchHeight });
+    addLine({ x: pitchWidth, y: 0 }, { x: pitchWidth, y: pitchHeight });
 
-    <span class="c1">// End lines</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">});</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
-</code></pre></div></div>
+    // End lines
+    addLine({ x: 0, y: 0 }, { x: pitchWidth, y: 0 });
+    addLine({ x: 0, y: pitchHeight }, { x: pitchWidth, y: pitchHeight });
+</code></pre>
 
 <p>I repeated this process for all pitch elements, resulting in the image below:</p>
 
@@ -242,44 +258,44 @@
 
 <p>This is the code that retrieves the homography matrix from the list of points and applies it to the template image:</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">function</span> <span class="nf">computeHomography</span><span class="p">()</span> <span class="p">{</span>
-        <span class="c1">// Check that both lists of points have the same size and that their size is at least 4</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">Both lists of points must have the same size and contain at least 4 points</span><span class="dl">'</span><span class="p">);</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+<pre><code class="language-javascript">    function computeHomography() {
+        // Check that both lists of points have the same size and that their size is at least 4
+        if (pointsImage.length !== pointsTemplate.length || pointsImage.length &lt; 4) {
+            alert('Both lists of points must have the same size and contain at least 4 points');
+            return;
+        }
 
-        <span class="c1">// Convert points to cv.Mat format</span>
-        <span class="kd">let</span> <span class="nx">imagePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
-        <span class="kd">let</span> <span class="nx">templatePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
+        // Convert points to cv.Mat format
+        let imagePoints = cv.matFromArray(pointsImage.length, 1, cv.CV_32FC2, pointsImage.flatMap(point =&gt; [Math.round(point.x), Math.round(point.y)]));
+        let templatePoints = cv.matFromArray(pointsTemplate.length, 1, cv.CV_32FC2, pointsTemplate.flatMap(point =&gt; [Math.round(point.x), Math.round(point.y)]));
 
-        <span class="c1">// Compute homography</span>
-        <span class="kd">let</span> <span class="nx">homography</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">findHomography</span><span class="p">(</span><span class="nx">templatePoints</span><span class="p">,</span> <span class="nx">imagePoints</span><span class="p">);</span>
+        // Compute homography
+        let homography = cv.findHomography(templatePoints, imagePoints);
 
-        <span class="c1">// Check if homography is none because of colinear points</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">homography</span><span class="p">.</span><span class="nf">empty</span><span class="p">())</span>
-        <span class="p">{</span>
-            <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Could not found any homography for these sets of points. Be sure they are not colinear.</span><span class="dl">"</span><span class="p">);</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+        // Check if homography is none because of colinear points
+        if (homography.empty())
+        {
+            alert("Could not found any homography for these sets of points. Be sure they are not colinear.");
+            return;
+        }
 
-        <span class="c1">// Warp the template image using the homography</span>
-        <span class="kd">let</span> <span class="nx">warpedTemplate</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">cv</span><span class="p">.</span><span class="nc">Mat</span><span class="p">();</span>
-        <span class="nx">cv</span><span class="p">.</span><span class="nf">warpPerspective</span><span class="p">(</span><span class="nx">templateImage</span><span class="p">,</span> <span class="nx">warpedTemplate</span><span class="p">,</span> <span class="nx">homography</span><span class="p">,</span> <span class="nx">sourceImage</span><span class="p">.</span><span class="nf">size</span><span class="p">());</span>
+        // Warp the template image using the homography
+        let warpedTemplate = new cv.Mat();
+        cv.warpPerspective(templateImage, warpedTemplate, homography, sourceImage.size());
 
-        <span class="c1">// Add the warped template to the source image</span>
-        <span class="kd">let</span> <span class="nx">resultWeighted</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">cv</span><span class="p">.</span><span class="nc">Mat</span><span class="p">();</span>
-        <span class="nx">cv</span><span class="p">.</span><span class="nf">addWeighted</span><span class="p">(</span><span class="nx">sourceImage</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">warpedTemplate</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">resultWeighted</span><span class="p">);</span>
-        <span class="nx">cv</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="dl">'</span><span class="s1">imageCanvas</span><span class="dl">'</span><span class="p">,</span> <span class="nx">resultWeighted</span><span class="p">);</span>
+        // Add the warped template to the source image
+        let resultWeighted = new cv.Mat();
+        cv.addWeighted(sourceImage, 1, warpedTemplate, 0.5, 0, resultWeighted);
+        cv.imshow('imageCanvas', resultWeighted);
 
-        <span class="c1">// Clean up memory</span>
-        <span class="nx">imagePoints</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
-        <span class="nx">templatePoints</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
-        <span class="nx">warpedTemplate</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+        // Clean up memory
+        imagePoints.delete();
+        templatePoints.delete();
+        warpedTemplate.delete();
 
-        <span class="k">return</span> <span class="nx">homography</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div></div>
+        return homography;
+    }
+</code></pre>
 
 <h3 id="projecting-between-image-and-template">Projecting between image and template</h3>
 
@@ -365,6 +381,13 @@
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

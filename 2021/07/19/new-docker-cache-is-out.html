@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -147,61 +163,61 @@
 
 <p>I updated my CI pipeline to support the new feature. I can now remove all conditionals that I was using before to reduce building time when Dockerfile or conda.yaml were not modified. The simplified pipeline would look like this:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration new cache</span>
+<pre><code class="language-yaml">name: Continuous Integration new cache
 
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">push</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
-  <span class="na">pull_request</span><span class="pi">:</span>
-    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build_docker</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+    steps:
+      - uses: actions/checkout@v2
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@v1</span>
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Login to GitHub Container Registry</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">registry</span><span class="pi">:</span> <span class="s">ghcr.io</span>
-          <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-          <span class="na">password</span><span class="pi">:</span> <span class="s">$</span>
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: mmeendez8
+          password: $
 
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build production image</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v2</span>
-        <span class="na">with</span><span class="pi">:</span>
-          <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
-          <span class="na">file</span><span class="pi">:</span> <span class="s">Dockerfile</span>
-          <span class="na">push</span><span class="pi">:</span> <span class="kc">true</span>
-          <span class="na">tags</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
-          <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=gha</span>
-          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=gha,mode=max</span>
+      - name: Build production image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-  <span class="na">lint_and_test</span><span class="pi">:</span>
-    <span class="na">needs</span><span class="pi">:</span> <span class="s">build_docker</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-    <span class="na">container</span><span class="pi">:</span>
-      <span class="na">image</span><span class="pi">:</span> <span class="s">ghcr.io/mmeendez8/cache_docker/ci_dlc:latest</span>
-      <span class="na">credentials</span><span class="pi">:</span>
-        <span class="na">username</span><span class="pi">:</span> <span class="s">mmeendez8</span>
-        <span class="na">password</span><span class="pi">:</span> <span class="s">$</span>
+  lint_and_test:
+    needs: build_docker
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mmeendez8/cache_docker/ci_dlc:latest
+      credentials:
+        username: mmeendez8
+        password: $
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Lint code</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="s">pre-commit install</span>
-          <span class="s">pre-commit run</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">pytest tests</span>
-</code></pre></div></div>
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint code
+        run: |
+          pre-commit install
+          pre-commit run
+      - name: Run tests
+        run: pytest tests
+</code></pre>
 
-<p>Note how <code class="language-plaintext highlighter-rouge">cache-from</code> and <code class="language-plaintext highlighter-rouge">cache-to</code> type is set now to <code class="language-plaintext highlighter-rouge">gha</code> (github action). The first time the action is triggered the cache is empty so Docker will need to build all layers from scratch:</p>
+<p>Note how <code>cache-from</code> and <code>cache-to</code> type is set now to <code>gha</code> (github action). The first time the action is triggered the cache is empty so Docker will need to build all layers from scratch:</p>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/empty_cache.jpg">
@@ -212,9 +228,9 @@
 
 <p>But after this cache is full, so we can reuse all our layers in next builds, if the images was not modified, or just some of them when we apply changes to our Dockerfile. Let’s trigger a new build with an empty commit and check the time it needs now:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit <span class="nt">--allow-empty</span> <span class="nt">-m</span> <span class="s2">"Test build"</span>
+<pre><code class="language-bash">git commit --allow-empty -m "Test build"
 git push
-</code></pre></div></div>
+</code></pre>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/full_cache.jpg">
@@ -295,6 +311,13 @@ git push
   
   <!-- Mathjax -->
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

@@ -48,6 +48,22 @@
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -139,7 +155,7 @@
 
 <script src="https://gist.github.com/mmeendez8/8949b080739804b8703feb9aff72bf7d.js"></script>
 
-<p>In here we download the dataset using Keras. After this we create tensors that will be filled with the Numpy vectors of the training set. The map function will convert the image from <code class="language-plaintext highlighter-rouge">uint8</code> to <code class="language-plaintext highlighter-rouge">floats</code>. The dataset API allows us to define a batch size and to prefetch this batches, it uses a thread and an internal buffer to prefetch elements from the input dataset ahead of the time they are requested. Last three lines are used to create an iterator, so we can move through the different batches of our data and reshape them. Pretty simple!</p>
+<p>In here we download the dataset using Keras. After this we create tensors that will be filled with the Numpy vectors of the training set. The map function will convert the image from <code>uint8</code> to <code>floats</code>. The dataset API allows us to define a batch size and to prefetch this batches, it uses a thread and an internal buffer to prefetch elements from the input dataset ahead of the time they are requested. Last three lines are used to create an iterator, so we can move through the different batches of our data and reshape them. Pretty simple!</p>
 
 <p>If this is the first time you use this API I recommend you to test how is this working with this simple example that shows the first image of each batch.</p>
 
@@ -151,7 +167,7 @@
 
 <p>We must now “code our encoder”. Since we are dealing with images, we are going to use some convolutional layers which will help us to maintain the spatial relations between pixels. I got the some of the ideas of how to structure the network from this <a href="https://towardsdatascience.com/teaching-a-variational-autoencoder-vae-to-draw-mnist-characters-978675c95776" target="_blank" rel="noopener noreferrer">great Felix Mohr’s post</a></p>
 
-<p>My intention is to gradually reduce the dimensionality of our input. The images are <code class="language-plaintext highlighter-rouge">28x28</code> pixels, so if we add a convolutional layer with a stride of 2 and some extra padding too, we can reduce the image dimension to the half (<a href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks" target="_blank" rel="noopener noreferrer">review some CNN theory here</a>). With two of these layers concatenated the final dimensions will be <code class="language-plaintext highlighter-rouge">7x7</code> (<code class="language-plaintext highlighter-rouge">x64</code> if have into account the number of filters I am applying). After this I use another convolutional layer with stride 1 and ‘same’ padding which will maintain the vector size through the conv operations.</p>
+<p>My intention is to gradually reduce the dimensionality of our input. The images are <code>28x28</code> pixels, so if we add a convolutional layer with a stride of 2 and some extra padding too, we can reduce the image dimension to the half (<a href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks" target="_blank" rel="noopener noreferrer">review some CNN theory here</a>). With two of these layers concatenated the final dimensions will be <code>7x7</code> (<code>x64</code> if have into account the number of filters I am applying). After this I use another convolutional layer with stride 1 and ‘same’ padding which will maintain the vector size through the conv operations.</p>
 
 <p>The <strong>mean</strong> and <strong>standard deviation</strong> of our Gaussian will be computed through two dense layers. We must note that the standard deviation of a Normal distribution is always positive, so I added a softplus function that will take care of this restriction (other works also apply a diagonal constraint on these weights). The epsilon value will be sampled from an unit normal distribution and then we will obtain our \(z\) value using the <em>reparametrization trick</em> (<a href="https://medium.com/@miguelmndez_30551/vaes-i-generating-images-with-tensorflow-f81b2f1c63b0" target="_blank" rel="noopener noreferrer">see my previous post</a>)</p>
 
@@ -172,7 +188,7 @@
 
 <script src="https://gist.github.com/mmeendez8/ea9e71ad05d2f79f448b34f1a8b5be6c.js"></script>
 
-<p>Note that <code class="language-plaintext highlighter-rouge">FLAGS.inputs_decoder</code> references the number of neurons in our dense layers which will determine the size of the image before the transpose convolution layers. In this case I will use the same structure as in the encoder, so the number of neurons will be 49 and the input image size to the first tranposed conv layer will be <code class="language-plaintext highlighter-rouge">7x7</code>. It’s also interesting to point that the last layer uses a <a href="https://en.wikipedia.org/wiki/Sigmoid_function" target="_blank" rel="noopener noreferrer">sigmoid</a> activation, <strong>so we force our outputs to be between 0 and 1</strong>.</p>
+<p>Note that <code>FLAGS.inputs_decoder</code> references the number of neurons in our dense layers which will determine the size of the image before the transpose convolution layers. In this case I will use the same structure as in the encoder, so the number of neurons will be 49 and the input image size to the first tranposed conv layer will be <code>7x7</code>. It’s also interesting to point that the last layer uses a <a href="https://en.wikipedia.org/wiki/Sigmoid_function" target="_blank" rel="noopener noreferrer">sigmoid</a> activation, <strong>so we force our outputs to be between 0 and 1</strong>.</p>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid.jpg">
@@ -375,6 +391,13 @@
   });
 </script>
   
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
 
 </body>
 

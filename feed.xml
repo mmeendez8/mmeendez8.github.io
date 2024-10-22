@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-09-27T08:01:32+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Understanding MOT Metrics</title><link href="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html" rel="alternate" type="text/html" title="Understanding MOT Metrics" /><published>2024-08-25T00:00:00+00:00</published><updated>2024-08-25T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html"><![CDATA[<p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-10-22T07:42:27+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Understanding MOT Metrics</title><link href="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html" rel="alternate" type="text/html" title="Understanding MOT Metrics" /><published>2024-08-25T00:00:00+00:00</published><updated>2024-08-25T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html"><![CDATA[<p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
 
 <p>In this article, I’ll provide an introduction to tracking metrics, starting from the basic principles and breaking down the key differences between various metrics. I’ll focus on three popular metrics: MOTA, IDF1, and HOTA, which are widely used in the <a href="https://paperswithcode.com/sota/multi-object-tracking-on-mot20-1" target="_blank" rel="noopener noreferrer">Multi-Object Tracking (MOT) community</a>. Understanding these is crucial because the choice of metric can significantly impact how we interpret a tracker’s performance.</p>
 
@@ -75,10 +75,10 @@ For a more in-depth explanation of the Hungarian algorithm, check out <a href="h
 
 <p>In practice, the Hungarian matching algorithm is modified to minimize identity switches from the previous frame. In <a href="https://github.com/JonathonLuiten/TrackEval/blob/master/trackeval/metrics/clear.py#L81" target="_blank" rel="noopener noreferrer">TrackEval code</a> this is done using a simple gating trick:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score</span> <span class="o">=</span> <span class="nc">IoU</span><span class="p">(</span><span class="n">GT</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">pred</span> <span class="o">==</span> <span class="nf">previous_assigned_id</span><span class="p">(</span><span class="n">GT</span><span class="p">):</span>
-    <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">*</span> <span class="mi">1000</span>
-</code></pre></div></div>
+<pre><code class="language-python">score = IoU(GT, pred)
+if pred == previous_assigned_id(GT):
+    score = score * 1000
+</code></pre>
 
 <p>The MOTA metric is computed across all frames as:</p>
 
@@ -160,12 +160,12 @@ For a more in-depth explanation of the Hungarian algorithm, check out <a href="h
 
 <p>The HOTA algorithm can be summarized in the following steps:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">each</span> <span class="n">frame</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">each</span> <span class="n">α</span><span class="p">:</span>
-        <span class="n">matching</span> <span class="n">between</span> <span class="n">gt</span> <span class="ow">and</span> <span class="nf">preds </span><span class="p">(</span><span class="n">Hungarian</span> <span class="n">algorithm</span><span class="p">)</span>
-        <span class="n">obtain</span> <span class="n">TP</span><span class="p">,</span> <span class="n">FP</span> <span class="ow">and</span> <span class="n">FN</span> <span class="k">from</span> <span class="n">previous</span> <span class="n">matching</span>
-        <span class="n">compute</span> <span class="n">AssA</span> <span class="n">across</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">video</span> <span class="k">for</span> <span class="n">each</span> <span class="n">TP</span><span class="p">.</span>
-</code></pre></div></div>
+<pre><code class="language-python">for each frame:
+    for each α:
+        matching between gt and preds (Hungarian algorithm)
+        obtain TP, FP and FN from previous matching
+        compute AssA across the entire video for each TP.
+</code></pre>
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota.jpg">
@@ -235,7 +235,7 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <h2 id="how-does-hpa-work">How does HPA work?</h2>
 
-<p>First of all we need to make sure we understand the concepts of <code class="language-plaintext highlighter-rouge">requests</code> and <code class="language-plaintext highlighter-rouge">limits</code> since they are fundamental to how resources are allocated and managed across the pods in a cluster.</p>
+<p>First of all we need to make sure we understand the concepts of <code>requests</code> and <code>limits</code> since they are fundamental to how resources are allocated and managed across the pods in a cluster.</p>
 
 <ul>
   <li><strong>Requests</strong>: This value specifies the amount of CPU or memory that Kubernetes guarantees to a pod. When a pod is scheduled, the Kubernetes scheduler uses this request value to decide on which node the pod can fit. So this number ensures the pod has the resources it needs to run.</li>
@@ -244,57 +244,57 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <p>Imagine our deployment has the following setup:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># deployment.yaml</span>
-<span class="na">resources</span><span class="pi">:</span>
-  <span class="na">limits</span><span class="pi">:</span>
-    <span class="na">memory</span><span class="pi">:</span> <span class="s">2000Mi</span>
-    <span class="na">cpu</span><span class="pi">:</span> <span class="s">1500m</span>
-  <span class="na">requests</span><span class="pi">:</span>
-    <span class="na">memory</span><span class="pi">:</span> <span class="s">1350Mi</span>
-    <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
+<pre><code class="language-yaml"># deployment.yaml
+resources:
+  limits:
+    memory: 2000Mi
+    cpu: 1500m
+  requests:
+    memory: 1350Mi
+    cpu: 500m
     
-</code></pre></div></div>
+</code></pre>
 
 <p>And our HPA is configured in the following manner:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">autoscaling/v2</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">HorizontalPodAutoscaler</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">autoscaler-name</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">scaleTargetRef</span><span class="pi">:</span>
-    <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
-    <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s">autoscaler-name</span>
-  <span class="na">minReplicas</span><span class="pi">:</span> <span class="m">1</span>
-  <span class="na">maxReplicas</span><span class="pi">:</span> <span class="m">3</span>
-  <span class="na">metrics</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Resource</span>
-    <span class="na">resource</span><span class="pi">:</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">cpu</span>
-      <span class="na">target</span><span class="pi">:</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">Utilization</span>
-        <span class="na">averageUtilization</span><span class="pi">:</span> <span class="m">90</span>
-  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Resource</span>
-    <span class="na">resource</span><span class="pi">:</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">memory</span>
-      <span class="na">target</span><span class="pi">:</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">Utilization</span>
-        <span class="na">averageUtilization</span><span class="pi">:</span> <span class="m">90</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: autoscaler-name
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: autoscaler-name
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 90
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 90
+</code></pre>
 
 <p>So what does this mean? Well if you are a proper engineer what you would do is check the <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details" target="_blank" rel="noopener noreferrer">official docs</a> and try to carefully understand this. But if you are like me… you probably would make some assumptions and hope for the best (only to end up having to read the docs 😅).</p>
 
 <p>My first guess was that this would configure HPA to scale up the number of pods when memory or CPU usage exceeded 90%. However, I overlooked a crucial detail: the calculation also needs to include the current number of replicas. Here’s how HPA actually works:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
-</code></pre></div></div>
+<pre><code>desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
+</code></pre>
 
 <p>Where:</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">currentReplicas</code> is the number of replicas the deployment is currently running.</li>
-  <li><code class="language-plaintext highlighter-rouge">currentMetricValue</code> is the current value of the metric we are monitoring (e.g. CPU usage).</li>
-  <li><code class="language-plaintext highlighter-rouge">desiredMetricValue</code> is the target value for the metric we are monitoring (e.g. 90% requested CPU usage).</li>
+  <li><code>currentReplicas</code> is the number of replicas the deployment is currently running.</li>
+  <li><code>currentMetricValue</code> is the current value of the metric we are monitoring (e.g. CPU usage).</li>
+  <li><code>desiredMetricValue</code> is the target value for the metric we are monitoring (e.g. 90% requested CPU usage).</li>
 </ul>
 
 <p>So let’s see what I observed in Grafana that day.</p>
@@ -308,7 +308,7 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <p class="image-caption"><em>Figure 1. Grafana plot showing memory and CPU usages. Note pod colors differ between CPU and Memory usage</em></p>
 
-<p>What I observed was that at 12:20, we had three pods running with memory usage around <code class="language-plaintext highlighter-rouge">1100 MB</code> and CPU usage less than <code class="language-plaintext highlighter-rouge">100m</code>. Both metrics appeared to be below the target values: <code class="language-plaintext highlighter-rouge">1215 MB (=0.9*1350 MB)</code> for memory and <code class="language-plaintext highlighter-rouge">450m (=0.9*500m)</code> for CPU. So, why were there three pods running?</p>
+<p>What I observed was that at 12:20, we had three pods running with memory usage around <code>1100 MB</code> and CPU usage less than <code>100m</code>. Both metrics appeared to be below the target values: <code>1215 MB (=0.9*1350 MB)</code> for memory and <code>450m (=0.9*500m)</code> for CPU. So, why were there three pods running?</p>
 
 <h2 id="visualization-tool">Visualization tool</h2>
 
@@ -423,7 +423,7 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <p class="image-caption"><em>Figure 2. HPA memory expected replica</em></p>
 
-<p>The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let’s do the same for the CPU usage assuming a value of <code class="language-plaintext highlighter-rouge">600m</code> at that time:</p>
+<p>The memory usage seems to be below the 90% so the number of replicas would be set to 1. Let’s do the same for the CPU usage assuming a value of <code>600m</code> at that time:</p>
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_init.png">
@@ -434,7 +434,7 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <p class="image-caption"><em>Figure 3. HPA CPU expected replica</em></p>
 
-<p>At startup, the CPU usage for the pod exceeded the target value of <code class="language-plaintext highlighter-rouge">450m</code>. This means that the <code class="language-plaintext highlighter-rouge">currentMetricValue / desiredMetricValue</code> ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:</p>
+<p>At startup, the CPU usage for the pod exceeded the target value of <code>450m</code>. This means that the <code>currentMetricValue / desiredMetricValue</code> ratio was greater than one, indicating that the autoscaler needed to scale up the replicas. But by how much? Let’s adjust the x-axis of the plot to display the number of replicas:</p>
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/cpu_stairs.png">
@@ -445,11 +445,11 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <p class="image-caption"><em>Figure 4. HPA CPU current replicas vs expected replicas</em></p>
 
-<p>There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the <code class="language-plaintext highlighter-rouge">currentMetricValue / desiredMetricValue</code> ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, <code class="language-plaintext highlighter-rouge">maxReplicas</code> was set to 3. Thus, we have identified the root of the problem!</p>
+<p>There you go! We can clearly see the staircase pattern, similar to $f(x) = x + 1$. This occurs because the <code>currentMetricValue / desiredMetricValue</code> ratio is greater than 1, prompting the autoscaler to continuously increase the number of replicas until it reaches the maximum allowed. In this instance, <code>maxReplicas</code> was set to 3. Thus, we have identified the root of the problem!</p>
 
 <h2 id="why-is-hpa-not-scaling-down">Why is HPA not scaling down?</h2>
 
-<p>Although CPU usage spiked at startup, it quickly returned to low levels. So why isn’t the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of <code class="language-plaintext highlighter-rouge">450m</code>, as illustrated in <em>Figure 1</em>. According to the official HPA documentation:</p>
+<p>Although CPU usage spiked at startup, it quickly returned to low levels. So why isn’t the HPA scaling down the number of replicas? It appears that the CPU requirement is well below the target value of <code>450m</code>, as illustrated in <em>Figure 1</em>. According to the official HPA documentation:</p>
 
 <blockquote>
   <p>“If multiple metrics are specified in a HorizontalPodAutoscaler, this calculation is done for each metric, and then the largest of the desired replica counts is chosen.”</p>
@@ -731,27 +731,27 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
 <p>I was surprised by the scarcity of information available on creating a Docker image with Python 3.11 as the system’s default Python version. While one could use the official Python images, I personally prefer to have complete control over and understanding of my Docker images. This practice helps avoid unnecessary dependencies and can be particularly beneficial when addressing issues as unknown environment variables or extra packages that may be set in the base images.</p>
 
-<p>Note that for building our images we will use Docker Buildx, which is a Docker CLI plugin that extends the capabilities of the Docker CLI. There are two different ways of building images with Docker Buildx: using the <code class="language-plaintext highlighter-rouge">docker buildx build</code> command or setting up the <code class="language-plaintext highlighter-rouge">DOCKER_BUILDKIT</code> environment variable.</p>
+<p>Note that for building our images we will use Docker Buildx, which is a Docker CLI plugin that extends the capabilities of the Docker CLI. There are two different ways of building images with Docker Buildx: using the <code>docker buildx build</code> command or setting up the <code>DOCKER_BUILDKIT</code> environment variable.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using the docker buildx build command</span>
-docker buildx build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
+<pre><code class="language-bash"># Using the docker buildx build command
+docker buildx build -t my-image:latest -f my-file .
 
-<span class="c"># Setting up the DOCKER_BUILDKIT environment variable</span>
-<span class="nb">export </span><span class="nv">DOCKER_BUILDKIT</span><span class="o">=</span>1
-docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
-</code></pre></div></div>
+# Setting up the DOCKER_BUILDKIT environment variable
+export DOCKER_BUILDKIT=1
+docker build -t my-image:latest -f my-file .
+</code></pre>
 
 <p>Let’s begin by configuring our Dockerfile:</p>
 
-<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+<pre><code class="language-dockerfile">FROM ubuntu:22.04
 
-<span class="c"># Set non-interactive mode to avoid prompts during build</span>
-<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+# Set non-interactive mode to avoid prompts during build
+ARG DEBIAN_FRONTEND=noninteractive
 
-<span class="c"># Install system tools and libraries.</span>
-<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
-<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
-</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+# Install system tools and libraries.
+# Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads
+RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
+    apt-get update &amp;&amp; \ 
     apt-get install -y software-properties-common &amp;&amp; \
     # Add the Deadsnakes PPA for Python 3.11
     add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
@@ -770,12 +770,12 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
     update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
     update-alternatives --set python /usr/bin/python3.11
 
-<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
-</code></pre></div></div>
+ENTRYPOINT [ "/bin/bash" ]
+</code></pre>
 
 <p>This Dockerfile is relatively standard. We are utilizing Ubuntu 22.04 as our base image and installing Python 3.11 from the Deadsnakes PPA. Moreover, we’re setting Python 3.11 as our default Python version using update-alternatives.</p>
 
-<p>For those curious about the <code class="language-plaintext highlighter-rouge">--mount</code> flag, it’s a Docker Buildx feature that caches downloaded packages, preventing them from being downloaded again when adding new packages. This feature can significantly reduce the time required to build your images.</p>
+<p>For those curious about the <code>--mount</code> flag, it’s a Docker Buildx feature that caches downloaded packages, preventing them from being downloaded again when adding new packages. This feature can significantly reduce the time required to build your images.</p>
 
 <h2 id="poetry">Poetry</h2>
 
@@ -783,12 +783,12 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <p>If you’re curious about the need for a virtual environment in our Docker image, there are a couple of reasons. Firstly, isolating your project’s dependencies from the system Python ensures a clean, conflict-free environment. Secondly, you might consider using a multi-stage build. This means first installing everything needed in an initial stage and then copying the final virtual environment to the second clean stage. This would make our image smaller and faster to build. However, this is not the focus of this post and I will not cover it here.</p>
 
-<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+<pre><code class="language-dockerfile">FROM ubuntu:22.04
 
-<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+ARG DEBIAN_FRONTEND=noninteractive
 
-<span class="c"># Set environment variables</span>
-<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.7.1 \
@@ -797,10 +797,10 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
     POETRY_VIRTUALENVS_CREATE=false \
     VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
 
-<span class="c"># Install system tools and libraries.</span>
-<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
-<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
-</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+# Install system tools and libraries.
+# Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads
+RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
+    apt-get update &amp;&amp; \ 
     apt-get install -y software-properties-common &amp;&amp; \
     # Add the Deadsnakes PPA for Python 3.11
     add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
@@ -819,55 +819,55 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
     update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
     update-alternatives --set python /usr/bin/python3.11
 
-<span class="c"># Set PATH to include Poetry and custom venv</span>
-<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
+# Set PATH to include Poetry and custom venv
+ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
-<span class="c"># Install poetry</span>
-<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
+# Install poetry
+RUN curl -sSL https://install.python-poetry.org | python - --version $POETRY_VERSION
 
-<span class="c"># Create and prepare the virtual environment</span>
-<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
+# Create and prepare the virtual environment
+RUN python -m venv $VENV_PATH &amp;&amp; \
+    python -m pip install --upgrade pip &amp;&amp; \
+    pip cache purge &amp;&amp; rm -Rf /root/.cache/pip/http
     
-<span class="k">WORKDIR</span><span class="s"> /app</span>
+WORKDIR /app
 
-<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
-</code></pre></div></div>
+ENTRYPOINT [ "/bin/bash" ]
+</code></pre>
 
-<p>I’ve set <code class="language-plaintext highlighter-rouge">VENV_PATH</code> to <code class="language-plaintext highlighter-rouge">{project-dir}/.venv</code>. This is because Poetry might not follow the environment variable we set earlier, as mentioned in the <a href="https://python-poetry.org/docs/configuration/#virtualenvscreate" target="_blank" rel="noopener noreferrer">official docs</a>, and instead creates its own environment. Everything else in the setup is quite standard. If you have any questions, please feel free to ask.</p>
+<p>I’ve set <code>VENV_PATH</code> to <code>{project-dir}/.venv</code>. This is because Poetry might not follow the environment variable we set earlier, as mentioned in the <a href="https://python-poetry.org/docs/configuration/#virtualenvscreate" target="_blank" rel="noopener noreferrer">official docs</a>, and instead creates its own environment. Everything else in the setup is quite standard. If you have any questions, please feel free to ask.</p>
 
 <h2 id="pytorch">Pytorch</h2>
 
 <p>Installing Torch with Poetry can be tricky because Torch can be installed with or without GPU support, making it challenging to support both CPU and GPU versions in your pyproject.toml file. For example, you might use the CPU version for Continuous Integration (CI) and the GPU version for running your models in production. Many issues related to this are discussed on the <a href="https://github.com/python-poetry/poetry/issues/6409" target="_blank" rel="noopener noreferrer">Poetry GitHub</a>. After trying different methods, my preferred solution is to install dependencies using Poetry and then install Torch using pip. We need to ensure Torch is installed inside our virtual environment (venv), which requires setting the correct paths in advance (apologies if you were expecting a more complex solution 😑). Here’s what you need to add:</p>
 
-<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Copy dependency files to the app directory</span>
-<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
+<pre><code class="language-dockerfile"># Copy dependency files to the app directory
+COPY poetry.lock pyproject.toml /app
 
-<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
-<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
-</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    <span class="c"># Install torch GPU</span>
+# Install dependencies with Poetry and Torch with pip, caching downloaded packages
+RUN --mount=type=cache,target=/root/.cache \
+    poetry install --without dev &amp;&amp; \
+    # Install torch GPU
     pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html 
 
-<span class="c"># Copy the entire project code to the container</span>
-<span class="k">COPY</span><span class="s"> ./ /source/</span>
-</code></pre></div></div>
+# Copy the entire project code to the container
+COPY ./ /source/
+</code></pre>
 
-<p>Note that we first copy the <code class="language-plaintext highlighter-rouge">poetry.lock</code> and <code class="language-plaintext highlighter-rouge">pyproject.toml</code> to the image and then we run <code class="language-plaintext highlighter-rouge">poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code class="language-plaintext highlighter-rouge">--mount</code> flag to cache the downloaded packages.</p>
+<p>Note that we first copy the <code>poetry.lock</code> and <code>pyproject.toml</code> to the image and then we run <code>poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code>--mount</code> flag to cache the downloaded packages.</p>
 
-<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code class="language-plaintext highlighter-rouge">cu118</code> in the installation command to ensure compatibility. This is what makes the torch wheel huge, because it includes code for multiple CUDA architectures so the same binary can be used on different GPUs. If you want to obtain a smaller image, you can build torch from source and only specify the architecture you need for your GPU. <a href="https://github.com/pytorch/pytorch/issues/17621" target="_blank" rel="noopener noreferrer">This</a> is a good thread about this topic.</p>
+<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code>cu118</code> in the installation command to ensure compatibility. This is what makes the torch wheel huge, because it includes code for multiple CUDA architectures so the same binary can be used on different GPUs. If you want to obtain a smaller image, you can build torch from source and only specify the architecture you need for your GPU. <a href="https://github.com/pytorch/pytorch/issues/17621" target="_blank" rel="noopener noreferrer">This</a> is a good thread about this topic.</p>
 
 <h2 id="final-solution">Final solution</h2>
 
 <p>Here’s the final Dockerfile that puts everything we’ve talked about into action, hope this can help you to build your own image.</p>
 
-<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+<pre><code class="language-dockerfile">FROM ubuntu:22.04
 
-<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+ARG DEBIAN_FRONTEND=noninteractive
 
-<span class="c"># Set environment variables</span>
-<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.7.1 \
@@ -876,10 +876,10 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
     POETRY_VIRTUALENVS_CREATE=false \
     VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
 
-<span class="c"># Install system tools and libraries.</span>
-<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
-<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
-</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
+# Install system tools and libraries.
+# Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads
+RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
+    apt-get update &amp;&amp; \ 
     apt-get install -y software-properties-common &amp;&amp; \
     # Add the Deadsnakes PPA for Python 3.11
     add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
@@ -898,32 +898,32 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
     update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
     update-alternatives --set python /usr/bin/python3.11
 
-<span class="c"># Set PATH to include Poetry and custom venv</span>
-<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
+# Set PATH to include Poetry and custom venv
+ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
-<span class="c"># Install poetry</span>
-<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
+# Install poetry
+RUN curl -sSL https://install.python-poetry.org | python - --version $POETRY_VERSION
 
-<span class="c"># Create and prepare the virtual environment</span>
-<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
+# Create and prepare the virtual environment
+RUN python -m venv $VENV_PATH &amp;&amp; \
+    python -m pip install --upgrade pip &amp;&amp; \
+    pip cache purge &amp;&amp; rm -Rf /root/.cache/pip/http
     
-<span class="k">WORKDIR</span><span class="s"> /app</span>
+WORKDIR /app
 
-<span class="c"># Copy dependency files to the app directory</span>
-<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
+# Copy dependency files to the app directory
+COPY poetry.lock pyproject.toml /app
 
-<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
-<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
-</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip <span class="nb">install </span><span class="nv">torch</span><span class="o">==</span>2.0.1+cu118 <span class="nv">torchvision</span><span class="o">==</span>0.15.2+cu118 <span class="nt">-f</span> https://download.pytorch.org/whl/torch_stable.html 
+# Install dependencies with Poetry and Torch with pip, caching downloaded packages
+RUN --mount=type=cache,target=/root/.cache \
+    poetry install --without dev &amp;&amp; \
+    pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html 
 
-<span class="c"># Copy the entire project code to the container</span>
-<span class="k">COPY</span><span class="s"> ./ /source/</span>
+# Copy the entire project code to the container
+COPY ./ /source/
 
-<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
-</code></pre></div></div>
+ENTRYPOINT [ "/bin/bash" ]
+</code></pre>
 
 <p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">NFL Field Mapping: A Journey Through Sports Analytics and Homography</title><link href="https://miguel-mendez-ai.com/2024/02/07/nfl-field-mapping.html" rel="alternate" type="text/html" title="NFL Field Mapping: A Journey Through Sports Analytics and Homography" /><published>2024-02-07T00:00:00+00:00</published><updated>2024-02-07T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/02/07/nfl-field-mapping</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/02/07/nfl-field-mapping.html"><![CDATA[<p>I have been working in sports analytics for 2 years now. I am mainly focusing on the computer vision side of things but saying “sports analytics” is a good way to make it sound more interesting. My goal is simple: extract as much information as possible from sports event video feeds and ensure the data is high-quality. In order to achieve this, I must be able to pinpoint the real world location of the objects observed in the video feed. In other words, map pixels in the video feed to real world coordinates. That mapping is what I refer to as homography. I have already written a post in the company blog about this. If you are interested in why it matters and what it can be used for, you can check it out <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target="_blank" rel="noopener noreferrer">here</a>.</p>
 
@@ -996,29 +996,29 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <p>I created a simple image with the same resolution as the NFL pitch, <em>120 x 53.3 px</em>. This means one pixel in the image equals one yard in the real world. Next, I added end zones, hash marks, yard numbers, and all the necessary elements, each positioned accurately. I have to admit that although this task should be relatively simple and mechanical, it took me a while to achieve a decent result. Be sure to check the real code, but see below a small example that can help you realize the amount of handcrafting needed to create a good template:</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// Define the pitch dimensions and other constants</span>
-    <span class="kd">const</span> <span class="nx">pitchHeight</span> <span class="o">=</span> <span class="mi">53</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">pitchWidth</span> <span class="o">=</span> <span class="mi">120</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> 
-    <span class="kd">const</span> <span class="nx">ctxTemplate</span> <span class="o">=</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nf">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+<pre><code class="language-javascript">    // Define the pitch dimensions and other constants
+    const pitchHeight = 53 + 1/3;
+    const pitchWidth = 120;
+    const lineWidth = 2; 
+    const ctxTemplate = templateCanvas.getContext('2d');
 
-    <span class="c1">// Set size and color of template canvas</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">;</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">black</span><span class="dl">"</span><span class="p">;</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nf">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">templateCanvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    // Set size and color of template canvas
+    ctxTemplate.strokeStyle = 'red';
+    ctxTemplate.fillStyle = "black";
+    ctxTemplate.fillRect(0, 0, templateCanvas.width, templateCanvas.height);
     
-    <span class="c1">// Translate to avoid cropping the sidelines</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="nx">lineWidth</span><span class="p">;</span>
-    <span class="nx">ctxTemplate</span><span class="p">.</span><span class="nf">translate</span><span class="p">(</span><span class="nx">lineWidth</span><span class="p">,</span> <span class="nx">lineWidth</span><span class="p">);</span>
+    // Translate to avoid cropping the sidelines
+    ctxTemplate.lineWidth = lineWidth;
+    ctxTemplate.translate(lineWidth, lineWidth);
 
-    <span class="c1">// Side lines</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
+    // Side lines
+    addLine({ x: 0, y: 0 }, { x: 0, y: pitchHeight });
+    addLine({ x: pitchWidth, y: 0 }, { x: pitchWidth, y: pitchHeight });
 
-    <span class="c1">// End lines</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">});</span>
-    <span class="nf">addLine</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pitchWidth</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pitchHeight</span> <span class="p">});</span>
-</code></pre></div></div>
+    // End lines
+    addLine({ x: 0, y: 0 }, { x: pitchWidth, y: 0 });
+    addLine({ x: 0, y: pitchHeight }, { x: pitchWidth, y: pitchHeight });
+</code></pre>
 
 <p>I repeated this process for all pitch elements, resulting in the image below:</p>
 
@@ -1047,44 +1047,44 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <p>This is the code that retrieves the homography matrix from the list of points and applies it to the template image:</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">function</span> <span class="nf">computeHomography</span><span class="p">()</span> <span class="p">{</span>
-        <span class="c1">// Check that both lists of points have the same size and that their size is at least 4</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">Both lists of points must have the same size and contain at least 4 points</span><span class="dl">'</span><span class="p">);</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+<pre><code class="language-javascript">    function computeHomography() {
+        // Check that both lists of points have the same size and that their size is at least 4
+        if (pointsImage.length !== pointsTemplate.length || pointsImage.length &lt; 4) {
+            alert('Both lists of points must have the same size and contain at least 4 points');
+            return;
+        }
 
-        <span class="c1">// Convert points to cv.Mat format</span>
-        <span class="kd">let</span> <span class="nx">imagePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsImage</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsImage</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
-        <span class="kd">let</span> <span class="nx">templatePoints</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">matFromArray</span><span class="p">(</span><span class="nx">pointsTemplate</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">CV_32FC2</span><span class="p">,</span> <span class="nx">pointsTemplate</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="nx">point</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">)]));</span>
+        // Convert points to cv.Mat format
+        let imagePoints = cv.matFromArray(pointsImage.length, 1, cv.CV_32FC2, pointsImage.flatMap(point =&gt; [Math.round(point.x), Math.round(point.y)]));
+        let templatePoints = cv.matFromArray(pointsTemplate.length, 1, cv.CV_32FC2, pointsTemplate.flatMap(point =&gt; [Math.round(point.x), Math.round(point.y)]));
 
-        <span class="c1">// Compute homography</span>
-        <span class="kd">let</span> <span class="nx">homography</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nf">findHomography</span><span class="p">(</span><span class="nx">templatePoints</span><span class="p">,</span> <span class="nx">imagePoints</span><span class="p">);</span>
+        // Compute homography
+        let homography = cv.findHomography(templatePoints, imagePoints);
 
-        <span class="c1">// Check if homography is none because of colinear points</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">homography</span><span class="p">.</span><span class="nf">empty</span><span class="p">())</span>
-        <span class="p">{</span>
-            <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Could not found any homography for these sets of points. Be sure they are not colinear.</span><span class="dl">"</span><span class="p">);</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+        // Check if homography is none because of colinear points
+        if (homography.empty())
+        {
+            alert("Could not found any homography for these sets of points. Be sure they are not colinear.");
+            return;
+        }
 
-        <span class="c1">// Warp the template image using the homography</span>
-        <span class="kd">let</span> <span class="nx">warpedTemplate</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">cv</span><span class="p">.</span><span class="nc">Mat</span><span class="p">();</span>
-        <span class="nx">cv</span><span class="p">.</span><span class="nf">warpPerspective</span><span class="p">(</span><span class="nx">templateImage</span><span class="p">,</span> <span class="nx">warpedTemplate</span><span class="p">,</span> <span class="nx">homography</span><span class="p">,</span> <span class="nx">sourceImage</span><span class="p">.</span><span class="nf">size</span><span class="p">());</span>
+        // Warp the template image using the homography
+        let warpedTemplate = new cv.Mat();
+        cv.warpPerspective(templateImage, warpedTemplate, homography, sourceImage.size());
 
-        <span class="c1">// Add the warped template to the source image</span>
-        <span class="kd">let</span> <span class="nx">resultWeighted</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">cv</span><span class="p">.</span><span class="nc">Mat</span><span class="p">();</span>
-        <span class="nx">cv</span><span class="p">.</span><span class="nf">addWeighted</span><span class="p">(</span><span class="nx">sourceImage</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">warpedTemplate</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">resultWeighted</span><span class="p">);</span>
-        <span class="nx">cv</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="dl">'</span><span class="s1">imageCanvas</span><span class="dl">'</span><span class="p">,</span> <span class="nx">resultWeighted</span><span class="p">);</span>
+        // Add the warped template to the source image
+        let resultWeighted = new cv.Mat();
+        cv.addWeighted(sourceImage, 1, warpedTemplate, 0.5, 0, resultWeighted);
+        cv.imshow('imageCanvas', resultWeighted);
 
-        <span class="c1">// Clean up memory</span>
-        <span class="nx">imagePoints</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
-        <span class="nx">templatePoints</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
-        <span class="nx">warpedTemplate</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+        // Clean up memory
+        imagePoints.delete();
+        templatePoints.delete();
+        warpedTemplate.delete();
 
-        <span class="k">return</span> <span class="nx">homography</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div></div>
+        return homography;
+    }
+</code></pre>
 
 <h3 id="projecting-between-image-and-template">Projecting between image and template</h3>
 
@@ -1132,337 +1132,337 @@ docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</spa
 
 <p>First, we create a random password without special characters:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Creates a random password for the database</span>
-<span class="nx">resource</span> <span class="s2">"random_password"</span> <span class="s2">"mlflow_db"</span> <span class="p">{</span>
-  <span class="nx">length</span>  <span class="o">=</span> <span class="mi">16</span>
-  <span class="nx">special</span> <span class="o">=</span> <span class="kc">false</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<pre><code class="language-hcl"># Creates a random password for the database
+resource "random_password" "mlflow_db" {
+  length  = 16
+  special = false
+}
+</code></pre>
 
 <p>Next, we set up a security group for the database that allows TCP traffic on port 5432 (typical for PostgreSQL databases). We are limiting incoming traffic to only our VPN. If you are not looking to restrict traffic, you can skip this step.</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This specifies the security group for the database</span>
-<span class="nx">module</span> <span class="s2">"mlflow_db_security_group"</span> <span class="p">{</span>
-  <span class="nx">source</span>  <span class="o">=</span> <span class="s2">"terraform-aws-modules/security-group/aws"</span>
-  <span class="nx">version</span> <span class="o">=</span> <span class="s2">"~&gt; 4"</span>
+<pre><code class="language-hcl"># This specifies the security group for the database
+module "mlflow_db_security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~&gt; 4"
 
-  <span class="nx">name</span>        <span class="o">=</span> <span class="s2">"mlflow-db-sg"</span>
-  <span class="nx">description</span> <span class="o">=</span> <span class="s2">"RDS Aurora ingress security group"</span>
-  <span class="nx">vpc_id</span>      <span class="o">=</span> <span class="nx">aws_vpc</span><span class="err">.</span><span class="nx">main</span><span class="p">.</span><span class="nx">id</span> <span class="c1"># You need to use you own vpc id here</span>
+  name        = "mlflow-db-sg"
+  description = "RDS Aurora ingress security group"
+  vpc_id      = aws_vpc.main.id # You need to use you own vpc id here
 
-  <span class="nx">ingress_with_cidr_blocks</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="nx">from_port</span>   <span class="o">=</span> <span class="mi">5432</span>
-      <span class="nx">to_port</span>     <span class="o">=</span> <span class="mi">5432</span>
-      <span class="nx">protocol</span>    <span class="o">=</span> <span class="s2">"tcp"</span>
-      <span class="nx">description</span> <span class="o">=</span> <span class="s2">"RDS Aurora access from within VPC"</span>
-      <span class="nx">cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="nx">var</span><span class="p">.</span><span class="nx">your_vpn</span><span class="p">]</span>
-    <span class="p">},</span>
-  <span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div></div>
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "RDS Aurora access from within VPC"
+      cidr_blocks = [var.your_vpn]
+    },
+  ]
+}
+</code></pre>
 
 <p>Finally, we create a RDS Aurora cluster for the MLFlow database. The setup is straightforward, but you can always refer to the <a href="https://registry.terraform.io/modules/terraform-aws-modules/rds-aurora/aws/latest" target="_blank" rel="noopener noreferrer">official documentation</a> for more details. Notice how we use the earlier created password and security group to restrict access. We are creating a single writer instance, assuming limited traffic. If you expect more, consider adding a read replica in the instances map.</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Database configuration</span>
-<span class="nx">module</span> <span class="s2">"mlflow_cluster_db"</span> <span class="p">{</span>
-  <span class="nx">source</span>         <span class="o">=</span> <span class="s2">"terraform-aws-modules/rds-aurora/aws"</span>
-  <span class="nx">version</span>        <span class="o">=</span> <span class="s2">"6.2.0"</span>
+<pre><code class="language-hcl"># Database configuration
+module "mlflow_cluster_db" {
+  source         = "terraform-aws-modules/rds-aurora/aws"
+  version        = "6.2.0"
 
-  <span class="nx">name</span>           <span class="o">=</span> <span class="s2">"mlflow-db"</span>
-  <span class="nx">engine</span>         <span class="o">=</span> <span class="s2">"aurora-postgresql"</span>
-  <span class="nx">engine_version</span> <span class="o">=</span> <span class="s2">"14.5"</span>
-  <span class="nx">instance_class</span> <span class="o">=</span> <span class="s2">"db.r5.large"</span>
-  <span class="nx">instances</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nx">one</span> <span class="o">=</span> <span class="p">{}</span>
-  <span class="p">}</span>
+  name           = "mlflow-db"
+  engine         = "aurora-postgresql"
+  engine_version = "14.5"
+  instance_class = "db.r5.large"
+  instances = {
+    one = {}
+  }
 
-  <span class="nx">database_name</span>          <span class="o">=</span> <span class="s2">"mlflow"</span>
-  <span class="nx">master_username</span>        <span class="o">=</span> <span class="s2">"mlflow"</span>
-  <span class="nx">create_random_password</span> <span class="o">=</span> <span class="kc">false</span>
-  <span class="nx">master_password</span>        <span class="o">=</span> <span class="nx">random_password</span><span class="err">.</span><span class="nx">mlflow_db</span><span class="err">.</span><span class="nx">result</span>
+  database_name          = "mlflow"
+  master_username        = "mlflow"
+  create_random_password = false
+  master_password        = random_password.mlflow_db.result
 
-  <span class="nx">create_security_group</span>  <span class="o">=</span> <span class="kc">false</span>
-  <span class="nx">subnets</span>                <span class="o">=</span> <span class="nx">local</span><span class="p">.</span><span class="nx">subnets_ids_database</span>
-  <span class="nx">vpc_security_group_ids</span> <span class="o">=</span> <span class="p">[</span><span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_db_security_group</span><span class="p">.</span><span class="nx">security_group_id</span><span class="p">]</span>
+  create_security_group  = false
+  subnets                = local.subnets_ids_database
+  vpc_security_group_ids = [module.mlflow_db_security_group.security_group_id]
 
-  <span class="nx">storage_encrypted</span>   <span class="o">=</span> <span class="kc">true</span>
-  <span class="nx">apply_immediately</span>   <span class="o">=</span> <span class="kc">true</span>
-  <span class="nx">monitoring_interval</span> <span class="o">=</span> <span class="mi">10</span>
+  storage_encrypted   = true
+  apply_immediately   = true
+  monitoring_interval = 10
 
-  <span class="nx">enabled_cloudwatch_logs_exports</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"postgresql"</span><span class="p">]</span>
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 
-  <span class="nx">tags</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nx">Environment</span> <span class="o">=</span> <span class="s2">"dev"</span>
-    <span class="nx">Terraform</span>   <span class="o">=</span> <span class="s2">"true"</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+  }
+}
+</code></pre>
 
 <p>That is about it for the database setup. Lastly, we need to store the DB user, password, and endpoint for later connection. I will use AWS Secrets Manager for this. How you manage secrets may vary; the only thing you really want to avoid is to store them in source code. You could also use AWS Parameter Store or Hashicorp Vault, for example. Here’s how to store the secrets in AWS Secrets Manager:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_username_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-username"</span>
-<span class="p">}</span>
+<pre><code class="language-hcl">resource "aws_secretsmanager_secret" "mlflow_db_master_username_id" {
+  name  = "mlflow-username"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_username"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_username_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_username</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret_version" "mlflow_db_master_username" {
+  secret_id     = aws_secretsmanager_secret.mlflow_db_master_username_id[0].id
+  secret_string = module.mlflow_cluster_db.cluster_master_username
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_master_password_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-password"</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret" "mlflow_db_master_password_id" {
+  name  = "mlflow-password"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_master_password"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_master_password_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_master_password</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret_version" "mlflow_db_master_password" {
+  secret_id     = aws_secretsmanager_secret.mlflow_db_master_password_id[0].id
+  secret_string = module.mlflow_cluster_db.cluster_master_password
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret"</span> <span class="s2">"mlflow_db_endpoint_id"</span> <span class="p">{</span>
-  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">"mlflow-db-writer-endpoint"</span>
-<span class="p">}</span>
+resource "aws_secretsmanager_secret" "mlflow_db_endpoint_id" {
+  name  = "mlflow-db-writer-endpoint"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_secretsmanager_secret_version"</span> <span class="s2">"mlflow_db_endpoint"</span> <span class="p">{</span>
-  <span class="nx">secret_id</span>     <span class="o">=</span> <span class="nx">aws_secretsmanager_secret</span><span class="p">.</span><span class="nx">mlflow_db_endpoint_id</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">secret_string</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">mlflow_cluster_db</span><span class="p">.</span><span class="nx">cluster_endpoint</span>
-<span class="p">}</span>
-</code></pre></div></div>
+resource "aws_secretsmanager_secret_version" "mlflow_db_endpoint" {
+  secret_id     = aws_secretsmanager_secret.mlflow_db_endpoint_id[0].id
+  secret_string = module.mlflow_cluster_db.cluster_endpoint
+}
+</code></pre>
 
 <h2 id="storage-bucket-and-iam-role">Storage bucket and IAM Role</h2>
 
 <p>Next up is setting up a storage bucket for all the artifacts, and we’re going to use AWS S3 for this. Here’s the Terraform configuration needed:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_s3_bucket"</span> <span class="s2">"mlflow_artifacts_bucket"</span> <span class="p">{</span>
-  <span class="nx">bucket</span> <span class="o">=</span> <span class="s2">"mlflow-artifacts-bucket"</span>
-<span class="p">}</span>
+<pre><code class="language-hcl">resource "aws_s3_bucket" "mlflow_artifacts_bucket" {
+  bucket = "mlflow-artifacts-bucket"
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_s3_bucket_ownership_controls"</span> <span class="s2">"mlflow_bucket_ownership"</span> <span class="p">{</span>
-  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">rule</span> <span class="p">{</span>
-    <span class="nx">object_ownership</span> <span class="o">=</span> <span class="s2">"BucketOwnerPreferred"</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+resource "aws_s3_bucket_ownership_controls" "mlflow_bucket_ownership" {
+  bucket = aws_s3_bucket.mlflow_artifacts_bucket[0].id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
 
-<span class="nx">resource</span> <span class="s2">"aws_s3_bucket_acl"</span> <span class="s2">"mlflow_bucket_acl"</span> <span class="p">{</span>
-  <span class="nx">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nx">aws_s3_bucket_ownership_controls</span><span class="p">.</span><span class="nx">mlflow_bucket_ownership</span><span class="p">]</span>
+resource "aws_s3_bucket_acl" "mlflow_bucket_acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.mlflow_bucket_ownership]
 
-  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">mlflow_artifacts_bucket</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span>
-  <span class="nx">acl</span>    <span class="o">=</span> <span class="s2">"private"</span>
-<span class="p">}</span>
-</code></pre></div></div>
+  bucket = aws_s3_bucket.mlflow_artifacts_bucket[0].id
+  acl    = "private"
+}
+</code></pre>
 
 <p>This configuration creates an S3 bucket named ‘mlflow-artifacts-bucket’. It also sets up ownership controls, ensuring new objects uploaded without an ACL are owned by the bucket owner. Additionally, it enforces a private ACL for the bucket, securing the stored data.</p>
 
 <p>Now, MLFlow needs to access this bucket from EKS, so we’ll create an IAM Role for Service Accounts. Here’s how to do it:</p>
 
-<div class="language-hcl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="s2">"aws_iam_role"</span> <span class="s2">"mlflow-role"</span> <span class="p">{</span>
-  <span class="nx">name</span> <span class="o">=</span> <span class="s2">"mlflow-role"</span>
+<pre><code class="language-hcl">resource "aws_iam_role" "mlflow-role" {
+  name = "mlflow-role"
 
-  <span class="nx">assume_role_policy</span> <span class="o">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
-    <span class="nx">Version</span> <span class="o">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
-    <span class="nx">Statement</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="nx">Action</span> <span class="o">=</span> <span class="s2">"sts:AssumeRole"</span><span class="p">,</span>
-        <span class="nx">Effect</span> <span class="o">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
-        <span class="nx">Principal</span> <span class="o">=</span> <span class="p">{</span>
-          <span class="nx">Service</span> <span class="o">=</span> <span class="s2">"ec2.amazonaws.com"</span> 
-        <span class="p">},</span>
-      <span class="p">},</span>
-    <span class="p">],</span>
-  <span class="p">})</span>
-<span class="p">}</span>
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com" 
+        },
+      },
+    ],
+  })
+}
 
-<span class="c1"># Custom Policy for Specific S3 Bucket Access</span>
-<span class="nx">resource</span> <span class="s2">"aws_iam_policy"</span> <span class="s2">"mlflow_s3_policy"</span> <span class="p">{</span>
-  <span class="nx">name</span>   <span class="o">=</span> <span class="s2">"mlflow_s3_policy"</span>
-  <span class="nx">policy</span> <span class="o">=</span> <span class="nx">jsonencode</span><span class="p">({</span>
-    <span class="nx">Version</span> <span class="o">=</span> <span class="s2">"2012-10-17"</span><span class="p">,</span>
-    <span class="nx">Statement</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="nx">Action</span> <span class="o">=</span> <span class="p">[</span>
-          <span class="s2">"s3:GetObject"</span><span class="p">,</span>
-          <span class="s2">"s3:GetObject*"</span><span class="p">,</span>
-          <span class="s2">"s3:ListBucket"</span><span class="p">,</span>
-          <span class="s2">"s3:PutObject"</span><span class="p">,</span>
-          <span class="s2">"s3:DeleteObject"</span>
-        <span class="p">],</span>
-        <span class="nx">Effect</span>   <span class="o">=</span> <span class="s2">"Allow"</span><span class="p">,</span>
-        <span class="nx">Resource</span> <span class="o">=</span> <span class="p">[</span>
-          <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket"</span><span class="p">,</span>
-          <span class="s2">"arn:aws:s3:::mlflow-artifacts-bucket/*"</span>
-        <span class="p">]</span>
-      <span class="p">}</span>
-    <span class="p">]</span>
-  <span class="p">})</span>
-<span class="p">}</span>
+# Custom Policy for Specific S3 Bucket Access
+resource "aws_iam_policy" "mlflow_s3_policy" {
+  name   = "mlflow_s3_policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:GetObject*",
+          "s3:ListBucket",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ],
+        Effect   = "Allow",
+        Resource = [
+          "arn:aws:s3:::mlflow-artifacts-bucket",
+          "arn:aws:s3:::mlflow-artifacts-bucket/*"
+        ]
+      }
+    ]
+  })
+}
 
-<span class="c1"># Attach Custom Policy to the Role</span>
-<span class="nx">resource</span> <span class="s2">"aws_iam_role_policy_attachment"</span> <span class="s2">"s3_policy_attachment"</span> <span class="p">{</span>
-  <span class="nx">role</span>       <span class="o">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">mlflow-role</span><span class="p">.</span><span class="nx">name</span>
-  <span class="nx">policy_arn</span> <span class="o">=</span> <span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">.</span><span class="nx">arn</span>
-  <span class="nx">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nx">aws_iam_policy</span><span class="p">.</span><span class="nx">mlflow_s3_policy</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div></div>
+# Attach Custom Policy to the Role
+resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
+  role       = aws_iam_role.mlflow-role.name
+  policy_arn = aws_iam_policy.mlflow_s3_policy.arn
+  depends_on = [aws_iam_policy.mlflow_s3_policy]
+}
+</code></pre>
 
-<p>This code sets up a new role, <code class="language-plaintext highlighter-rouge">mlflow-role</code>, and attaches a custom policy, <code class="language-plaintext highlighter-rouge">mlflow_s3_policy</code>, to it. This policy grants specific permissions to access the S3 bucket we created earlier.</p>
+<p>This code sets up a new role, <code>mlflow-role</code>, and attaches a custom policy, <code>mlflow_s3_policy</code>, to it. This policy grants specific permissions to access the S3 bucket we created earlier.</p>
 
 <h2 id="docker">Docker</h2>
 
 <p>Before we proceed, it’s important to note that the official MLFlow Docker image doesn’t include the necessary libraries for connecting with AWS S3 and Postgres. To address this, we’ll need to create a custom image that includes these libraries. This is done by crafting a Dockerfile like the one below:</p>
 
-<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ghcr.io/mlflow/mlflow:v2.7.1</span>
+<pre><code class="language-dockerfile">FROM ghcr.io/mlflow/mlflow:v2.7.1
 
-<span class="k">RUN </span>apt-get <span class="nt">-y</span> update <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    apt-get <span class="nt">-y</span> <span class="nb">install </span>python3-dev build-essential pkg-config <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
-</span>    pip <span class="nb">install </span>psycopg2-binary boto3
+RUN apt-get -y update &amp;&amp; \
+    apt-get -y install python3-dev build-essential pkg-config &amp;&amp; \
+    pip install --upgrade pip &amp;&amp; \
+    pip install psycopg2-binary boto3
 
-<span class="k">CMD</span><span class="s"> ["bash"]</span>
-</code></pre></div></div>
+CMD ["bash"]
+</code></pre>
 
 <p>This Dockerfile starts with the official MLFlow image and adds the required libraries. After crafting this file, you can build the image and push it to your ECR repository, or any other repository you prefer to use.</p>
 
 <h2 id="deployment">Deployment</h2>
 
-<p>Finally, we’ll set up the server to run the MLflow tracking server on AWS EKS. We typically use Flux for deploying services in Kubernetes, so we’ll create a <code class="language-plaintext highlighter-rouge">kustomization.yaml</code> file containing all the necessary resources. Alternatively, you could also deploy using Terraform, although I am less familiar with this method as we primarily utilize Flux for our deployments.</p>
+<p>Finally, we’ll set up the server to run the MLflow tracking server on AWS EKS. We typically use Flux for deploying services in Kubernetes, so we’ll create a <code>kustomization.yaml</code> file containing all the necessary resources. Alternatively, you could also deploy using Terraform, although I am less familiar with this method as we primarily utilize Flux for our deployments.</p>
 
-<p>We will begin with defining secrets. Our secrets are stored in AWS Secrets Manager and accessed from Kubernetes. We use the <a href="https://github.com/external-secrets/kubernetes-external-secrets" target="_blank" rel="noopener noreferrer">External Secrets</a> package for simplicity. Here is what our <code class="language-plaintext highlighter-rouge">secrets.yaml</code> file looks like:</p>
+<p>We will begin with defining secrets. Our secrets are stored in AWS Secrets Manager and accessed from Kubernetes. We use the <a href="https://github.com/external-secrets/kubernetes-external-secrets" target="_blank" rel="noopener noreferrer">External Secrets</a> package for simplicity. Here is what our <code>secrets.yaml</code> file looks like:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes-client.io/v1"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ExternalSecret</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-secrets</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">backendType</span><span class="pi">:</span> <span class="s">secretsManager</span>
-  <span class="na">data</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span>  <span class="s">mlflow-username</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_USERNAME</span>
-    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">mlflow-password</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_PASSWORD</span>
-    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">mlflow-db-writer-endpoint</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">AWS_SECRET_MLFLOW_HOST</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: "kubernetes-client.io/v1"
+kind: ExternalSecret
+metadata:
+  name: mlflow-secrets
+  namespace: monitoring
+spec:
+  backendType: secretsManager
+  data:
+    - key:  mlflow-username
+      name: AWS_SECRET_MLFLOW_USERNAME
+    - key: mlflow-password
+      name: AWS_SECRET_MLFLOW_PASSWORD
+    - key: mlflow-db-writer-endpoint
+      name: AWS_SECRET_MLFLOW_HOST
+</code></pre>
 
-<p>Next, we need a service account for our deployment, defined in <code class="language-plaintext highlighter-rouge">service-account.yaml</code>:</p>
+<p>Next, we need a service account for our deployment, defined in <code>service-account.yaml</code>:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-sa</span>
-  <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">eks.amazonaws.com/role-arn</span><span class="pi">:</span> <span class="s">arn:aws:iam::941819254007:role/mlflow-role</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mlflow-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::941819254007:role/mlflow-role
+</code></pre>
 
 <p>This configuration uses the earlier created IAM role for accessing the S3 bucket.</p>
 
-<p>We also need a service for our deployment, specified in <code class="language-plaintext highlighter-rouge">service.yaml</code> file:</p>
+<p>We also need a service for our deployment, specified in <code>service.yaml</code> file:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ports</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-      <span class="na">targetPort</span><span class="pi">:</span> <span class="s">http</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app.kubernetes.io/name</span><span class="pi">:</span> <span class="s">mlflow</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow
+spec:
+  ports:
+    - port: 8080
+      name: http
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: mlflow
+</code></pre>
 
-<p>This is a very simple service definition that just exposes port 8080 and targets all pods with the label <code class="language-plaintext highlighter-rouge">app.kubernetes.io/name: mlflow</code>.</p>
+<p>This is a very simple service definition that just exposes port 8080 and targets all pods with the label <code>app.kubernetes.io/name: mlflow</code>.</p>
 
-<p>Next, we need an ingress to expose our service to the outside world. We use AWS ALB Ingress Controller for this. Here’s what our <code class="language-plaintext highlighter-rouge">ingress.yaml</code> file looks like:</p>
+<p>Next, we need an ingress to expose our service to the outside world. We use AWS ALB Ingress Controller for this. Here’s what our <code>ingress.yaml</code> file looks like:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-  <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s">alb</span>
-    <span class="na">alb.ingress.kubernetes.io/scheme</span><span class="pi">:</span> <span class="s">internal</span>
-    <span class="na">alb.ingress.kubernetes.io/target-type</span><span class="pi">:</span> <span class="s">ip</span>
-    <span class="na">alb.ingress.kubernetes.io/ssl-redirect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">443"</span>
-    <span class="na">alb.ingress.kubernetes.io/listen-ports</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[{"HTTPS":</span><span class="nv"> </span><span class="s">443}]'</span>
-    <span class="na">alb.ingress.kubernetes.io/healthcheck-path</span><span class="pi">:</span> <span class="s">/</span>
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mlflow
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /
 
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">rules</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">host-url</span>
-    <span class="na">http</span><span class="pi">:</span>
-      <span class="na">paths</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-          <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
-          <span class="na">backend</span><span class="pi">:</span>
-            <span class="na">service</span><span class="pi">:</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-              <span class="na">port</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-</code></pre></div></div>
+spec:
+  rules:
+  - host: host-url
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mlflow
+              port:
+                name: http
+</code></pre>
 
-<p>This Ingress configuration sets up access for our MLFlow tracking server. It is very simple, the configuration ensures SSL redirection to HTTPS on port 443 and that is is only accessible from within the VPC (internal). The rule specified routes traffic for the <code class="language-plaintext highlighter-rouge">host-url</code> to the MLflow service on the HTTP port.</p>
+<p>This Ingress configuration sets up access for our MLFlow tracking server. It is very simple, the configuration ensures SSL redirection to HTTPS on port 443 and that is is only accessible from within the VPC (internal). The rule specified routes traffic for the <code>host-url</code> to the MLflow service on the HTTP port.</p>
 
-<p>Lastly, the deployment itself, outlined in <code class="language-plaintext highlighter-rouge">deployment.yaml</code> file:</p>
+<p>Lastly, the deployment itself, outlined in <code>deployment.yaml</code> file:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">mlflow</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">mlflow</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">serviceAccount</span><span class="pi">:</span> <span class="s">mlflow-sa</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">app</span>
-        <span class="na">image</span><span class="pi">:</span> <span class="s">add-your-image-here</span>
-        <span class="na">command</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">mlflow"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">server"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--host=0.0.0.0"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--backend-store-uri=postgresql://$(AWS_SECRET_MLFLOW_USERNAME):$(AWS_SECRET_MLFLOW_PASSWORD)@$(AWS_SECRET_MLFLOW_HOST):5432/mlflow"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--default-artifact-root=s3://mlflow-artifacts-bucket"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">--port=8080"</span>
-        <span class="na">ports</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-          <span class="na">containerPort</span><span class="pi">:</span> <span class="m">8080</span>
-        <span class="na">envFrom</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
-            <span class="na">name</span><span class="pi">:</span> <span class="s">mlflow-secrets</span>
-        <span class="na">readinessProbe</span><span class="pi">:</span>
-          <span class="na">httpGet</span><span class="pi">:</span>
-            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-        <span class="na">startupProbe</span><span class="pi">:</span>
-          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">10</span>
-          <span class="na">httpGet</span><span class="pi">:</span>
-            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-        <span class="na">resources</span><span class="pi">:</span>
-          <span class="na">requests</span><span class="pi">:</span>
-            <span class="na">memory</span><span class="pi">:</span> <span class="s">1G</span>
-            <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
-          <span class="na">limits</span><span class="pi">:</span>
-            <span class="na">memory</span><span class="pi">:</span> <span class="s">1G</span>
-            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
-</code></pre></div></div>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: mlflow
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      serviceAccount: mlflow-sa
+      containers:
+      - name: app
+        image: add-your-image-here
+        command:
+        - "mlflow"
+        - "server"
+        - "--host=0.0.0.0"
+        - "--backend-store-uri=postgresql://$(AWS_SECRET_MLFLOW_USERNAME):$(AWS_SECRET_MLFLOW_PASSWORD)@$(AWS_SECRET_MLFLOW_HOST):5432/mlflow"
+        - "--default-artifact-root=s3://mlflow-artifacts-bucket"
+        - "--port=8080"
+        ports:
+        - name: http
+          containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: mlflow-secrets
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        startupProbe:
+          initialDelaySeconds: 10
+          httpGet:
+            path: /
+            port: 8080
+        resources:
+          requests:
+            memory: 1G
+            cpu: 500m
+          limits:
+            memory: 1G
+            cpu: "1"
+</code></pre>
 
 <p>Key takeaways from this setup:</p>
 
 <ol>
   <li>We deploy a single replica of the MLFlow pod.</li>
-  <li>Replace <code class="language-plaintext highlighter-rouge">add-your-image-here</code> with the image we created earlier.</li>
-  <li>Secrets created earlier are passed as environment variables in the <code class="language-plaintext highlighter-rouge">envFrom</code> section.</li>
-  <li>Entrypoint is set to <code class="language-plaintext highlighter-rouge">mlflow server</code> and we pass the required arguments to connect to the database and the S3 bucket.</li>
+  <li>Replace <code>add-your-image-here</code> with the image we created earlier.</li>
+  <li>Secrets created earlier are passed as environment variables in the <code>envFrom</code> section.</li>
+  <li>Entrypoint is set to <code>mlflow server</code> and we pass the required arguments to connect to the database and the S3 bucket.</li>
   <li>Readiness and startup probes ensure the pod is fully operational before receiving requests.</li>
 </ol>
 
@@ -1599,11 +1599,11 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 
 <p>The cascade association step would look like this:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">track_age</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">maximum_age</span><span class="p">):</span>
-    <span class="n">tracks_to_associate</span> <span class="o">=</span> <span class="nf">get_tracks_with_age</span><span class="p">(</span><span class="n">tracks</span><span class="p">,</span> <span class="n">track_age</span><span class="p">)</span>
-    <span class="nf">associate</span><span class="p">(</span><span class="n">tracks_to_associate</span><span class="p">,</span> <span class="n">detections</span><span class="p">)</span>
-    <span class="nf">remove_associated_detections</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python">for track_age in range(1, maximum_age):
+    tracks_to_associate = get_tracks_with_age(tracks, track_age)
+    associate(tracks_to_associate, detections)
+    remove_associated_detections(detections)
+</code></pre>
 
 <h2 id="bytetrack">ByteTrack</h2>
 
@@ -1729,7 +1729,7 @@ There is camera motion correction in the code but not in the paper!!!!
 <p>Protocol Buffers, also known as Protobuf, is a language-agnostic binary serialization format developed by Google. It is used for efficient data <strong>serialization of structured data</strong> and communication between applications. It is faster than JSON for two reasons:</p>
 
 <ul>
-  <li><strong>Messages are shorter</strong>. In Protobuf messages do not contain any metadata or extra information such as field names and data types. This is not needed since the data schema has been strictly predefined in the <code class="language-plaintext highlighter-rouge">.proto</code> file. It also uses a compact binary representation, variable-length encoding, which means that the number of bytes required to represent a value depends on its size.</li>
+  <li><strong>Messages are shorter</strong>. In Protobuf messages do not contain any metadata or extra information such as field names and data types. This is not needed since the data schema has been strictly predefined in the <code>.proto</code> file. It also uses a compact binary representation, variable-length encoding, which means that the number of bytes required to represent a value depends on its size.</li>
   <li><strong>Serialization is faster</strong>. Converting messages to and from bytes is faster than in JSON because of its binary format and predefined schema. Decoding can be optimized and parallelized.</li>
 </ul>
 
@@ -1739,13 +1739,13 @@ There is camera motion correction in the code but not in the paper!!!!
 
 <p>Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. However, images do not fall under the category of structured text. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG… In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create random 100x100 rgb image
-</span><span class="n">image</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
-<span class="c1"># serialize image to jpg using opencv
-</span><span class="n">encoded_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imencode</span><span class="p">(</span><span class="sh">"</span><span class="s">.jpg</span><span class="sh">"</span><span class="p">,</span> <span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">tobytes</span><span class="p">()</span>
-<span class="c1"># fake send with grpc
-</span><span class="n">grpc</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">encoded_image</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python"># create random 100x100 rgb image
+image = numpy.random.rand(100, 100, 3) * 255
+# serialize image to jpg using opencv
+encoded_image = cv2.imencode(".jpg", image)[1].tobytes()
+# fake send with grpc
+grpc.send(encoded_image)
+</code></pre>
 
 <p>The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here… Let’s check this with real numbers:</p>
 
@@ -1763,47 +1763,47 @@ The gRPC server has been implemented using <a href="https://grpc.io/docs/languag
 
 <p class="image-caption"><em>This is what Stable Diffusion creates with the prompt “an image of a cat is being encoded into a chunk of bytes”</em></p>
 
-<p>We decided to measure three different requests and using a single response for all of them. The gRPC <code class="language-plaintext highlighter-rouge">.proto</code> file for those requests looks like the following:</p>
+<p>We decided to measure three different requests and using a single response for all of them. The gRPC <code>.proto</code> file for those requests looks like the following:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BasicRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
+<pre><code class="language-python">class BasicRequest(BaseModel):
+    """
     Structured data request, we expect to match online benchmarks with this
-    </span><span class="sh">"""</span>
-    <span class="n">field1</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">field2</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">field3</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">field4</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    """
+    field1: str
+    field2: str
+    field3: int
+    field4: Dict[str, int]
 
-<span class="k">class</span> <span class="nc">ImageBase64Request</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
+class ImageBase64Request(BaseModel):
+    """
     Encode image as a string using Base64 encoding. 
     This is a very bad solution (but simple to do) that should always be avoided
-    </span><span class="sh">"""</span>
-    <span class="n">image</span><span class="p">:</span> <span class="nb">str</span>
+    """
+    image: str
 
-<span class="k">class</span> <span class="nc">ImageBinaryRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
+class ImageBinaryRequest(BaseModel):
+    """
     Contains an image encoded as bytes.
-    </span><span class="sh">"""</span>
-    <span class="n">image</span><span class="p">:</span> <span class="nb">bytes</span>
+    """
+    image: bytes
 
-<span class="k">class</span> <span class="nc">BasicResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">prediction1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
-    <span class="n">prediction2</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
-</code></pre></div></div>
+class BasicResponse(BaseModel):
+    prediction1: List[float]
+    prediction2: Dict[str, int]
+</code></pre>
 
 <p>Note REST’s requests and responses are identical to these so we can make a fair comparison.</p>
 
 <p>Our client does a very simple thing, sends twenty concurrent requests to each server and waits for a response. It repeats this ten times for then computing the average time it took. Pseudocode for the client it is shown below:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">start</span><span class="o">=</span> <span class="nf">time</span><span class="p">()</span>
-    <span class="nf">send_concurrent_request_to_specific_server</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">times</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="nf">start</span><span class="p">())</span>
+<pre><code class="language-python">times = []
+for _ in range(10):
+    start= time()
+    send_concurrent_request_to_specific_server(n=20)
+    times.append(time() - start())
 
-<span class="n">average_time</span> <span class="o">=</span> <span class="nf">mean</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
-</code></pre></div></div>
+average_time = mean(times)
+</code></pre>
 
 <p>We tested this for three different image sizes. Results are collected below:</p>
 
@@ -2008,24 +2008,24 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <p>Two factors contribute to the similar performance results for gRPC and REST. Firstly, the model’s inference time is considerably longer than the networking time, making it difficult to discern the small gains obtained by changing the transmission protocol. For example, sending 20 large images concurrently in the simple base case (Table 3) took roughly 0.19s, whereas we are now spending approximately 1.4 seconds (Table 6), highlighting the significant impact of model inference time on the comparison.</p>
 
-<p>Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve’s <code class="language-plaintext highlighter-rouge">.proto</code> definition for <a href="https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23" target="_blank" rel="noopener noreferrer">prediction response</a> is too generic and it cannot be personalized with your model specifics.</p>
+<p>Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve’s <code>.proto</code> definition for <a href="https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23" target="_blank" rel="noopener noreferrer">prediction response</a> is too generic and it cannot be personalized with your model specifics.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span> <span class="n">PredictionResponse</span> <span class="p">{</span>
-    <span class="o">//</span> <span class="n">Response</span> <span class="n">content</span> <span class="k">for</span> <span class="n">prediction</span>
-    <span class="nb">bytes</span> <span class="n">prediction</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<pre><code class="language-json">message PredictionResponse {
+    // Response content for prediction
+    bytes prediction = 1;
+}
+</code></pre>
 
-<p>This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the <code class="language-plaintext highlighter-rouge">.proto</code> file for our response could be something like:</p>
+<p>This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the <code>.proto</code> file for our response could be something like:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span> <span class="n">PredictionResponse</span> <span class="p">{</span>
-    <span class="n">repeated</span> <span class="nb">float</span> <span class="n">scores</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="n">repeated</span> <span class="n">int32</span> <span class="n">scores</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="n">repeated</span> <span class="n">repeated</span> <span class="n">int32</span> <span class="n">bboxes</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<pre><code class="language-json">message PredictionResponse {
+    repeated float scores = 1;
+    repeated int32 scores = 2;
+    repeated repeated int32 bboxes = 3;
+}
+</code></pre>
 
-<p>The differences between this response and the one provided by Torchserve are clear. You do not get any of the Protobuf advantage since the Torchserve schema definition is too general. A better or more customizable definition such as the one provided by Tfserving, of the <code class="language-plaintext highlighter-rouge">.proto</code> file could help boost performance.</p>
+<p>The differences between this response and the one provided by Torchserve are clear. You do not get any of the Protobuf advantage since the Torchserve schema definition is too general. A better or more customizable definition such as the one provided by Tfserving, of the <code>.proto</code> file could help boost performance.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -2033,7 +2033,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">CNNs &amp;amp; Transformers Explainability: What do they see?</title><link href="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers.html" rel="alternate" type="text/html" title="CNNs &amp;amp; Transformers Explainability: What do they see?" /><published>2021-12-09T00:00:00+00:00</published><updated>2021-12-09T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers</id><content type="html" xml:base="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers.html"><![CDATA[<p><em>I created a small demo in <a href="https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability" target="_blank" rel="noopener noreferrer">Hugging Face Spaces</a> to play with the code</em></p>
 
-<p>A couple of weeks ago I saw a very interesting <a href="https://pytorch.org/blog/FX-feature-extraction-torchvision/" target="_blank" rel="noopener noreferrer">post by Alexander Soare and Francisco Massa</a> on Pytorch Blog. The authors explained that the latest version of Torchivision  <a href="https://github.com/pytorch/vision/releases/tag/v0.11.0" target="_blank" rel="noopener noreferrer"><code class="language-plaintext highlighter-rouge">v0.11.0</code></a> included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don’t need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.</p>
+<p>A couple of weeks ago I saw a very interesting <a href="https://pytorch.org/blog/FX-feature-extraction-torchvision/" target="_blank" rel="noopener noreferrer">post by Alexander Soare and Francisco Massa</a> on Pytorch Blog. The authors explained that the latest version of Torchivision  <a href="https://github.com/pytorch/vision/releases/tag/v0.11.0" target="_blank" rel="noopener noreferrer"><code>v0.11.0</code></a> included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don’t need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.</p>
 
 <p>So … I couldn’t resist, I really wanted to try this and see how it works! I’ve been thinking about the differences between Transformer and CNN when classifying images and was wondering if I could compare them. So I rechecked the Class Activation Map paper<a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> from 2015. This is a classic job that shows how to paint activation maps from your last conv layer, conditioned on your model output label. For the case of transformers, I based my experiments on Attention Flow <a href="https://arxiv.org/pdf/2005.00928.pdf" target="_blank" rel="noopener noreferrer">[2]</a> which seems to be the standard method in the community.</p>
 
@@ -2051,7 +2051,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
   <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1002-c0f0bfcc7.webp 1002w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" />
 </a></p>
 
-<p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code class="language-plaintext highlighter-rouge">n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code class="language-plaintext highlighter-rouge">n_filters</code> x <code class="language-plaintext highlighter-rouge">n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
+<p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code>n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code>n_filters</code> x <code>n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
 
 \[M_c(x,y) = \sum_{k}w_k^c f_k(x,y)\]
 
@@ -2063,33 +2063,33 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <h3 id="code">Code</h3>
 
-<p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code class="language-plaintext highlighter-rouge">get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code class="language-plaintext highlighter-rouge">layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code class="language-plaintext highlighter-rouge">layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
+<p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code>get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code>layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code>layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="n">torchvision.models.feature_extraction</span> <span class="kn">import</span> <span class="n">create_feature_extractor</span>
+<pre><code class="language-python">from torchvision import models
+from torchvision.models.feature_extraction import create_feature_extractor
 
-<span class="n">resnet50</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nf">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">resnet50</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
+resnet50 = models.resnet50(pretrained=True).to("cuda")
+resnet50.eval()
 
-<span class="n">feature_extractor</span> <span class="o">=</span> <span class="nf">create_feature_extractor</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">return_nodes</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">layer4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">fc</span><span class="sh">'</span><span class="p">])</span>
-</code></pre></div></div>
+feature_extractor = create_feature_extractor(resnet50, return_nodes=['layer4', 'fc'])
+</code></pre>
 
 <p>For computing the CAM we just need to apply the previous formula. First we need to get linear layer weight matrix, select the row that relates with the predicted output class and multiply it by the extracted features, then we can apply min-max normalization so that the CAM is between 0 and 1.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fc_layer_weights</span> <span class="o">=</span> <span class="n">resnet50</span><span class="p">.</span><span class="n">fc</span><span class="p">.</span><span class="n">weight</span>
+<pre><code class="language-python">fc_layer_weights = resnet50.fc.weight
 
-<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
-    <span class="c1"># Extract features and remove batch dim
-</span>    <span class="n">output</span> <span class="o">=</span> <span class="nf">feature_extractor</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
-    <span class="n">cnn_features</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="sh">"</span><span class="s">layer4</span><span class="sh">"</span><span class="p">].</span><span class="nf">squeeze</span><span class="p">()</span>
-    <span class="n">class_id</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="sh">"</span><span class="s">fc</span><span class="sh">"</span><span class="p">].</span><span class="nf">argmax</span><span class="p">()</span>
+with torch.no_grad():
+    # Extract features and remove batch dim
+    output = feature_extractor(img_tensor)
+    cnn_features = output["layer4"].squeeze()
+    class_id = output["fc"].argmax()
 
-    <span class="c1"># Linear combination of class weights and cnn features
-</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">fc_layer_weights</span><span class="p">[</span><span class="n">class_id</span><span class="p">].</span><span class="nf">matmul</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    # Linear combination of class weights and cnn features
+    cam = fc_layer_weights[class_id].matmul(cnn_features.flatten(1))
 
-<span class="c1"># Reshape back to 2D
-</span><span class="n">cam</span> <span class="o">=</span> <span class="n">cam</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cnn_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-</code></pre></div></div>
+# Reshape back to 2D
+cam = cam.reshape(cnn_features.shape[1], cnn_features.shape[2])
+</code></pre>
 
 <p>That’s all! Just a few lines, let’s see a few simple examples:</p>
 
@@ -2121,11 +2121,11 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <p>At the very first attention layer, the input vectors are the linear projections of the flattened patches:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Pseudocode simplification from HF implementation
-</span><span class="n">patch_embeddings</span> <span class="o">=</span> <span class="nc">PatchEmbeddings</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">flat_patch_embeddings</span> <span class="o">=</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">linear_projections</span> <span class="o">=</span> <span class="nc">Linear</span><span class="p">(</span><span class="n">patch_embeddings</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python"># Pseudocode simplification from HF implementation
+patch_embeddings = PatchEmbeddings(image, patch_size=16)
+flat_patch_embeddings = Flatten(patch_embeddings, dim=-1)
+linear_projections = Linear(patch_embeddings, out_features=embedding_size)
+</code></pre>
 
 <p>So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In <a href="https://arxiv.org/abs/2005.00928" target="_blank" rel="noopener noreferrer">[2]</a> two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.</p>
 
@@ -2148,39 +2148,39 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <h3 id="code-1">Code</h3>
 
-<p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code class="language-plaintext highlighter-rouge">0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
+<p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code>0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">transformers</span> <span class="kn">import</span> <span class="n">ViTForImageClassification</span>
-<span class="n">vit</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="sh">"</span><span class="s">google/vit-base-patch16-224</span><span class="sh">"</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">vit</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
-</code></pre></div></div>
+<pre><code class="language-python">from transformers import ViTForImageClassification
+vit = ViTForImageClassification.from_pretrained("google/vit-base-patch16-224").to("cuda")
+vit.eval()
+</code></pre>
 
-<p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code class="language-plaintext highlighter-rouge">output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
+<p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code>output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Inference
-</span><span class="n">result</span> <span class="o">=</span> <span class="nf">vit</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="c1"># Stack all layers attention
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nf">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># Average the attention at each layer over all heads
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># Add residual and re-normalize
-</span><span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="nf">to</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">attention_probs</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">attention_probs</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">residual</span>
+<pre><code class="language-python"># Inference
+result = vit(img_tensor, output_attentions=True)
+# Stack all layers attention
+attention_probs = torch.stack(result[1]).squeeze(1)
+# Average the attention at each layer over all heads
+attention_probs = torch.mean(attention_probs, dim=1)
+# Add residual and re-normalize
+residual = torch.eye(attention_probs.size(-1)).to("cuda")
+attention_probs = 0.5 * attention_probs + 0.5 * residual
 
-<span class="c1"># Normalize by layer
-</span><span class="n">attention_probs</span> <span class="o">=</span> <span class="n">attention_probs</span> <span class="o">/</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="nf">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+# Normalize by layer
+attention_probs = attention_probs / attention_probs.sum(dim=-1).unsqueeze(-1)
 
-<span class="c1"># Compute rollout
-</span><span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">attention_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">attention_probs</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
-    <span class="n">attention_rollout</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">matmul</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">attention_rollout</span><span class="p">)</span>
+# Compute rollout
+attention_rollout = attention_probs[0]
+for i in range(1, attention_probs.size(0)):
+    attention_rollout = torch.matmul(attention_probs[i], attention_rollout)
 
-<span class="c1"># Attentions between CLS token and patches
-</span><span class="n">mask</span> <span class="o">=</span> <span class="n">attention_rollout</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
-<span class="c1"># Reshape back to 2D
-</span><span class="n">mask_size</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">mask</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nf">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="n">mask_size</span><span class="p">,</span> <span class="n">mask_size</span><span class="p">)</span>
-</code></pre></div></div>
+# Attentions between CLS token and patches
+mask = attention_rollout[0, 1:]
+# Reshape back to 2D
+mask_size = np.sqrt(mask.size(0)).astype(int)
+mask = mask.reshape(mask_size, mask_size)
+</code></pre>
 
 <p>Pretty simple, let’s see a few examples:</p>
 
