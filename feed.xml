@@ -1,4 +1,154 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-10-22T07:42:27+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Understanding MOT Metrics</title><link href="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html" rel="alternate" type="text/html" title="Understanding MOT Metrics" /><published>2024-08-25T00:00:00+00:00</published><updated>2024-08-25T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html"><![CDATA[<p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-10-23T07:35:00+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Concurrent Requests in Python: httpx vs aiohttp</title><link href="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx.html" rel="alternate" type="text/html" title="Concurrent Requests in Python: httpx vs aiohttp" /><published>2024-10-20T00:00:00+00:00</published><updated>2024-10-20T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx.html"><![CDATA[<p>Over the past couple of weeks, I encountered a tricky bug while working on a computer vision application. After spending time troubleshooting, I decide to write this post since it might help other people to avoid the same issue.</p>
+
+<h2 id="the-setup">The Setup</h2>
+
+<p>I have a computer vision REST API that receives images and returns predictions. The setup includes several replicas running behind a load balancer, and each server batches requests to maximize GPU usage and minimize latency—a fairly common setup for computer vision applications. Here’s a simple diagram showing the flow of requests from the client to the server:</p>
+
+<div class="post-center-image">
+    <a href="/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/architecture.jpg">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/architecture-800-d9bf89083.jpg" alt="Application Diagram" srcset="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/architecture-400-c9c164616.webp 400w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/architecture-800-c9c164616.webp 800w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/architecture-1500-c9c164616.webp 1500w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/architecture-1506-c9c164616.webp 1506w" sizes="(max-width: 767px) 100vw, 80vw" width="1506" height="663" />
+</a>
+
+</div>
+
+<p>I was using the <code>httpx</code> library from my Python client to send requests asynchronously to this service. Initially, things worked fine, but as the traffic increased, random errors started appearing. These errors were intermittent, making it even harder to trace the root cause and putting my patience to the limit.</p>
+
+<p>Note that these are the library versions I am using across this post:</p>
+
+<pre><code class="language-bash">python                            3.11.3
+aiohttp                           3.10.10
+httpx                             0.27.2
+</code></pre>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>I initially chose <code>httpx</code> for my client due to its modern async/await support and its recommendation in FastAPI’s documentation. It seemed like a solid choice for handling concurrent requests. However, as I ramped up the number of requests, I began encountering random crashes that were difficult to debug. The errors weren’t immediately obvious, and it took time to isolate the issue as being related to <code>httpx</code>. Here’s a minimal example of the client-server setup I was working with.</p>
+
+<h3 id="server-code-fastapi">Server Code (FastAPI)</h3>
+
+<pre><code class="language-python">from fastapi import FastAPI
+from pydantic import BaseModel, Field
+import asyncio
+import uvicorn
+
+app = FastAPI()
+
+class ImagePayload(BaseModel):
+    image: str = Field(..., description="Base64 encoded image")
+
+@app.post("/process_image")
+async def process_image(payload: ImagePayload):
+    await asyncio.sleep(3)
+
+    return {
+        "message": "Image processed successfully after a delay"
+    }
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+</code></pre>
+
+<h3 id="httpx-client-code">Httpx Client Code</h3>
+
+<p>This is the client code that sends a lot of requests concurrently to the server. Note I have added a few variables here:</p>
+
+<ul>
+  <li><code>CONCURRENT_REQUESTS</code>: The number of concurrent requests that will be sent to the server</li>
+  <li><code>TOTAL_REQUESTS</code>: The total number of requests that will be sent to the server</li>
+  <li><code>TIMEOUT</code>: The timeout in seconds for each individual request</li>
+</ul>
+
+<pre><code class="language-python">import asyncio
+import httpx
+import base64
+import numpy as np
+
+SERVER_URL = "http://localhost:8000/process_image"
+
+CONCURRENT_REQUESTS = 300
+TOTAL_REQUESTS = 1000
+TIMEOUT = 30
+
+async def send_request(client, image_data):
+    response = await client.post(SERVER_URL, json={"image": image_data})
+    return response.json()
+
+async def main():
+    image = np.random.randint(0, 255, (100, 100, 3), dtype=np.uint8)
+    image_data = base64.b64encode(image).decode()
+    
+    async with httpx.AsyncClient(limits=httpx.Limits(max_connections=CONCURRENT_REQUESTS), verify=False, timeout=TIMEOUT) as client:
+        tasks = [send_request(client, image_data) for _ in range(TOTAL_REQUESTS)]
+        results = await asyncio.gather(*tasks)
+
+    for i, result in enumerate(results, 1):
+        print(f"Response {i}:", result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</code></pre>
+
+<p>When I run this code I see that a lot of requests succeed but suddenly the whole program crashes with the following error:</p>
+
+<pre><code class="language-bash">(the exception is too long to be shown here)
+  File "/home/mmendez/pypoetry/virtualenvs/example//lib/python3.11/site-packages/httpx/_client.py", line 1776, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mmendez/pypoetry/virtualenvs/example//lib/python3.11/site-packages/httpx/_transports/default.py", line 376, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/home/mmendez/.pyenv/versions/3.11.3/lib/python3.11/contextlib.py", line 155, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/mmendez/pypoetry/virtualenvs/example//lib/python3.11/site-packages/httpx/_transports/default.py", line 89, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+</code></pre>
+
+<p>This is quite frustrating because <code>httpx.ReadError</code> is a generic error indicating that something went wrong while reading the response from the server, but it doesn’t give much detail. What made this especially challenging is that on my application the error wasn’t consistent. It only occurred under heavy traffic, and even then, it didn’t happen every time.</p>
+
+<h2 id="the-fix-switch-to-aiohttp">The Fix: Switch to aiohttp</h2>
+
+<p>After searching through the <code>httpx</code> GitHub repository, I found upon this <a href="https://github.com/encode/httpx/issues/3215" target="_blank" rel="noopener noreferrer">issue</a>, which provided insight into the performance limitations of <code>httpx</code> when compared to <code>aiohttp</code>. This is another popular library for handling asynchronous HTTP requests in Python. The solution became clear: switch to <code>aiohttp</code> and see if the problem persists.</p>
+
+<p>Here’s how the client code looks after switching to aiohttp:</p>
+
+<pre><code class="language-python">import asyncio
+import aiohttp
+import base64
+import numpy as np
+
+SERVER_URL = "http://localhost:8000/process_image"
+CONCURRENT_REQUESTS = 300
+TOTAL_REQUESTS = 1000
+TIMEOUT = 30
+
+async def send_request(session, image_data):
+    async with session.post(SERVER_URL, json={"image": image_data}) as response:
+        return await response.json()
+
+async def main():
+    image = np.random.randint(0, 255, (100, 100, 3), dtype=np.uint8)
+    image_data = base64.b64encode(image.tobytes()).decode()
+    
+    timeout = aiohttp.ClientTimeout(total=TIMEOUT)
+    connector = aiohttp.TCPConnector(limit=CONCURRENT_REQUESTS)
+    
+    async with aiohttp.ClientSession(timeout=timeout, connector=connector) as session:
+        tasks = [send_request(session, image_data) for _ in range(TOTAL_REQUESTS)]
+        
+        results = await asyncio.gather(*tasks)
+
+    for i, result in enumerate(results, 1):
+        print(f"Response {i}:", result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</code></pre>
+
+<p>This simple change resolved all the random errors and even improved the overall performance.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>If you’re building an application that needs to handle a large number of concurrent requests, especially in a production environment, I recommend switching to <code>aiohttp</code>. While <code>httpx</code> is a great library, it may not be the best choice for high-concurrency use cases just yet. Hopefully, these issues will be resolved soon, but until then, <code>aiohttp</code> has proven to be a more reliable choice.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Understanding MOT Metrics</title><link href="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html" rel="alternate" type="text/html" title="Understanding MOT Metrics" /><published>2024-08-25T00:00:00+00:00</published><updated>2024-08-25T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html"><![CDATA[<p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
 
 <p>In this article, I’ll provide an introduction to tracking metrics, starting from the basic principles and breaking down the key differences between various metrics. I’ll focus on three popular metrics: MOTA, IDF1, and HOTA, which are widely used in the <a href="https://paperswithcode.com/sota/multi-object-tracking-on-mot20-1" target="_blank" rel="noopener noreferrer">Multi-Object Tracking (MOT) community</a>. Understanding these is crucial because the choice of metric can significantly impact how we interpret a tracker’s performance.</p>
 
@@ -2031,194 +2181,4 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
 <p>If you’re using Torchserve to serve computer vision models, it’s recommended to steer clear of gRPC. Our findings show that there are no performance benefits to using gRPC. Moreover, it adds code complexity while hindering debugging due to its non-human-readable messages. Since REST is more commonly used, most developers are already familiar with it. Switching to gRPC in this scenario comes with a learning curve that doesn’t offer any significant advantages.</p>
 
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">CNNs &amp;amp; Transformers Explainability: What do they see?</title><link href="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers.html" rel="alternate" type="text/html" title="CNNs &amp;amp; Transformers Explainability: What do they see?" /><published>2021-12-09T00:00:00+00:00</published><updated>2021-12-09T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers</id><content type="html" xml:base="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers.html"><![CDATA[<p><em>I created a small demo in <a href="https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability" target="_blank" rel="noopener noreferrer">Hugging Face Spaces</a> to play with the code</em></p>
-
-<p>A couple of weeks ago I saw a very interesting <a href="https://pytorch.org/blog/FX-feature-extraction-torchvision/" target="_blank" rel="noopener noreferrer">post by Alexander Soare and Francisco Massa</a> on Pytorch Blog. The authors explained that the latest version of Torchivision  <a href="https://github.com/pytorch/vision/releases/tag/v0.11.0" target="_blank" rel="noopener noreferrer"><code>v0.11.0</code></a> included a new utility that allows us to access intermediate transformations of an input during the step-forward of a PyTorch module. That is, we don’t need more complex code to get the intermediate activations of a model, we can simply point to a specific layer and get its results. The article analyzes the different methods that were used to carry out this task, comparing their advantages and disadvantages. This is a remarkably clear post (as generally on the Pytorch blog) that not only explains you how this new feature works, but also provides insight into the other common methods.</p>
-
-<p>So … I couldn’t resist, I really wanted to try this and see how it works! I’ve been thinking about the differences between Transformer and CNN when classifying images and was wondering if I could compare them. So I rechecked the Class Activation Map paper<a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> from 2015. This is a classic job that shows how to paint activation maps from your last conv layer, conditioned on your model output label. For the case of transformers, I based my experiments on Attention Flow <a href="https://arxiv.org/pdf/2005.00928.pdf" target="_blank" rel="noopener noreferrer">[2]</a> which seems to be the standard method in the community.</p>
-
-<p>This post was created with the intention of improving my knowledge on ViT, TorchVision and model’s explainability. I do not pretend to compare ResNet against ViT since they have been trained with different datasets. ViT was pre-trained on ImageNet-21k and finetuned on ImageNet whileas ResNet50 was only trained on ImageNet.</p>
-
-<p>Now, let’s see how to implement both methods and visualize some results!</p>
-
-<h2 id="class-activation-map---resnet">Class Activation Map - ResNet</h2>
-
-<h3 id="a-small-review">A small review</h3>
-
-<p>In <a href="https://arxiv.org/pdf/1512.04150.pdf" target="_blank" rel="noopener noreferrer">[1]</a> authors propose a way to relate last layer activations to the input image. Conv layers apply a set of filters to the input data and they return the stacked filter responses. In this paper authors show how each of this stacked responses contribute to decide the output label. The trick is very simple, they propose to add a Global Average Pooling (GAP) layer over each of the 2D features outputted from the last convolutional layer. Thanks to this, we can figure out how much is each filter contributing to the final classification of the image. As usually an image is worth a thousand words, so have a look at the figure below extracted from the paper:</p>
-
-<p><a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-8518703f0.jpg" alt="CNNs &amp; Transformers Explainability: What do they see?" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-400-c0f0bfcc7.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-800-c0f0bfcc7.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/gap-1002-c0f0bfcc7.webp 1002w" sizes="(max-width: 767px) 100vw, 80vw" width="1002" height="476" />
-</a></p>
-
-<p>See how the GAP layer reduces each of the filter outputs to a single averaged element. Then, we will have a vector of size <code>n_filters</code> that will be multiplied by a linear layer which weights will be a matrix of size <code>n_filters</code> x <code>n_classes</code>. Once you know the classification output, you can “isolate” the weight vector related with that class and multiply it by the activations. In math notation this would be expressed by:</p>
-
-\[M_c(x,y) = \sum_{k}w_k^c f_k(x,y)\]
-
-<p>where \(k\) represents the number of filters in the last conv layer, \(w_k^c\)  are the linear layer weights and \(f_k(x,y)\) represents the 2D stacked filter responses.</p>
-
-<p>This paper was publised in 2015 and at that time popular architectures did not have GAP layers so they have to be finetuned with these extra layers… But we are going to use a ResNet architecture which already has a GAP layer at the end! You can check <a href="https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py#L203" target="_blank" rel="noopener noreferrer">here</a> torchvision implementation of ResNets to be sure of this.</p>
-
-<p>There have been multiple works that have evolved CAM idea, you can check a few implementions of them in <a href="https://github.com/frgfm/torch-cam" target="_blank" rel="noopener noreferrer">torch-cam</a> repo.</p>
-
-<h3 id="code">Code</h3>
-
-<p>First of all we need to get the pretrained ResNet50 model from torchvision and put it in eval model. Then we can get extract the features we need by specifying their names. We can check all the names of the layers with <code>get_graph_node_names</code> function. In this case I need to extract last conv layer activation, this is <code>layer4</code>. One of the advantages of using the new feature extractor is that it would automatically mark the <code>layer4</code> as a leaf of the computation graph, so following layers would not be computed (and that’s awesome!). Unfortunately, we also need to get the classification output of the network so we are not really getting the full power of the feature_extractor. Let’s code this:</p>
-
-<pre><code class="language-python">from torchvision import models
-from torchvision.models.feature_extraction import create_feature_extractor
-
-resnet50 = models.resnet50(pretrained=True).to("cuda")
-resnet50.eval()
-
-feature_extractor = create_feature_extractor(resnet50, return_nodes=['layer4', 'fc'])
-</code></pre>
-
-<p>For computing the CAM we just need to apply the previous formula. First we need to get linear layer weight matrix, select the row that relates with the predicted output class and multiply it by the extracted features, then we can apply min-max normalization so that the CAM is between 0 and 1.</p>
-
-<pre><code class="language-python">fc_layer_weights = resnet50.fc.weight
-
-with torch.no_grad():
-    # Extract features and remove batch dim
-    output = feature_extractor(img_tensor)
-    cnn_features = output["layer4"].squeeze()
-    class_id = output["fc"].argmax()
-
-    # Linear combination of class weights and cnn features
-    cam = fc_layer_weights[class_id].matmul(cnn_features.flatten(1))
-
-# Reshape back to 2D
-cam = cam.reshape(cnn_features.shape[1], cnn_features.shape[2])
-</code></pre>
-
-<p>That’s all! Just a few lines, let’s see a few simple examples:</p>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-333ec12b6.jpg" alt="CAM" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-400-d5f6fcf29.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-800-d5f6fcf29.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/CAMR-1100-d5f6fcf29.webp 1100w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
-</a>
-
-</div>
-
-<h2 id="vit-attention-map">ViT Attention Map</h2>
-
-<h3 id="another-brief-review">Another brief review</h3>
-
-<p>ViT paper<a href="https://arxiv.org/pdf/2010.11929.pdf" target="_blank" rel="noopener noreferrer">[3]</a> was publised at the end of 2020 and it has already become a reference in the field. There are an incredible large number of works<a href="https://arxiv.org/abs/2101.01169" target="_blank" rel="noopener noreferrer">[4]</a> that have used it as a baseline to build new methods upon its ideas. The authors found a simple way to treat images as sequences so they can feed them to a Transformer encoder, simply divide them into fixed-size patches.</p>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-da40c3cdb.jpg" alt="Vision Transformer" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-400-23824f5be.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-800-23824f5be.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/vit-879-23824f5be.webp 879w" sizes="(max-width: 767px) 100vw, 80vw" width="879" height="470" />
-</a>
-
-</div>
-
-<p>The attentions mechanism allows us to figure out what parts or patches of the image are key for the classification result. This will allow us to interpret model’s decision.</p>
-
-\[Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V\]
-
-<p>In the attention formula, the dot product between the query and the key represents the raw attention scores. I like to imagine this as a similarity matrix, where each position represents how “similar” the query and key embeddings are. So when both vectors are not aligned the dot product will tend to zero.</p>
-
-<p>At the very first attention layer, the input vectors are the linear projections of the flattened patches:</p>
-
-<pre><code class="language-python"># Pseudocode simplification from HF implementation
-patch_embeddings = PatchEmbeddings(image, patch_size=16)
-flat_patch_embeddings = Flatten(patch_embeddings, dim=-1)
-linear_projections = Linear(patch_embeddings, out_features=embedding_size)
-</code></pre>
-
-<p>So it would be very easy to visualize attention weights at this very first layer because they directly relate to the image embeddings. This task becomes harder when we stack multiple Transformer layers (there are 12 layers in ViT). In <a href="https://arxiv.org/abs/2005.00928" target="_blank" rel="noopener noreferrer">[2]</a> two different methods are proposed with the aim of easing this task, Attention Rollout and Attention Flow. We are going to use the first of them because of its simplicity.</p>
-
-<h3 id="attention-rollout">Attention Rollout</h3>
-
-<p>We can model the information flow as a graph where input patches and hidden embeddings are the nodes and the edges represent the attentions from the nodes in one layer to the next layer. These edges are weighted by the attention weights which determine the amount of information that is passed from one layer to the next. Hence, if we want to compute the attention that a node at layer \(i\) receives from all previous layer nodes, we can simply multiply the attention weights matrices from the input layer until our target \(i\). Check the following animation to see how this works:</p>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-2f6a36848.jpg" alt="Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-400-d83342cea.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/attention_rollout-774-d83342cea.webp 774w" sizes="(max-width: 767px) 100vw, 80vw" width="774" height="658" />
-</a>
-
-</div>
-
-<p class="image-caption"><em>Attention rollout simulation obtained from <a href="https://samiraabnar.github.io/articles/2020-04/attention_flow" target="_blank" rel="noopener noreferrer">Samira Abnar’s blog</a></em></p>
-
-<p>This is super straight-forward and easy to understand but we are missing the influence of residual connections. Paper authors handle this in a very elegant way, they realize that the output at layer \(V_{l+1}\) depends on the previous output and the attention weights: \(V_{l+1} = V_{l} + W_{att}V_l\), where \(W_{att}\) is the attention matrix. This can also be expressed as \(V_{l+1} = (W_{att} + I)V_l\). Thus, re-normalizing the weights, the raw attention updated by residual connections can be expressed as: \(A = 0.5W_{att} + 0.5I\).</p>
-
-<p>Note I have seen other implementations of this method that instead of averaging the attention between the different heads of each layer, use min or max operator since it seems to work better in practice (see <a href="https://github.com/jacobgil/vit-explain" target="_blank" rel="noopener noreferrer">this implementation</a>)</p>
-
-<h3 id="code-1">Code</h3>
-
-<p>First of all we need to setup our ViT model, unfortunately at the moment of writing this post we cannot use Torchvision’s ViT because it is not included in latest version <code>0.11.1</code> (it has been recently added see <a href="https://github.com/pytorch/vision/pull/4594" target="_blank" rel="noopener noreferrer">this PR</a>). For this reason, we cannot use the new feature extractor and we need to find another implementation. I will use Hugging Face library because it is simple and allows me get all attention matrices directly.</p>
-
-<pre><code class="language-python">from transformers import ViTForImageClassification
-vit = ViTForImageClassification.from_pretrained("google/vit-base-patch16-224").to("cuda")
-vit.eval()
-</code></pre>
-
-<p>You can check the <a href="https://huggingface.co/docs/transformers/model_doc/vit#transformers.ViTModel" target="_blank" rel="noopener noreferrer">official documentation</a> to see how we can use <code>output_attentions</code> parameter to get the attentions tensors of all attention layers. Attention rollout code would consist on:</p>
-
-<pre><code class="language-python"># Inference
-result = vit(img_tensor, output_attentions=True)
-# Stack all layers attention
-attention_probs = torch.stack(result[1]).squeeze(1)
-# Average the attention at each layer over all heads
-attention_probs = torch.mean(attention_probs, dim=1)
-# Add residual and re-normalize
-residual = torch.eye(attention_probs.size(-1)).to("cuda")
-attention_probs = 0.5 * attention_probs + 0.5 * residual
-
-# Normalize by layer
-attention_probs = attention_probs / attention_probs.sum(dim=-1).unsqueeze(-1)
-
-# Compute rollout
-attention_rollout = attention_probs[0]
-for i in range(1, attention_probs.size(0)):
-    attention_rollout = torch.matmul(attention_probs[i], attention_rollout)
-
-# Attentions between CLS token and patches
-mask = attention_rollout[0, 1:]
-# Reshape back to 2D
-mask_size = np.sqrt(mask.size(0)).astype(int)
-mask = mask.reshape(mask_size, mask_size)
-</code></pre>
-
-<p>Pretty simple, let’s see a few examples:</p>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-62565fb71.jpg" alt="Rollout Transform" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-400-c56709655.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-800-c56709655.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/ROLLOUTR-1100-c56709655.webp 1100w" sizes="(max-width: 767px) 100vw, 80vw" width="1100" height="200" />
-</a>
-
-</div>
-
-<p>There seems to be a larger noise when we comparing these results wrt CAM ones. One plausible option to reduce this effect is to filter very low attentions and keep only the strongest ones. I will stick with the original implementation but you find about this in <a href="https://github.com/jacobgil/vit-explain" target="_blank" rel="noopener noreferrer">this repo</a>.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>We have covered two important methods that can give us some intuition on how CNNs and Transformers work internally. A few key aspects that we must keep in mind:</p>
-
-<ul>
-  <li>
-    <p>The idea behind this post was to improve my understanding of the ViT architecture, TorchVision new features, GAP and Attention Rollout. This should not be used as a comparison between ResNet and ViT, since ViT was pre-trained on ImageNet-21k and finetuned on ImageNet whileas ResNet50 was only trained on ImageNet.</p>
-  </li>
-  <li>
-    <p>CAM does not generalize to models without global average pooling. You would need to retrain your model with a GAP layer or use a different method. <a href="https://github.com/frgfm/torch-cam" target="_blank" rel="noopener noreferrer">Here</a> you can check some different implementations.</p>
-  </li>
-  <li>
-    <p>I have used Hugging Face’s ViT implementation since it is not yet available on latest Torchvision version.</p>
-  </li>
-  <li>
-    <p>Do not forget to check the <a href="https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability" target="_blank" rel="noopener noreferrer">Hugging Face Space</a> I created for this post!</p>
-  </li>
-</ul>
-
-<h2 id="references">References</h2>
-
-<ul>
-  <li>[1] Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., &amp; Torralba, A. (2016). Learning deep features for discriminative localization. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 2921-2929).</li>
-  <li>[2] Abnar, S., &amp; Zuidema, W. (2020). Quantifying attention flow in transformers. arXiv preprint arXiv:2005.00928.</li>
-  <li>[3] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., … &amp; Houlsby, N. (2020). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929.</li>
-  <li>[4] Khan, S., Naseer, M., Hayat, M., Zamir, S. W., Khan, F. S., &amp; Shah, M. (2021). Transformers in vision: A survey. arXiv preprint arXiv:2101.01169.</li>
-</ul>
-
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
