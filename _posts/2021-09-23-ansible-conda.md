@@ -2,9 +2,12 @@
 layout: post
 title:  "Using Ansible and Python to monitor my servers"
 subtitle: "Code your own scripts in Python, deploy them using Ansible & Conda and get real time reports from your server"
+author: Miguel Mendez
 description: "The best way for monitoring your server is through your own code,"
 image: "/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail.jpg"
 selected: y
+tags: [Ansible, Python, Monitoring, Conda, DevOps]
+categories: [DevOps, Python]
 ---
 
 I have been in charge of my team's computational servers for about a year. I am far from being an expert in this field and most of the things I know are related to having been using Linux for so many years. I needed to automate some things that were wasting me a lot of time, so I decided that instead of learning and configuring a new monitoring tool, I would use this opportunity to create my own. This may not be the best decision for you, but in my case I had a clear vision of what I needed and the amount of work it would take to do it (and I also wanted to play a little bit with all this stuff).

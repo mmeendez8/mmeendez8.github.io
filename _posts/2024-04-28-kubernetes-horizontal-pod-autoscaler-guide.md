@@ -2,10 +2,13 @@
 layout: post
 title: "A Guide to Horizontal Pod Autoscaler"
 subtitle: "Understand and visualize how Kubernetes HPA works with a real world example"
+author: Miguel Mendez
 description: "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool."
 image: "/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg"
 selected: y
 mathjax: y
+tags: [Kubernetes, HPA, Autoscaling, DevOps]
+categories: [DevOps, Kubernetes]
 ---
 
 A few weeks ago, while reviewing service metrics in Grafana, I noticed some unexpected behaviour in one of our services—there were more pods than necessary given the current traffic load. This led me to uncover that the extra pods were spawned by the Horizontal Pod Autoscaler (HPA) based on the metrics we had configured (a while ago). Understanding HPA took me a few hours. This is a task typically handled by specialized teams in larger companies, but working at a startup forces you to wear many hats and I often find myself analyzing how models perform in production. In this post, I'll discuss the issues I encountered with HPA and demonstrate how a simple [visualization tool](#visualization-tool) can help anticipate the number of replicas needed.

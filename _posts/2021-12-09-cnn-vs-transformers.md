@@ -2,10 +2,13 @@
 layout: post
 title:  "CNNs & Transformers Explainability: What do they see?"
 subtitle: "A simple explanation and visualization of ViT attentions and ResNet activations"
+author: Miguel Mendez
 description: "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout"
 image: "/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg"
 selected: y
 mathjax: y
+tags: [CNN, Transformers, Explainability, ViT, ResNet, Attention]
+categories: [Machine Learning, Explainability, Computer Vision]
 ---
 
 *I created a small demo in [Hugging Face Spaces](https://huggingface.co/spaces/mmeendez/cnn_transformer_explainability){:target="_blank"}{:rel="noopener noreferrer"} to play with the code*

@@ -2,10 +2,13 @@
 layout: post
 title:  "Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC"
 subtitle: "Benchmarking protocols performance for sending images"
+author: Miguel Mendez
 description: " This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology."
 image: "/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg"
 selected: y
 mathjax: y
+tags: [Torchserve, gRPC, REST, Computer Vision, Benchmarking]
+categories: [Computer Vision, Machine Learning, Benchmarking]
 ---
 
 Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/){:target="_blank"}{:rel="noopener noreferrer"} for working with me in completing the benchmarking discussed in this post.

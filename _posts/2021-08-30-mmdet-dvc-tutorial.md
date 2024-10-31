@@ -2,9 +2,12 @@
 layout: post
 title:  "DVC + MMdetection"
 subtitle: "A guide to train, monitor, compare and evaluate your pytorch object detection models"
+author: Miguel Mendez
 description: "Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!"
 image: "/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail.jpg"
 selected: y
+tags: [DVC, MMdetection, PyTorch, Object Detection, Machine Learning]
+categories: [Machine Learning, PyTorch]
 ---
 
 I recently [published a post]({% post_url 2021-07-01-dvc-tutorial %}){:target="_blank"}{:rel="noopener noreferrer"} where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge [model zoo](https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md){:target="_blank"}{:rel="noopener noreferrer"} with DVC for designing ML pipelines, versioning our models and monitor training progress.

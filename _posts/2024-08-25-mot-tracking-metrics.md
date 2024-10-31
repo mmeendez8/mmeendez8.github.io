@@ -2,10 +2,13 @@
 layout: post
 title: "Understanding MOT Metrics"
 subtitle: "Comparing MOTA, IDF1, and HOTA for Multi-Object Tracking Evaluation"
+author: Miguel Mendez
 description: "Explore the essential Object Tracking metrics with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking."
 image: "/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg"
 selected: y
 mathjax: y
+tags: [MOT, tracking, metrics, MOTA, IDF1, HOTA]
+categories: [Computer Vision, Machine Learning, Tracking]
 ---
 
 After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about [tracking by detection]({% post_url 2023-11-08-tracking-by-detection-overview %}) and explores how we measure tracking performance.

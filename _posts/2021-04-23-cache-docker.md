@@ -2,9 +2,12 @@
 layout: post
 title:  "Reduce Actions time with Docker and Github Cache"
 subtitle: "Use Github Actions cache and Docker to reduce time installing Conda dependencies"
+author: Miguel Mendez
 description: "Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache"
 image: "assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail.jpg"
 selected: y
+tags: [Docker, GitHub Actions, CI/CD, Conda, DevOps]
+categories: [DevOps, Docker]
 ---
 
 I've been bumping my head around Github Actions recently, as most of our Continuos Integration (CI) builds time was spent installing third party libraries. In most of our projects we have to deal with large dependencies like Pytorch or CUDA, which are needed to run our test suite and some others like [pre-commit](https://pre-commit.com/){:target="_blank"}{:rel="noopener noreferrer"} that help us to lint our code. This is very annoying since you need to run all setup steps on every build even though your environment does not change. 

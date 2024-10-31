@@ -2,6 +2,25 @@
 layout: default
 ---
 
+<!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ page.title }}",
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ site.data.main_info.name }}",
+      "url": "{{ site.url }}"
+    },
+    "description": "{{ page.description | default: site.description }}"
+    "keywords": "{{ page.tags | join: ', ' }}",
+    "articleSection": "{{ page.categories | join: ', ' }}"
+  }
+  </script>
+
 <header class="the-post-header">
     <div class="container">
       <a href="{{ site.baseurl }}/">

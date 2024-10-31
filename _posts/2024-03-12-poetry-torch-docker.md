@@ -2,10 +2,13 @@
 layout: post
 title: "Building an Efficient Docker Image with Poetry and PyTorch"
 subtitle: "A guide for your Deep Learning environment setup"
+author: Miguel Mendez
 description: "Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects."
 image: "/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg"
 selected: y
 mathjax: n
+tags: [Docker, Poetry, PyTorch, Deep Learning, Python]
+categories: [DevOps, Deep Learning]
 ---
 
 The goal of this post is straightforward: to guide you through the creation of a Docker image equipped with Poetry for dependency management and Torch for running deep learning models, specifically utilizing Python 3.11. While the task may seem simple at first glance, it involves several tricks that I believe can be very useful to share. This guide will utilize Docker Buildx, a powerful feature that might be unfamiliar to some, yet it is enabled by default in newer Docker releases.

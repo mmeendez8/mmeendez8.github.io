@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>{{ site.data.main_info.name }} | {{ page.title }}</title>
-  <meta name="author" content="Miguel Mendez">
-  <meta property="og:website" content="Miguel Mendez personal website">
+
+  <title>{{ page.title }}</title>
+
+  <meta name="author" content="{{ site.data.main_info.name }}">
+  <meta property="og:website" content="{{ site.data.main_info.name }} personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="{{ page.title }}">
+
   {% if page.description %}
   <meta name="description" property="og:description" content="{{ page.description }}">
   {% else %}
@@ -23,6 +26,11 @@
   {% else %}
   <meta name="image" property="og:image" content="{{ site.data.main_info.default_pic | prepend: site.relative_url }}">
   {% endif %}
+
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -65,7 +73,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
-
 
 
   <!-- Favicon

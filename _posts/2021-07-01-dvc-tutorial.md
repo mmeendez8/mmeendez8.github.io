@@ -2,9 +2,12 @@
 layout: post
 title:  "Version control your dataset with DVC"
 subtitle: "Use DVC and Git for tracking changes on your machine learning dataset"
+author: Miguel Mendez
 image: "/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail.jpg"
 description: "Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code."
 selected: y
+tags: [DVC, Data Version Control, Machine Learning, Git, CI/CD]
+categories: [Machine Learning, Data Engineering]
 ---
 
 [Data Version Control (DVC)](https://dvc.org/){:target="_blank"}{:rel="noopener noreferrer"} is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.
