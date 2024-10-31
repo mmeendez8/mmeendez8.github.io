@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Multi-Object Tracking by Detection: A Comprehensive Guide</title>
+
+  <title>Multi-Object Tracking by Detection: A Comprehensive Guide</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Multi-Object Tracking by Detection: A Comprehensive Guide">
+
   
   <meta name="description" property="og:description" content="Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack.">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2023/11/08/tracking-by-detection-overview">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2023/11/08/tracking-by-detection-overview">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Multi-Object Tracking by Detection: A Comprehensive Guide",
+    "datePublished": "2023-11-08T00:00:00+00:00",
+    "dateModified": "2023-11-08T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack."
+    "keywords": "Object Tracking, Computer Vision, SORT, DeepSORT, ByteTrack, BoT-SORT, SMILEtrack",
+    "articleSection": "Computer Vision, Machine Learning"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Multi-Object Tracking by Detection: A Comprehensive Guide" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2023/11/08/tracking-by-detection-overview.html">
+    data-size="large" , data-text="Multi-Object Tracking by Detection: A Comprehensive Guide" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2023/11/08/tracking-by-detection-overview">
   </a>
 </div>
 
@@ -204,7 +230,7 @@
 <p>The intention of this blog is to keep myself updated with the bibliography of tracking by detection methods. My intention is to regularly update this blog with new information and resources I find interesting.
 I have included the SORT and DeepSORT papers in the list, despite being older methods, as they laid the groundwork for many of the techniques covered here.</p>
 
-<p>If you want to understand HOTA metric, I recommend you to read my other post about <a href="/2024/08/25/mot-tracking-metrics.html">tracking metrics</a></p>
+<p>If you want to understand HOTA metric, I recommend you to read my other post about <a href="/2024/08/25/mot-tracking-metrics">tracking metrics</a></p>
 
 <h2 id="sort">SORT</h2>
 
@@ -382,7 +408,7 @@ There is camera motion correction in the code but not in the paper!!!!
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

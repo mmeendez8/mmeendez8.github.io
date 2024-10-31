@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | The theory behind Variational Autoencoders</title>
+
+  <title>The theory behind Variational Autoencoders</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="The theory behind Variational Autoencoders">
+
   
   <meta name="description" property="og:description" content="Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow! ">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2019/01/19/vae-theory">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2019/01/19/vae-theory">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The theory behind Variational Autoencoders",
+    "datePublished": "2019-01-19T00:00:00+00:00",
+    "dateModified": "2019-01-19T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow! "
+    "keywords": "Deep Learning, Variational Autoencoders, Machine Learning, Theory",
+    "articleSection": "Machine Learning, Deep Learning"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="The theory behind Variational Autoencoders" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/01/19/vae-theory.html">
+    data-size="large" , data-text="The theory behind Variational Autoencoders" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/01/19/vae-theory">
   </a>
 </div>
 
@@ -139,8 +165,8 @@
   <p>Generative models are one of the cooler branches of Deep Learning. During last weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of posts, I will try to transmit and also provide useful resources which I have found and feel the need to share! You can read the other posts in this series here:</p>
 
 <ul>
-  <li><a href="/2019/01/24/vae-tensorflow.html">Post 2: VAEs! Generating images with Tensorflow</a></li>
-  <li><a href="/2019/02/06/vae-fifa.html">Post 3: Generating FIFA 19 players with VAEs and Tensorflow</a></li>
+  <li><a href="/2019/01/24/vae-tensorflow">Post 2: VAEs! Generating images with Tensorflow</a></li>
+  <li><a href="/2019/02/06/vae-fifa">Post 3: Generating FIFA 19 players with VAEs and Tensorflow</a></li>
 </ul>
 
 <h2 id="what-are-vaes">What are VAEs?</h2>
@@ -280,7 +306,7 @@
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

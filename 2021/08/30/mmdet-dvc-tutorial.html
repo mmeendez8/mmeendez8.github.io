@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | DVC + MMdetection</title>
+
+  <title>DVC + MMdetection</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="DVC + MMdetection">
+
   
   <meta name="description" property="og:description" content="Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2021/08/30/mmdet-dvc-tutorial">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2021/08/30/mmdet-dvc-tutorial">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "DVC + MMdetection",
+    "datePublished": "2021-08-30T00:00:00+00:00",
+    "dateModified": "2021-08-30T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!"
+    "keywords": "DVC, MMdetection, PyTorch, Object Detection, Machine Learning",
+    "articleSection": "Machine Learning, PyTorch"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,13 +156,13 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="DVC + MMdetection" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/08/30/mmdet-dvc-tutorial.html">
+    data-size="large" , data-text="DVC + MMdetection" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/08/30/mmdet-dvc-tutorial">
   </a>
 </div>
 
 <div class="container the-post-content">
 
-  <p>I recently <a href="/2021/07/01/dvc-tutorial.html" target="_blank" rel="noopener noreferrer">published a post</a> where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge <a href="https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md" target="_blank" rel="noopener noreferrer">model zoo</a> with DVC for designing ML pipelines, versioning our models and monitor training progress.</p>
+  <p>I recently <a href="/2021/07/01/dvc-tutorial" target="_blank" rel="noopener noreferrer">published a post</a> where I showed how to use DVC to maintain versions of our datasets so we reduce data reproducibility problems to a minimum. This is the second part of the tutorial where we are going to see how we can combine the power of mmdetection framework and its huge <a href="https://github.com/open-mmlab/mmdetection/blob/master/docs/model_zoo.md" target="_blank" rel="noopener noreferrer">model zoo</a> with DVC for designing ML pipelines, versioning our models and monitor training progress.</p>
 
 <p>It is quite a lot of content to cover, so I will be going through it step by step and trying to keep things as simple as possible. You can find all the code for this tutorial in my <a href="https://github.com/mmeendez8/mmdetection_dvc" target="_blank" rel="noopener noreferrer">Github</a>. So let’s start with it!</p>
 
@@ -474,7 +500,7 @@ dvc push
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Understanding MOT Metrics</title>
+
+  <title>Understanding MOT Metrics</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Understanding MOT Metrics">
+
   
   <meta name="description" property="og:description" content="Explore the essential Object Tracking metrics with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking.">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Understanding MOT Metrics",
+    "datePublished": "2024-08-25T00:00:00+00:00",
+    "dateModified": "2024-08-25T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Explore the essential Object Tracking metrics with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking."
+    "keywords": "MOT, tracking, metrics, MOTA, IDF1, HOTA",
+    "articleSection": "Computer Vision, Machine Learning, Tracking"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,13 +156,13 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Understanding MOT Metrics" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics.html">
+    data-size="large" , data-text="Understanding MOT Metrics" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics">
   </a>
 </div>
 
 <div class="container the-post-content">
 
-  <p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview.html">tracking by detection</a> and explores how we measure tracking performance.</p>
+  <p>After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about <a href="/2023/11/08/tracking-by-detection-overview">tracking by detection</a> and explores how we measure tracking performance.</p>
 
 <p>In this article, I’ll provide an introduction to tracking metrics, starting from the basic principles and breaking down the key differences between various metrics. I’ll focus on three popular metrics: MOTA, IDF1, and HOTA, which are widely used in the <a href="https://paperswithcode.com/sota/multi-object-tracking-on-mot20-1" target="_blank" rel="noopener noreferrer">Multi-Object Tracking (MOT) community</a>. Understanding these is crucial because the choice of metric can significantly impact how we interpret a tracker’s performance.</p>
 
@@ -378,7 +404,7 @@ The authors demonstrate how HOTA positions itself in the middle, striking a bala
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

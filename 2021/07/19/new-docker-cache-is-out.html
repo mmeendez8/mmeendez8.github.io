@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Export to Github Cache with Docker Buildx</title>
+
+  <title>Export to Github Cache with Docker Buildx</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Export to Github Cache with Docker Buildx">
+
   
   <meta name="description" property="og:description" content="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2021/07/19/new-docker-cache-is-out">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2021/07/19/new-docker-cache-is-out">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Export to Github Cache with Docker Buildx",
+    "datePublished": "2021-07-19T00:00:00+00:00",
+    "dateModified": "2021-07-19T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!"
+    "keywords": "Docker, Buildx, GitHub Actions, CI/CD, DevOps",
+    "articleSection": "DevOps, Docker"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,17 +156,17 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Export to Github Cache with Docker Buildx" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/07/19/new-docker-cache-is-out.html">
+    data-size="large" , data-text="Export to Github Cache with Docker Buildx" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/07/19/new-docker-cache-is-out">
   </a>
 </div>
 
 <div class="container the-post-content">
 
-  <p>I have recently <a href="/2021/04/23/cache-docker.html" target="_blank" rel="noopener noreferrer">uploaded a post</a> with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for <a href="https://docs.docker.com/buildx/working-with-buildx/" target="_blank" rel="noopener noreferrer">Docker BuildX</a> integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!</p>
+  <p>I have recently <a href="/2021/04/23/cache-docker" target="_blank" rel="noopener noreferrer">uploaded a post</a> with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for <a href="https://docs.docker.com/buildx/working-with-buildx/" target="_blank" rel="noopener noreferrer">Docker BuildX</a> integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!</p>
 
 <h2 id="1-get-the-basics">1. Get the basics</h2>
 
-<p>You can read <a href="/2021/04/23/cache-docker.html" target="_blank" rel="noopener noreferrer">my previous post</a> to get the whole picture but I also recommend you to visit the official pull requests that lead to this new feature:</p>
+<p>You can read <a href="/2021/04/23/cache-docker" target="_blank" rel="noopener noreferrer">my previous post</a> to get the whole picture but I also recommend you to visit the official pull requests that lead to this new feature:</p>
 
 <ul>
   <li><a href="https://github.com/docker/buildx/pull/535" target="_blank" rel="noopener noreferrer">This</a> is the buildx code that has been merged for allowing the use of github internal cache</li>
@@ -269,7 +295,7 @@ git push
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

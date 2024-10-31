@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | VAEs! Generating images with Tensorflow</title>
+
+  <title>VAEs! Generating images with Tensorflow</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="VAEs! Generating images with Tensorflow">
+
   
   <meta name="description" property="og:description" content="This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there ">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2019/01/24/vae-tensorflow">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2019/01/24/vae-tensorflow">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "VAEs! Generating images with Tensorflow",
+    "datePublished": "2019-01-24T00:00:00+00:00",
+    "dateModified": "2019-01-24T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there "
+    "keywords": "Deep Learning, Tensorflow, Variational Autoencoders, Machine Learning",
+    "articleSection": "Machine Learning, Deep Learning"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,21 +156,21 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="VAEs! Generating images with Tensorflow" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/01/24/vae-tensorflow.html">
+    data-size="large" , data-text="VAEs! Generating images with Tensorflow" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/01/24/vae-tensorflow">
   </a>
 </div>
 
 <div class="container the-post-content">
 
-  <p>In <a href="/2019/01/19/vae-theory.html">my previous post</a> I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!</p>
+  <p>In <a href="/2019/01/19/vae-theory">my previous post</a> I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!</p>
 
 <p><strong>Note</strong>: All code in here can be found on my <a href="https://github.com/mmeendez8/Autoencoder" target="_blank" rel="noopener noreferrer">Github</a> account.</p>
 
 <p>You can read the other posts in this series here:</p>
 
 <ul>
-  <li><a href="/2019/01/19/vae-theory.html">Post 1: The theory behind Variational Autoencoders</a></li>
-  <li><a href="/2019/02/06/vae-fifa.html">Post 3: Generating FIFA 19 players with VAEs and Tensorflow</a></li>
+  <li><a href="/2019/01/19/vae-theory">Post 1: The theory behind Variational Autoencoders</a></li>
+  <li><a href="/2019/02/06/vae-fifa">Post 3: Generating FIFA 19 players with VAEs and Tensorflow</a></li>
 </ul>
 
 <h2 id="get-the-data">Get the data</h2>
@@ -340,7 +366,7 @@
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

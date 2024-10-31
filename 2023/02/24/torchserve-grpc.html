@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC</title>
+
+  <title>Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC">
+
   
   <meta name="description" property="og:description" content=" This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC",
+    "datePublished": "2023-02-24T00:00:00+00:00",
+    "dateModified": "2023-02-24T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": " This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology."
+    "keywords": "Torchserve, gRPC, REST, Computer Vision, Benchmarking",
+    "articleSection": "Computer Vision, Machine Learning, Benchmarking"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc.html">
+    data-size="large" , data-text="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc">
   </a>
 </div>
 
@@ -484,7 +510,7 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

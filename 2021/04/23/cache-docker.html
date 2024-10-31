@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Reduce Actions time with Docker and Github Cache</title>
+
+  <title>Reduce Actions time with Docker and Github Cache</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Reduce Actions time with Docker and Github Cache">
+
   
   <meta name="description" property="og:description" content="Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.comassets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2021/04/23/cache-docker">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2021/04/23/cache-docker">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Reduce Actions time with Docker and Github Cache",
+    "datePublished": "2021-04-23T00:00:00+00:00",
+    "dateModified": "2021-04-23T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache"
+    "keywords": "Docker, GitHub Actions, CI/CD, Conda, DevOps",
+    "articleSection": "DevOps, Docker"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Reduce Actions time with Docker and Github Cache" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/04/23/cache-docker.html">
+    data-size="large" , data-text="Reduce Actions time with Docker and Github Cache" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/04/23/cache-docker">
   </a>
 </div>
 
@@ -498,7 +524,7 @@ jobs:
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

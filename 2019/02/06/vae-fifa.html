@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Generating FIFA 19 players with VAEs and Tensorflow</title>
+
+  <title>Generating FIFA 19 players with VAEs and Tensorflow</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Generating FIFA 19 players with VAEs and Tensorflow">
+
   
   <meta name="description" property="og:description" content="Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2019/02/06/vae-fifa">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2019/02/06/vae-fifa">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Generating FIFA 19 players with VAEs and Tensorflow",
+    "datePublished": "2019-02-06T00:00:00+00:00",
+    "dateModified": "2019-02-06T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Learn to generate syntethic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country"
+    "keywords": "VAE, TensorFlow, Machine Learning, FIFA, Data Scraping",
+    "articleSection": "Machine Learning, Deep Learning"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Generating FIFA 19 players with VAEs and Tensorflow" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/02/06/vae-fifa.html">
+    data-size="large" , data-text="Generating FIFA 19 players with VAEs and Tensorflow" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/02/06/vae-fifa">
   </a>
 </div>
 
@@ -152,15 +178,15 @@
 <p>You can read the other posts in this series here:</p>
 
 <ul>
-  <li><a href="/2019/01/19/vae-theory.html">Post 1: The theory behind Variational Autoencoders</a></li>
-  <li><a href="/2019/01/24/vae-tensorflow.html">Post 2: VAEs! Generating images with Tensorflow</a></li>
+  <li><a href="/2019/01/19/vae-theory">Post 1: The theory behind Variational Autoencoders</a></li>
+  <li><a href="/2019/01/24/vae-tensorflow">Post 2: VAEs! Generating images with Tensorflow</a></li>
 </ul>
 
 <h2 id="1-introduction">1. Introduction</h2>
 
 <p>I spent a few hours thinking about which dataset could I use to apply all the knowledge and lines of code I acquire learning about VAEs.</p>
 
-<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="/2019/01/24/vae-tensorflow.html">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
+<p>I had some constraints that limit my work but the main one were the limited availability of resources and computational power. The dataset I was looking for, must had small images which will allow me to get some results in a rational amount of time. Also I would like to deal with colored images, since <a href="/2019/01/24/vae-tensorflow">my previous model</a> was designed for black and white images and I wanted to evolve it to deal with more complex images.</p>
 
 <p>Finally I found a dataset that fitted all my requirements and at the same time was interesting and funny for me, so I could not resist.</p>
 
@@ -239,7 +265,7 @@
 
 <h2 id="4-define-the-network">4. Define the network</h2>
 
-<p>In my <a href="/2019/01/24/vae-tensorflow.html">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
+<p>In my <a href="/2019/01/24/vae-tensorflow">previous post</a> I show how to define the Autoencoder network and its cost function. Nevertheless, I was not happy with that implementation since the definition of the network was in the main file, very far away from what I would consider a modular code.</p>
 
 <p>So now, I have created a new class which will allow me to create the network in a very simple and intuitive manner. I must thank to <a href="https://danijar.com/structuring-your-tensorflow-models/" target="_blank" rel="noopener noreferrer">this amazing post</a> from <a href="https://danijar.com/" target="_blank" rel="noopener noreferrer">Danijar Hafner</a> where I found a way to combine decorators with Tensorflow’s Graph intuition. I won’t explain this code in here, otherwise the post would be too long but feel free to ask below about anything you want.</p>
 
@@ -396,7 +422,7 @@
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

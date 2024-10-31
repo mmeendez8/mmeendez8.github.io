@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | Concurrent Requests in Python: httpx vs aiohttp</title>
+
+  <title>Concurrent Requests in Python: httpx vs aiohttp</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="Concurrent Requests in Python: httpx vs aiohttp">
+
   
   <meta name="description" property="og:description" content="In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Concurrent Requests in Python: httpx vs aiohttp",
+    "datePublished": "2024-10-20T00:00:00+00:00",
+    "dateModified": "2024-10-20T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios"
+    "keywords": "Python, aiohttp, httpx, concurrency, networking",
+    "articleSection": "Programming, Python, Networking"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Concurrent Requests in Python: httpx vs aiohttp" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx.html">
+    data-size="large" , data-text="Concurrent Requests in Python: httpx vs aiohttp" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx">
   </a>
 </div>
 
@@ -303,7 +329,7 @@ if __name__ == "__main__":
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

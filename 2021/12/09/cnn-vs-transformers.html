@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | CNNs & Transformers Explainability: What do they see?</title>
+
+  <title>CNNs & Transformers Explainability: What do they see?</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="CNNs & Transformers Explainability: What do they see?">
+
   
   <meta name="description" property="og:description" content="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "CNNs & Transformers Explainability: What do they see?",
+    "datePublished": "2021-12-09T00:00:00+00:00",
+    "dateModified": "2021-12-09T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout"
+    "keywords": "CNN, Transformers, Explainability, ViT, ResNet, Attention",
+    "articleSection": "Machine Learning, Explainability, Computer Vision"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="CNNs & Transformers Explainability: What do they see?" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers.html">
+    data-size="large" , data-text="CNNs & Transformers Explainability: What do they see?" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers">
   </a>
 </div>
 
@@ -343,7 +369,7 @@ mask = mask.reshape(mask_size, mask_size)
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">

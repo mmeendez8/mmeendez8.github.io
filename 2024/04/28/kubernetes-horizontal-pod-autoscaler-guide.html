@@ -7,11 +7,14 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <meta charset="utf-8">
-  <title>Miguel Méndez | A Guide to Horizontal Pod Autoscaler</title>
+
+  <title>A Guide to Horizontal Pod Autoscaler</title>
+
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  
+  <meta name="title" property="og:title" content="A Guide to Horizontal Pod Autoscaler">
+
   
   <meta name="description" property="og:description" content="Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool.">
   
@@ -19,6 +22,11 @@
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg">
   
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -63,7 +71,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
-
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href=/libs/icon.png>
@@ -100,7 +107,26 @@
 
 <body>
 
-  <header class="the-post-header">
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "A Guide to Horizontal Pod Autoscaler",
+    "datePublished": "2024-04-28T00:00:00+00:00",
+    "dateModified": "2024-04-28T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool."
+    "keywords": "Kubernetes, HPA, Autoscaling, DevOps",
+    "articleSection": "DevOps, Kubernetes"
+  }
+  </script>
+
+<header class="the-post-header">
     <div class="container">
       <a href="/">
         <h3>Miguel Méndez</h3>
@@ -130,7 +156,7 @@
 
 <div class="share-button">
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="A Guide to Horizontal Pod Autoscaler" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide.html">
+    data-size="large" , data-text="A Guide to Horizontal Pod Autoscaler" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide">
   </a>
 </div>
 
@@ -412,7 +438,7 @@ spec:
 
     <div class="footer">
       <div class="footer-sign">
-      <p> <a  href=/index.html#top>Miguel Méndez </a></p>
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
       </div>
 
       <div class="footer-thanks">
