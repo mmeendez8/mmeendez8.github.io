@@ -2,6 +2,7 @@
 layout: post
 title: "Concurrent Requests in Python: httpx vs aiohttp"
 subtitle: "How switching from httpx to aiohttp resolved my networking errors"
+author: Miguel Mendez
 description: "In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios"
 image: "/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg"
 selected: y

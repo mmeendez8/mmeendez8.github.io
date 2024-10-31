@@ -2,6 +2,7 @@
 layout: post
 title: "NFL Field Mapping: A Journey Through Sports Analytics and Homography"
 subtitle: "A Computer Vision webapp to map NFL game images to their real-world coordinates"
+author: Miguel Mendez
 description: "Dive into the world of sports analytics with a hands-on guide to mapping NFL fields to real-world coordinates using homography. Discover how computer vision techniques can transform video feed data into actionable insights, and explore the development of a web app for image calibration with the help of Copilot. Whether you're a sports enthusiast or a developer curious about the intersection of technology and sports, join to this journey through the fascinating process of sports field registration."
 image: "/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail.jpg"
 selected: y

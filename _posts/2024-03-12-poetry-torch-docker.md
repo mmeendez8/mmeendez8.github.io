@@ -2,6 +2,7 @@
 layout: post
 title: "Building an Efficient Docker Image with Poetry and PyTorch"
 subtitle: "A guide for your Deep Learning environment setup"
+author: Miguel Mendez
 description: "Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects."
 image: "/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail.jpg"
 selected: y

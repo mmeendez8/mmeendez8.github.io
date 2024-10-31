@@ -2,6 +2,7 @@
 layout: post
 title:  "DVC + MMdetection"
 subtitle: "A guide to train, monitor, compare and evaluate your pytorch object detection models"
+author: Miguel Mendez
 description: "Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!"
 image: "/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail.jpg"
 selected: y

@@ -2,6 +2,7 @@
 layout: post
 title: "Multi-Object Tracking by Detection: A Comprehensive Guide"
 subtitle: "Exploring the Advancements and Accuracy in Multi-Object Tracking Technologies"
+author: Miguel Mendez
 description: "Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack."
 image: "/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png"
 selected: y

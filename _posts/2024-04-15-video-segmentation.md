@@ -2,6 +2,7 @@
 layout: post
 title: "Exploring Transformer-Based Methods in Video Instance Segmentation"
 subtitle: "A comparison of the latest research and innovations in Video Instance Segmentation"
+author: Miguel Mendez
 description: "Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT."
 image: "/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg"
 selected: y

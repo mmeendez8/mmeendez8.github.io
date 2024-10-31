@@ -2,6 +2,7 @@
 layout: post
 title:  "Export to Github Cache with Docker Buildx"
 subtitle: "We can finally use Docker buildx cache-to gha with build-push action and it is blazingly fast!"
+author: Miguel Mendez
 description: "Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!"
 image: "/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg"
 selected: y

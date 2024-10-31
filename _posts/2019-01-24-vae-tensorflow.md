@@ -2,6 +2,7 @@
 layout: post
 title:  "VAEs! Generating images with Tensorflow"
 subtitle: "Learn how to code a Variational Autoencoder"
+author: Miguel Mendez
 image: "/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail.jpg"
 description: "This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there "
 selected: y

@@ -2,6 +2,7 @@
 layout: post
 title:  "Reduce Actions time with Docker and Github Cache"
 subtitle: "Use Github Actions cache and Docker to reduce time installing Conda dependencies"
+author: Miguel Mendez
 description: "Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache"
 image: "assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail.jpg"
 selected: y
