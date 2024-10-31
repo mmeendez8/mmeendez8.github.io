@@ -15,7 +15,7 @@ layout: default
       "name": "{{ site.data.main_info.name }}",
       "url": "{{ site.url }}"
     },
-    "description": "{{ page.description | default: site.description }}"
+    "description": "{{ page.description | default: site.description }}",
     "keywords": "{{ page.tags | join: ', ' }}",
     "articleSection": "{{ page.categories | join: ', ' }}"
   }
