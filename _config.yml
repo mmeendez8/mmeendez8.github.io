@@ -4,7 +4,7 @@ includes: ./_includes
 baseurl: null
 relative_url: "https://miguel-mendez-ai.com"
 url: "https://miguel-mendez-ai.com"
-permalink: /:categories/:year/:month/:day/:title
+permalink: /:year/:month/:day/:title
 
 markdown: kramdown
 highlighter: none

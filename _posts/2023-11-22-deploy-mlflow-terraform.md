@@ -7,6 +7,8 @@ description: "Explore this step-by-step guide on deploying MLFlow in AWS using T
 image: "/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg"
 selected: y
 mathjax: n
+tags: [MLFlow, AWS, Terraform, Machine Learning, DevOps]
+categories: [Machine Learning, DevOps, Cloud]
 ---
 
 Training and deploying machine learning models is a complex process. There are lots of steps involved – think data prep, model training, evaluating how good your model is, and then deploying it. Especially when it comes to training and evaluation, it's super important to have a tool that makes life easier, something that lets us compare different experiments and track their performance (like losses, hyperparameters, metrics, etc.).

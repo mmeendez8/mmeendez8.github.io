@@ -7,6 +7,8 @@ description: " This post compares the performance of Torchserve's REST and gRPC 
 image: "/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg"
 selected: y
 mathjax: y
+tags: [Torchserve, gRPC, REST, Computer Vision, Benchmarking]
+categories: [Computer Vision, Machine Learning, Benchmarking]
 ---
 
 Special thanks to [Javier Guzman](https://www.linkedin.com/in/jguzmanfd/){:target="_blank"}{:rel="noopener noreferrer"} for working with me in completing the benchmarking discussed in this post.

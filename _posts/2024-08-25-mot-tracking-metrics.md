@@ -7,6 +7,8 @@ description: "Explore the essential Object Tracking metrics with this comprehens
 image: "/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg"
 selected: y
 mathjax: y
+tags: [MOT, tracking, metrics, MOTA, IDF1, HOTA]
+categories: [Computer Vision, Machine Learning, Tracking]
 ---
 
 After a long time, I have finally sat down to write this blog post on tracking metrics. It builds on my last post about [tracking by detection]({% post_url 2023-11-08-tracking-by-detection-overview %}) and explores how we measure tracking performance.

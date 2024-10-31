@@ -6,6 +6,8 @@ author: Miguel Mendez
 description: "Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!"
 image: "/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail.jpg"
 selected: y
+tags: [Docker, Buildx, GitHub Actions, CI/CD, DevOps]
+categories: [DevOps, Docker]
 ---
 
 I have recently [uploaded a post]({% post_url 2021-04-23-cache-docker %}){:target="_blank"}{:rel="noopener noreferrer"} with some tricks for reducing the time you spend when building Docker images on Github Actions. That did indeed work pretty well for me until now, but it was a naive solution while waiting for [Docker BuildX](https://docs.docker.com/buildx/working-with-buildx/){:target="_blank"}{:rel="noopener noreferrer"} integration with Github cache. The wait is over and we do not need to manually cache files since Docker BuildX will do everything as we expected!

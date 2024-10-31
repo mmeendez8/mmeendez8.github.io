@@ -8,4 +8,6 @@ image: "/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail
 selected: y
 mathjax: n
 external-url: https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/
+tags: [AI, Homography Estimation, Sports Analytics, Deep Learning]
+categories: [AI, Sports Analytics, Deep Learning]
 ---

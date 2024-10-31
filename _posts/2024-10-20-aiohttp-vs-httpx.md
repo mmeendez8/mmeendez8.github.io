@@ -7,6 +7,8 @@ description: "In high-concurrency networking situations, handling a large number
 image: "/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg"
 selected: y
 mathjax: n
+tags: [Python, aiohttp, httpx, concurrency, networking]
+categories: [Programming, Python, Networking]
 ---
 
 Over the past couple of weeks, I encountered a tricky bug while working on a computer vision application. After spending time troubleshooting, I decide to write this post since it might help other people to avoid the same issue. 

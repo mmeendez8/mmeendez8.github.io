@@ -7,6 +7,8 @@ description: "Dive into the complexities of object tracking in computer vision w
 image: "/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png"
 selected: y
 mathjax: y
+tags: [Object Tracking, Computer Vision, SORT, DeepSORT, ByteTrack, BoT-SORT, SMILEtrack]
+categories: [Computer Vision, Machine Learning]
 ---
 
 

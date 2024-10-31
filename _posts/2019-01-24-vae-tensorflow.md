@@ -7,6 +7,8 @@ image: "/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail.jpg"
 description: "This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there "
 selected: y
 mathjax: y
+tags: [Deep Learning, Tensorflow, Variational Autoencoders, Machine Learning]
+categories: [Machine Learning, Deep Learning]
 ---
 
 In [my previous post]({% post_url 2019-01-19-vae-theory %}) I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!

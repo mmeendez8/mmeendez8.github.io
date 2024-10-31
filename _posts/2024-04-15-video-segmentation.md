@@ -7,6 +7,8 @@ description: "Get a detailed overview of the transformative impact of transforme
 image: "/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail.jpg"
 selected: y
 mathjax: n
+tags: [Video Segmentation, Transformers, Computer Vision, Deep Learning]
+categories: [Computer Vision, Deep Learning]
 ---
 
 I had recently visited the most recent literature on Video Segmentation and I was startled by how lost I found myself. If you are versed in this field, you are probably familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not, then you will probably find yourself as lost as I was a few weeks ago.
