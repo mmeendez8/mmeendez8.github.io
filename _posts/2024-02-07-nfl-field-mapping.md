@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "NFL Field Mapping: A Journey Through Sports Analytics and Homography"
-subtitle: "A Computer Vision webapp to map NFL game images to their real-world coordinates"
+title: "Image Registration in Sports Analytics:"
+subtitle: "Using computer vision to map NFL images, recover homographies, and locate players in real-world coordinates"
 author: Miguel Mendez
-description: "Dive into the world of sports analytics with a hands-on guide to mapping NFL fields to real-world coordinates using homography. Discover how computer vision techniques can transform video feed data into actionable insights, and explore the development of a web app for image calibration with the help of Copilot. Whether you're a sports enthusiast or a developer curious about the intersection of technology and sports, join to this journey through the fascinating process of sports field registration."
+description: "Explore computer vision techniques for mapping NFL field images to real-world coordinates. Learn how to develop a web app that uses homography to transform video feed data into precise spatial insights for sports analytics"
 image: "/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail.jpg"
 selected: y
 mathjax: y
-tags: [Sports Analytics, Computer Vision, Homography, NFL]
+tags: [Sports Analytics, Computer Vision, Homography, NFL, Player Location, Real World Coordinates]
 categories: [Sports Analytics, Computer Vision]
 ---
 
@@ -26,7 +26,7 @@ When I joined [StatsBomb](https://statsbomb.com/){:target="_blank"}{:rel="noopen
 Here’s the result for you to explore directly. There are just a few steps to follow:
 
 1. Upload image of a NFL game
-2. Select at least four points in the image and the pitch template. Be sure to select the same points in both images.
+2. Select at least four points in the image and the pitch template. Be sure toa select the same points in both images.
 3. Click on the "Compute homography" button to see the warped pitch template overlaid on the uploaded image.
 
 Make sure to read the following sections for a deeper understanding of how it all works. 
