@@ -1,8 +1,16 @@
 experiences:
+  - company: "Hudl"
+    url: "https://www.hudl.com/"
+    location: "Vigo, ESP (Remote)"
+    time: "Aug'24 - now"
+    title: "Senior Machine Learning Engineer"
+    image: "/assets/images/fullsize/vitae/hudl.webp"
+    description: ""
+
   - company: "Statsbomb"
     url: "https://statsbomb.com/"
     location: "Vigo, ESP (Remote)"
-    time: "Feb'22 - now"
+    time: "Feb'22 - Jul'24"
     title: "Machine Learning Engineer"
     image: "/assets/images/fullsize/vitae/statsbomb.webp"
     description: "Architecting and deploying advanced computer vision systems for automated sports analytics, processing thousands of matches across 90+ leagues. 
@@ -13,7 +21,7 @@ experiences:
     url: "https://www.gradiant.org/"
     location: "Vigo, ESP"
     time: "Apr'19 - Jan'22"
-    title: "Senior Machine Learning Research Engineer"
+    title: "Machine Learning Research Engineer"
     image: "/assets/images/fullsize/vitae/gradiant.webp"
     description: "Led development of computer vision solutions for real-time object detection and semantic segmentation with deep learning frameworks (PyTorch/TensorFlow). 
     Optimized models for deployment on edge (Nvidia Jetson) and cloud platforms (AWS/Azure). Directed AI best practices, MLOps pipelines, and infrastructure modernization."
