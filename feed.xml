@@ -1,4 +1,271 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-11-29T09:49:57+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python</title><link href="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx" rel="alternate" type="text/html" title="Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python" /><published>2024-10-20T00:00:00+00:00</published><updated>2024-10-20T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx"><![CDATA[<p>Over the past couple of weeks, I encountered a tricky bug while working on a computer vision application. After spending time troubleshooting, I decide to write this post since it might help other people to avoid the same issue.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://miguel-mendez-ai.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://miguel-mendez-ai.com/" rel="alternate" type="text/html" /><updated>2024-12-09T14:10:59+00:00</updated><id>https://miguel-mendez-ai.com/feed.xml</id><entry><title type="html">Comparing CPU vs GPU Performance in PyTorch</title><link href="https://miguel-mendez-ai.com/2024/12/05/gpu-normalization" rel="alternate" type="text/html" title="Comparing CPU vs GPU Performance in PyTorch" /><published>2024-12-05T00:00:00+00:00</published><updated>2024-12-05T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/12/05/gpu-normalization</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/12/05/gpu-normalization"><![CDATA[<p>This post has been on my to-do list for a long time, and I’m excited to finally have the time to write it. I hope you find it useful because it’s about a topic I find very interesting.</p>
+
+<p>It all started while I was testing some of our internal data preprocessing pipelines and began thinking about the performance of the normalization step. Image normalization is a straightforward process: subtract the mean and divide by the standard deviation. These operations are well-suited for parallel processing, which is where GPUs excel. However, there are a few other factors to consider, such as data types and data transfer between the CPU and GPU.</p>
+
+<p>In this post, I’ll compare the performance differences between CPU and GPU when normalizing images, and explore the impact of data types and data transfer. Let’s get started!</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>Let’s start by creating some test data and importing the necessary libraries:</p>
+
+<pre><code class="language-python">import torch
+from torchvision.transforms import v2
+from torch.profiler import profile, record_function, ProfilerActivity, schedule
+from torch.utils.data import Dataset, DataLoader
+
+batch_size = 10
+height, width = 720, 1280
+# Create test images as uint8
+img_uint8 = torch.randint(0, 256, (batch_size, 3, height, width), dtype=torch.uint8)
+# Create float version since torch.Normalize expects float input
+img_float = img_uint8.float()
+
+# ImageNet normalization values
+mean = torch.tensor([123.675, 116.28, 103.53])
+std = torch.tensor([58.395, 57.12, 57.375])
+</code></pre>
+
+<p>To profile our operations, we’ll use PyTorch’s built-in profiler. This is just because I wanted to play with it and this looked like a good opportunity. We’ll define a custom profiling function to simplify the process:</p>
+
+<pre><code class="language-python">def custom_profile(func, activities, times=10):
+    with profile(activities=activities, record_shapes=True) as p:
+        for _ in range(times):
+            func()
+            p.step()
+    print(p.key_averages().table(sort_by="cpu_time_total", row_limit=10))
+</code></pre>
+
+<h2 id="basic-cpu-normalization">Basic CPU Normalization</h2>
+
+<p>Let’s start by implementing our normalization function and profiling it on the CPU:</p>
+
+<pre><code class="language-python">def my_normalize(image, mean, std):
+    # Reshape mean and std for broadcasting
+    mean = mean.view(-1, 1, 1)
+    std = std.view(-1, 1, 1)
+    return (image - mean) / std
+
+custom_profile(
+    lambda: my_normalize(img_uint8, mean, std), 
+    activities=[ProfilerActivity.CPU]
+)
+</code></pre>
+
+<p>The profiler reveals some interesting insights:</p>
+
+<pre><code class="language-plaintext">-----------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-----------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+              aten::sub        36.69%     643.926ms        67.74%        1.189s     118.902ms            10  
+              aten::div        32.25%     565.990ms        32.25%     565.990ms      56.599ms            10  
+               aten::to         0.00%      73.817us        31.06%     545.093ms      54.509ms            10  
+         aten::_to_copy         0.02%     324.441us        31.05%     545.019ms      54.502ms            10  
+            aten::copy_        31.01%     544.341ms        31.01%     544.341ms      54.434ms            10  
+    aten::empty_strided         0.02%     354.039us         0.02%     354.039us      35.404us            10  
+             aten::view         0.01%     225.351us         0.01%     225.351us      11.268us            20  
+-----------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 1.755s
+</code></pre>
+
+<ul>
+  <li>The basic operations (<code>aten::sub</code> and <code>aten::div</code>) account for most of the execution time.</li>
+  <li>A significant portion of time is also spent on type conversion operations (<code>aten::to</code>, <code>aten::_to_copy</code>).</li>
+  <li>These conversions occur because the input is <code>uint8</code>, while the mean and standard deviation are <code>floats</code>. So PyTorch converts the input to <code>float</code> before performing the operations.</li>
+</ul>
+
+<p>Now, let’s compare the performance when using <code>float</code> as input instead:</p>
+
+<pre><code class="language-python">custom_profile(
+    lambda: my_normalize(img_float, mean, std), 
+    activities=[ProfilerActivity.CPU]
+)
+</code></pre>
+
+<pre><code class="language-plaintext">--------------  ------------  ------------  ------------  ------------  ------------  ------------  
+          Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+--------------  ------------  ------------  ------------  ------------  ------------  ------------  
+     aten::sub        50.19%     569.169ms        50.19%     569.169ms      56.917ms            10  
+     aten::div        49.79%     564.562ms        49.79%     564.562ms      56.456ms            10  
+    aten::view         0.02%     203.964us         0.02%     203.964us      10.198us            20  
+--------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 1.134s
+</code></pre>
+
+<p>This is much faster! Here’s our first takeaway: always use the correct data types to avoid unnecessary conversions. Casting between types is costly and can significantly impact performance.</p>
+
+<p>At this point I became quite interested in knowing how my simple function would compare to PyTorch’s built-in normalization function. So I couldn’t resist the temptation to compare them.
+Note that I have used the new torchvision transforms v2 API:</p>
+
+<pre><code class="language-python">torch_normalize = v2.Normalize(mean, std)
+custom_profile(lambda: torch_normalize(img_float), activities=[ProfilerActivity.CPU])
+</code></pre>
+
+<pre><code class="language-plaintext">-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                         Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                    aten::sub        87.41%     785.070ms        87.41%     785.070ms      78.507ms            10  
+                   aten::div_        12.21%     109.692ms        12.21%     109.692ms      10.969ms            10  
+                   aten::item         0.30%       2.692ms         0.33%       2.921ms      32.458us            90  
+             aten::is_nonzero         0.02%     136.106us         0.32%       2.899ms      96.634us            30  
+    aten::_local_scalar_dense         0.03%     229.645us         0.03%     229.645us       2.552us            90  
+                   aten::view         0.02%     169.587us         0.02%     169.587us       8.479us            20  
+                  aten::empty         0.02%     161.253us         0.02%     161.253us       8.063us            20  
+                     aten::to         0.00%      14.746us         0.00%      14.746us       0.737us            20  
+             aten::lift_fresh         0.00%      12.286us         0.00%      12.286us       0.614us            20  
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 898.176ms
+</code></pre>
+
+<p>We can spot a few extra operations because PyTorch checks that the types and dimensions are correct (along with other performance optimizations, as seen in the <a href="https://github.com/pytorch/vision/blob/6279faa88a3fe7de49bf58284d31e3941b768522/torchvision/transforms/v2/functional/_misc.py#L19" target="_blank" rel="noopener noreferrer">source code</a>).</p>
+
+<p>You might notice a small difference: there’s an <code>aten::div_</code> operation instead of <code>aten::div</code>. This happens because PyTorch’s <code>Normalize</code> function does the division in-place, while our custom function does not. Still, the main operations are the same, and the performance is very similar.</p>
+
+<p>This means we’ve mostly achieved the same behavior. Great! Now, let’s see how it runs on the GPU.</p>
+
+<h2 id="gpu-implementation">GPU Implementation</h2>
+
+<p>We only need a simple adjustment to run our code on the GPU. Specifically, we need to move our tensors to the GPU and ensure the operations execute there. Additionally, I’ve included CUDA in our profiler activity:</p>
+
+<pre><code class="language-python">img_gpu = img_float.cuda()
+mean_gpu = mean.cuda()
+std_gpu = std.cuda()
+
+custom_profile(
+    lambda: my_normalize(img_gpu, mean_gpu, std_gpu),
+    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]
+)
+</code></pre>
+
+<p>The profiler output shows the following:</p>
+
+<pre><code class="language-plaintext">-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                  cudaDeviceSynchronize        85.85%      20.758ms        85.85%      20.758ms      20.758ms       0.000us         0.00%       0.000us       0.000us             1  
+                                              aten::sub        10.09%       2.439ms        13.14%       3.177ms     317.717us      10.450ms        48.68%      10.450ms       1.045ms            10  
+                                       cudaLaunchKernel         3.31%     799.561us         3.31%     799.561us      39.978us       0.000us         0.00%       0.000us       0.000us            20  
+                                              aten::div         0.55%     133.436us         0.81%     195.034us      19.503us      11.019ms        51.32%      11.019ms       1.102ms            10  
+                                             aten::view         0.21%      50.311us         0.21%      50.311us       2.516us       0.000us         0.00%       0.000us       0.000us            20  
+void at::native::elementwise_kernel&lt;128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      10.450ms        48.68%      10.450ms       1.045ms            10  
+void at::native::elementwise_kernel&lt;128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      11.019ms        51.32%      11.019ms       1.102ms            10  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 24.181ms
+Self CUDA time total: 21.469ms
+</code></pre>
+
+<p>There are a few new operations in the trace:</p>
+<ul>
+  <li><code>cudaLaunchKernel</code>: A CUDA runtime API function that launches a CUDA kernel on the GPU. This is the mechanism used to execute GPU code asynchronously.</li>
+  <li><code>cudaDeviceSynchronize</code>: Forces the CPU to wait until all previously launched GPU operations are complete.</li>
+</ul>
+
+<p>The key observation here is that the <code>sum</code> and <code>div</code> operations take significantly less time on the GPU compared to the CPU. This is because the GPU can parallelize these operations across many cores, making it much faster than the CPU. This supports our initial hypothesis that the GPU should be faster for this kind of operation.</p>
+
+<p>But… is there anything else we can improve? Can we make this optimization even better?</p>
+
+<h2 id="the-importance-of-data-transfer">The importance of data transfer</h2>
+
+<p>So this is where things get interesting. We have seen that using the correct data types is crucial for performance. Avoiding unnecessary conversions can save a lot of time. But have you considered the time it takes to move data between the CPU and GPU? Let’s start with a simple exploration:</p>
+
+<pre><code class="language-python">def custom_pipeline(img, mean, std):
+  img_cuda = img.to("cuda")
+  return my_normalize(img_cuda, mean, std)
+
+custom_profile(
+    lambda: custom_pipeline(img_float, mean, std), 
+    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]
+)
+</code></pre>
+
+<pre><code class="language-plaintext">-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                               aten::to         1.02%       2.999ms        98.06%     288.017ms      28.802ms       0.000us         0.00%     267.229ms      26.723ms            10  
+                                         aten::_to_copy         0.07%     213.702us        97.03%     285.018ms      28.502ms       0.000us         0.00%     267.229ms      26.723ms            10  
+                                            aten::copy_         0.09%     271.131us        96.91%     284.653ms      28.465ms     267.229ms        92.59%     267.229ms      26.723ms            10  
+                                        cudaMemcpyAsync        96.68%     283.985ms        96.68%     283.985ms      28.398ms       0.000us         0.00%       0.000us       0.000us            10  
+                                              aten::div         0.09%     278.727us         0.97%       2.859ms     285.949us      10.986ms         3.81%      10.986ms       1.099ms            10  
+                                             cudaMalloc         0.83%       2.424ms         0.83%       2.424ms       2.424ms       0.000us         0.00%       0.000us       0.000us             1  
+                                  cudaDeviceSynchronize         0.66%       1.952ms         0.66%       1.952ms       1.952ms       0.000us         0.00%       0.000us       0.000us             1  
+                                              aten::sub         0.18%     514.698us         0.26%     771.397us      77.140us      10.402ms         3.60%      10.402ms       1.040ms            10  
+                                       cudaLaunchKernel         0.14%     410.469us         0.14%     410.469us      20.523us       0.000us         0.00%       0.000us       0.000us            20  
+                                  cudaStreamSynchronize         0.14%     396.956us         0.14%     396.956us      39.696us       0.000us         0.00%       0.000us       0.000us            10  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 293.730ms
+Self CUDA time total: 288.617ms
+</code></pre>
+
+<p>It’s interesting to see that <code>cudaMemcpyAsync</code> takes up to <strong>96.68%</strong> of the total CPU time! That’s a lot!</p>
+
+<p>Can we avoid this data transfer? Unfortunately no, the data must be on the GPU to be processed. But can we optimize it? Yes! We can do this by transferring less data.</p>
+
+<p>How? By using the correct data types! <code>uint8</code> is 1/4 the size of <code>float32</code> (1 byte vs. 4 bytes). So, we can move the data to the GPU as <code>uint8</code>, convert it to <code>float32</code>, and then normalize it. If memory bandwidth is the bottleneck, this should be faster!</p>
+
+<pre><code class="language-python">def custom_pipeline_uint8(img, mean, std):
+  img_cuda = img.to("cuda").float()
+  return my_normalize(img_cuda, mean, std)
+
+custom_profile(
+    lambda: custom_pipeline_uint8(img_uint8, mean, std), 
+    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]
+)
+</code></pre>
+
+<pre><code class="language-plaintext">-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                               aten::to         1.09%     935.260us        95.88%      82.642ms       4.132ms       0.000us         0.00%      62.728ms       3.136ms            20  
+                                         aten::_to_copy         0.31%     264.719us        94.80%      81.707ms       4.085ms       0.000us         0.00%      62.728ms       3.136ms            20  
+                                            aten::copy_         0.42%     365.007us        94.21%      81.197ms       4.060ms      62.728ms        74.50%      62.728ms       3.136ms            20  
+                                        cudaMemcpyAsync        93.10%      80.242ms        93.10%      80.242ms       8.024ms       0.000us         0.00%       0.000us       0.000us            10  
+                                  cudaDeviceSynchronize         3.42%       2.949ms         3.42%       2.949ms       2.949ms       0.000us         0.00%       0.000us       0.000us             1  
+                                  cudaStreamSynchronize         0.45%     385.047us         0.45%     385.047us      38.505us       0.000us         0.00%       0.000us       0.000us            10  
+                                       cudaLaunchKernel         0.43%     370.317us         0.43%     370.317us      12.344us       0.000us         0.00%       0.000us       0.000us            30  
+                                              aten::sub         0.26%     221.024us         0.37%     317.485us      31.748us      10.457ms        12.42%      10.457ms       1.046ms            10  
+                                    aten::empty_strided         0.28%     244.689us         0.28%     244.689us      12.234us       0.000us         0.00%       0.000us       0.000us            20  
+                                              aten::div         0.17%     142.558us         0.24%     210.994us      21.099us      11.010ms        13.08%      11.010ms       1.101ms            10  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 86.192ms
+Self CUDA time total: 84.195ms
+</code></pre>
+
+<p>And it is indeed faster! This is a great optimization! We often focus on how efficient the GPU is at computations (which is true), but we should pay more attention to the data being transferred between the CPU and GPU and look for ways to optimize that!</p>
+
+<p>Although torch profiler has been very useful here, let’s compare things now using a classic timer to see how total time compares:</p>
+
+<pre><code class="language-python">import time
+
+def timer(func):
+    start = time.time()
+    func()
+    return time.time() - start
+
+gpu_time_from_float = timer(lambda: custom_pipeline(img_float, mean, std))
+gpu_time_from_uint = timer(lambda: custom_pipeline_uint8(img_uint8, mean, std))
+
+print(f"Time transferring floats: {gpu_time_from_float:.4f}s")
+print(f"Time transferring uint8: {gpu_time_from_uint:.4f}s")
+print(f"Speedup: {gpu_time_from_float / gpu_time_from_uint:.2f}x")
+</code></pre>
+
+<pre><code class="language-plaintext">Time transferring floats: 0.0306s
+Time transferring uint8: 0.0083s
+Speedup: 3.69x
+</code></pre>
+
+<p>This is something to always keep in mind when optimizing your data pipeline and I am pretty sure this can help many people out there to tune their inference pipelines!</p>
+
+<p>I imagine the avid reader might be wondering: hasn’t PyTorch been designed to handle data loading and preprocessing on the GPU to avoid it sitting idle, waiting for data? That’s true. During training, if we can fully parallelize data preprocessing on the CPU and model inference on the GPU, we can achieve optimal performance. However, when serving a model, we typically only need to load a few images on demand and apply normalization. In such cases, we can leverage the optimizations discussed in this post.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post, we’ve explored the performance differences between CPU and GPU when normalizing images in PyTorch, and examined how data transfer and data types influence preprocessing efficiency. Key takeaways for optimizing your pipeline include:</p>
+
+<ol>
+  <li>Always use the correct data types to avoid unnecessary conversions.</li>
+  <li>Minimize the amount of data transferred between the CPU and GPU.</li>
+  <li>Optimize your data pipeline to take full advantage of the GPU’s parallel processing capabilities.</li>
+</ol>]]></content><author><name>Miguel Mendez</name></author><category term="Deep Learning" /><category term="Performance" /><category term="PyTorch" /><category term="GPU" /><category term="Performance" /><category term="Computer Vision" /><category term="Python" /><summary type="html"><![CDATA[A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python</title><link href="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx" rel="alternate" type="text/html" title="Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python" /><published>2024-10-20T00:00:00+00:00</published><updated>2024-10-20T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx</id><content type="html" xml:base="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx"><![CDATA[<p>Over the past couple of weeks, I encountered a tricky bug while working on a computer vision application. After spending time troubleshooting, I decide to write this post since it might help other people to avoid the same issue.</p>
 
 <h2 id="the-setup">The Setup</h2>
 
@@ -1851,334 +2118,4 @@ There is camera motion correction in the code but not in the paper!!!!
   <li>[<a href="https://arxiv.org/pdf/2110.06864.pdf" target="_blank" rel="noopener noreferrer">3</a>] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., … &amp; Wang, X. (2022, October). Bytetrack: Multi-object tracking by associating every detection box. In European Conference on Computer Vision (pp. 1-21). Cham: Springer Nature Switzerland.</li>
   <li>[<a href="https://arxiv.org/pdf/2206.14651.pdf" target="_blank" rel="noopener noreferrer">4</a>] Aharon, N., Orfaig, R., &amp; Bobrovsky, B. Z. (2022). BoT-SORT: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651.</li>
   <li>[<a href="https://arxiv.org/pdf/2211.08824.pdf" target="_blank" rel="noopener noreferrer">5</a>] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.</li>
-</ul>]]></content><author><name>Miguel Mendez</name></author><category term="Computer Vision" /><category term="Machine Learning" /><category term="Object Tracking" /><category term="Computer Vision" /><category term="SORT" /><category term="DeepSORT" /><category term="ByteTrack" /><category term="BoT-SORT" /><category term="SMILEtrack" /><summary type="html"><![CDATA[Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Creating Better Data: AI &amp;amp; Homography Estimation</title><link href="https://miguel-mendez-ai.com/2023/09/22/homography-estimation" rel="alternate" type="text/html" title="Creating Better Data: AI &amp;amp; Homography Estimation" /><published>2023-09-22T00:00:00+00:00</published><updated>2023-09-22T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/09/22/homography-estimation</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/09/22/homography-estimation"><![CDATA[]]></content><author><name>Miguel Mendez</name></author><category term="AI" /><category term="Sports Analytics" /><category term="Deep Learning" /><category term="AI" /><category term="Homography Estimation" /><category term="Sports Analytics" /><category term="Deep Learning" /><summary type="html"><![CDATA[Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Image Transmission for Computer Vision: A Comparison of Torchserve’s REST and gRPC</title><link href="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc" rel="alternate" type="text/html" title="Image Transmission for Computer Vision: A Comparison of Torchserve’s REST and gRPC" /><published>2023-02-24T00:00:00+00:00</published><updated>2023-02-24T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc"><![CDATA[<p>Special thanks to <a href="https://www.linkedin.com/in/jguzmanfd/" target="_blank" rel="noopener noreferrer">Javier Guzman</a> for working with me in completing the benchmarking discussed in this post.</p>
-
-<p>In the past few weeks, we have been exploring the potential advantages of adopting gRPC to enhance the performance of our services. Although I have conducted extensive research on this topic, I have not been able to find relevant information that specifically addresses our use case, which involves transmitting images to a model server and receiving a response in the most efficient manner. While there are numerous benchmarks that demonstrate significant performance improvements when migrating from REST to gRPC using structured data, it has been challenging to locate a similar benchmark for image transmission… And that is the main reason behind this post!</p>
-
-<p>All the code for the different benchmarks can be found in <a href="https://github.com/mmeendez8/grpc_vs_rest" target="_blank" rel="noopener noreferrer">this Github repository</a>. You can find instructions in the README file. It’s important to note that our primary objective was to conduct this testing on our cloud infrastructure, where both the servers and clients were deployed on the same Kubernetes cluster. This allowed us to replicate a real-world scenario as closely as possible.</p>
-
-<h2 id="some-thoughts-on-grpc">Some thoughts on gRPC</h2>
-
-<p>When you start reading about gRPC, you soon realize that it involves two main features that can really help you to speed up your system communications.</p>
-
-<h3 id="http2">HTTP2</h3>
-
-<p>gRPC is built on the HTTP/2 protocol, which was specifically designed to address the latency issues of its predecessor, HTTP/1.1. There are two key features of HTTP/2 that are particularly relevant to our benchmarking efforts:</p>
-
-<ul>
-  <li>
-    <p><strong>Multiplexed streams</strong>: With HTTP/2, multiple requests and responses can be transmitted over a single connection. While HTTP/1.1 can also reuse connections through pooling, the ability to multiplex streams becomes more important as the number of servers increases. When multiple HTTP requests are performed in a very short span of time, HTTP/1.1 has no way to share those connections. Therefore, it will create new connections to the content server for each HTTP request (see <a href="https://blog.codavel.com/http2-multiplexing" target="_blank" rel="noopener noreferrer">here</a> for a extended explanation)</p>
-  </li>
-  <li>
-    <p><strong>Binary protocol</strong>: Unlike HTTP/1.1, which is text-based, HTTP/2 uses a binary protocol which facilitates more efficient parsing. This can have a significant impact on performance, particularly when dealing with large datasets such as images.</p>
-  </li>
-</ul>
-
-<h3 id="protobuf">Protobuf</h3>
-
-<p>Protocol Buffers, also known as Protobuf, is a language-agnostic binary serialization format developed by Google. It is used for efficient data <strong>serialization of structured data</strong> and communication between applications. It is faster than JSON for two reasons:</p>
-
-<ul>
-  <li><strong>Messages are shorter</strong>. In Protobuf messages do not contain any metadata or extra information such as field names and data types. This is not needed since the data schema has been strictly predefined in the <code>.proto</code> file. It also uses a compact binary representation, variable-length encoding, which means that the number of bytes required to represent a value depends on its size.</li>
-  <li><strong>Serialization is faster</strong>. Converting messages to and from bytes is faster than in JSON because of its binary format and predefined schema. Decoding can be optimized and parallelized.</li>
-</ul>
-
-<p>In <a href="https://nilsmagnus.github.io/post/proto-json-sizes/" target="_blank" rel="noopener noreferrer">this post</a> you can see a good comparison of Protobuf vs JSON sizes for structured data. TLDR: Protobuf is always smaller than gzipped json but seems to lose its clear advantage when mesage sizes are large.</p>
-
-<h3 id="how-does-this-apply-to-images">How does this apply to images?</h3>
-
-<p>Structured data is text that has been predefined and formatted to a set structure. Protobuf can take advantage of the schema definitions of the data to speed up serialization and compression size. However, images do not fall under the category of structured text. Basically if you want to convert an image to bytes in an efficient manner and without losing information you have to use specific handcrafted methods that have been carefully designed for this, such as JPEG, PNG… In other words, Protobuf is not going to help you here since compression and serialization will depend on your image library. See this example:</p>
-
-<pre><code class="language-python"># create random 100x100 rgb image
-image = numpy.random.rand(100, 100, 3) * 255
-# serialize image to jpg using opencv
-encoded_image = cv2.imencode(".jpg", image)[1].tobytes()
-# fake send with grpc
-grpc.send(encoded_image)
-</code></pre>
-
-<p>The key feature here is that Protobuf is not really helping. Given that it is one of key points of gRPC, differences between REST and gRPC cannot be that high here… Let’s check this with real numbers:</p>
-
-<h2 id="1-base-benchmark">1. Base benchmark</h2>
-
-<p>First thing we wanted to do is check if we were able to reproduce those benchmarks we found on the web. The idea is simple, create two equivalent REST and gRPC servers and measure the time they take to process and respond to different requests.
-The gRPC server has been implemented using <a href="https://grpc.io/docs/languages/python/basics/" target="_blank" rel="noopener noreferrer">python grpc library</a> and we have used <a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener noreferrer">FastAPI</a> for the REST one.</p>
-
-<div class="post-center-image">
-<a href="/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-768-253323f5f.png" alt="Cat being compressed to bytes" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-400-b0be83dae.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/cat_bytes-768-b0be83dae.webp 768w" sizes="(max-width: 767px) 100vw, 80vw" width="768" height="768" />
-</a>
-
-</div>
-
-<p class="image-caption"><em>This is what Stable Diffusion creates with the prompt “an image of a cat is being encoded into a chunk of bytes”</em></p>
-
-<p>We decided to measure three different requests and using a single response for all of them. The gRPC <code>.proto</code> file for those requests looks like the following:</p>
-
-<pre><code class="language-python">class BasicRequest(BaseModel):
-    """
-    Structured data request, we expect to match online benchmarks with this
-    """
-    field1: str
-    field2: str
-    field3: int
-    field4: Dict[str, int]
-
-class ImageBase64Request(BaseModel):
-    """
-    Encode image as a string using Base64 encoding. 
-    This is a very bad solution (but simple to do) that should always be avoided
-    """
-    image: str
-
-class ImageBinaryRequest(BaseModel):
-    """
-    Contains an image encoded as bytes.
-    """
-    image: bytes
-
-class BasicResponse(BaseModel):
-    prediction1: List[float]
-    prediction2: Dict[str, int]
-</code></pre>
-
-<p>Note REST’s requests and responses are identical to these so we can make a fair comparison.</p>
-
-<p>Our client does a very simple thing, sends twenty concurrent requests to each server and waits for a response. It repeats this ten times for then computing the average time it took. Pseudocode for the client it is shown below:</p>
-
-<pre><code class="language-python">times = []
-for _ in range(10):
-    start= time()
-    send_concurrent_request_to_specific_server(n=20)
-    times.append(time() - start())
-
-average_time = mean(times)
-</code></pre>
-
-<p>We tested this for three different image sizes. Results are collected below:</p>
-
-<div class="table-wrapper">
-
-  <table>
-    <thead>
-      <tr>
-        <th> </th>
-        <th>Basic (0.001 MB)</th>
-        <th>B64 (0.306 MB)</th>
-        <th>Binary (0.229 MB)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>REST</td>
-        <td>0.0723</td>
-        <td>0.0943</td>
-        <td>0.0572</td>
-      </tr>
-      <tr>
-        <td>gRPC</td>
-        <td>0.0093 (x7.7)</td>
-        <td>0.0179 (x5.2)</td>
-        <td>0.0120 (x4.7)</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Table 1. Results for small images: 360x640</p>
-
-</div>
-
-<div class="table-wrapper">
-
-  <table>
-    <thead>
-      <tr>
-        <th> </th>
-        <th>Basic (0.001 MB)</th>
-        <th>B64 (1.160 MB)</th>
-        <th>Binary (0.870 MB)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>REST</td>
-        <td>0.0611</td>
-        <td>0.2350</td>
-        <td>0.0872</td>
-      </tr>
-      <tr>
-        <td>gRPC</td>
-        <td>0.0090 (x6.7)</td>
-        <td>0.0926 (x2.5)</td>
-        <td>0.0570 (x1.5)</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Table 2. Results for medium images: 720x1280</p>
-
-</div>
-
-<div class="table-wrapper">
-
-  <table>
-    <thead>
-      <tr>
-        <th> </th>
-        <th>Basic (0.001 MB)</th>
-        <th>B64 (3.094 MB)</th>
-        <th>Binary (2.320 MB)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>REST</td>
-        <td>0.0583</td>
-        <td>0.8056</td>
-        <td>0.1909 (x1.03)</td>
-      </tr>
-      <tr>
-        <td>gRPC</td>
-        <td>0.0097 (x6)</td>
-        <td>0.2793 (x2.9)</td>
-        <td>0.1974</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Table 3. Results for large images: 1080x1920</p>
-
-</div>
-
-<p>We can extract some conclussion from previous tables:</p>
-
-<ol>
-  <li>gRPC achieves around a x6 improvement with respect to REST for structured data (Basic column). The results <a href="https://medium.com/@EmperorRXF/evaluating-performance-of-rest-vs-grpc-1b8bdf0b22da#:~:text=gRPC%20is%20roughly%207%20times,of%20HTTP%2F2%20by%20gRPC." target="_blank" rel="noopener noreferrer">match online benchmarks</a> and we know this is because we are taking advantage of Protobuf serialization and HTTP2 protocol.</li>
-  <li>For Base64 and Binary we observe a relation between image size and gRPC performance. As the image size increase, the difference between REST and gRPC are smaller.</li>
-  <li>In the Base64 case, gRPC helps to serialize faster and in a more optimal way the string. We know from <a href="https://nilsmagnus.github.io/post/proto-json-sizes/" target="_blank" rel="noopener noreferrer">this post</a> that Protobuf loses its advantage when message size increases.</li>
-  <li>Binary is a special case as we know we are not getting any advantage from using Protobuf for our serialization and message size (this is determined by the image format we chose). On the contrary it is harming our performance. There is still  some encoding going on in Protobuf, since it needs to format our chunk of image bytes inside the Protobuf message format. This little thing might be making REST as good as gRPC for large images!</li>
-</ol>
-
-<h2 id="torchserve-benchmark">Torchserve benchmark</h2>
-
-<p>I have been using <a href="https://pytorch.org/serve/" target="_blank" rel="noopener noreferrer">TorchServe</a> for a while now and I am quite happy with it. It provides all the flexibility I need and it is quite simple to set up. Model handlers allow you to customize every detail for your specific model without really worrying about other complex things such as batching and queing requests. 
-I do not intend to give an overview of TorchServe or make a comparison of its advantages compared to other inference servers, I will leave that for a plausible future post.</p>
-
-<p>The documentation for Torchserve’s <a href="https://pytorch.org/serve/grpc_api.html" target="_blank" rel="noopener noreferrer">gRPC API</a> could be improved, as it currently requires users to download the official repository to generate a Python gRPC client stub from the proto files. However, I have attached these files to the repository, so you can easily run the benchmark without having to worry about this step.</p>
-
-<p>The experiment is very similar to the previous one, sending 20 concurrent request and repeating that 10 times to measure the average time. I am going to use one of the pytorch vision model examples, <a href="https://pytorch.org/hub/pytorch_vision_densenet/" target="_blank" rel="noopener noreferrer">densenet161</a>. The model is not important here since we do not really care about inference results. Let’s see some results:</p>
-
-<div class="table-wrapper">
-
-  <table>
-    <thead>
-      <tr>
-        <th> </th>
-        <th>B64 (0.306 MB)</th>
-        <th>Binary (0.229)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>REST</td>
-        <td>0.884</td>
-        <td>0.628</td>
-      </tr>
-      <tr>
-        <td>gRPC</td>
-        <td>X</td>
-        <td>0.645</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Table 4. Results for small images: 360x640</p>
-
-</div>
-
-<div class="table-wrapper">
-
-  <table>
-    <thead>
-      <tr>
-        <th> </th>
-        <th>B64 (0.306 MB)</th>
-        <th>Binary (0.229)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>REST</td>
-        <td>1.262</td>
-        <td>0.946</td>
-      </tr>
-      <tr>
-        <td>gRPC</td>
-        <td>X</td>
-        <td>0.927</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Table 5. Results for medium images: 720x1280</p>
-
-</div>
-
-<div class="table-wrapper">
-
-  <table>
-    <thead>
-      <tr>
-        <th> </th>
-        <th>B64 (0.306 MB)</th>
-        <th>Binary (0.229)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>REST</td>
-        <td>2.188</td>
-        <td>1.384</td>
-      </tr>
-      <tr>
-        <td>gRPC</td>
-        <td>X</td>
-        <td>1.422</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Table 6. Results for large images: 1080x1920</p>
-
-</div>
-
-<p>Note there are not results for B64 gRPC since this is not allowed by Torchserve schema definition.</p>
-
-<p>Translating the insights gained from benchmarking with the base servers can be challenging. The tables indicate that Base64 encoding should be avoided and that there are no significant performance differences between using gRPC and REST.</p>
-
-<p>Two factors contribute to the similar performance results for gRPC and REST. Firstly, the model’s inference time is considerably longer than the networking time, making it difficult to discern the small gains obtained by changing the transmission protocol. For example, sending 20 large images concurrently in the simple base case (Table 3) took roughly 0.19s, whereas we are now spending approximately 1.4 seconds (Table 6), highlighting the significant impact of model inference time on the comparison.</p>
-
-<p>Secondly, the Torchserve implementation plays a role in these results. It has been observed that Torchserve’s <code>.proto</code> definition for <a href="https://github.com/pytorch/serve/blob/master/frontend/server/src/main/resources/proto/inference.proto#L20-L23" target="_blank" rel="noopener noreferrer">prediction response</a> is too generic and it cannot be personalized with your model specifics.</p>
-
-<pre><code class="language-json">message PredictionResponse {
-    // Response content for prediction
-    bytes prediction = 1;
-}
-</code></pre>
-
-<p>This means that your response will be converted to a chunk of bytes so you would not be getting any advantage from Protobuf serialization (similar to what happens with images). For example if our model returns three lists of bounding boxes, class and scores, the <code>.proto</code> file for our response could be something like:</p>
-
-<pre><code class="language-json">message PredictionResponse {
-    repeated float scores = 1;
-    repeated int32 scores = 2;
-    repeated repeated int32 bboxes = 3;
-}
-</code></pre>
-
-<p>The differences between this response and the one provided by Torchserve are clear. You do not get any of the Protobuf advantage since the Torchserve schema definition is too general. A better or more customizable definition such as the one provided by Tfserving, of the <code>.proto</code> file could help boost performance.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>If you’re using Torchserve to serve computer vision models, it’s recommended to steer clear of gRPC. Our findings show that there are no performance benefits to using gRPC. Moreover, it adds code complexity while hindering debugging due to its non-human-readable messages. Since REST is more commonly used, most developers are already familiar with it. Switching to gRPC in this scenario comes with a learning curve that doesn’t offer any significant advantages.</p>
-
-<p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>]]></content><author><name>Miguel Mendez</name></author><category term="Computer Vision" /><category term="Machine Learning" /><category term="Benchmarking" /><category term="Torchserve" /><category term="gRPC" /><category term="REST" /><category term="Computer Vision" /><category term="Benchmarking" /><summary type="html"><![CDATA[This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+</ul>]]></content><author><name>Miguel Mendez</name></author><category term="Computer Vision" /><category term="Machine Learning" /><category term="Object Tracking" /><category term="Computer Vision" /><category term="SORT" /><category term="DeepSORT" /><category term="ByteTrack" /><category term="BoT-SORT" /><category term="SMILEtrack" /><summary type="html"><![CDATA[Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Creating Better Data: AI &amp;amp; Homography Estimation</title><link href="https://miguel-mendez-ai.com/2023/09/22/homography-estimation" rel="alternate" type="text/html" title="Creating Better Data: AI &amp;amp; Homography Estimation" /><published>2023-09-22T00:00:00+00:00</published><updated>2023-09-22T00:00:00+00:00</updated><id>https://miguel-mendez-ai.com/2023/09/22/homography-estimation</id><content type="html" xml:base="https://miguel-mendez-ai.com/2023/09/22/homography-estimation"><![CDATA[]]></content><author><name>Miguel Mendez</name></author><category term="AI" /><category term="Sports Analytics" /><category term="Deep Learning" /><category term="AI" /><category term="Homography Estimation" /><category term="Sports Analytics" /><category term="Deep Learning" /><summary type="html"><![CDATA[Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" /><media:content medium="image" url="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
