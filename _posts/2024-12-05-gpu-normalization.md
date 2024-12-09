@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Image Normalization: CPU vs GPU Performance in PyTorch"
+title: "Comparing CPU vs GPU Performance in PyTorch"
 subtitle: "Understanding the performance differences in Pytorch's image normalization"
 author: Miguel Mendez
 description: "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline."
@@ -13,9 +13,9 @@ categories: [Deep Learning, Performance]
 
 This post has been on my to-do list for a long time, and I’m excited to finally have the time to write it. I hope you find it useful because it’s about a topic I find very interesting.  
 
-It all started while I was testing some of our internal data preprocessing pipelines and began thinking about the performance of the normalization step. Image normalization is a straightforward process: subtract the mean and divide by the standard deviation. At first glance, this seems like a task where a GPU should provide a significant speed-up and you’re probably thinking the same! But is that really the case?  
+It all started while I was testing some of our internal data preprocessing pipelines and began thinking about the performance of the normalization step. Image normalization is a straightforward process: subtract the mean and divide by the standard deviation. These operations are well-suited for parallel processing, which is where GPUs excel. However, there are a few other factors to consider, such as data types and data transfer between the CPU and GPU.
 
-This question motivated me to investigate further, and surprisingly, it led to an even more interesting finding...
+In this post, I’ll compare the performance differences between CPU and GPU when normalizing images, and explore the impact of data types and data transfer. Let’s get started!
 
 ## Setup
 
@@ -183,7 +183,7 @@ The key observation here is that the `sum` and `div` operations take significant
 
 But... is there anything else we can improve? Can we make this optimization even better?  
 
-## The importance of data types
+## The importance of data transfer
 
 So this is where things get interesting. We have seen that using the correct data types is crucial for performance. Avoiding unnecessary conversions can save a lot of time. But have you considered the time it takes to move data between the CPU and GPU? Let’s start with a simple exploration:  
 
@@ -286,7 +286,7 @@ I imagine the avid reader might be wondering: hasn’t PyTorch been designed to 
 
 ## Conclusion
 
-In this post, we’ve explored the differences between CPU and GPU performance when normalizing images in PyTorch. We’ve learned that several factors are key to optimizing preprocessing pipelines:  
+In this post, we’ve explored the performance differences between CPU and GPU when normalizing images in PyTorch, and examined how data transfer and data types influence preprocessing efficiency. Key takeaways for optimizing your pipeline include:
 
 1. Always use the correct data types to avoid unnecessary conversions.  
 2. Minimize the amount of data transferred between the CPU and GPU.  
