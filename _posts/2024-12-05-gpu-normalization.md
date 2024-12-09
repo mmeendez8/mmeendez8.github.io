@@ -11,11 +11,11 @@ tags: [PyTorch, GPU, Performance, Computer Vision, Python]
 categories: [Deep Learning, Performance, CUDA]
 ---
 
-This post has been on my to-do list for a long time, and I’m excited to finally have the time to write it. I hope you find it useful because it’s about a topic I find very interesting.  
+This post has been on my to-do list for a long time, and I’m excited to finally have the time to write it. This topic is particularly interesting to me, and I hope you find it useful.
 
-It all started while I was testing some of our internal data preprocessing pipelines and began thinking about the performance of the normalization step. Image normalization is a straightforward process: subtract the mean and divide by the standard deviation. These operations are well-suited for parallel processing, which is where GPUs excel. However, there are a few other factors to consider, such as data types and data transfer between the CPU and GPU.
+It all started while I was testing some of our internal data preprocessing pipelines and began thinking about the performance of the normalization step. Image normalization is a straightforward process: subtract the mean and divide by the standard deviation. These operations are well-suited for parallel processing, which is where GPUs excel. However, factors like data types and data transfer between the CPU and GPU also play a significant role.
 
-In this post, I’ll compare the performance differences between CPU and GPU when normalizing images, and explore the impact of data types and data transfer. Let’s get started!
+My goal is to compare the performance differences between CPU and GPU for image normalization and explore the impact of data types and data transfer. Let’s get started!
 
 ## Setup
 
