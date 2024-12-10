@@ -16,6 +16,7 @@ layout: default
       "url": "{{ site.url }}"
     },
     "description": "{{ page.description | default: site.description }}",
+    "image": "{{ site.url }}{{ page.image }}",
     "keywords": "{{ page.tags | join: ', ' }}",
     "articleSection": "{{ page.categories | join: ', ' }}"
   }
