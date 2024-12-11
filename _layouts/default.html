@@ -80,6 +80,10 @@
   <link rel="icon" type="image/png" href={{ "/libs/icon.png" | prepend: site.baseurl }}>
   <link rel="shortcut icon" type="image/png" href={{ "/libs/icon.png" | prepend: site.baseurl }}>
 
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/atom+xml" href="{{ site.url }}{{ site.data.main_info.rss }}">
+
+
   <!-- Google Analytics -->
   {% include google_analytics.html %}
   {% include twitter_card.html %}
