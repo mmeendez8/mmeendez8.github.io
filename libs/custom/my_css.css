@@ -635,6 +635,9 @@ table thead {
   } 
 }
 
+.MathJax_Display {
+  max-width: 100% !important;
+}
 .the-post-title{
   font-size: 3rem;
   font-family: Tiempos Headline,Arial,sans-serif;
@@ -757,4 +760,15 @@ code, pre {
 
 .comments {
   margin: 100px 0 40px 0;
+}
+
+/*  ================ Mathjax  ================ */
+/* https://akshat.blog/posts/mathjax-scrollable-box-display-mode/ */
+/* This adds horizontal scrolling to large equations on display mode (not for inline) */
+mjx-container[display] {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  min-width: 0 !important;
 }
