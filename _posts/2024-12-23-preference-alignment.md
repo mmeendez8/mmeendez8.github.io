@@ -1,14 +1,14 @@
 ---
 layout: post
-title: "Preference alignment"
-subtitle: ""
+title: "LLM Preference Alignment"
+subtitle: "Understanding PPO, DPO, and ORPO"
 author: Miguel Mendez
-description: ""
-image: "/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg"
+description: "This post covers LLM preference alignment, focusing on key techniques like PPO, DPO, and ORPO. Understand how large language models (LLMs) can be aligned with human preferences. Learn about the latest advancements in LLM alignment and how these methods optimize models to follow specific rules and preferences."
+image: "/assets/images/fullsize/posts/2024-12-23-preference-alignment/thumbnail.jpg"
 selected: y
 mathjax: y
-tags: [PyTorch, GPU, Performance, Computer Vision, Python]
-categories: [Deep Learning, Performance, CUDA]
+tags: [LLM, Language-Model, RLHF, Reinforcement-Learning, DPO, PPO, ORPO]
+categories: [Deep Learning, Machine Learning, Natural Language Processing, AI, Technology]
 ---
 
 I am trying to keep myself updated with the LLM literature and recently found an [interesting course](https://github.com/huggingface/smol-course) from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.
@@ -20,12 +20,11 @@ I am trying to keep myself updated with the LLM literature and recently found an
 3. [DPO: Direct Preference Optimization](#dpo)
 4. [ORPO: Monolithic Preference Optimization without Reference Model](#orpo)
 
-
 ## What is preference alignment?
 
 Training a large language model (LLM) can involve several steps:
 
-1. **Train model on next token prediction**: Train the model on a massive amount of data since we do not need to do any kind of labeling (model just predicts the next token).
+1. **Train model on next token prediction**: This is done on a massive amount of data since we do not need to do any kind of labeling. Raw text is enough, we just need to predict the next token in a sequence and backpropagate the error.
 2. **Supervised fine-tuning (SFT):** This is the step where we fine-tune the model to a specific task. This can be a chatbot, a summarizer, a translator, etc. We need labeled data for this step.
 3. **Preference Aligment:** Force the model to follow a specific set of rules or preferences. Like do not using offensive language, do not generate fake news, etc.
 
@@ -45,6 +44,7 @@ A simple example of model alignment is to provide our fine-tuned chatbot model w
   frameborder="0"
   width="100%"
   height="500px"
+  sandbox
 ></iframe>
 
 Gathering this kind of data can be very expensive and time-consuming. Fine-tuning involves a prompt and a single response, while alignment requires a prompt and multiple responses. We need to define how to rank these replies (good/bad).
@@ -57,8 +57,8 @@ Let's explore the different methods we can use to align our models!
 
 In the context of LLMs, the agent is the model, the state is the input prompt, and the action is the generated response. We need a reward model to evaluate the quality of these responses. While we could use human feedback for this, having humans intervene in the training loop is impractical. Instead, we can train a model to provide feedback on the responses as a human would. This model is called a reward model.
 
-<div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-16-preference-alignment/reward-model.png --alt Diagram showing the pipeline to train a reward model %}
+<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/reward-model.png --alt Diagram showing the pipeline to train a reward model %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -68,7 +68,7 @@ In the context of LLMs, the agent is the model, the state is the input prompt, a
 Once we have a reward model we can plugin it in our RL training loop and use the PPO algorithm to train our model. See the diagram below:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-16-preference-alignment/ppo.jpg --alt Diagram showing the PPO pipeline %}
+    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/ppo.jpg --alt Diagram showing the PPO pipeline %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -128,7 +128,6 @@ $$ P(y_{w} > y_l) = \sigma(r(x, y_w) - r(x, y_l)) $$
 
 If we now update the latest equation with our reward model (Eq. 6) we just get:
 
-
 $$ P(y_{w} > y_l) = \sigma \left( \beta \log \frac{\pi^*(y_w|x)}{\pi_{ref}(y_w|x)} + \beta \log Z(x) - \beta \log \frac{\pi^*(y_l|x)}{\pi_{ref}(y_l|x)} - \beta \log Z(x) \right)$$
 
 And that's how the Z term cancels out! See that we have moved from defining preferences in terms of the reward model to defining them in terms of the optimal policy. We can just maximize our previous expression or minimize the negative version of it. This is the loss function we will use to train our model:
@@ -142,7 +141,7 @@ This is just awesome.
 This section became larger than expected, but in summary, we can say that DPO provides a way to remove RL from the alignment process. We can directly train our SFT model with a dataset of preferences using the loss function derived in the previous section. Gradient descent is all we need now, and our alignment diagram simplifies to:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-16-preference-alignment/dpo.jpg --alt Diagram showing the PPO pipeline %}
+    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/dpo.jpg --alt Diagram showing the PPO pipeline %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -162,18 +161,18 @@ $$ \log P_{\theta}(y|x) = \frac{1}{m} \sum_{t=1}^{m} \log P_{\theta}(y_t|x, y_{<
 
 This loss basically tries to make the log-likelihood of the output tokens as high as possible given the input prompt. The diagram below shows a intuitive representation of this process:
 
-<div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-16-preference-alignment/llm_diagram.jpg --alt Diagram showing how a LLM works %}
+<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/llm_diagram.jpg --alt Diagram showing how a LLM works %}
 </div>
 
 {:refdef: class="image-caption"}
-*Figure 3. LLM Diagram*
+*Figure 4. LLM Diagram*
 {: refdef}
 
-The goal of this loss function is to maximize the probability of the correct next word (Lisbon) given the previous words (The capital of Portugal is). This loss focuses on maximizing the likelihood of the correct token and does not directly penalize incorrect tokens (Madrid, London). When aligning a language model, we use a dataset of preferences with chosen and rejected responses (as seen in the HF dataset). The absence of a penalty for incorrect responses can result in these rejected responses sometimes having a higher likelihood than the chosen ones! Figure 3 of the paper illustrates this issue.
+The goal of this loss function is to maximize the probability of the correct next word (Lisbon) given the previous words (The capital of Portugal is). This loss focuses on maximizing the likelihood of the correct token and does not directly penalize incorrect tokens (Madrid, London). When aligning a language model, we use a dataset of preferences with chosen and rejected responses (as seen in the HF dataset). The absence of a penalty for incorrect responses can result in these rejected responses sometimes having a higher likelihood than the chosen ones! The next figure shows an example of this:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-16-preference-alignment/orpo_figure.png --alt Figure from ORPO paper showing log probabilities for chosen and rejected responses %}
+    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/orpo_figure.png --alt Figure from ORPO paper showing log probabilities for chosen and rejected responses %}
 </div>
 
 You might be guessing what this paper is going to propose... and yes! It introduces a penalty term for the rejected responses. Let's start by defining how likely it is for our model $\theta$ to generate an output sequence:
@@ -193,11 +192,11 @@ $$ \mathcal{L}_{ORPO} = \mathbb{E}_{(x, y_w, y_l)} [\mathcal{L}_{SFT} + \lambda 
 ORPO is computationally more efficient than the previous methods and it is also achieves better results (check the experiments section of the paper). The diagram below shows the simplified ORPO pipeline:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-16-preference-alignment/orpo.jpg --alt ORPO diagram %}
+    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/orpo.jpg --alt ORPO diagram %}
 </div>
 
 {:refdef: class="image-caption"}
-*Figure 3. Diagram showing the ORPO pipeline. Note it uses the Base Model instead of starting from a SFT trained one. *
+*Figure 5. Diagram showing the ORPO pipeline. Note it uses the Base Model instead of starting from a SFT trained one.*
 {: refdef}
 
 There is also a very interesting post from HuggingFace team that shows how they have used ORPO for training Llama3 and obtained very encouraging results. You can check it [here](https://huggingface.co/blog/mlabonne/orpo-llama-3).
