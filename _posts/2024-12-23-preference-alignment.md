@@ -11,7 +11,7 @@ tags: [LLM, Language-Model, RLHF, Reinforcement-Learning, DPO, PPO, ORPO]
 categories: [Deep Learning, Machine Learning, Natural Language Processing, AI, Technology]
 ---
 
-I am trying to keep myself updated with the LLM literature and recently found an [interesting course](https://github.com/huggingface/smol-course) from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.
+I am trying to keep myself updated with the LLM literature and recently found an [interesting course](https://github.com/huggingface/smol-course){:target="_blank"}{:rel="noopener noreferrer"} from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.
 
 ## Table of contents
 
@@ -28,7 +28,7 @@ Training a large language model (LLM) can involve several steps:
 2. **Supervised fine-tuning (SFT):** This is the step where we fine-tune the model to a specific task. This can be a chatbot, a summarizer, a translator, etc. We need labeled data for this step.
 3. **Preference Aligment:** Force the model to follow a specific set of rules or preferences. Like do not using offensive language, do not generate fake news, etc.
 
-Nowadays, the first step is done by companies with access to massive amounts of data and computational resources such as Anthropic, OpenAI, Meta, etc. We usually refer to these as **Base Models**, and those that have been fine-tuned to follow a specific task as **Instruct Models**. See, for example, [Qwen/Qwen2-7B](https://huggingface.co/Qwen/Qwen2-7B) and [Qwen/Qwen2-7B-instruct](https://huggingface.co/Qwen/Qwen2-7B-Instruct).
+Nowadays, the first step is done by companies with access to massive amounts of data and computational resources such as Anthropic, OpenAI, Meta, etc. We usually refer to these as **Base Models**, and those that have been fine-tuned to follow a specific task as **Instruct Models**. See, for example, [Qwen/Qwen2-7B](https://huggingface.co/Qwen/Qwen2-7B){:target="_blank"}{:rel="noopener noreferrer"} and [Qwen/Qwen2-7B-instruct](https://huggingface.co/Qwen/Qwen2-7B-Instruct){:target="_blank"}{:rel="noopener noreferrer"}.
 
 A simple example of a dataset used for supervised fine-tuning can be a chatbot dataset like the one below:
 
@@ -37,7 +37,7 @@ A simple example of a dataset used for supervised fine-tuning can be a chatbot d
 | What is Celta de Vigo stadium?              | Celta de Vigo's stadium is Balaídos.                                              |
 | Who is Celta de Vigo's most popular player? | The most popular and iconic player in the history of Celta de Vigo is Iago Aspas. |
 
-A simple example of model alignment is to provide our fine-tuned chatbot model with a prompt and two different responses: one that aligns with our preferences and one that does not. The goal is to train the model to prefer the response that aligns with our preferences. See below a real example from the [Ultrafeedback dataset](https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized):
+A simple example of model alignment is to provide our fine-tuned chatbot model with a prompt and two different responses: one that aligns with our preferences and one that does not. The goal is to train the model to prefer the response that aligns with our preferences. See below a real example from the [Ultrafeedback dataset](https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized){:target="_blank"}{:rel="noopener noreferrer"}:
 
 <iframe
   src="https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized/embed/viewer/all/train?row=0"
@@ -45,6 +45,7 @@ A simple example of model alignment is to provide our fine-tuned chatbot model w
   frameborder="0"
   width="100%"
   height="500px"
+  title="Ultrafeedback dataset viewer"
   sandbox
 ></iframe>
 
@@ -63,7 +64,7 @@ In the context of LLMs, the agent is the model, the state is the input prompt, a
 </div>
 
 {:refdef: class="image-caption"}
-*Figure 1. Diagram showing the pipeline to train a reward model (obtained from [HuggingFace blog](https://huggingface.co/blog/rlhf))*
+*Figure 1. Diagram showing the pipeline to train a reward model (obtained from [HuggingFace blog](https://huggingface.co/blog/rlhf){:target="_blank"}{:rel="noopener noreferrer"})*
 {: refdef}
 
 Once we have a reward model we can plugin it in our RL training loop and use the PPO algorithm to train our model. See the diagram below:
@@ -84,7 +85,7 @@ $$ \begin{equation} J_{\text{RLHF}} = \max_{\pi_\theta} \mathbb{E}_{x \sim D, y 
 
 Where $\pi_{\theta}$ is the policy/model we are trying to learn, $D$ is the dataset of prompts and responses, $r_{\varphi}$ is the reward model, $\beta$ is a hyperparameter that controls the trade-off between maximizing the reward and minimizing the KL divergence term. The KL divergence is in charge of keeping the policy close to the reference model to avoid exploitation.
 
-Have in mind that is not possible to apply gradient descent directly to this objective. The variable $$y\sim \pi_\theta(y\|x)$$ is sampled from our LLM and this involes non-differentiable operations (check [this post](https://neptune.ai/blog/customizing-llm-output-post-processing-techniques) to learn more about the different sampling methods).
+Have in mind that is not possible to apply gradient descent directly to this objective. The variable $$y\sim \pi_\theta(y\|x)$$ is sampled from our LLM and this involes non-differentiable operations (check [this post](https://neptune.ai/blog/customizing-llm-output-post-processing-techniques){:target="_blank"}{:rel="noopener noreferrer"} to learn more about the different sampling methods).
 
 PPO has proven to be a very effective algorithm for alignin LLMs but it is also a complex and often unstable procedure. What if we could simplify this process?
 
@@ -151,7 +152,7 @@ This section became larger than expected, but in summary, we can say that DPO pr
 
 HuggingFace team compared DPO with other aligning methods that I am not covering in this post (IPO and KTO). It showed 
 
-HuggingFace team compared DPO with other alignment methods (IPO and KTO) and found that DPO performed the best, followed by KTO, and then IPO. Check their [blog post](https://huggingface.co/blog/pref-tuning) for more details.
+HuggingFace team compared DPO with other alignment methods (IPO and KTO) and found that DPO performed the best, followed by KTO, and then IPO. Check their [blog post](https://huggingface.co/blog/pref-tuning){:target="_blank"}{:rel="noopener noreferrer"} for more details.
 
 
 ## ORPO
@@ -200,15 +201,15 @@ ORPO is computationally more efficient than the previous methods and it is also 
 *Figure 5. Diagram showing the ORPO pipeline. Note it uses the Base Model instead of starting from a SFT trained one.*
 {: refdef}
 
-There is also a very interesting post from HuggingFace team that shows how they have used ORPO for training Llama3 and obtained very encouraging results. You can check it [here](https://huggingface.co/blog/mlabonne/orpo-llama-3).
+There is also a very interesting post from HuggingFace team that shows how they have used ORPO for training Llama3 and obtained very encouraging results. You can check it [here](https://huggingface.co/blog/mlabonne/orpo-llama-3){:target="_blank"}{:rel="noopener noreferrer"}.
 
 
 ## References
 
-- [[1](https://arxiv.org/pdf/1707.06347)] Schulman, J., Wolski, F., Dhariwal, P., Radford, A., & Klimov, O. (2017). Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347.
-- [[2](https://arxiv.org/pdf/2305.18290)] Rafailov, R., Sharma, A., Mitchell, E., Manning, C. D., Ermon, S., & Finn, C. (2024). Direct preference optimization: Your language model is secretly a reward model. Advances in Neural Information Processing Systems, 36.
-- [[3](https://arxiv.org/pdf/2403.07691)] Hong, J., Lee, N., & Thorne, J. (2024, November). Orpo: Monolithic preference optimization without reference model. In Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (pp. 11170-11189).
-- [[4](https://vinija.ai/concepts/llm-alignment/#empirical-evaluation-dpo-vs-ipo-vs-kto)] LLM Alignment
-- [[5](https://www.youtube.com/watch?v=hvGa5Mba4c8&t=2590s)] Direct Preference Optimization (DPO) explained
-- [[6](https://github.com/huggingface/alignment-handbook)] HF Alignment Handbook
-- [[7](https://huggingface.co/blog/rlhf)] HF blog post on RLHF
+- [[1](https://arxiv.org/pdf/1707.06347){:target="_blank"}{:rel="noopener noreferrer"}] Schulman, J., Wolski, F., Dhariwal, P., Radford, A., & Klimov, O. (2017). Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347.
+- [[2](https://arxiv.org/pdf/2305.18290){:target="_blank"}{:rel="noopener noreferrer"}] Rafailov, R., Sharma, A., Mitchell, E., Manning, C. D., Ermon, S., & Finn, C. (2024). Direct preference optimization: Your language model is secretly a reward model. Advances in Neural Information Processing Systems, 36.
+- [[3](https://arxiv.org/pdf/2403.07691){:target="_blank"}{:rel="noopener noreferrer"}] Hong, J., Lee, N., & Thorne, J. (2024, November). Orpo: Monolithic preference optimization without reference model. In Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (pp. 11170-11189).
+- [[4](https://vinija.ai/concepts/llm-alignment/#empirical-evaluation-dpo-vs-ipo-vs-kto){:target="_blank"}{:rel="noopener noreferrer"}] LLM Alignment
+- [[5](https://www.youtube.com/watch?v=hvGa5Mba4c8&t=2590s){:target="_blank"}{:rel="noopener noreferrer"}] Direct Preference Optimization (DPO) explained
+- [[6](https://github.com/huggingface/alignment-handbook){:target="_blank"}{:rel="noopener noreferrer"}] HF Alignment Handbook
+- [[7](https://huggingface.co/blog/rlhf){:target="_blank"}{:rel="noopener noreferrer"}] HF blog post on RLHF
