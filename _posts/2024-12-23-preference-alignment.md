@@ -37,17 +37,7 @@ A simple example of a dataset used for supervised fine-tuning can be a chatbot d
 | What is Celta de Vigo stadium?              | Celta de Vigo's stadium is Balaídos.                                              |
 | Who is Celta de Vigo's most popular player? | The most popular and iconic player in the history of Celta de Vigo is Iago Aspas. |
 
-A simple example of model alignment is to provide our fine-tuned chatbot model with a prompt and two different responses: one that aligns with our preferences and one that does not. The goal is to train the model to prefer the response that aligns with our preferences. See below a real example from the [Ultrafeedback dataset](https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized){:target="_blank"}{:rel="noopener noreferrer"}:
-
-<iframe
-  src="https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized/embed/viewer/all/train?row=0"
-  loading="lazy"
-  frameborder="0"
-  width="100%"
-  height="500px"
-  title="Ultrafeedback dataset viewer"
-  sandbox
-></iframe>
+A simple example of model alignment is to provide our fine-tuned chatbot model with a prompt and two different responses: one that aligns with our preferences and one that does not. The goal is to train the model to prefer the response that aligns with our preferences. Check for example the [Ultrafeedback dataset](https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized){:target="_blank"}{:rel="noopener noreferrer"} in HuggingFace datasets.
 
 Gathering this kind of data can be very expensive and time-consuming. Fine-tuning involves a prompt and a single response, while alignment requires a prompt and multiple responses. We need to define how to rank these replies (good/bad).
 
