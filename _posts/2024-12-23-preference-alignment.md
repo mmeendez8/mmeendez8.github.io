@@ -41,6 +41,7 @@ A simple example of model alignment is to provide our fine-tuned chatbot model w
 
 <iframe
   src="https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized/embed/viewer/all/train?row=0"
+  loading="lazy"
   frameborder="0"
   width="100%"
   height="500px"
