@@ -29,8 +29,10 @@ presets:
 
   thumbnail:
     formats: [webp]
-    widths: [400, 800, 1500, 2000]
+    widths: [1500, 2000]
     dimension_attributes: true
+    attributes:
+      img: 'fetchpriority="high"' 
     sizes:
       mobile: 100vw
     size: 50vw
