@@ -4,7 +4,7 @@ title: "LLM Preference Alignment"
 subtitle: "Understanding PPO, DPO, and ORPO"
 author: Miguel Mendez
 description: "This post covers LLM preference alignment, focusing on key techniques like PPO, DPO, and ORPO. Understand how large language models (LLMs) can be aligned with human preferences. Learn about the latest advancements in LLM alignment and how these methods optimize models to follow specific rules and preferences."
-image: "/assets/images/fullsize/posts/2024-12-23-preference-alignment/thumbnail.jpg"
+image: "/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail.jpg"
 selected: y
 mathjax: y
 tags: [LLM, Language-Model, RLHF, Reinforcement-Learning, DPO, PPO, ORPO]
@@ -50,7 +50,7 @@ Let's explore the different methods we can use to align our models!
 In the context of LLMs, the agent is the model, the state is the input prompt, and the action is the generated response. We need a reward model to evaluate the quality of these responses. While we could use human feedback for this, having humans intervene in the training loop is impractical. Instead, we can train a model to provide feedback on the responses as a human would. This model is called a reward model.
 
 <div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/reward-model.png --alt Diagram showing the pipeline to train a reward model %}
+    {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model.png --alt Diagram showing the pipeline to train a reward model %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -60,7 +60,7 @@ In the context of LLMs, the agent is the model, the state is the input prompt, a
 Once we have a reward model we can plugin it in our RL training loop and use the PPO algorithm to train our model. See the diagram below:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/ppo.jpg --alt Diagram showing the PPO pipeline %}
+    {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo.jpg --alt Diagram showing the PPO pipeline %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -133,7 +133,7 @@ This is just awesome.
 This section became larger than expected, but in summary, we can say that DPO provides a way to remove RL from the alignment process. We can directly train our SFT model with a dataset of preferences using the loss function derived in the previous section. Gradient descent is all we need now, and our alignment diagram simplifies to:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/dpo.jpg --alt Diagram showing the PPO pipeline %}
+    {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo.jpg --alt Diagram showing the PPO pipeline %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -154,7 +154,7 @@ $$ \log P_{\theta}(y|x) = \frac{1}{m} \sum_{t=1}^{m} \log P_{\theta}(y_t|x, y_{<
 This loss basically tries to make the log-likelihood of the output tokens as high as possible given the input prompt. The diagram below shows a intuitive representation of this process:
 
 <div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/llm_diagram.jpg --alt Diagram showing how a LLM works %}
+    {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram.jpg --alt Diagram showing how a LLM works %}
 </div>
 
 {:refdef: class="image-caption"}
@@ -164,7 +164,7 @@ This loss basically tries to make the log-likelihood of the output tokens as hig
 The goal of this loss function is to maximize the probability of the correct next word (Lisbon) given the previous words (The capital of Portugal is). This loss focuses on maximizing the likelihood of the correct token and does not directly penalize incorrect tokens (Madrid, London). When aligning a language model, we use a dataset of preferences with chosen and rejected responses (as seen in the HF dataset). The absence of a penalty for incorrect responses can result in these rejected responses sometimes having a higher likelihood than the chosen ones! The next figure shows an example of this:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/orpo_figure.png --alt Figure from ORPO paper showing log probabilities for chosen and rejected responses %}
+    {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure.png --alt Figure from ORPO paper showing log probabilities for chosen and rejected responses %}
 </div>
 
 You might be guessing what this paper is going to propose... and yes! It introduces a penalty term for the rejected responses. Let's start by defining how likely it is for our model $\theta$ to generate an output sequence:
@@ -184,7 +184,7 @@ $$ \mathcal{L}_{ORPO} = \mathbb{E}_{(x, y_w, y_l)} [\mathcal{L}_{SFT} + \lambda 
 ORPO is computationally more efficient than the previous methods and it is also achieves better results (check the experiments section of the paper). The diagram below shows the simplified ORPO pipeline:
 
 <div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-12-23-preference-alignment/orpo.jpg --alt ORPO diagram %}
+    {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo.jpg --alt ORPO diagram %}
 </div>
 
 {:refdef: class="image-caption"}
