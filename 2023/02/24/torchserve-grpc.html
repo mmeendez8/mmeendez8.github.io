@@ -154,15 +154,9 @@
   </div>
 
   <div class="the-post-title-image">
-    <img src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0a3487f5b.jpg" alt="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-0fd0326d8.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0fd0326d8.webp 800w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1500-0fd0326d8.webp 1500w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-2000-0fd0326d8.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="3200" height="1879">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-0a3487f5b.jpg" alt="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC" srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1500-0fd0326d8.webp 1500w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-2000-0fd0326d8.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="3200" height="1879">
 
   </div>
-</div>
-
-<div class="share-button">
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2023/02/24/torchserve-grpc">
-  </a>
 </div>
 
 <div class="container the-post-content">
@@ -549,13 +543,17 @@ I do not intend to give an overview of TorchServe or make a comparison of its ad
   
   <!-- Mathjax -->
   
-    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          processEscapes: true
-      }
-  });
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      processEscapes: true,
+      tags: "all"    // Enable automatic equation numbering
+    }
+  };
+</script>
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
 </script>
   
 

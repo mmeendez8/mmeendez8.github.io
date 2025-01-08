@@ -154,15 +154,9 @@
   </div>
 
   <div class="the-post-title-image">
-    <img src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-cb24aec13.jpg" alt="Image Registration in Sports Analytics:" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-400-a9c63d958.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-a9c63d958.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-1500-a9c63d958.webp 1500w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-2000-a9c63d958.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="7801" height="4198">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-cb24aec13.jpg" alt="Image Registration in Sports Analytics:" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-1500-a9c63d958.webp 1500w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-2000-a9c63d958.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="7801" height="4198">
 
   </div>
-</div>
-
-<div class="share-button">
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Image Registration in Sports Analytics:" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/02/07/nfl-field-mapping">
-  </a>
 </div>
 
 <div class="container the-post-content">
@@ -395,13 +389,17 @@
   
   <!-- Mathjax -->
   
-    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          processEscapes: true
-      }
-  });
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      processEscapes: true,
+      tags: "all"    // Enable automatic equation numbering
+    }
+  };
+</script>
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
 </script>
   
 

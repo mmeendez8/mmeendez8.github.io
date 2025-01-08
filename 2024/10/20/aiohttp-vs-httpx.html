@@ -154,15 +154,9 @@
   </div>
 
   <div class="the-post-title-image">
-    <img src="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-83878bcb5.jpg" alt="Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python" srcset="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-400-00d0f72ea.webp 400w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-00d0f72ea.webp 800w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-1500-00d0f72ea.webp 1500w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-2000-00d0f72ea.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1425">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-83878bcb5.jpg" alt="Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python" srcset="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-1500-00d0f72ea.webp 1500w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-2000-00d0f72ea.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1425">
 
   </div>
-</div>
-
-<div class="share-button">
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx">
-  </a>
 </div>
 
 <div class="container the-post-content">
@@ -368,13 +362,17 @@ if __name__ == "__main__":
   
   <!-- Mathjax -->
   
-    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          processEscapes: true
-      }
-  });
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      processEscapes: true,
+      tags: "all"    // Enable automatic equation numbering
+    }
+  };
+</script>
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
 </script>
   
 

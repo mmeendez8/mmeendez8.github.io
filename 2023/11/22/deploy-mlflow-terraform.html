@@ -154,15 +154,9 @@
   </div>
 
   <div class="the-post-title-image">
-    <img src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-2c1587934.jpg" alt="MLFlow Deployment on AWS with Terraform" srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-400-cb6960f9e.webp 400w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-cb6960f9e.webp 800w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1300-cb6960f9e.webp 1300w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="975">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-2c1587934.jpg" alt="MLFlow Deployment on AWS with Terraform" srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1300-cb6960f9e.webp 1300w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="975">
 
   </div>
-</div>
-
-<div class="share-button">
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="MLFlow Deployment on AWS with Terraform" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform">
-  </a>
 </div>
 
 <div class="container the-post-content">
@@ -589,13 +583,17 @@ spec:
   
   <!-- Mathjax -->
   
-    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          processEscapes: true
-      }
-  });
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      processEscapes: true,
+      tags: "all"    // Enable automatic equation numbering
+    }
+  };
+</script>
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
 </script>
   
 

@@ -154,15 +154,9 @@
   </div>
 
   <div class="the-post-title-image">
-    <img src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-303e983fa.jpg" alt="VAEs! Generating images with Tensorflow" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-400-3b8ac1db5.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-3b8ac1db5.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1500-3b8ac1db5.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-2000-3b8ac1db5.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2500" height="1667">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-303e983fa.jpg" alt="VAEs! Generating images with Tensorflow" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1500-3b8ac1db5.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-2000-3b8ac1db5.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2500" height="1667">
 
   </div>
-</div>
-
-<div class="share-button">
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" ,
-    data-size="large" , data-text="VAEs! Generating images with Tensorflow" , data-via="mmeendez8" , data-url="https://miguel-mendez-ai.com/2019/01/24/vae-tensorflow">
-  </a>
 </div>
 
 <div class="container the-post-content">
@@ -405,13 +399,17 @@
   
   <!-- Mathjax -->
   
-    <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          processEscapes: true
-      }
-  });
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      processEscapes: true,
+      tags: "all"    // Enable automatic equation numbering
+    }
+  };
+</script>
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
 </script>
   
 
