@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Managing Multiple GitHub Accounts with SSH"
-subtitle: "Easily switch between work and personal GitHub accounts using SSH keys and Git configuration"
+subtitle: "Easily switch between GitHub accounts using different SSH keys"
 author: Miguel Mendez
 description: "Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts."
 image: "/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg"
