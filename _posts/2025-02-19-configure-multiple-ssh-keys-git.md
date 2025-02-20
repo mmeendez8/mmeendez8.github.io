@@ -11,7 +11,7 @@ tags: [GitHub, SSH, Git, Git-Configuration, Multiple-GitHub-Accounts, SSH-Keys, 
 categories: [Software Development, DevOps, Git, Programming, Productivity, Tech Guides]  
 ---
 
-Each time I change my laptop, I spend at least an hour configuring permissions for my GitHub accounts. Most people probably don’t have this problem, but I need a separate account for work and another for my personal projects. So this is a quick guide that I hope will at least help me in the future to do this without spending so much time searching for the solution.
+Each time I change my laptop, I spend at least an hour configuring permissions for my GitHub accounts. Most people probably don’t have this problem, but I need a separate account for work and another for my personal projects. So this is a quick guide that I hope will at least help me in the future to do this without spending so much time searching for how to do it.
 
 This solution assumes the following file structure:
 
