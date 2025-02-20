@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <meta charset="utf-8">
+
+  <title>Managing Multiple GitHub Accounts with SSH</title>
+
+  <meta name="author" content="Miguel Mendez">
+  <meta property="og:website" content="Miguel Mendez personal website">
+  <meta name="robots" content="max-image-preview:large">
+  <meta name="title" property="og:title" content="Managing Multiple GitHub Accounts with SSH">
+
+  
+  <meta name="description" property="og:description" content="Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts.">
+  
+
+  
+  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg">
+  
+
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2025/02/19/configure-multiple-ssh-keys-git">
+
+  <!-- Set canonical link to avoid duplication in google search -->
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2025/02/19/configure-multiple-ssh-keys-git">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- preload fonts -->
+  <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href=/libs/custom/my_css.css>
+  <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
+
+  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
+  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
+  
+  <!-- non critical lighthouse css -->
+  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
+
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+
+  <!-- Hihglight.js
+  <!-- Preload CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
+  
+  <!-- Load only necessary languages (example: javascript and python) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href=/libs/icon.png>
+  <link rel="shortcut icon" type="image/png" href=/libs/icon.png>
+
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/atom+xml" href="https://miguel-mendez-ai.com/feed.xml">
+
+
+  <!-- Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMHYVFNF1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMHYVFNF1J');
+</script>
+    <!-- Twitter cards -->
+  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:title" content="Managing Multiple GitHub Accounts with SSH">
+  
+  
+  <meta name="twitter:description" content="Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts.">
+  
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg">
+  
+
+  <!-- end of Twitter cards -->
+  
+
+</head>
+
+<body>
+
+  <!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Managing Multiple GitHub Accounts with SSH",
+    "datePublished": "2025-02-19T00:00:00+00:00",
+    "dateModified": "2025-02-19T00:00:00+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com"
+    },
+    "description": "Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts.",
+    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg",
+    "keywords": "GitHub, SSH, Git, Git-Configuration, Multiple-GitHub-Accounts, SSH-Keys, Version-Control",
+    "articleSection": "Software Development, DevOps, Git, Programming, Productivity, Tech Guides"
+  }
+  </script>
+
+<header class="the-post-header">
+    <div class="container">
+      <a href="/">
+        <h3>Miguel Méndez</h3>
+      </a>
+      <div>
+        <a  href=/index.html#posts>
+         <h3 class="posts-link">Posts</h3>
+        </a>
+      </div>
+    </div>
+</header>
+
+<div class="the-post-title-placeholder">
+  <div class="offset">
+    <div class="the-post-title-text">
+      <span class="the-post-date">February 19, 2025 </span>
+      <h1 class="the-post-title">Managing Multiple GitHub Accounts with SSH</h1>
+      <p>Easily switch between GitHub accounts using different SSH keys</p>
+    </div>
+  </div>
+
+  <div class="the-post-title-image">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-9455cb56a.jpg" alt="Managing Multiple GitHub Accounts with SSH" srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1300-285bacf39.webp 1300w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="837">
+
+  </div>
+</div>
+
+<div class="container the-post-content">
+
+  <p>Each time I change my laptop, I spend at least an hour configuring permissions for my GitHub accounts. Most people probably don’t have this problem, but I need a separate account for work and another for my personal projects. So this is a quick guide that I hope will at least help me in the future to do this without spending so much time searching for how to do it.</p>
+
+<p>This solution assumes the following file structure:</p>
+
+<pre><code class="language-bash">.
+├── work/
+│   ├── work-repo1
+│   ├── work-repo2
+│   └── ...
+└── personal/
+    ├── personal-repo1
+    ├── personal-repo2
+    └── ...
+</code></pre>
+
+<p>Where <code>work</code> and <code>personal</code> are the folders assigned to each account. When I want to work with a specific account I need to clone the repository in the corresponding folder.</p>
+
+<h2 id="step-1-generate-ssh-keys">Step 1: Generate SSH keys</h2>
+
+<p>First, you need to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener noreferrer">generate SSH keys</a> for each account. You can do this by running the following command:</p>
+
+<pre><code class="language-bash">ssh-keygen -t ed25519 -C "your_email@example.com"
+</code></pre>
+
+<p>When you run this command, you will be prompted to enter a file in which to save the key. You can specify a different file for each account. For example, you could save the key for your work account as <code>id_rsa_work</code> and the key for your personal account as <code>id_rsa_personal</code>.</p>
+
+<h2 id="step-2-add-ssh-keys-to-the-ssh-agent">Step 2: Add SSH keys to the SSH agent</h2>
+
+<p>Next, you need to add the SSH keys to the SSH agent. You can do this by running the following commands:</p>
+
+<pre><code class="language-bash">eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa_work
+ssh-add ~/.ssh/id_rsa_personal
+</code></pre>
+
+<h2 id="step-3-add-ssh-keys-to-your-github-accounts">Step 3: Add SSH keys to your Github accounts</h2>
+
+<p>Finally, you need to add the SSH keys to your Github accounts. You can do this by copying the contents of the public key file (e.g., <code>id_rsa_work.pub</code> and <code>id_rsa_personal.pub</code>) and pasting them into the SSH keys section of your Github account settings.</p>
+
+<p><strong>Note</strong>: If you belong to an organization, you may need to configure SSO and authorize the key. This can be done from the key settings page.</p>
+
+<h2 id="step-4-configuring-ssh">Step 4: Configuring SSH</h2>
+
+<p>Now we need to configure SSH to use the correct key for each repository. For this we are going to first modify the <code>~/.ssh/config</code> file to include the following:</p>
+
+<pre><code class="language-bash">Host github.com
+  AddKeysToAgent yes
+  IdentitiesOnly yes  
+</code></pre>
+
+<p>The <code>IdentityOnly</code> option is important because it tells SSH to only use the key specified in the configuration file.</p>
+
+<h2 id="step-5-configuring-git">Step 5: Configuring Git</h2>
+
+<p>Now we need to configure git to use the correct key for each repository. For this we are going to first modify the <code>~/.gitconfig</code> file to include the following:</p>
+
+<pre><code class="language-bash">[includeIf "gitdir:~/personal/"]
+  path = ~/.gituser-personal
+[includeIf "gitdir:~/work/"]
+  path = ~/.gituser-work
+</code></pre>
+
+<p>This just tells git to include the corresponding file when we are in the <code>personal</code> or <code>work</code> folder. Now let’s create the files <code>~/.gituser-personal</code> and <code>~/.gituser-work</code> with the following content:</p>
+
+<pre><code class="language-bash"># ~/.gituser-personal
+[user]
+    email = personal@mail.com # Replace with you personal email
+    name = Miguel Mendez
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_rsa_personal
+</code></pre>
+
+<pre><code class="language-bash"># ~/.gituser-work
+[user]
+    email = work@mail.com  # Replace with your work email
+    name = Miguel Mendez
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_rsa_work
+</code></pre>
+
+<p>This will tell git to use the correct key for each repository.</p>
+
+<h2 id="step-6-clone-the-repository">Step 6: Clone the repository</h2>
+
+<p>You are almost all set. There is just a hacky part that we are forced to do with this solution. All the previous git configurations will only work if we are under a git repository. So we need to basically run <code>git init</code> in both <code>work</code> and <code>personal</code> folders. This is a bit annoying but it is the only way I found to make this work.</p>
+
+<pre><code class="language-bash">cd ~/work
+git init
+
+cd ~/personal
+git init
+</code></pre>
+
+<p>That’s all! You can now clone your repositories in the corresponding folder and git will use the correct key for each one.</p>
+
+  
+</div>
+
+<div class="comments">
+  <script src="https://utteranc.es/client.js"
+        repo="mmeendez8/mmeendez8.github.io"
+        issue-term="url"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+</div>
+
+    <div class="footer">
+      <div class="footer-sign">
+      <p> <a  href=/index.html#top>Miguel Mendez </a></p>
+      </div>
+
+      <div class="footer-thanks">
+        <p>based on <a href="http://web.media.mit.edu/~msaveski" target="_blank" rel="noopener">Martin Saveski</a> and <a href='https://marinaaisa.com/' target="_blank" rel="noopener">Marina Aisa</a> templates</p>
+      </div>
+
+      <div class="footer-icons">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-github-circled" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+          <i class="icon-linkedin-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+          <i class="icon-twitter-squared" aria-hidden="true"></i>
+        </a>
+
+        <a href='/feed.xml' target="_blank" rel="noopener">
+          <i class="icon-rss-squared" aria-hidden="true"></i>
+        </a>
+        
+      </div>
+
+    </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
+  <!-- Mathjax -->
+  
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      processEscapes: true,
+      tags: "all"    // Enable automatic equation numbering
+    }
+  };
+</script>
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
+</script>
+  
+
+  <!-- Highlight.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+</script>
+
+</body>
+
+</html>
