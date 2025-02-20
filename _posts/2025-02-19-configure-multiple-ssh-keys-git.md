@@ -55,7 +55,19 @@ Finally, you need to add the SSH keys to your Github accounts. You can do this b
 
 **Note**: If you belong to an organization, you may need to configure SSO and authorize the key. This can be done from the key settings page.
 
-## Step 4: Configuring Git
+## Step 4: Configuring SSH
+
+Now we need to configure SSH to use the correct key for each repository. For this we are going to first modify the `~/.ssh/config` file to include the following:
+
+```bash
+Host github.com
+  AddKeysToAgent yes
+  IdentitiesOnly yes  
+```
+
+The `IdentityOnly` option is important because it tells SSH to only use the key specified in the configuration file.
+
+## Step 5: Configuring Git
 
 Now we need to configure git to use the correct key for each repository. For this we are going to first modify the `~/.gitconfig` file to include the following:
 
@@ -90,7 +102,7 @@ This just tells git to include the corresponding file when we are in the `person
 
 This will tell git to use the correct key for each repository. 
 
-## Step 5: Clone the repository
+## Step 6: Clone the repository
 
 You are almost all set. There is just a hacky part that we are forced to do with this solution. All the previous git configurations will only work if we are under a git repository. So we need to basically run `git init` in both `work` and `personal` folders. This is a bit annoying but it is the only way I found to make this work.
 
