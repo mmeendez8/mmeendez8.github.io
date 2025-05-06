@@ -8,25 +8,25 @@
 
   <meta charset="utf-8">
 
-  <title>Managing Multiple GitHub Accounts with SSH</title>
+  <title>Deepstream Tutorial</title>
 
   <meta name="author" content="Miguel Mendez">
   <meta property="og:website" content="Miguel Mendez personal website">
   <meta name="robots" content="max-image-preview:large">
-  <meta name="title" property="og:title" content="Managing Multiple GitHub Accounts with SSH">
+  <meta name="title" property="og:title" content="Deepstream Tutorial">
 
   
-  <meta name="description" property="og:description" content="Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts.">
+  <meta name="description" property="og:description" content="">
   
 
   
   <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg">
   
 
-  <meta property="og:url" content="https://miguel-mendez-ai.com/2025/02/19/configure-multiple-ssh-keys-git">
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2025/04/22/deepstream-tutorial">
 
   <!-- Set canonical link to avoid duplication in google search -->
-  <link rel="canonical" href="https://miguel-mendez-ai.com/2025/02/19/configure-multiple-ssh-keys-git">
+  <link rel="canonical" href="https://miguel-mendez-ai.com/2025/04/22/deepstream-tutorial">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -92,10 +92,10 @@
 </script> -->
     <!-- Twitter cards -->
   <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
-  <meta name="twitter:title" content="Managing Multiple GitHub Accounts with SSH">
+  <meta name="twitter:title" content="Deepstream Tutorial">
   
   
-  <meta name="twitter:description" content="Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts.">
+  <meta name="twitter:description" content="">
   
   
 
@@ -116,18 +116,18 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Managing Multiple GitHub Accounts with SSH",
-    "datePublished": "2025-02-19T00:00:00+00:00",
-    "dateModified": "2025-02-19T00:00:00+00:00",
+    "headline": "Deepstream Tutorial",
+    "datePublished": "2025-04-22T00:00:00+00:00",
+    "dateModified": "2025-04-22T00:00:00+00:00",
     "author": {
       "@type": "Person",
       "name": "Miguel Mendez",
       "url": "https://miguel-mendez-ai.com"
     },
-    "description": "Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts.",
+    "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg",
-    "keywords": "GitHub, SSH, Git, Git-Configuration, Multiple-GitHub-Accounts, SSH-Keys, Version-Control",
-    "articleSection": "Software Development, DevOps, Git, Programming, Productivity, Tech Guides"
+    "keywords": "",
+    "articleSection": ""
   }
   </script>
 
@@ -147,116 +147,49 @@
 <div class="the-post-title-placeholder">
   <div class="offset">
     <div class="the-post-title-text">
-      <span class="the-post-date">February 19, 2025 </span>
-      <h1 class="the-post-title">Managing Multiple GitHub Accounts with SSH</h1>
-      <p>Easily switch between GitHub accounts using different SSH keys</p>
+      <span class="the-post-date">April 22, 2025 </span>
+      <h1 class="the-post-title">Deepstream Tutorial</h1>
+      <p></p>
     </div>
   </div>
 
   <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-9455cb56a.jpg" alt="Managing Multiple GitHub Accounts with SSH" srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1300-285bacf39.webp 1300w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="837">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-9455cb56a.jpg" alt="Deepstream Tutorial" srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1300-285bacf39.webp 1300w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="837">
 
   </div>
 </div>
 
 <div class="container the-post-content">
 
-  <p>Each time I change my laptop, I spend at least an hour configuring permissions for my GitHub accounts. Most people probably don’t have this problem, but I need a separate account for work and another for my personal projects. So this is a quick guide that I hope will at least help me in the future to do this without spending so much time searching for how to do it.</p>
+  <p>Deepstream is a powerful video streaming and processing library that allows you to build computer vision applications that run at full speed. It is really great but it is also very hard to start with it. I am creating this blog post with the aim of helping other people to get started with Deepstream, this is the classic “I would like to have had this when I started” post. Let’s get started with some basics.</p>
 
-<p>This solution assumes the following file structure:</p>
+<h2 id="gstreamer-basics">Gstreamer basics</h2>
 
-<pre><code class="language-bash">.
-├── work/
-│   ├── work-repo1
-│   ├── work-repo2
-│   └── ...
-└── personal/
-    ├── personal-repo1
-    ├── personal-repo2
-    └── ...
-</code></pre>
+<p><a href="https://developer.nvidia.com/deepstream-sdk">NVIDIA’s DeepStream SDK</a> is a complete streaming analytics toolkit based on GStreamer for AI-based multi-sensor processing, video, audio, and image understanding. Ok, nice, so we probably need to understand GStreamer first. Let’s check the definition of GStreamer in the <a href="https://gstreamer.freedesktop.org/">GStreamer website</a>:</p>
+<blockquote>
+  <p>GStreamer is a library for constructing graphs of media-handling components</p>
+</blockquote>
 
-<p>Where <code>work</code> and <code>personal</code> are the folders assigned to each account. When I want to work with a specific account I need to clone the repository in the corresponding folder.</p>
+<p>That’s a very good definition in my opinion. It is all about graphs, you have a source, you have a sink, and you have some processing in between. You just need to add components to your graph, link them, and run it. These components are generally called elements. I see</p>
 
-<h2 id="step-1-generate-ssh-keys">Step 1: Generate SSH keys</h2>
+<ul>
+  <li><strong>Source</strong>: This is the element that generates the data. It can be a file, a camera, or any other source of data.</li>
+  <li><strong>Sink</strong>: This is the element that consumes the data. It can be a file, a display, or any other sink of data.</li>
+  <li><strong>Filter</strong>: This is the element that processes the data. It can be a decoder, an encoder, or any other filter of data.</li>
+</ul>
 
-<p>First, you need to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener noreferrer">generate SSH keys</a> for each account. You can do this by running the following command:</p>
+<p>A simple pipeline that combines all these elements would look like this:</p>
 
-<pre><code class="language-bash">ssh-keygen -t ed25519 -C "your_email@example.com"
-</code></pre>
+<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+    <a href="/assets/images/fullsize/posts/2025-04-22-deepstream-tutorial/image.png">
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-04-22-deepstream-tutorial/image-573-b4fb866cf.png" alt="Example gstreamer pipeline" srcset="/generated/assets/images/fullsize/posts/2025-04-22-deepstream-tutorial/image-400-23a64379c.webp 400w, /generated/assets/images/fullsize/posts/2025-04-22-deepstream-tutorial/image-573-23a64379c.webp 573w" sizes="(max-width: 767px) 100vw, 80vw" width="573" height="150" />
+</a>
 
-<p>When you run this command, you will be prompted to enter a file in which to save the key. You can specify a different file for each account. For example, you could save the key for your work account as <code>id_rsa_work</code> and the key for your personal account as <code>id_rsa_personal</code>.</p>
+</div>
 
-<h2 id="step-2-add-ssh-keys-to-the-ssh-agent">Step 2: Add SSH keys to the SSH agent</h2>
+<p class="image-caption"><em>Figure 1. Example Gstreamer pipeline extracted from <a href="https://gstreamer.freedesktop.org/documentation/tutorials/basic/concepts.html?gi-language=c">Gstreamer docs</a></em></p>
 
-<p>Next, you need to add the SSH keys to the SSH agent. You can do this by running the following commands:</p>
-
-<pre><code class="language-bash">eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa_work
-ssh-add ~/.ssh/id_rsa_personal
-</code></pre>
-
-<h2 id="step-3-add-ssh-keys-to-your-github-accounts">Step 3: Add SSH keys to your Github accounts</h2>
-
-<p>Finally, you need to add the SSH keys to your Github accounts. You can do this by copying the contents of the public key file (e.g., <code>id_rsa_work.pub</code> and <code>id_rsa_personal.pub</code>) and pasting them into the SSH keys section of your Github account settings.</p>
-
-<p><strong>Note</strong>: If you belong to an organization, you may need to configure SSO and authorize the key. This can be done from the key settings page.</p>
-
-<h2 id="step-4-configuring-ssh">Step 4: Configuring SSH</h2>
-
-<p>Now we need to configure SSH to use the correct key for each repository. For this we are going to first modify the <code>~/.ssh/config</code> file to include the following:</p>
-
-<pre><code class="language-bash">Host github.com
-  AddKeysToAgent yes
-  IdentitiesOnly yes  
-</code></pre>
-
-<p>The <code>IdentityOnly</code> option is important because it tells SSH to only use the key specified in the configuration file.</p>
-
-<h2 id="step-5-configuring-git">Step 5: Configuring Git</h2>
-
-<p>Now we need to configure git to use the correct key for each repository. For this we are going to first modify the <code>~/.gitconfig</code> file to include the following:</p>
-
-<pre><code class="language-bash">[includeIf "gitdir:~/personal/"]
-  path = ~/.gituser-personal
-[includeIf "gitdir:~/work/"]
-  path = ~/.gituser-work
-</code></pre>
-
-<p>This just tells git to include the corresponding file when we are in the <code>personal</code> or <code>work</code> folder. Now let’s create the files <code>~/.gituser-personal</code> and <code>~/.gituser-work</code> with the following content:</p>
-
-<pre><code class="language-bash"># ~/.gituser-personal
-[user]
-    email = personal@mail.com # Replace with you personal email
-    name = Miguel Mendez
-
-[core]
-    sshCommand = ssh -i ~/.ssh/id_rsa_personal
-</code></pre>
-
-<pre><code class="language-bash"># ~/.gituser-work
-[user]
-    email = work@mail.com  # Replace with your work email
-    name = Miguel Mendez
-
-[core]
-    sshCommand = ssh -i ~/.ssh/id_rsa_work
-</code></pre>
-
-<p>This will tell git to use the correct key for each repository.</p>
-
-<h2 id="step-6-clone-the-repository">Step 6: Clone the repository</h2>
-
-<p>You are almost all set. There is just a hacky part that we are forced to do with this solution. All the previous git configurations will only work if we are under a git repository. So we need to basically run <code>git init</code> in both <code>work</code> and <code>personal</code> folders. This is a bit annoying but it is the only way I found to make this work.</p>
-
-<pre><code class="language-bash">cd ~/work
-git init
-
-cd ~/personal
-git init
-</code></pre>
-
-<p>That’s all! You can now clone your repositories in the corresponding folder and git will use the correct key for each one.</p>
+<p>The ports through which GStreamer elements communicate are called pads (GstPad). Source pads output data, sink pads receive data. Source elements have only source pads, sink elements have only sink pads, and filter elements have both.</p>
 
   
 </div>
