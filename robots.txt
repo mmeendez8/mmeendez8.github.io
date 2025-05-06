@@ -1,5 +1,4 @@
 Sitemap: https://miguel-mendez-ai/sitemap.xml
 
 User-agent: GPTBot
-User-agent: ChatGPT-User
 Disallow: /
