@@ -178,7 +178,7 @@ But this would be computationally expensive. Instead, it uses a more efficient a
 for each frame:
     potential_matches += normalize_similarity(frame_similarity)
 
-# Jaccard-like aligment between GT and predictions
+# Jaccard-like alignment between GT and predictions
 global_alignment = potential_matches / (gt_count + pred_count - potential_matches)
 
 # Pass 2: Optimal matching per frame
