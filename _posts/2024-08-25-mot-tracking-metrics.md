@@ -161,9 +161,7 @@ $$
 
 In this formula, the $\alpha$ term represents the different Intersection over Union (IoU) thresholds used to compute the metric. A True Positive (TP) is only considered when the match IoU score is above the given $\alpha$ threshold. The metric uses 19 different $\alpha$ values, ranging from 0.05 to 0.95 in increments of 0.05.
 
-HOTA uses global alignment (high-order association) between predicted and ground truth detections, similar to IDF1, but also incorporates localization accuracy. This means that HOTA evaluates both the ability to detect objects accurately and to maintain correct associations over time.
-
-The HOTA algorithm can be summarized in the following steps:
+HOTA uses global alignment between predicted and ground truth tracks across the entire video, similar to IDF1. Ideally, we would evaluate every possible association like this:
 
 ```python
 for each frame:
@@ -173,13 +171,39 @@ for each frame:
         compute AssA across the entire video for each TP.
 ```
 
-<div class="post-center-image">
-    {% picture pimage /assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota.jpg --alt HOTA metric diagram %}
-</div>
+But this would be computationally expensive. Instead, it uses a more efficient approach that approximates a similar result. [TrackEval implementation](https://github.com/JonathonLuiten/TrackEval/blob/master/trackeval/metrics/hota.py#L53) uses a two-pass approach to balance computational efficiency with accuracy:
 
-{:refdef: class="image-caption"}
-*Figure 4. HOTA metric diagram*
-{: refdef}
+```python
+# Pass 1: Build global ID relationships
+for each frame:
+    potential_matches += normalize_similarity(frame_similarity)
+
+# Jaccard-like aligment between GT and predictions
+global_alignment = potential_matches / (gt_count + pred_count - potential_matches)
+
+# Pass 2: Optimal matching per frame
+for each frame:
+    frame_score = global_alignment[frame_gt_ids, frame_pred_ids] * frame_similarity
+    matching = hungarian_algorithm(frame_score)
+
+    for each α:
+        valid_matches = frame_similarity[matching] >= α
+        TP[α] += count(valid_matches)
+        FN[α] += count(unmatched_gt)
+        FP[α] += count(unmatched_pred)
+
+# Final compute aggregated metrics
+for each α:
+    AssA[α] = compute_AssA(TP[α], FP[α], FN[α])
+```
+
+The first pass builds global ID relationships between ground truth and predictions across all frames. The second pass uses these global relationships, weighted by frame-specific similarities, to find optimal matchings using the Hungarian algorithm.
+
+The key insight is that HOTA weighs each potential match by both:
+- How often these IDs appear together **globally**  
+- How well they match in this **specific frame** 
+
+This approximates evaluating all possible associations without the computational cost.
 
 In the original paper, Ass-IoU is referred to as the metric obtained by computing DetA across the entire sequence for a single true positive (TP) match in the current frame. The AssA metric can then be defined as follows:
 
