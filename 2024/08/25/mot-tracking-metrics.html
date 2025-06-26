@@ -319,9 +319,7 @@ if pred == previous_assigned_id(GT):
 
 <p>In this formula, the $\alpha$ term represents the different Intersection over Union (IoU) thresholds used to compute the metric. A True Positive (TP) is only considered when the match IoU score is above the given $\alpha$ threshold. The metric uses 19 different $\alpha$ values, ranging from 0.05 to 0.95 in increments of 0.05.</p>
 
-<p>HOTA uses global alignment (high-order association) between predicted and ground truth detections, similar to IDF1, but also incorporates localization accuracy. This means that HOTA evaluates both the ability to detect objects accurately and to maintain correct associations over time.</p>
-
-<p>The HOTA algorithm can be summarized in the following steps:</p>
+<p>HOTA uses global alignment between predicted and ground truth tracks across the entire video, similar to IDF1. Ideally, we would evaluate every possible association like this:</p>
 
 <pre><code class="language-python">for each frame:
     for each α:
@@ -330,14 +328,40 @@ if pred == previous_assigned_id(GT):
         compute AssA across the entire video for each TP.
 </code></pre>
 
-<div class="post-center-image">
-    <a href="/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-800-4a2b59f98.jpg" alt="HOTA metric diagram" srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-400-86dc5e9da.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-800-86dc5e9da.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota-1384-86dc5e9da.webp 1384w" sizes="(max-width: 767px) 100vw, 80vw" width="1384" height="722" />
-</a>
+<p>But this would be computationally expensive. Instead, it uses a more efficient approach that approximates a similar result. <a href="https://github.com/JonathonLuiten/TrackEval/blob/master/trackeval/metrics/hota.py#L53">TrackEval implementation</a> uses a two-pass approach to balance computational efficiency with accuracy:</p>
 
-</div>
+<pre><code class="language-python"># Pass 1: Build global ID relationships
+for each frame:
+    potential_matches += normalize_similarity(frame_similarity)
 
-<p class="image-caption"><em>Figure 4. HOTA metric diagram</em></p>
+# Jaccard-like alignment between GT and predictions
+global_alignment = potential_matches / (gt_count + pred_count - potential_matches)
+
+# Pass 2: Optimal matching per frame
+for each frame:
+    frame_score = global_alignment[frame_gt_ids, frame_pred_ids] * frame_similarity
+    matching = hungarian_algorithm(frame_score)
+
+    for each α:
+        valid_matches = frame_similarity[matching] &gt;= α
+        TP[α] += count(valid_matches)
+        FN[α] += count(unmatched_gt)
+        FP[α] += count(unmatched_pred)
+
+# Final compute aggregated metrics
+for each α:
+    AssA[α] = compute_AssA(TP[α], FP[α], FN[α])
+</code></pre>
+
+<p>The first pass builds global ID relationships between ground truth and predictions across all frames. The second pass uses these global relationships, weighted by frame-specific similarities, to find optimal matchings using the Hungarian algorithm.</p>
+
+<p>The key insight is that HOTA weighs each potential match by both:</p>
+<ul>
+  <li>How often these IDs appear together <strong>globally</strong></li>
+  <li>How well they match in this <strong>specific frame</strong></li>
+</ul>
+
+<p>This approximates evaluating all possible associations without the computational cost.</p>
 
 <p>In the original paper, Ass-IoU is referred to as the metric obtained by computing DetA across the entire sequence for a single true positive (TP) match in the current frame. The AssA metric can then be defined as follows:</p>
 
