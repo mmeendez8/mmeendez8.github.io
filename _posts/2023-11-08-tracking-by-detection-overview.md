@@ -126,7 +126,7 @@ The ByteTrack algorithm has been shown to be very effective and it is currently 
 
 I personally love the BoT-SORT paper. It is build upon ByteTrack and it combines three different ideas that work very well together. These are:
 
-1. **Kalman Filter update**: SORT introduced a way of modelling the track state vector using a seven-tuple $$\mathbf{x} = [x_c,y_c,a,h,\dot{x_c},\dot{y_c},\dot{s}]^T$$. BoT-SORT proposes to replace the scale and aspect ratio of the bounding box  ($$s$$, $$a$$) with the widht and height ($$w$$, $$h$$) to create an eight-tuple:
+1. **Kalman Filter update**: SORT introduced a way of modelling the track state vector using a seven-tuple $$\mathbf{x} = [x_c,y_c,a,h,\dot{x_c},\dot{y_c},\dot{s}]^T$$. BoT-SORT proposes to replace the scale and aspect ratio of the bounding box  ($$s$$, $$a$$) with the width and height ($$w$$, $$h$$) to create an eight-tuple:
 
     $$
     \mathbf{x} = [x_c,y_c,w,h,\dot{x_c},\dot{y_c},\dot{w}, \dot{h}]^T
