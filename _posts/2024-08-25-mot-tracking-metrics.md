@@ -17,6 +17,11 @@ In this article, I'll provide an introduction to tracking metrics, starting from
 
 Let's get started!
 
+
+<div style="display: flex; justify-content: center;">
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Want to learn about tracking metrics? Check out this post I wrote<a href="https://t.co/1bZnuBkJjn">https://t.co/1bZnuBkJjn</a></p>&mdash; Miguel Mendez (@mmeendez8) <a href="https://twitter.com/mmeendez8/status/1973655598882496982?ref_src=twsrc%5Etfw">October 2, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
 ## The basics
 
 
@@ -240,6 +245,7 @@ The most suitable metric depends on your specific application. For instance:
 ## Conclusion
 
 In this post, we've explored three key metrics used in Multi-Object Tracking: MOTA, IDF1, and HOTA. Each metric offers unique insights into tracking performance, with its own strengths and limitations. MOTA provides a straightforward measure but may be oversimplistic in complex scenarios. IDF1 focuses on long-term consistency but may not fully capture detection improvements. HOTA, which attempts to balance detection and association accuracy, has emerged as the standard metric used today for benchmarking tracking algorithms.
+
 
 
 ## References
