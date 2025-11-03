@@ -207,13 +207,13 @@ title: Miguel Mendez | Personal Webpage
   <!-- ========== RESUME ========== -->
 
   <!-- Schema.org Work Experience markup -->
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "itemListElement": [
-      {% for exp in site.data.experience.experiences %}
-      {% if exp.title contains 'Engineer' or exp.title contains 'Scientist' or exp.title contains 'Consultant' %}
+      {% assign filtered_experiences = site.data.experience.experiences | where_exp: "exp", "exp.title contains 'Engineer' or exp.title contains 'Scientist' or exp.title contains 'Consultant'" %}
+      {% for exp in filtered_experiences %}
       {
         "@type": "ListItem",
         "position": {{ forloop.index }},
@@ -236,11 +236,10 @@ title: Miguel Mendez | Personal Webpage
           "description": "{{ exp.description | strip_html | strip_newlines }}"
         }
       }{% unless forloop.last %},{% endunless %}
-      {% endif %}
       {% endfor %}
     ]
   }
-  </script>
+</script>
 
   <div class="section" id="resume">
     <h2>Vitæ</h2>
