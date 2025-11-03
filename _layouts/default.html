@@ -88,6 +88,33 @@
   {% include google_analytics.html %}
   {% include twitter_card.html %}
 
+  <!-- Schema.org WebSite markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.title }}",
+    "url": "{{ site.url }}",
+    "description": "{{ site.description }}",
+    "author": {
+      "@type": "Person",
+      "@id": "{{ site.url }}/#person",
+      "name": "{{ site.data.main_info.name }}",
+      "url": "{{ site.url }}",
+      "image": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
+      "jobTitle": "{{ site.data.main_info.title }}",
+      "sameAs": [
+        "{{ site.data.main_info.linkedin }}",
+        "{{ site.data.main_info.github }}",
+        "{{ site.data.main_info.twitter }}",
+        "{{ site.data.main_info.medium }}",
+        "{{ site.data.main_info.stackoverflow }}"
+      ]
+    },
+    "inLanguage": "en"
+  }
+  </script>
+
 </head>
 
 <body>
