@@ -11,7 +11,7 @@ tags: [Deep Learning, Variational Autoencoders, Machine Learning, Theory]
 categories: [Machine Learning, Deep Learning]
 ---
 
-Generative models are one of the cooler branches of Deep Learning. During last weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of posts, I will try to transmit and also provide useful resources which I have found and feel the need to share! You can read the other posts in this series here:
+Generative models are one of the cooler branches of Deep Learning. During the last few weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia's last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of posts, I will try to transmit and also provide useful resources which I have found and feel the need to share! You can read the other posts in this series here:
 
 - [Post 2: VAEs! Generating images with Tensorflow]({% post_url 2019-01-24-vae-tensorflow %})
 - [Post 3: Generating FIFA 19 players with VAEs and Tensorflow]({% post_url 2019-02-06-vae-fifa %})
@@ -22,11 +22,11 @@ Variational Autoencoders are after all a neural network. They consist of two mai
 
 The decoder is also neural network. It’s input will be in the same dimensional space than the encoder’s output and its function consists on bringing the data back to the original probability distribution. This is, output an image as the ones we have in our dataset.
 
-So during training, the encoder ‘encodes’ the images into the latent space (information is lost due to lower dimensionality), after this the decoder tries to recover the original input. The commited error is for sure **backpropagated** through the whole network and the this improves its ability to reconstruct the original inputs.
+So during training, the encoder 'encodes' the images into the latent space (information is lost due to lower dimensionality), after this the decoder tries to recover the original input. The committed error is then **backpropagated** through the whole network and this improves its ability to reconstruct the original inputs.
 
-But wait… wasn’t this a **generative** model? Yes! The encoder is in fact fitting a probability distribution to our data! The lower dimensional space is stochastic (usually modeled with a Gaussian probability density), so once our training has converged to an stable solution, we can sample from this distribution an create new unseen samples!!
+But wait… wasn't this a **generative** model? Yes! The encoder is in fact fitting a probability distribution to our data! The lower dimensional space is stochastic (usually modeled with a Gaussian probability density), so once our training has converged to a stable solution, we can sample from this distribution and create new unseen samples!!
 
-If you are not impressed yet, think about this simplification of the problem. Imagine we collect all articles that have been published in New York Times during last year and we force ourselves to summarize them but with the following restriction: we can only use one hundred words from English vocabulary. For this task we will need to select this set of words carefully to minimize the loss of information. When we have succeed at this task, we might be able to reconstruct the original article from the words we see. But also, we can select a random number of words (from the 100 sample set) and create a new 'fake' article!
+If you are not impressed yet, think about this simplification of the problem. Imagine we collect all articles that have been published in New York Times during last year and we force ourselves to summarize them but with the following restriction: we can only use one hundred words from English vocabulary. For this task we will need to select this set of words carefully to minimize the loss of information. When we have succeeded at this task, we might be able to reconstruct the original article from the words we see. But also, we can select a random number of words (from the 100 sample set) and create a new 'fake' article!
 
 <div class="post-center-image">
 {% picture pimage /assets/images/fullsize/posts/2019-01-19-vae-theory/fake.jpg --alt Fake news image %}
@@ -36,7 +36,7 @@ We will then act as encoders, transforming the articles into a reduced 100 words
 
 ## The math
 
-My idea here is to stick just with those parts that were more difficult to understand for me and that might help another person in the same situation! I will cover the intuition behind the algorithm and the most important parts that one needs to understand before implementing this network on on Tensorflow.
+My idea here is to stick just with those parts that were more difficult to understand for me and that might help another person in the same situation! I will cover the intuition behind the algorithm and the most important parts that one needs to understand before implementing this network on Tensorflow.
 
 There are two main resources I have used where you can find a whole explanation of VAEs algorithm. These are [Doersch article](https://arxiv.org/pdf/1606.05908.pdf){:target="_blank"}{:rel="noopener noreferrer"} and [Jaan Altosaar blog post](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/#mean-field){:target="_blank"}{:rel="noopener noreferrer"}.
 
@@ -55,7 +55,7 @@ What we in fact want, is to find good values for the latent variables given our 
 
 Which I would express in another way as: do not worry, it is a simplification but the **neural network will take care of it**!
 
-The family of distributions can be expressed as $$q​_λ​​(z∣x)$$. The $$λ$$ term refers to a specific family, if we are working with **Gaussians**, then $$λ$$ will Zcorrespond with the mean and variance of the latent variables **for each datapoint**.
+The family of distributions can be expressed as $$q​_λ​​(z∣x)$$. The $$λ$$ term refers to a specific family, if we are working with **Gaussians**, then $$λ$$ will correspond with the mean and variance of the latent variables **for each datapoint**.
 
 So we use $$q(z\|x)$$ to approximate $$p(z\|x)$$. We can use [Kullback-Leibler](https://www.youtube.com/watch?v=xmvxXXZUXdk){:target="_blank"}{:rel="noopener noreferrer"} divergence to measure how well are we approximating p.
 

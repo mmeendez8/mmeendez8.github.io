@@ -26,7 +26,7 @@ When I joined [StatsBomb](https://statsbomb.com/){:target="_blank"}{:rel="noopen
 Here’s the result for you to explore directly. There are just a few steps to follow:
 
 1. Upload image of a NFL game
-2. Select at least four points in the image and the pitch template. Be sure toa select the same points in both images.
+2. Select at least four points in the image and the pitch template. Be sure to select the same points in both images.
 3. Click on the "Compute homography" button to see the warped pitch template overlaid on the uploaded image.
 
 Make sure to read the following sections for a deeper understanding of how it all works. 

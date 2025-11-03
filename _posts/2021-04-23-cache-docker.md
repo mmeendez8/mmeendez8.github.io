@@ -12,7 +12,7 @@ categories: [DevOps, Docker]
 
 I've been bumping my head around Github Actions recently, as most of our Continuos Integration (CI) builds time was spent installing third party libraries. In most of our projects we have to deal with large dependencies like Pytorch or CUDA, which are needed to run our test suite and some others like [pre-commit](https://pre-commit.com/){:target="_blank"}{:rel="noopener noreferrer"} that help us to lint our code. This is very annoying since you need to run all setup steps on every build even though your environment does not change. 
 
-A classic CI workflow can be split into 2 two different blocks. The first one installs all dependencies that are going to be needed for running all jobs that compone the second block (test, lint, etc.). When these dependencies are small and they can be installed in a few seconds, you do not need to worry about them. Problems come when you deal with larger packages which is usually the case when working with Deep Learning. 
+A classic CI workflow can be split into two different blocks. The first one installs all dependencies that are going to be needed for running all jobs that compone the second block (test, lint, etc.). When these dependencies are small and they can be installed in a few seconds, you do not need to worry about them. Problems come when you deal with larger packages which is usually the case when working with Deep Learning. 
 
 In this post I pretend to provide some intuition of how have I optimized some of these pipelines for building Pytorch and Cuda using a Conda environment in a pretty efficient way.
 
