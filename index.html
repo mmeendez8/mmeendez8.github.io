@@ -107,11 +107,97 @@
   <!-- end of Twitter cards -->
   
 
+  <!-- Schema.org WebSite markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Miguel Mendez AI Blog",
+    "url": "https://miguel-mendez-ai.com",
+    "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+    "author": {
+      "@type": "Person",
+      "@id": "https://miguel-mendez-ai.com/#person",
+      "name": "Miguel Mendez",
+      "url": "https://miguel-mendez-ai.com",
+      "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+      "jobTitle": "AI Engineer, Hudl",
+      "sameAs": [
+        "https://www.linkedin.com/in/miguel-mendez/",
+        "https://github.com/mmeendez8",
+        "https://twitter.com/mmeendez8",
+        "https://medium.com/@miguelmendez_",
+        "https://stackoverflow.com/users/8380638/m33n"
+      ]
+    },
+    "inLanguage": "en"
+  }
+  </script>
+
 </head>
 
 <body>
 
-  <!-- ========== Header ========== -->
+  <!-- Schema.org Person/ProfilePage markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
+    "jobTitle": "Senior Machine Learning Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Hudl",
+      "url": "https://www.hudl.com"
+    },
+    "email": "miguelmndez [AT] gmail.com",
+    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+    "url": "https://miguel-mendez-ai.com",
+    "sameAs": [
+      "https://www.linkedin.com/in/miguel-mendez/",
+      "https://github.com/mmeendez8",
+      "https://twitter.com/mmeendez8",
+      "https://medium.com/@miguelmendez_",
+      "https://stackoverflow.com/users/8380638/m33n"
+    ],
+    "knowsAbout": [
+      "Machine Learning",
+      "Deep Learning",
+      "Computer Vision",
+      "Multi-Object Tracking",
+      "Object Detection",
+      "Camera Calibration",
+      "Generative Models",
+      "MLOps",
+      "PyTorch",
+      "Sports Analytics"
+    ],
+    "alumniOf": [
+      {
+        "@type": "EducationalOrganization",
+        "name": "Purdue University",
+        "url": "https://www.purdue.edu/"
+      },
+      {
+        "@type": "EducationalOrganization",
+        "name": "Polytechnic University of Catalonia",
+        "url": "https://www.upc.edu/en"
+      },
+      {
+        "@type": "EducationalOrganization",
+        "name": "University of A Coruña",
+        "url": "https://www.udc.es/"
+      }
+    ],
+    "description": "Senior AI Engineer at Hudl specializing in computer vision systems for sports analytics. Expert in multi-object tracking, camera calibration, object detection, and production-scale AI systems."
+  }
+}
+</script>
+
+<!-- ========== Header ========== -->
 <div class="container">
 
   <div class="header-container">
@@ -125,7 +211,7 @@
 
     <div class="header-title">
       <h1>Miguel Mendez</h1>
-      <p>Machine Learning Engineer, Statsbomb</p>
+      <p>AI Engineer, Hudl</p>
       <p>miguelmndez [AT] gmail.com</p>
 
       <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
@@ -203,6 +289,127 @@
   </div>
 
   <!-- ========== POSTS ========== -->
+
+  <!-- Schema.org Blog Collection markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Blog Posts",
+    "description": "Technical blog posts about Machine Learning, Deep Learning, and Computer Vision",
+    "url": "https://miguel-mendez-ai.com/#posts",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        
+        
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "Managing Multiple GitHub Accounts with SSH",
+            "url": "https://miguel-mendez-ai.com/2025/02/19/configure-multiple-ssh-keys-git",
+            "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail.jpg",
+            "datePublished": "2025-02-19T00:00:00+00:00",
+            "author": {
+              "@type": "Person",
+              "@id": "https://miguel-mendez-ai.com/#person"
+            },
+            "description": "Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts."
+          }
+        },
+        
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "LLM Preference Alignment",
+            "url": "https://miguel-mendez-ai.com/2025/01/07/preference-alignment",
+            "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail.jpg",
+            "datePublished": "2025-01-07T00:00:00+00:00",
+            "author": {
+              "@type": "Person",
+              "@id": "https://miguel-mendez-ai.com/#person"
+            },
+            "description": "This post covers LLM preference alignment, focusing on key techniques like PPO, DPO, and ORPO. Understand how large language models (LLMs) can be aligned with human preferences. Learn about the latest advancements in LLM alignment and how these methods optimize models to follow specific rules and preferences."
+          }
+        },
+        
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "Image Normalization: Comparing CPU vs GPU Performance in PyTorch",
+            "url": "https://miguel-mendez-ai.com/2024/12/05/gpu-normalization",
+            "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg",
+            "datePublished": "2024-12-05T00:00:00+00:00",
+            "author": {
+              "@type": "Person",
+              "@id": "https://miguel-mendez-ai.com/#person"
+            },
+            "description": "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline."
+          }
+        },
+        
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python",
+            "url": "https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx",
+            "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg",
+            "datePublished": "2024-10-20T00:00:00+00:00",
+            "author": {
+              "@type": "Person",
+              "@id": "https://miguel-mendez-ai.com/#person"
+            },
+            "description": "In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios"
+          }
+        },
+        
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "Understanding Object Tracking Metrics",
+            "url": "https://miguel-mendez-ai.com/2024/08/25/mot-tracking-metrics",
+            "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail.jpg",
+            "datePublished": "2024-08-25T00:00:00+00:00",
+            "author": {
+              "@type": "Person",
+              "@id": "https://miguel-mendez-ai.com/#person"
+            },
+            "description": "Explore the essential Object Tracking metrics with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking."
+          }
+        },
+        
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "A Guide to Horizontal Pod Autoscaler",
+            "url": "https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide",
+            "image": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg",
+            "datePublished": "2024-04-28T00:00:00+00:00",
+            "author": {
+              "@type": "Person",
+              "@id": "https://miguel-mendez-ai.com/#person"
+            },
+            "description": "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool."
+          }
+        }
+        
+      ]
+    }
+  }
+  </script>
+
   <div class="section" id="posts">
     <h2>Posts</h2>
 
@@ -704,6 +911,126 @@
 
 
   <!-- ========== RESUME ========== -->
+
+  <!-- Schema.org Work Experience markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      
+      
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "OrganizationRole",
+          "roleName": "Senior Machine Learning Engineer",
+          "member": {
+            "@type": "Person",
+            "@id": "https://miguel-mendez-ai.com/#person"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "name": "Hudl",
+            "url": "https://www.hudl.com/",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Vigo, ESP (Remote)"
+            }
+          },
+          "description": ""
+        }
+      },
+      
+      
+      
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "OrganizationRole",
+          "roleName": "Machine Learning Engineer",
+          "member": {
+            "@type": "Person",
+            "@id": "https://miguel-mendez-ai.com/#person"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "name": "Statsbomb",
+            "url": "https://statsbomb.com/",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Vigo, ESP (Remote)"
+            }
+          },
+          "description": "Architecting and deploying advanced computer vision systems for automated sports analytics, processing thousands of matches across 90+ leagues. Building custom deep learning models (PyTorch) for real-time player tracking, ball detection, and camera calibration. Established an end-to-end MLOps pipeline for model training, deployment, and monitoring at scale, while leading AI infrastructure modernization and technical initiatives in sports data collection."
+        }
+      },
+      
+      
+      
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "OrganizationRole",
+          "roleName": "Machine Learning Research Engineer",
+          "member": {
+            "@type": "Person",
+            "@id": "https://miguel-mendez-ai.com/#person"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "name": "Gradiant",
+            "url": "https://www.gradiant.org/",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Vigo, ESP"
+            }
+          },
+          "description": "Led development of computer vision solutions for real-time object detection and semantic segmentation with deep learning frameworks (PyTorch/TensorFlow). Optimized models for deployment on edge (Nvidia Jetson) and cloud platforms (AWS/Azure). Directed AI best practices, MLOps pipelines, and infrastructure modernization."
+        }
+      },
+      
+      
+      
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "OrganizationRole",
+          "roleName": "Data Scientist, Consultant",
+          "member": {
+            "@type": "Person",
+            "@id": "https://miguel-mendez-ai.com/#person"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "name": "Desigual, InnoIT",
+            "url": "https://www.inno-it.es/",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Barcelona, ESP"
+            }
+          },
+          "description": "Designed end-to-end machine learning solutions for retail optimization, including demand forecasting and intelligent inventory management across a global store network. Developed a CNN-based visual search system for product recommendations and style matching. Implemented predictive analytics to enhance stock distribution and improve supply chain efficiency."
+        }
+      },
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    ]
+  }
+  </script>
+
   <div class="section" id="resume">
     <h2>Vitæ</h2>
 
@@ -979,6 +1306,35 @@
   </div>
 
   <!-- ========== Other Projects ========== -->
+
+  <!-- Schema.org Software Projects markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "SoftwareSourceCode",
+          "name": "Pyodi: Python Object Detection Insights",
+          "description": "A simple tool for explore your object detection dataset. The goal of this library is to provide simple and intuitive visualizations from your dataset and automatically find the best parameters for generating a specific grid of anchors that can fit you data characteristics",
+          "url": "https://github.com/Gradiant/pyodi",
+          "codeRepository": "https://github.com/Gradiant/pyodi",
+          "author": {
+            "@type": "Person",
+            "@id": "https://miguel-mendez-ai.com/#person"
+          },
+          "programmingLanguage": "Python",
+          "keywords": "deep-learning computer-vision object-detection pytorch"
+        }
+      }
+      
+    ]
+  }
+  </script>
 
   <div class="section" id="other-projects">
     <h2>Other Projects</h2>
