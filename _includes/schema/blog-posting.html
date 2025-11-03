@@ -1,0 +1,52 @@
+<!-- schema.org markup to help SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ page.title }}",
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ site.url }}{{ page.url }}"
+  },
+  "author": {
+    "@type": "Person",
+    "@id": "{{ site.url }}/#person",
+    "name": "{{ site.data.main_info.name }}",
+    "url": "{{ site.url }}",
+    "image": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
+    "jobTitle": "{{ site.data.main_info.title }}",
+    "sameAs": [
+      "{{ site.data.main_info.linkedin }}",
+      "{{ site.data.main_info.github }}",
+      "{{ site.data.main_info.twitter_url }}",
+      "{{ site.data.main_info.medium }}",
+      "{{ site.data.main_info.stackoverflow }}"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.data.main_info.name }} Blog",
+    "url": "{{ site.url }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
+      "width": 691,
+      "height": 691
+    }
+  },
+  "description": "{{ page.description | default: site.description }}",
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ site.url }}{{ page.image }}",
+    "width": 2000,
+    "height": 1200
+  },
+  "keywords": "{{ page.tags | join: ', ' }}",
+  "articleSection": "{{ page.categories | join: ', ' }}",
+  "wordCount": "{{ content | number_of_words }}",
+  "inLanguage": "en",
+  "articleBody": "{{ page.description | default: content | strip_html | truncate: 500 }}"
+}
+</script>

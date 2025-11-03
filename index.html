@@ -3,64 +3,7 @@ layout: default
 title: Miguel Mendez | Personal Webpage
 ---
 
-<!-- Schema.org Person/ProfilePage markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  "mainEntity": {
-    "@type": "Person",
-    "@id": "{{ site.url }}/#person",
-    "name": "{{ site.data.main_info.name }}",
-    "jobTitle": "Senior Machine Learning Engineer",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Hudl",
-      "url": "https://www.hudl.com"
-    },
-    "email": "{{ site.data.main_info.email }}",
-    "image": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
-    "url": "{{ site.url }}",
-    "sameAs": [
-      "{{ site.data.main_info.linkedin }}",
-      "{{ site.data.main_info.github }}",
-      "{{ site.data.main_info.twitter }}",
-      "{{ site.data.main_info.medium }}",
-      "{{ site.data.main_info.stackoverflow }}"
-    ],
-    "knowsAbout": [
-      "Machine Learning",
-      "Deep Learning",
-      "Computer Vision",
-      "Multi-Object Tracking",
-      "Object Detection",
-      "Camera Calibration",
-      "Generative Models",
-      "MLOps",
-      "PyTorch",
-      "Sports Analytics"
-    ],
-    "alumniOf": [
-      {
-        "@type": "EducationalOrganization",
-        "name": "Purdue University",
-        "url": "https://www.purdue.edu/"
-      },
-      {
-        "@type": "EducationalOrganization",
-        "name": "Polytechnic University of Catalonia",
-        "url": "https://www.upc.edu/en"
-      },
-      {
-        "@type": "EducationalOrganization",
-        "name": "University of A Coruña",
-        "url": "https://www.udc.es/"
-      }
-    ],
-    "description": "Senior AI Engineer at Hudl specializing in computer vision systems for sports analytics. Expert in multi-object tracking, camera calibration, object detection, and production-scale AI systems."
-  }
-}
-</script>
+{% include schema/profile.html %}
 
 <!-- ========== Header ========== -->
 <div class="container">
@@ -86,7 +29,7 @@ title: Miguel Mendez | Personal Webpage
         <i class="icon-linkedin-squared" aria-hidden="true"></i>
       </a>
 
-      <a href='{{site.data.main_info.twitter}}' target="_blank" rel="noopener">
+      <a href='{{site.data.main_info.twitter_url}}' target="_blank" rel="noopener">
         <i class="icon-twitter-squared" aria-hidden="true"></i>
       </a>
 
@@ -130,40 +73,7 @@ title: Miguel Mendez | Personal Webpage
 
   <!-- ========== POSTS ========== -->
 
-  <!-- Schema.org Blog Collection markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Blog Posts",
-    "description": "Technical blog posts about Machine Learning, Deep Learning, and Computer Vision",
-    "url": "{{ site.url }}/#posts",
-    "mainEntity": {
-      "@type": "ItemList",
-      "itemListElement": [
-        {% assign selected_posts = site.posts | where: "selected", "y" %}
-        {% for post in selected_posts limit: site.data.main_info.posts_to_show %}
-        {
-          "@type": "ListItem",
-          "position": {{ forloop.index }},
-          "item": {
-            "@type": "BlogPosting",
-            "headline": "{{ post.title }}",
-            "url": "{{ site.url }}{{ post.url }}",
-            "image": "{{ site.url }}{{ post.image }}",
-            "datePublished": "{{ post.date | date_to_xmlschema }}",
-            "author": {
-              "@type": "Person",
-              "@id": "{{ site.url }}/#person"
-            },
-            "description": "{{ post.description | strip_html }}"
-          }
-        }{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      ]
-    }
-  }
-  </script>
+  {% include schema/blog-collection.html %}
 
   <div class="section" id="posts">
     <h2>Posts</h2>
@@ -206,40 +116,7 @@ title: Miguel Mendez | Personal Webpage
 
   <!-- ========== RESUME ========== -->
 
-  <!-- Schema.org Work Experience markup -->
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": [
-      {% assign filtered_experiences = site.data.experience.experiences | where_exp: "exp", "exp.title contains 'Engineer' or exp.title contains 'Scientist' or exp.title contains 'Consultant'" %}
-      {% for exp in filtered_experiences %}
-      {
-        "@type": "ListItem",
-        "position": {{ forloop.index }},
-        "item": {
-          "@type": "OrganizationRole",
-          "roleName": "{{ exp.title }}",
-          "member": {
-            "@type": "Person",
-            "@id": "{{ site.url }}/#person"
-          },
-          "memberOf": {
-            "@type": "Organization",
-            "name": "{{ exp.company }}",
-            "url": "{{ exp.url }}",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "{{ exp.location }}"
-            }
-          },
-          "description": "{{ exp.description | strip_html | strip_newlines }}"
-        }
-      }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]
-  }
-</script>
+  {% include schema/work-experience.html %}
 
   <div class="section" id="resume">
     <h2>Vitæ</h2>
@@ -300,34 +177,7 @@ title: Miguel Mendez | Personal Webpage
 
   <!-- ========== Other Projects ========== -->
 
-  <!-- Schema.org Software Projects markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": [
-      {% for project in site.data.other_projects.other_projects %}
-      {
-        "@type": "ListItem",
-        "position": {{ forloop.index }},
-        "item": {
-          "@type": "SoftwareSourceCode",
-          "name": "{{ project.title }}",
-          "description": "{{ project.description | strip_html | strip_newlines }}",
-          "url": "{{ project.code }}",
-          "codeRepository": "{{ project.code }}",
-          "author": {
-            "@type": "Person",
-            "@id": "{{ site.url }}/#person"
-          },
-          "programmingLanguage": "Python",
-          "keywords": "{{ project.tags | replace: '#', '' }}"
-        }
-      }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]
-  }
-  </script>
+  {% include schema/projects.html %}
 
   <div class="section" id="other-projects">
     <h2>Other Projects</h2>

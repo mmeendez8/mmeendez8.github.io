@@ -1,0 +1,58 @@
+<!-- Schema.org Person/ProfilePage markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "{{ site.url }}/#person",
+    "name": "{{ site.data.main_info.name }}",
+    "jobTitle": "Senior Machine Learning Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Hudl",
+      "url": "https://www.hudl.com"
+    },
+    "email": "{{ site.data.main_info.email }}",
+    "image": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
+    "url": "{{ site.url }}",
+    "sameAs": [
+      "{{ site.data.main_info.linkedin }}",
+      "{{ site.data.main_info.github }}",
+      "{{ site.data.main_info.twitter_url }}",
+      "{{ site.data.main_info.medium }}",
+      "{{ site.data.main_info.stackoverflow }}"
+    ],
+    "knowsAbout": [
+      "Machine Learning",
+      "Deep Learning",
+      "Computer Vision",
+      "Multi-Object Tracking",
+      "Object Detection",
+      "Camera Calibration",
+      "Generative Models",
+      "MLOps",
+      "PyTorch",
+      "Sports Analytics"
+    ],
+    "alumniOf": [
+      {
+        "@type": "EducationalOrganization",
+        "name": "Purdue University",
+        "url": "https://www.purdue.edu/"
+      },
+      {
+        "@type": "EducationalOrganization",
+        "name": "Polytechnic University of Catalonia",
+        "url": "https://www.upc.edu/en"
+      },
+      {
+        "@type": "EducationalOrganization",
+        "name": "University of A Coruña",
+        "url": "https://www.udc.es/"
+      }
+    ],
+    "description": "Senior Machine Learning Engineer at Hudl specializing in computer vision systems for sports analytics. Expert in multi-object tracking, camera calibration, object detection, and production-scale AI systems."
+  }
+}
+</script>

@@ -1,3 +1,4 @@
-Sitemap: https://miguel-mendez-ai/sitemap.xml
+User-agent: *
+Allow: /
 
-Disallow: /
+Sitemap: https://miguel-mendez-ai.com/sitemap.xml

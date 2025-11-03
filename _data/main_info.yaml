@@ -1,5 +1,5 @@
 name: "Miguel Mendez"
-title: "AI Engineer, Hudl"
+title: "Senior Machine Learning Engineer, Hudl"
 description: "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning."
 email: "miguelmndez [AT] gmail.com"
 profile_pic: "/assets/images/fullsize/profile-pics/main_circle.webp"
@@ -8,7 +8,8 @@ linkedin: "https://www.linkedin.com/in/miguel-mendez/"
 github: "https://github.com/mmeendez8"
 medium: "https://medium.com/@miguelmendez_"
 stackoverflow: "https://stackoverflow.com/users/8380638/m33n"
-twitter: https://twitter.com/mmeendez8
+twitter: mmeendez8
+twitter_url: https://twitter.com/mmeendez8
 rss: "/feed.xml"
-google_analystics_tracking_id: "UA-133014227-1"
+google_analytics_id: "G-LMHYVFNF1J"
 posts_to_show: 6
