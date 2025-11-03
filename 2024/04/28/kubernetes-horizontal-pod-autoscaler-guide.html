@@ -24,6 +24,7 @@
   
 
   <meta property="og:url" content="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide">
+  <meta property="og:type" content="website">
 
   <!-- Set canonical link to avoid duplication in google search -->
   <link rel="canonical" href="https://miguel-mendez-ai.com/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide">
@@ -91,7 +92,7 @@
   gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
-  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:site" content="@mmeendez8">
   <meta name="twitter:title" content="A Guide to Horizontal Pod Autoscaler">
   
   
@@ -108,31 +109,32 @@
   
 
   <!-- Schema.org WebSite markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Miguel Mendez AI Blog",
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Miguel Mendez AI Blog",
+  "url": "https://miguel-mendez-ai.com",
+  "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+  "author": {
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
     "url": "https://miguel-mendez-ai.com",
-    "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
-    "author": {
-      "@type": "Person",
-      "@id": "https://miguel-mendez-ai.com/#person",
-      "name": "Miguel Mendez",
-      "url": "https://miguel-mendez-ai.com",
-      "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-      "jobTitle": "AI Engineer, Hudl",
-      "sameAs": [
-        "https://www.linkedin.com/in/miguel-mendez/",
-        "https://github.com/mmeendez8",
-        "https://twitter.com/mmeendez8",
-        "https://medium.com/@miguelmendez_",
-        "https://stackoverflow.com/users/8380638/m33n"
-      ]
-    },
-    "inLanguage": "en"
-  }
-  </script>
+    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+    "jobTitle": "Senior Machine Learning Engineer, Hudl",
+    "sameAs": [
+      "https://www.linkedin.com/in/miguel-mendez/",
+      "https://github.com/mmeendez8",
+      "https://twitter.com/mmeendez8",
+      "https://medium.com/@miguelmendez_",
+      "https://stackoverflow.com/users/8380638/m33n"
+    ]
+  },
+  "inLanguage": "en"
+}
+</script>
+
 
 </head>
 
@@ -156,7 +158,7 @@
     "name": "Miguel Mendez",
     "url": "https://miguel-mendez-ai.com",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "AI Engineer, Hudl",
+    "jobTitle": "Senior Machine Learning Engineer, Hudl",
     "sameAs": [
       "https://www.linkedin.com/in/miguel-mendez/",
       "https://github.com/mmeendez8",
@@ -166,16 +168,22 @@
     ]
   },
   "publisher": {
-    "@type": "Person",
-    "@id": "https://miguel-mendez-ai.com/#person",
-    "name": "Miguel Mendez",
+    "@type": "Organization",
+    "name": "Miguel Mendez Blog",
     "url": "https://miguel-mendez-ai.com",
-    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp"
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+      "width": 691,
+      "height": 691
+    }
   },
   "description": "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool.",
   "image": {
     "@type": "ImageObject",
-    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg"
+    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test.jpg",
+    "width": 2000,
+    "height": 1200
   },
   "keywords": "Kubernetes, HPA, Autoscaling, DevOps",
   "articleSection": "DevOps, Kubernetes",
@@ -184,6 +192,7 @@
   "articleBody": "Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool."
 }
 </script>
+
 
 <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
@@ -212,6 +221,25 @@
   ]
 }
 </script>
+
+
+<!-- Open Graph Article Meta Tags -->
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-04-28T00:00:00+00:00">
+<meta property="article:modified_time" content="2024-04-28T00:00:00+00:00">
+<meta property="article:author" content="Miguel Mendez">
+
+<meta property="article:section" content="DevOps">
+
+
+<meta property="article:tag" content="Kubernetes">
+
+<meta property="article:tag" content="HPA">
+
+<meta property="article:tag" content="Autoscaling">
+
+<meta property="article:tag" content="DevOps">
+
 
 <header class="the-post-header">
     <div class="container">

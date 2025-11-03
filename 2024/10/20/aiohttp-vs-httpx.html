@@ -24,6 +24,7 @@
   
 
   <meta property="og:url" content="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx">
+  <meta property="og:type" content="website">
 
   <!-- Set canonical link to avoid duplication in google search -->
   <link rel="canonical" href="https://miguel-mendez-ai.com/2024/10/20/aiohttp-vs-httpx">
@@ -91,7 +92,7 @@
   gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
-  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:site" content="@mmeendez8">
   <meta name="twitter:title" content="Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python">
   
   
@@ -108,31 +109,32 @@
   
 
   <!-- Schema.org WebSite markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Miguel Mendez AI Blog",
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Miguel Mendez AI Blog",
+  "url": "https://miguel-mendez-ai.com",
+  "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+  "author": {
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
     "url": "https://miguel-mendez-ai.com",
-    "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
-    "author": {
-      "@type": "Person",
-      "@id": "https://miguel-mendez-ai.com/#person",
-      "name": "Miguel Mendez",
-      "url": "https://miguel-mendez-ai.com",
-      "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-      "jobTitle": "AI Engineer, Hudl",
-      "sameAs": [
-        "https://www.linkedin.com/in/miguel-mendez/",
-        "https://github.com/mmeendez8",
-        "https://twitter.com/mmeendez8",
-        "https://medium.com/@miguelmendez_",
-        "https://stackoverflow.com/users/8380638/m33n"
-      ]
-    },
-    "inLanguage": "en"
-  }
-  </script>
+    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+    "jobTitle": "Senior Machine Learning Engineer, Hudl",
+    "sameAs": [
+      "https://www.linkedin.com/in/miguel-mendez/",
+      "https://github.com/mmeendez8",
+      "https://twitter.com/mmeendez8",
+      "https://medium.com/@miguelmendez_",
+      "https://stackoverflow.com/users/8380638/m33n"
+    ]
+  },
+  "inLanguage": "en"
+}
+</script>
+
 
 </head>
 
@@ -156,7 +158,7 @@
     "name": "Miguel Mendez",
     "url": "https://miguel-mendez-ai.com",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "AI Engineer, Hudl",
+    "jobTitle": "Senior Machine Learning Engineer, Hudl",
     "sameAs": [
       "https://www.linkedin.com/in/miguel-mendez/",
       "https://github.com/mmeendez8",
@@ -166,16 +168,22 @@
     ]
   },
   "publisher": {
-    "@type": "Person",
-    "@id": "https://miguel-mendez-ai.com/#person",
-    "name": "Miguel Mendez",
+    "@type": "Organization",
+    "name": "Miguel Mendez Blog",
     "url": "https://miguel-mendez-ai.com",
-    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp"
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+      "width": 691,
+      "height": 691
+    }
   },
   "description": "In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios",
   "image": {
     "@type": "ImageObject",
-    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg"
+    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail.jpg",
+    "width": 2000,
+    "height": 1200
   },
   "keywords": "Python, aiohttp, httpx, concurrency, networking, asyncio",
   "articleSection": "Programming, Python, Networking",
@@ -184,6 +192,7 @@
   "articleBody": "In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios"
 }
 </script>
+
 
 <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
@@ -212,6 +221,29 @@
   ]
 }
 </script>
+
+
+<!-- Open Graph Article Meta Tags -->
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-10-20T00:00:00+00:00">
+<meta property="article:modified_time" content="2024-10-20T00:00:00+00:00">
+<meta property="article:author" content="Miguel Mendez">
+
+<meta property="article:section" content="Programming">
+
+
+<meta property="article:tag" content="Python">
+
+<meta property="article:tag" content="aiohttp">
+
+<meta property="article:tag" content="httpx">
+
+<meta property="article:tag" content="concurrency">
+
+<meta property="article:tag" content="networking">
+
+<meta property="article:tag" content="asyncio">
+
 
 <header class="the-post-header">
     <div class="container">

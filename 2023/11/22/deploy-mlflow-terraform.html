@@ -24,6 +24,7 @@
   
 
   <meta property="og:url" content="https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform">
+  <meta property="og:type" content="website">
 
   <!-- Set canonical link to avoid duplication in google search -->
   <link rel="canonical" href="https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform">
@@ -91,7 +92,7 @@
   gtag('config', 'G-LMHYVFNF1J');
 </script>
     <!-- Twitter cards -->
-  <meta name="twitter:site" content="@https://twitter.com/mmeendez8">
+  <meta name="twitter:site" content="@mmeendez8">
   <meta name="twitter:title" content="MLFlow Deployment on AWS with Terraform">
   
   
@@ -108,31 +109,32 @@
   
 
   <!-- Schema.org WebSite markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Miguel Mendez AI Blog",
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Miguel Mendez AI Blog",
+  "url": "https://miguel-mendez-ai.com",
+  "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+  "author": {
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
     "url": "https://miguel-mendez-ai.com",
-    "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
-    "author": {
-      "@type": "Person",
-      "@id": "https://miguel-mendez-ai.com/#person",
-      "name": "Miguel Mendez",
-      "url": "https://miguel-mendez-ai.com",
-      "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-      "jobTitle": "AI Engineer, Hudl",
-      "sameAs": [
-        "https://www.linkedin.com/in/miguel-mendez/",
-        "https://github.com/mmeendez8",
-        "https://twitter.com/mmeendez8",
-        "https://medium.com/@miguelmendez_",
-        "https://stackoverflow.com/users/8380638/m33n"
-      ]
-    },
-    "inLanguage": "en"
-  }
-  </script>
+    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+    "jobTitle": "Senior Machine Learning Engineer, Hudl",
+    "sameAs": [
+      "https://www.linkedin.com/in/miguel-mendez/",
+      "https://github.com/mmeendez8",
+      "https://twitter.com/mmeendez8",
+      "https://medium.com/@miguelmendez_",
+      "https://stackoverflow.com/users/8380638/m33n"
+    ]
+  },
+  "inLanguage": "en"
+}
+</script>
+
 
 </head>
 
@@ -156,7 +158,7 @@
     "name": "Miguel Mendez",
     "url": "https://miguel-mendez-ai.com",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "AI Engineer, Hudl",
+    "jobTitle": "Senior Machine Learning Engineer, Hudl",
     "sameAs": [
       "https://www.linkedin.com/in/miguel-mendez/",
       "https://github.com/mmeendez8",
@@ -166,16 +168,22 @@
     ]
   },
   "publisher": {
-    "@type": "Person",
-    "@id": "https://miguel-mendez-ai.com/#person",
-    "name": "Miguel Mendez",
+    "@type": "Organization",
+    "name": "Miguel Mendez Blog",
     "url": "https://miguel-mendez-ai.com",
-    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp"
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
+      "width": 691,
+      "height": 691
+    }
   },
   "description": "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud.",
   "image": {
     "@type": "ImageObject",
-    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg"
+    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg",
+    "width": 2000,
+    "height": 1200
   },
   "keywords": "MLFlow, AWS, Terraform, Machine Learning, DevOps",
   "articleSection": "Machine Learning, DevOps, Cloud",
@@ -184,6 +192,7 @@
   "articleBody": "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud."
 }
 </script>
+
 
 <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
@@ -213,6 +222,27 @@
 }
 </script>
 
+
+<!-- Open Graph Article Meta Tags -->
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-11-22T00:00:00+00:00">
+<meta property="article:modified_time" content="2023-11-22T00:00:00+00:00">
+<meta property="article:author" content="Miguel Mendez">
+
+<meta property="article:section" content="Machine Learning">
+
+
+<meta property="article:tag" content="MLFlow">
+
+<meta property="article:tag" content="AWS">
+
+<meta property="article:tag" content="Terraform">
+
+<meta property="article:tag" content="Machine Learning">
+
+<meta property="article:tag" content="DevOps">
+
+
 <header class="the-post-header">
     <div class="container">
       <a href="/">
@@ -236,7 +266,7 @@
   </div>
 
   <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-2c1587934.jpg" alt="MLFlow Deployment on AWS with Terraform" srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1300-cb6960f9e.webp 1300w" sizes="(max-width: 767px) 100vw, 50vw" width="1300" height="975">
+    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-bf603c9e4.jpg" alt="MLFlow Deployment on AWS with Terraform" srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1500-b79bd084a.webp 1500w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-2000-b79bd084a.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1500">
 
   </div>
 </div>
