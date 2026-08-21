@@ -21,19 +21,19 @@ title: Miguel Mendez | Personal Webpage
       <p>{{ site.data.main_info.title }}</p>
       <p>{{ site.data.main_info.email }}</p>
 
-      <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+      <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener" aria-label="GitHub profile">
         <i class="icon-github-circled" aria-hidden="true"></i>
       </a>
 
-      <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+      <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener" aria-label="LinkedIn profile">
         <i class="icon-linkedin-squared" aria-hidden="true"></i>
       </a>
 
-      <a href='{{site.data.main_info.twitter_url}}' target="_blank" rel="noopener">
+      <a href='{{site.data.main_info.twitter_url}}' target="_blank" rel="noopener" aria-label="X profile">
         <i class="icon-twitter-squared" aria-hidden="true"></i>
       </a>
 
-      <a href='{{site.baseurl}}{{site.data.main_info.rss}}' target="_blank" rel="noopener">
+      <a href='{{site.baseurl}}{{site.data.main_info.rss}}' target="_blank" rel="noopener" aria-label="RSS feed">
         <i class="icon-rss-squared" aria-hidden="true"></i>
       </a>
     </div>
@@ -87,7 +87,7 @@ title: Miguel Mendez | Personal Webpage
         <li class="{{ post_classes }}">
 
           {% if post.external-url %}
-            <a href="{{ post.external-url }}" target=”_blank”> 
+            <a href="{{ post.external-url }}" target="_blank" rel="noopener">
           {% else %}
             <a href="{{ post.url }}">
           {% endif %}
@@ -105,7 +105,9 @@ title: Miguel Mendez | Personal Webpage
         
         <!-- add see more link and set next posts to class hidden -->
         {% if post_count == site.data.main_info.posts_to_show %}
-          <a href="#" class="see-more-link">See more posts</a>
+          <li class="see-more-item">
+            <a href="#" class="see-more-link">See more posts</a>
+          </li>
           {% assign post_classes = post_classes | append: 'hidden' %}
         {% endif %}
 

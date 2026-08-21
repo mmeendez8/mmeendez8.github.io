@@ -48,6 +48,12 @@
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
 
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href={{ "/libs/external/fontello-bb2d1770/css/fontello.css" | prepend: site.baseurl }}>
+
+  {% if page.layout == "post" %}
   <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}></noscript>
@@ -55,12 +61,6 @@
   <!-- non critical lighthouse css -->
   <link rel="preload" href={{ "/libs/external/lightbox/lightbox.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href={{ "/libs/external/lightbox/lightbox.css" | prepend: site.baseurl }}></noscript>
-
-  <!-- Fontello
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href={{ "/libs/external/fontello-bb2d1770/css/fontello.css" | prepend: site.baseurl }}>
-
 
   <!-- Hihglight.js
   <!-- Preload CSS -->
@@ -74,6 +74,7 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+  {% endif %}
 
 
   <!-- Favicon
@@ -95,7 +96,9 @@
 
 <body>
 
+  <main>
   {{ content}}
+  </main>
 
     <div class="footer">
       <div class="footer-sign">
@@ -107,19 +110,19 @@
       </div>
 
       <div class="footer-icons">
-        <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener">
+        <a href='{{site.data.main_info.github}}' target="_blank" rel="noopener" aria-label="GitHub profile">
           <i class="icon-github-circled" aria-hidden="true"></i>
         </a>
 
-        <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener">
+        <a href='{{site.data.main_info.linkedin}}' target="_blank" rel="noopener" aria-label="LinkedIn profile">
           <i class="icon-linkedin-squared" aria-hidden="true"></i>
         </a>
 
-        <a href='{{site.data.main_info.twitter_url}}' target="_blank" rel="noopener">
+        <a href='{{site.data.main_info.twitter_url}}' target="_blank" rel="noopener" aria-label="X profile">
           <i class="icon-twitter-squared" aria-hidden="true"></i>
         </a>
 
-        <a href='{{site.baseurl}}{{site.data.main_info.rss}}' target="_blank" rel="noopener">
+        <a href='{{site.baseurl}}{{site.data.main_info.rss}}' target="_blank" rel="noopener" aria-label="RSS feed">
           <i class="icon-rss-squared" aria-hidden="true"></i>
         </a>
         
@@ -129,7 +132,9 @@
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  {% if page.layout == "post" %}
   <script type="text/javascript" src={{ "/libs/external/lightbox/lightbox.js" | prepend: site.baseurl }} defer></script>
+  {% endif %}
   
   <!-- Mathjax -->
   {% if page.mathjax %}
@@ -137,7 +142,9 @@
   {% endif %}
 
   <!-- Highlight.js -->
+  {% if page.layout == "post" %}
   {% include code_highlight.html %}
+  {% endif %}
 
 </body>
 

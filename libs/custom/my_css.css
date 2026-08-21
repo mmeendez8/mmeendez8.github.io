@@ -65,7 +65,7 @@ body{
 }
 
 a {
-  color: #5c68ff ;
+  color: #5b63fe;
   text-decoration: none;
   position: relative;
 }
@@ -285,7 +285,7 @@ table thead {
 }
 
 .post a:hover h3:hover {
-  color: #5c68ff;
+  color: #5b63fe;
 }
 
 .post-title{
@@ -313,6 +313,10 @@ table thead {
 
 .hidden{
   display: none;
+}
+
+.posts li.see-more-item {
+  margin-bottom: 0;
 }
 
 
@@ -454,7 +458,7 @@ table thead {
 }
 
 .vitae-actual::after{
-  border-color: #5c68ff;
+  border-color: #5b63fe;
 }
 
 .vitae-panel {
@@ -532,7 +536,7 @@ table thead {
 }
 
 .other-projects-content a:hover h3:hover {
-  color: #5c68ff;
+  color: #5b63fe;
 }
 
 /*  ================ Footer  ================ */

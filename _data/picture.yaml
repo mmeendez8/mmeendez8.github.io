@@ -6,12 +6,19 @@ presets:
 
   profile:
     formats: [webp]
-    widths: [400, 600, 800, 1500]
+    widths: [200, 400, 600, 800, 1500]
     dimension_attributes: true
+    attributes:
+      img: 'fetchpriority="high"'
+    sizes:
+      desktop: 250px
+      mobile: 200px
+    size: 400px
+    fallback_width: 400
 
   posts-grid:
     formats: [webp]
-    widths: [400, 600, 800, 1500]
+    widths: [400, 600, 700, 800, 1000, 1500]
     dimension_attributes: true
     attributes:
       img: 'loading="lazy"' 
