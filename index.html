@@ -44,32 +44,12 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
-  <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
   <!-- Fontello
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
 
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
   
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
 
 
   <!-- Favicon
@@ -140,6 +120,7 @@
 
 <body>
 
+  <main>
   <!-- Schema.org Person/ProfilePage markup -->
 <script type="application/ld+json">
 {
@@ -207,7 +188,7 @@
 
     <div class="header-img">
       <a href="/">
-        <img src="/generated/assets/images/fullsize/profile-pics/main_circle-691-86b223b2e.webp" alt="Site main picture" srcset="/generated/assets/images/fullsize/profile-pics/main_circle-400-86b223b2e.webp 400w, /generated/assets/images/fullsize/profile-pics/main_circle-600-86b223b2e.webp 600w, /generated/assets/images/fullsize/profile-pics/main_circle-691-86b223b2e.webp 691w" width="691" height="691">
+        <img fetchpriority="high" src="/generated/assets/images/fullsize/profile-pics/main_circle-400-86b223b2e.webp" alt="Site main picture" srcset="/generated/assets/images/fullsize/profile-pics/main_circle-200-86b223b2e.webp 200w, /generated/assets/images/fullsize/profile-pics/main_circle-400-86b223b2e.webp 400w, /generated/assets/images/fullsize/profile-pics/main_circle-600-86b223b2e.webp 600w, /generated/assets/images/fullsize/profile-pics/main_circle-691-86b223b2e.webp 691w" sizes="(min-width: 768px) 250px, (max-width: 767px) 200px, 400px" width="691" height="691">
 
       </a>
     </div>
@@ -217,19 +198,19 @@
       <p>Senior Machine Learning Engineer, Hudl</p>
       <p>miguelmndez [AT] gmail.com</p>
 
-      <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+      <a href='https://github.com/mmeendez8' target="_blank" rel="noopener" aria-label="GitHub profile">
         <i class="icon-github-circled" aria-hidden="true"></i>
       </a>
 
-      <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+      <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener" aria-label="LinkedIn profile">
         <i class="icon-linkedin-squared" aria-hidden="true"></i>
       </a>
 
-      <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+      <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener" aria-label="X profile">
         <i class="icon-twitter-squared" aria-hidden="true"></i>
       </a>
 
-      <a href='/feed.xml' target="_blank" rel="noopener">
+      <a href='/feed.xml' target="_blank" rel="noopener" aria-label="RSS feed">
         <i class="icon-rss-squared" aria-hidden="true"></i>
       </a>
     </div>
@@ -434,7 +415,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-82770cd6f.jpg" alt="Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts." srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-400-3eeff7720.webp 400w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-600-3eeff7720.webp 600w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-3eeff7720.webp 800w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1500-3eeff7720.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1287">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-82770cd6f.jpg" alt="Learn how to manage multiple GitHub accounts on the same computer using SSH keys and Git configuration. This step-by-step guide covers SSH key setup, Git configuration, and automating repository access, making it easy to switch between work and personal accounts without conflicts." srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-400-3eeff7720.webp 400w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-600-3eeff7720.webp 600w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-700-3eeff7720.webp 700w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-3eeff7720.webp 800w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1000-3eeff7720.webp 1000w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1500-3eeff7720.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1287">
 
             </div>
             <h3 class="post-title">Managing Multiple GitHub Accounts with SSH</h3>
@@ -456,7 +437,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-b0fdc3b2b.jpg" alt="This post covers LLM preference alignment, focusing on key techniques like PPO, DPO, and ORPO. Understand how large language models (LLMs) can be aligned with human preferences. Learn about the latest advancements in LLM alignment and how these methods optimize models to follow specific rules and preferences." srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-400-ab1a63182.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-600-ab1a63182.webp 600w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-ab1a63182.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1500-ab1a63182.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1204">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-b0fdc3b2b.jpg" alt="This post covers LLM preference alignment, focusing on key techniques like PPO, DPO, and ORPO. Understand how large language models (LLMs) can be aligned with human preferences. Learn about the latest advancements in LLM alignment and how these methods optimize models to follow specific rules and preferences." srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-400-ab1a63182.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-600-ab1a63182.webp 600w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-700-ab1a63182.webp 700w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-ab1a63182.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1000-ab1a63182.webp 1000w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1500-ab1a63182.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1204">
 
             </div>
             <h3 class="post-title">LLM Preference Alignment</h3>
@@ -478,7 +459,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-800-cd7dfbb30.jpg" alt="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline." srcset="/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-400-d19e03355.webp 400w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-600-d19e03355.webp 600w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-800-d19e03355.webp 800w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-1500-d19e03355.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1081">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-800-cd7dfbb30.jpg" alt="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline." srcset="/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-400-d19e03355.webp 400w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-600-d19e03355.webp 600w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-700-d19e03355.webp 700w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-800-d19e03355.webp 800w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-1000-d19e03355.webp 1000w, /generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-1500-d19e03355.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1081">
 
             </div>
             <h3 class="post-title">Image Normalization: Comparing CPU vs GPU Performance in PyTorch</h3>
@@ -500,7 +481,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-83878bcb5.jpg" alt="In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios" srcset="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-400-00d0f72ea.webp 400w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-600-00d0f72ea.webp 600w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-00d0f72ea.webp 800w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-1500-00d0f72ea.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1425">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-83878bcb5.jpg" alt="In high-concurrency networking situations, handling a large number of requests can lead to different behaviors between httpx and aiohttp. While httpx may fail under heavy load, switching to aiohttp offers a more reliable solution for managing high traffic in asynchronous Python applications. This post explores how httpx struggles with concurrency and how aiohttp outperforms it in such scenarios" srcset="/generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-400-00d0f72ea.webp 400w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-600-00d0f72ea.webp 600w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-700-00d0f72ea.webp 700w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-800-00d0f72ea.webp 800w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-1000-00d0f72ea.webp 1000w, /generated/assets/images/fullsize/posts/2024-10-20-aiohttp-vs-httpx/thumbnail-1500-00d0f72ea.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1425">
 
             </div>
             <h3 class="post-title">Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python</h3>
@@ -522,7 +503,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-800-bf7bc3551.jpg" alt="Explore the essential Object Tracking metrics with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking." srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-400-f189fa709.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-600-f189fa709.webp 600w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-800-f189fa709.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-1500-f189fa709.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1300">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-800-bf7bc3551.jpg" alt="Explore the essential Object Tracking metrics with this comprehensive guide. We break down and compare key metrics like MOTA, IDF1, and HOTA, while also covering DetA and AssA. Understand how these metrics assess spatial accuracy and temporal consistency in object tracking." srcset="/generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-400-f189fa709.webp 400w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-600-f189fa709.webp 600w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-700-f189fa709.webp 700w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-800-f189fa709.webp 800w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-1000-f189fa709.webp 1000w, /generated/assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/thumbnail-1500-f189fa709.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1300">
 
             </div>
             <h3 class="post-title">Understanding Object Tracking Metrics</h3>
@@ -544,7 +525,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-800-412a1b1ec.jpg" alt="Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool." srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-400-9bbf0e735.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-600-9bbf0e735.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-800-9bbf0e735.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-1500-9bbf0e735.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1841" height="1500">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-800-412a1b1ec.jpg" alt="Discover how Kubernetes' Horizontal Pod Autoscaler (HPA) functions using a real use case. Learn to manage and observe HPA in action with practical examples. This post will show you how to optimize resource usage, streamline pod scaling, and enhance application performance using a simple visualization tool." srcset="/generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-400-9bbf0e735.webp 400w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-600-9bbf0e735.webp 600w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-700-9bbf0e735.webp 700w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-800-9bbf0e735.webp 800w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-1000-9bbf0e735.webp 1000w, /generated/assets/images/fullsize/posts/2024-04-28-kubernetes-horizontal-pod-autoscaler-guide/test-1500-9bbf0e735.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1841" height="1500">
 
             </div>
             <h3 class="post-title">A Guide to Horizontal Pod Autoscaler</h3>
@@ -557,7 +538,9 @@
         
         <!-- add see more link and set next posts to class hidden -->
         
-          <a href="#" class="see-more-link">See more posts</a>
+          <li class="see-more-item">
+            <a href="#" class="see-more-link">See more posts</a>
+          </li>
           
         
 
@@ -569,7 +552,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-4e0de4c5d.jpg" alt="Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT." srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-400-8c96cc2ae.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-600-8c96cc2ae.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-8c96cc2ae.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1500-8c96cc2ae.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1500" height="875">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-4e0de4c5d.jpg" alt="Get a detailed overview of the transformative impact of transformer models on video instance segmentation. Learn about the evolution of VIS methods, the role of datasets like YouTube-VIS, and the latest research trends that are defining the future of video processing technologies. This includes detailed comparisons among leading models like VisTR, IFC, and TeViT." srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-400-8c96cc2ae.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-600-8c96cc2ae.webp 600w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-700-8c96cc2ae.webp 700w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-8c96cc2ae.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1000-8c96cc2ae.webp 1000w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1500-8c96cc2ae.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1500" height="875">
 
             </div>
             <h3 class="post-title">Exploring Transformer-Based Methods in Video Instance Segmentation</h3>
@@ -591,7 +574,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-24020353f.jpg" alt="Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects." srcset="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-400-3e0bc6e32.webp 400w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-600-3e0bc6e32.webp 600w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-3e0bc6e32.webp 800w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1500-3e0bc6e32.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2048" height="1365">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-24020353f.jpg" alt="Learn to create a Docker image for your Pytorch projects. Discover how to manage dependencies with Poetry and Python 3.11. We'll walk you through using Docker Buildx, handling Torch versions, and optimizing your build. Ideal for developers ready to quickly start their deep learning projects." srcset="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-400-3e0bc6e32.webp 400w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-600-3e0bc6e32.webp 600w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-700-3e0bc6e32.webp 700w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-3e0bc6e32.webp 800w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1000-3e0bc6e32.webp 1000w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1500-3e0bc6e32.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2048" height="1365">
 
             </div>
             <h3 class="post-title">Building an Efficient Docker Image with Poetry and PyTorch</h3>
@@ -613,7 +596,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-a8fc62bae.jpg" alt="Explore computer vision techniques for mapping NFL field images to real-world coordinates. Learn how to develop a web app that uses homography to transform video feed data into precise spatial insights for sports analytics" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-400-9a992963e.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-600-9a992963e.webp 600w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-9a992963e.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-1500-9a992963e.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1076">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-a8fc62bae.jpg" alt="Explore computer vision techniques for mapping NFL field images to real-world coordinates. Learn how to develop a web app that uses homography to transform video feed data into precise spatial insights for sports analytics" srcset="/generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-400-9a992963e.webp 400w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-600-9a992963e.webp 600w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-700-9a992963e.webp 700w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-800-9a992963e.webp 800w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-1000-9a992963e.webp 1000w, /generated/assets/images/fullsize/posts/2024-02-07-nfl-field-mapping/thumbnail-1500-9a992963e.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1076">
 
             </div>
             <h3 class="post-title">Image Registration in Sports Analytics:</h3>
@@ -635,7 +618,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-bf603c9e4.jpg" alt="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud." srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-400-b79bd084a.webp 400w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-600-b79bd084a.webp 600w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-b79bd084a.webp 800w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1500-b79bd084a.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1500">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-bf603c9e4.jpg" alt="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud." srcset="/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-400-b79bd084a.webp 400w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-600-b79bd084a.webp 600w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-700-b79bd084a.webp 700w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-800-b79bd084a.webp 800w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1000-b79bd084a.webp 1000w, /generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1500-b79bd084a.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1500">
 
             </div>
             <h3 class="post-title">MLFlow Deployment on AWS with Terraform</h3>
@@ -657,7 +640,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3a1d1f71c.png" alt="Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack." srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-400-3f77be17b.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-600-3f77be17b.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3f77be17b.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1500-3f77be17b.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1375">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3a1d1f71c.png" alt="Dive into the complexities of object tracking in computer vision with this detailed overview of tracking by detection. Discover the intricacies and advancements of key algorithms like SORT, DeepSORT, and ByteTrack, and learn to select the right one for your project. From foundational concepts to cutting-edge techniques, the performance and applications of multi-object tracking for real-world scenarios is dissected. SORT vs DeepSORT vs ByteTrack vs BoT-SORT vs SMILEtrack." srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-400-3f77be17b.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-600-3f77be17b.webp 600w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-700-3f77be17b.webp 700w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3f77be17b.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1000-3f77be17b.webp 1000w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1500-3f77be17b.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1375">
 
             </div>
             <h3 class="post-title">Multi-Object Tracking by Detection: A Comprehensive Guide</h3>
@@ -675,11 +658,11 @@
         <li class="post hidden">
 
           
-            <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target=”_blank”> 
+            <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target="_blank" rel="noopener">
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ecf6e2541.jpg" alt="Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs." srcset="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-400-ef622fa41.webp 400w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-600-ef622fa41.webp 600w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ef622fa41.webp 800w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1500-ef622fa41.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1500" height="1145">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ecf6e2541.jpg" alt="Revolutionizing Sports Analytics with Artificial Intelligence: Discover how StatsBomb leverages cutting-edge AI and deep learning to redefine sports analytics using homography estimation, providing unparalleled insights into player performance and game strategies. Dive into the innovative world of data-driven sports analysis with StatsBomb's latest breakthroughs." srcset="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-400-ef622fa41.webp 400w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-600-ef622fa41.webp 600w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-700-ef622fa41.webp 700w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ef622fa41.webp 800w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1000-ef622fa41.webp 1000w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1500-ef622fa41.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1500" height="1145">
 
             </div>
             <h3 class="post-title">Creating Better Data: AI & Homography Estimation</h3>
@@ -701,7 +684,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-7bcacbd1a.jpg" alt="This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology." srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-3a3c96567.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-600-3a3c96567.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-3a3c96567.webp 800w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1500-3a3c96567.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1174">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-7bcacbd1a.jpg" alt="This post compares the performance of Torchserve's REST and gRPC communication protocols for transmitting images to a computer vision deep learning model. We conducted benchmarks for structured data, Base64 encoded images, and binary image transmission. The goal is to help practitioners make informed decisions when choosing the right communication protocol for their specific use case, taking into account factors such as ease of implementation and familiarity with the technology." srcset="/generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-400-3a3c96567.webp 400w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-600-3a3c96567.webp 600w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-700-3a3c96567.webp 700w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-800-3a3c96567.webp 800w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1000-3a3c96567.webp 1000w, /generated/assets/images/fullsize/posts/2023-02-24-torchserve-grpc/thumbnail-1500-3a3c96567.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1174">
 
             </div>
             <h3 class="post-title">Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC</h3>
@@ -723,7 +706,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-12f747b51.jpg" alt="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-a56d329f5.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-a56d329f5.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-a56d329f5.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1500-a56d329f5.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1414">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-12f747b51.jpg" alt="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout" srcset="/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-400-a56d329f5.webp 400w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-600-a56d329f5.webp 600w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-700-a56d329f5.webp 700w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-800-a56d329f5.webp 800w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1000-a56d329f5.webp 1000w, /generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1500-a56d329f5.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1414">
 
             </div>
             <h3 class="post-title">CNNs & Transformers Explainability: What do they see?</h3>
@@ -745,7 +728,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-d2192aec8.jpg" alt="The best way for monitoring your server is through your own code," srcset="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-400-21c00dd3a.webp 400w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-600-21c00dd3a.webp 600w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-21c00dd3a.webp 800w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-1500-21c00dd3a.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1305">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-d2192aec8.jpg" alt="The best way for monitoring your server is through your own code," srcset="/generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-400-21c00dd3a.webp 400w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-600-21c00dd3a.webp 600w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-700-21c00dd3a.webp 700w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-800-21c00dd3a.webp 800w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-1000-21c00dd3a.webp 1000w, /generated/assets/images/fullsize/posts/2021-09-23-ansible-conda/thumbnail-1500-21c00dd3a.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1305">
 
             </div>
             <h3 class="post-title">Using Ansible and Python to monitor my servers</h3>
@@ -767,7 +750,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-90486abd7.jpg" alt="Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!" srcset="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-400-1cd432110.webp 400w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-600-1cd432110.webp 600w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-1cd432110.webp 800w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-1500-1cd432110.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1045">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-90486abd7.jpg" alt="Training a pytorch object detection model with mmdetection combined with DVC (Data Version Control) allows you to version your code, checkpoints and experiments. Learn how to do it and maximize the reproducibility of your experiments!" srcset="/generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-400-1cd432110.webp 400w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-600-1cd432110.webp 600w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-700-1cd432110.webp 700w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-800-1cd432110.webp 800w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-1000-1cd432110.webp 1000w, /generated/assets/images/fullsize/posts/2021-08-30-mmdet-dvc-tutorial/thumbnail-1500-1cd432110.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1045">
 
             </div>
             <h3 class="post-title">DVC + MMdetection</h3>
@@ -789,7 +772,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-800-565fd04ed.jpg" alt="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-400-42423977c.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-600-42423977c.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-800-42423977c.webp 800w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-1500-42423977c.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1489">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-800-565fd04ed.jpg" alt="Github actions cache is integrated with Docker buildx. Learn how to create a simple pipeline using build-push action and Github Cache. Test the new buildx cache-to exporter!" srcset="/generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-400-42423977c.webp 400w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-600-42423977c.webp 600w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-700-42423977c.webp 700w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-800-42423977c.webp 800w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-1000-42423977c.webp 1000w, /generated/assets/images/fullsize/posts/2021-07-19-new-docker-cache-is-out/thumbnail-1500-42423977c.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1489">
 
             </div>
             <h3 class="post-title">Export to Github Cache with Docker Buildx</h3>
@@ -811,7 +794,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-f41518dda.jpg" alt="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code." srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-400-cb272ff13.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-600-cb272ff13.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cb272ff13.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1500-cb272ff13.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1045">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-f41518dda.jpg" alt="Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code." srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-400-cb272ff13.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-600-cb272ff13.webp 600w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-700-cb272ff13.webp 700w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cb272ff13.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1000-cb272ff13.webp 1000w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1500-cb272ff13.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1045">
 
             </div>
             <h3 class="post-title">Version control your dataset with DVC</h3>
@@ -833,7 +816,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-1500-4b8e5649b.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1992" height="1440">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-10e1e1a09.jpg" alt="Learn how to use Docker in Github Actions improving you Continuos Integration builds. You can minimize the time spent installing Python and Conda dependencies by taking advantage of Actions Cache" srcset="/generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-400-4b8e5649b.webp 400w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-600-4b8e5649b.webp 600w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-700-4b8e5649b.webp 700w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-800-4b8e5649b.webp 800w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-1000-4b8e5649b.webp 1000w, /generated/assets/images/fullsize/posts/2021-04-23-cache-docker/thumbnail-1500-4b8e5649b.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="1992" height="1440">
 
             </div>
             <h3 class="post-title">Reduce Actions time with Docker and Github Cache</h3>
@@ -855,7 +838,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-7b652e54a.jpg" alt="Learn to generate synthetic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-400-d54e2c632.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-600-d54e2c632.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-d54e2c632.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-1500-d54e2c632.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1125">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-7b652e54a.jpg" alt="Learn to generate synthetic faces of FIFA football players using Variational Autoencoders (VAEs) and Tensorflow. Download and scrap a public dataset, train the model and see what players are generated from each country" srcset="/generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-400-d54e2c632.webp 400w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-600-d54e2c632.webp 600w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-700-d54e2c632.webp 700w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-800-d54e2c632.webp 800w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-1000-d54e2c632.webp 1000w, /generated/assets/images/fullsize/posts/2019-02-06-vae-fifa/thumbnail-1500-d54e2c632.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1125">
 
             </div>
             <h3 class="post-title">Generating FIFA 19 players with VAEs and Tensorflow</h3>
@@ -877,7 +860,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-e60febdc5.jpg" alt="This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-400-645497867.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-600-645497867.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-645497867.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1500-645497867.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1333">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-e60febdc5.jpg" alt="This post explains how to code a Variational Autoencoder from scratch using Tensorflow. You can also visualize the latent space and learn how image representations are distributed there" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-400-645497867.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-600-645497867.webp 600w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-700-645497867.webp 700w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-645497867.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1000-645497867.webp 1000w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1500-645497867.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2000" height="1333">
 
             </div>
             <h3 class="post-title">VAEs! Generating images with Tensorflow</h3>
@@ -899,7 +882,7 @@
           
 
             <div class="post-image-placeholder">
-              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow!" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-400-b3e614e1f.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-600-b3e614e1f.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1500-b3e614e1f.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2002" height="1497">
+              <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow!" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-400-b3e614e1f.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-600-b3e614e1f.webp 600w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-700-b3e614e1f.webp 700w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1000-b3e614e1f.webp 1000w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1500-b3e614e1f.webp 1500w" sizes="(min-width: 768px) 25vw, (max-width: 767px) calc(100vw - 38px), 400px" width="2002" height="1497">
 
             </div>
             <h3 class="post-title">The theory behind Variational Autoencoders</h3>
@@ -1350,6 +1333,7 @@
 </div>
 
 <script type="text/javascript" src="/libs/custom/myjs.js" defer></script>
+  </main>
 
     <div class="footer">
       <div class="footer-sign">
@@ -1361,19 +1345,19 @@
       </div>
 
       <div class="footer-icons">
-        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener" aria-label="GitHub profile">
           <i class="icon-github-circled" aria-hidden="true"></i>
         </a>
 
-        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener" aria-label="LinkedIn profile">
           <i class="icon-linkedin-squared" aria-hidden="true"></i>
         </a>
 
-        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener" aria-label="X profile">
           <i class="icon-twitter-squared" aria-hidden="true"></i>
         </a>
 
-        <a href='/feed.xml' target="_blank" rel="noopener">
+        <a href='/feed.xml' target="_blank" rel="noopener" aria-label="RSS feed">
           <i class="icon-rss-squared" aria-hidden="true"></i>
         </a>
         
@@ -1383,17 +1367,13 @@
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
   
   <!-- Mathjax -->
   
 
   <!-- Highlight.js -->
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
+  
 
 </body>
 

@@ -44,6 +44,12 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
+  <!-- Fontello
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet"
+    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+
+  
   <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
@@ -51,12 +57,6 @@
   <!-- non critical lighthouse css -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Fontello
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
-
 
   <!-- Hihglight.js
   <!-- Preload CSS -->
@@ -70,6 +70,7 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+  
 
 
   <!-- Favicon
@@ -140,6 +141,7 @@
 
 <body>
 
+  <main>
   <!-- schema.org markup to help SEO -->
 <script type="application/ld+json">
 {
@@ -544,6 +546,7 @@ spec:
         async>
   </script>
 </div>
+  </main>
 
     <div class="footer">
       <div class="footer-sign">
@@ -555,19 +558,19 @@ spec:
       </div>
 
       <div class="footer-icons">
-        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener">
+        <a href='https://github.com/mmeendez8' target="_blank" rel="noopener" aria-label="GitHub profile">
           <i class="icon-github-circled" aria-hidden="true"></i>
         </a>
 
-        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener">
+        <a href='https://www.linkedin.com/in/miguel-mendez/' target="_blank" rel="noopener" aria-label="LinkedIn profile">
           <i class="icon-linkedin-squared" aria-hidden="true"></i>
         </a>
 
-        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener">
+        <a href='https://twitter.com/mmeendez8' target="_blank" rel="noopener" aria-label="X profile">
           <i class="icon-twitter-squared" aria-hidden="true"></i>
         </a>
 
-        <a href='/feed.xml' target="_blank" rel="noopener">
+        <a href='/feed.xml' target="_blank" rel="noopener" aria-label="RSS feed">
           <i class="icon-rss-squared" aria-hidden="true"></i>
         </a>
         
@@ -577,7 +580,9 @@ spec:
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  
   
   <!-- Mathjax -->
   
@@ -596,11 +601,13 @@ spec:
   
 
   <!-- Highlight.js -->
+  
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         hljs.highlightAll();
     });
 </script>
+  
 
 </body>
 
