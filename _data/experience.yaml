@@ -5,7 +5,7 @@ experiences:
     time: "Aug'24 - now"
     title: "Senior Machine Learning Engineer"
     image: "/assets/images/fullsize/vitae/hudl.webp"
-    description: "Driving the computer vision work behind Hudl's Raw Tracking (XY) data, delivering automated player tracking from single-camera football broadcast footage at scale (120+ competitions), aligned with event data.
+    description: "Supporting automated player tracking across 120+ football competitions through Hudl's Raw Tracking (XY) data. Driving the computer vision work that extracts tracking data from single-camera broadcast footage and aligns it with event data.
     Designing and deploying multiple deep learning models that work together end-to-end for player tracking, detection, and camera calibration.
     Contributing across the full stack of the system, from model research to production pipelines processing matches every week."
 
