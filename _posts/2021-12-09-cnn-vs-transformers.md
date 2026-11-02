@@ -3,7 +3,7 @@ layout: post
 title:  "CNNs & Transformers Explainability: What do they see?"
 subtitle: "A simple explanation and visualization of ViT attentions and ResNet activations"
 author: Miguel Mendez
-description: "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout"
+description: "A Hugging Face Space to compare ResNet Class Activation Map to ViT Attention Rollout."
 image: "/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg"
 selected: y
 mathjax: y

@@ -4,6 +4,13 @@ media_queries:
 
 presets:
 
+  # Open Graph / Twitter preview image: a single 1200x630 JPG URL (no markup)
+  social:
+    markup: direct_url
+    fallback_format: jpg
+    fallback_width: 1200
+    crop: '40:21'
+
   profile:
     formats: [webp]
     widths: [200, 400, 600, 800, 1500]

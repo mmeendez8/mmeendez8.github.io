@@ -1,9 +1,16 @@
 name: "Miguel Mendez"
 title: "Senior Machine Learning Engineer, Hudl"
+job_title: "Senior Machine Learning Engineer"
+employer: "Hudl"
+employer_url: "https://www.hudl.com"
 description: "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning."
-email: "miguelmndez [AT] gmail.com"
+email: "miguelmndez@gmail.com"
+email_display: "miguelmndez [AT] gmail.com"
 profile_pic: "/assets/images/fullsize/profile-pics/main_circle.webp"
+# Social preview image used when a page has no `image` (real pixel size below)
 default_pic: "/assets/images/fullsize/profile-pics/main_rectangle.png"
+default_pic_width: 782
+default_pic_height: 459
 linkedin: "https://www.linkedin.com/in/miguel-mendez/"
 github: "https://github.com/mmeendez8"
 medium: "https://medium.com/@miguelmendez_"

@@ -4,7 +4,7 @@ title:  "The theory behind Variational Autoencoders"
 subtitle: "Learn the math"
 author: Miguel Mendez
 image: "/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail.jpg"
-description: "Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with Tensorflow! "
+description: "Learn the mathematics and theory behind Variational Autoencoders. Understand the Gaussian trick, what is the ELBO function and code your own model with TensorFlow!"
 selected: y
 mathjax: y
 tags: [Deep Learning, Variational Autoencoders, Machine Learning, Theory]

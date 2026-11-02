@@ -5,7 +5,7 @@
   "@type": "CollectionPage",
   "name": "Blog Posts",
   "description": "Technical blog posts about Machine Learning, Deep Learning, and Computer Vision",
-  "url": "{{ site.url }}/#posts",
+  "url": {{ '/#posts' | absolute_url | jsonify }},
   "mainEntity": {
     "@type": "ItemList",
     "itemListElement": [
@@ -16,15 +16,15 @@
         "position": {{ forloop.index }},
         "item": {
           "@type": "BlogPosting",
-          "headline": "{{ post.title }}",
-          "url": "{{ site.url }}{{ post.url }}",
-          "image": "{{ site.url }}{{ post.image }}",
-          "datePublished": "{{ post.date | date_to_xmlschema }}",
+          "headline": {{ post.title | jsonify }},
+          "url": {{ post.external-url | default: post.url | absolute_url | jsonify }},
+          "image": {{ post.image | absolute_url | jsonify }},
+          "datePublished": {{ post.date | date_to_xmlschema | jsonify }},
           "author": {
             "@type": "Person",
-            "@id": "{{ site.url }}/#person"
+            "@id": {{ '/#person' | absolute_url | jsonify }}
           },
-          "description": "{{ post.description | strip_html }}"
+          "description": {{ post.description | strip_html | strip_newlines | strip | jsonify }}
         }
       }{% unless forloop.last %},{% endunless %}
       {% endfor %}

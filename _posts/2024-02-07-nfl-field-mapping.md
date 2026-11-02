@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Image Registration in Sports Analytics:"
+title: "Image Registration in Sports Analytics: Mapping NFL Fields with Homography"
 subtitle: "Using computer vision to map NFL images, recover homographies, and locate players in real-world coordinates"
 author: Miguel Mendez
 description: "Explore computer vision techniques for mapping NFL field images to real-world coordinates. Learn how to develop a web app that uses homography to transform video feed data into precise spatial insights for sports analytics"

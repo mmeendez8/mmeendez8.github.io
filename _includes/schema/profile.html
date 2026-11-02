@@ -3,25 +3,26 @@
 {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
+  "url": {{ '/' | absolute_url | jsonify }},
   "mainEntity": {
     "@type": "Person",
-    "@id": "{{ site.url }}/#person",
-    "name": "{{ site.data.main_info.name }}",
-    "jobTitle": "Senior Machine Learning Engineer",
+    "@id": {{ '/#person' | absolute_url | jsonify }},
+    "name": {{ site.data.main_info.name | jsonify }},
+    "jobTitle": {{ site.data.main_info.job_title | jsonify }},
     "worksFor": {
       "@type": "Organization",
-      "name": "Hudl",
-      "url": "https://www.hudl.com"
+      "name": {{ site.data.main_info.employer | jsonify }},
+      "url": {{ site.data.main_info.employer_url | jsonify }}
     },
-    "email": "{{ site.data.main_info.email }}",
-    "image": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
-    "url": "{{ site.url }}",
+    "email": {{ site.data.main_info.email | prepend: 'mailto:' | jsonify }},
+    "image": {{ site.data.main_info.profile_pic | absolute_url | jsonify }},
+    "url": {{ '/' | absolute_url | jsonify }},
     "sameAs": [
-      "{{ site.data.main_info.linkedin }}",
-      "{{ site.data.main_info.github }}",
-      "{{ site.data.main_info.twitter_url }}",
-      "{{ site.data.main_info.medium }}",
-      "{{ site.data.main_info.stackoverflow }}"
+      {{ site.data.main_info.linkedin | jsonify }},
+      {{ site.data.main_info.github | jsonify }},
+      {{ site.data.main_info.twitter_url | jsonify }},
+      {{ site.data.main_info.medium | jsonify }},
+      {{ site.data.main_info.stackoverflow | jsonify }}
     ],
     "knowsAbout": [
       "Machine Learning",

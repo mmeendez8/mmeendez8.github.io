@@ -4,7 +4,7 @@ title:  "Version control your dataset with DVC"
 subtitle: "Use DVC and Git for tracking changes on your machine learning dataset"
 author: Miguel Mendez
 image: "/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail.jpg"
-description: "Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines at Github to test your data as you do with code."
+description: "Learn how to use DVC with a Google Drive remote for tracking changes on your dataset and create Continuous Integration pipelines on GitHub to test your data as you do with code."
 selected: y
 tags: [DVC, Data Version Control, Machine Learning, Git, CI/CD]
 categories: [Machine Learning, Data Engineering]

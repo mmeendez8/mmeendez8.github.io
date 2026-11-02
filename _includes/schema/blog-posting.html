@@ -1,52 +1,38 @@
-<!-- schema.org markup to help SEO -->
+<!-- schema.org markup to help SEO (values computed in page_meta.html) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "{{ page.title }}",
-  "datePublished": "{{ page.date | date_to_xmlschema }}",
-  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "headline": {{ page.title | jsonify }},
+  "description": {{ page_description | jsonify }},
+  "url": {{ canonical_url | jsonify }},
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "{{ site.url }}{{ page.url }}"
+    "@id": {{ canonical_url | jsonify }}
   },
+  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+  "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
   "author": {
     "@type": "Person",
-    "@id": "{{ site.url }}/#person",
-    "name": "{{ site.data.main_info.name }}",
-    "url": "{{ site.url }}",
-    "image": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
-    "jobTitle": "{{ site.data.main_info.title }}",
-    "sameAs": [
-      "{{ site.data.main_info.linkedin }}",
-      "{{ site.data.main_info.github }}",
-      "{{ site.data.main_info.twitter_url }}",
-      "{{ site.data.main_info.medium }}",
-      "{{ site.data.main_info.stackoverflow }}"
-    ]
+    "@id": {{ '/#person' | absolute_url | jsonify }},
+    "name": {{ site.data.main_info.name | jsonify }},
+    "url": {{ '/' | absolute_url | jsonify }}
   },
   "publisher": {
-    "@type": "Organization",
-    "name": "{{ site.data.main_info.name }} Blog",
-    "url": "{{ site.url }}",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ site.url }}{{ site.data.main_info.profile_pic }}",
-      "width": 691,
-      "height": 691
-    }
+    "@type": "Person",
+    "@id": {{ '/#person' | absolute_url | jsonify }},
+    "name": {{ site.data.main_info.name | jsonify }},
+    "url": {{ '/' | absolute_url | jsonify }}
   },
-  "description": "{{ page.description | default: site.description }}",
   "image": {
     "@type": "ImageObject",
-    "url": "{{ site.url }}{{ page.image }}",
-    "width": 2000,
-    "height": 1200
+    "url": {{ social_image | jsonify }},
+    "width": {{ social_image_width }},
+    "height": {{ social_image_height }}
   },
-  "keywords": "{{ page.tags | join: ', ' }}",
-  "articleSection": "{{ page.categories | join: ', ' }}",
-  "wordCount": "{{ content | number_of_words }}",
-  "inLanguage": "en",
-  "articleBody": "{{ page.description | default: content | strip_html | truncate: 500 }}"
+  "keywords": {{ page.tags | jsonify }},
+  "articleSection": {{ page.categories | first | jsonify }},
+  "wordCount": {{ page.content | strip_html | number_of_words }},
+  "inLanguage": "en"
 }
 </script>
