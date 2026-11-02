@@ -1,3 +1,4 @@
+{%- unless page.external-url -%}
 <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
 {
@@ -8,20 +9,15 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "{{ site.url }}"
+      "item": {{ '/' | absolute_url | jsonify }}
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Blog",
-      "item": "{{ site.url }}/#posts"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "{{ page.title }}",
-      "item": "{{ site.url }}{{ page.url }}"
+      "name": {{ page.title | jsonify }},
+      "item": {{ canonical_url | jsonify }}
     }
   ]
 }
 </script>
+{%- endunless -%}

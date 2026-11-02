@@ -8,30 +8,43 @@
 
   <meta charset="utf-8">
 
-  <title>{{ page.title }}</title>
+  {% include page_meta.html %}
 
+  <title>{{ page.title | escape }}</title>
+
+  <meta name="description" content="{{ page_description | escape }}">
   <meta name="author" content="{{ site.data.main_info.name }}">
-  <meta property="og:website" content="{{ site.data.main_info.name }} personal website">
-  <meta name="robots" content="max-image-preview:large">
-  <meta name="title" property="og:title" content="{{ page.title }}">
-
-  {% if page.description %}
-  <meta name="description" property="og:description" content="{{ page.description }}">
+  {% if page.noindex %}
+  <meta name="robots" content="noindex, follow">
   {% else %}
-  <meta name="description" property="og:description" content="{{ site.data.main_info.description }}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   {% endif %}
 
-  {% if page.image %}
-  <meta name="image" property="og:image" content="{{ page.image | prepend: site.relative_url }}">
-  {% else %}
-  <meta name="image" property="og:image" content="{{ site.data.main_info.default_pic | prepend: site.relative_url }}">
+  <!-- Canonical URL (posts republished elsewhere point to the original via `external-url`) -->
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="{{ site.title | escape }}">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="{{ og_type }}">
+  <meta property="og:title" content="{{ page.title | escape }}">
+  <meta property="og:description" content="{{ page_description | escape }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:image" content="{{ social_image }}">
+  <meta property="og:image:width" content="{{ social_image_width }}">
+  <meta property="og:image:height" content="{{ social_image_height }}">
+  <meta property="og:image:alt" content="{{ social_image_alt | escape }}">
+  {% if og_type == "article" %}
+  <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+  <meta property="article:modified_time" content="{{ page.last_modified_at | default: page.date | date_to_xmlschema }}">
+  <meta property="article:author" content="{{ '/' | absolute_url }}">
+  {% if page.categories.size > 0 %}
+  <meta property="article:section" content="{{ page.categories | first | escape }}">
   {% endif %}
-
-  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-  <meta property="og:type" content="website">
-
-  <!-- Set canonical link to avoid duplication in google search -->
-  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {% for tag in page.tags %}
+  <meta property="article:tag" content="{{ tag | escape }}">
+  {% endfor %}
+  {% endif %}
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -43,7 +56,11 @@
   <!-- preload fonts -->
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Regular.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
+  {% if page.layout == "post" %}
   <link rel="preload" href="{{ "/libs/external/fonts/Tiempos-Headline-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
+  {% else %}
+  <link rel="preload" href="{{ "/libs/external/fontello-bb2d1770/font/fontello.woff2?82615072" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
+  {% endif %}
 
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
@@ -91,6 +108,10 @@
   {% include twitter_card.html %}
 
   {% include schema/website.html %}
+  {% if og_type == "article" %}
+  {% include schema/blog-posting.html %}
+  {% include schema/breadcrumbs.html %}
+  {% endif %}
 
 </head>
 
@@ -137,7 +158,7 @@
   {% endif %}
   
   <!-- Mathjax -->
-  {% if page.mathjax %}
+  {% if page.mathjax == "y" %}
     {% include mathjax.html %}
   {% endif %}
 

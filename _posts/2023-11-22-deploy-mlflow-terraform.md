@@ -3,7 +3,7 @@ layout: post
 title: "MLFlow Deployment on AWS with Terraform"
 subtitle: "A Simple Guide to MLFlow Deployment on Kubernetes"
 author: Miguel Mendez
-description: "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud."
+description: "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize an MLFlow Docker image. Improve your Machine Learning experiment tracking and model management in the cloud."
 image: "/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg"
 selected: y
 mathjax: n

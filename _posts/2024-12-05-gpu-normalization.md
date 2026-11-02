@@ -3,7 +3,7 @@ layout: post
 title: "Image Normalization: Comparing CPU vs GPU Performance in PyTorch"
 subtitle: "Understanding the performance differences in Pytorch's image normalization"
 author: Miguel Mendez
-description: "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline."
+description: "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This post explores these factors and provides insights on how to optimize your data pipeline."
 image: "/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg"
 selected: y
 mathjax: n

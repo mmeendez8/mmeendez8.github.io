@@ -11,21 +11,21 @@
       "position": {{ forloop.index }},
       "item": {
         "@type": "OrganizationRole",
-        "roleName": "{{ exp.title }}",
+        "roleName": {{ exp.title | jsonify }},
         "member": {
           "@type": "Person",
-          "@id": "{{ site.url }}/#person"
+          "@id": {{ '/#person' | absolute_url | jsonify }}
         },
         "memberOf": {
           "@type": "Organization",
-          "name": "{{ exp.company }}",
-          "url": "{{ exp.url }}",
+          "name": {{ exp.company | jsonify }},
+          "url": {{ exp.url | jsonify }},
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": "{{ exp.location }}"
+            "addressLocality": {{ exp.location | strip | jsonify }}
           }
         },
-        "description": "{{ exp.description | strip_html | strip_newlines }}"
+        "description": {{ exp.description | strip_html | strip_newlines | strip | jsonify }}
       }
     }{% unless forloop.last %},{% endunless %}
     {% endfor %}

@@ -1,0 +1,31 @@
+{%- comment -%}
+  Computes the per-page values shared by the meta tags, Twitter card and
+  JSON-LD schemas. Included once at the top of <head> in default.html.
+{%- endcomment -%}
+
+{%- if page.layout == "post" -%}
+  {%- assign og_type = "article" -%}
+{%- else -%}
+  {%- assign og_type = "website" -%}
+{%- endif -%}
+
+{%- assign page_description = page.description | default: site.data.main_info.description | strip_html | strip_newlines | strip -%}
+
+{%- if page.external-url -%}
+  {%- assign canonical_url = page.external-url -%}
+{%- else -%}
+  {%- assign canonical_url = page.url | absolute_url -%}
+{%- endif -%}
+
+{%- if page.image -%}
+  {%- capture social_image -%}{% picture social {{ page.image }} %}{%- endcapture -%}
+  {%- assign social_image = social_image | strip | absolute_url -%}
+  {%- assign social_image_width = 1200 -%}
+  {%- assign social_image_height = 630 -%}
+  {%- assign social_image_alt = page.title -%}
+{%- else -%}
+  {%- assign social_image = site.data.main_info.default_pic | absolute_url -%}
+  {%- assign social_image_width = site.data.main_info.default_pic_width -%}
+  {%- assign social_image_height = site.data.main_info.default_pic_height -%}
+  {%- assign social_image_alt = site.data.main_info.name -%}
+{%- endif -%}
