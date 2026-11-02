@@ -8,26 +8,51 @@
 
   <meta charset="utf-8">
 
-  <title>CNNs & Transformers Explainability: What do they see?</title>
+  
 
+  <title>CNNs &amp; Transformers Explainability: What do they see?</title>
+
+  <meta name="description" content="A Hugging Face Space to compare ResNet Class Activation Map to ViT Attention Rollout.">
   <meta name="author" content="Miguel Mendez">
-  <meta property="og:website" content="Miguel Mendez personal website">
-  <meta name="robots" content="max-image-preview:large">
-  <meta name="title" property="og:title" content="CNNs & Transformers Explainability: What do they see?">
-
   
-  <meta name="description" property="og:description" content="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   
 
-  
-  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg">
-  
-
-  <meta property="og:url" content="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers">
-  <meta property="og:type" content="website">
-
-  <!-- Set canonical link to avoid duplication in google search -->
+  <!-- Canonical URL (posts republished elsewhere point to the original via `external-url`) -->
   <link rel="canonical" href="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Miguel Mendez AI Blog">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CNNs &amp; Transformers Explainability: What do they see?">
+  <meta property="og:description" content="A Hugging Face Space to compare ResNet Class Activation Map to ViT Attention Rollout.">
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers">
+  <meta property="og:image" content="https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1200-30f9afa0b.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CNNs &amp; Transformers Explainability: What do they see?">
+  
+  <meta property="article:published_time" content="2021-12-09T00:00:00+00:00">
+  <meta property="article:modified_time" content="2021-12-09T00:00:00+00:00">
+  <meta property="article:author" content="https://miguel-mendez-ai.com/">
+  
+  <meta property="article:section" content="Machine Learning">
+  
+  
+  <meta property="article:tag" content="CNN">
+  
+  <meta property="article:tag" content="Transformers">
+  
+  <meta property="article:tag" content="Explainability">
+  
+  <meta property="article:tag" content="ViT">
+  
+  <meta property="article:tag" content="ResNet">
+  
+  <meta property="article:tag" content="Attention">
+  
+  
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -39,7 +64,9 @@
   <!-- preload fonts -->
   <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  
   <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  
 
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
@@ -92,22 +119,16 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- Twitter cards -->
+    <!-- Twitter cards (values computed in page_meta.html) -->
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@mmeendez8">
-  <meta name="twitter:title" content="CNNs & Transformers Explainability: What do they see?">
-  
-  
-  <meta name="twitter:description" content="A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout">
-  
-  
-
-  
-  <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg">
-  
-
+  <meta name="twitter:creator" content="@mmeendez8">
+  <meta name="twitter:title" content="CNNs &amp; Transformers Explainability: What do they see?">
+  <meta name="twitter:description" content="A Hugging Face Space to compare ResNet Class Activation Map to ViT Attention Rollout.">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1200-30f9afa0b.jpg">
+  <meta name="twitter:image:alt" content="CNNs &amp; Transformers Explainability: What do they see?">
   <!-- end of Twitter cards -->
-  
+
 
   <!-- Schema.org WebSite markup -->
 <script type="application/ld+json">
@@ -115,15 +136,16 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Miguel Mendez AI Blog",
-  "url": "https://miguel-mendez-ai.com",
+  "url": "https://miguel-mendez-ai.com/",
   "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+  "inLanguage": "en",
   "author": {
     "@type": "Person",
     "@id": "https://miguel-mendez-ai.com/#person",
     "name": "Miguel Mendez",
-    "url": "https://miguel-mendez-ai.com",
+    "url": "https://miguel-mendez-ai.com/",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "Senior Machine Learning Engineer, Hudl",
+    "jobTitle": "Senior Machine Learning Engineer",
     "sameAs": [
       "https://www.linkedin.com/in/miguel-mendez/",
       "https://github.com/mmeendez8",
@@ -131,72 +153,51 @@
       "https://medium.com/@miguelmendez_",
       "https://stackoverflow.com/users/8380638/m33n"
     ]
-  },
-  "inLanguage": "en"
+  }
 }
 </script>
 
-
-</head>
-
-<body>
-
-  <main>
-  <!-- schema.org markup to help SEO -->
+  
+  <!-- schema.org markup to help SEO (values computed in page_meta.html) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "CNNs & Transformers Explainability: What do they see?",
-  "datePublished": "2021-12-09T00:00:00+00:00",
-  "dateModified": "2021-12-09T00:00:00+00:00",
+  "description": "A Hugging Face Space to compare ResNet Class Activation Map to ViT Attention Rollout.",
+  "url": "https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers"
   },
+  "datePublished": "2021-12-09T00:00:00+00:00",
+  "dateModified": "2021-12-09T00:00:00+00:00",
   "author": {
     "@type": "Person",
     "@id": "https://miguel-mendez-ai.com/#person",
     "name": "Miguel Mendez",
-    "url": "https://miguel-mendez-ai.com",
-    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "Senior Machine Learning Engineer, Hudl",
-    "sameAs": [
-      "https://www.linkedin.com/in/miguel-mendez/",
-      "https://github.com/mmeendez8",
-      "https://twitter.com/mmeendez8",
-      "https://medium.com/@miguelmendez_",
-      "https://stackoverflow.com/users/8380638/m33n"
-    ]
+    "url": "https://miguel-mendez-ai.com/"
   },
   "publisher": {
-    "@type": "Organization",
-    "name": "Miguel Mendez Blog",
-    "url": "https://miguel-mendez-ai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-      "width": 691,
-      "height": 691
-    }
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
+    "url": "https://miguel-mendez-ai.com/"
   },
-  "description": "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout",
   "image": {
     "@type": "ImageObject",
-    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail.jpg",
-    "width": 2000,
-    "height": 1200
+    "url": "https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2021-12-09-cnn-vs-transformers/thumbnail-1200-30f9afa0b.jpg",
+    "width": 1200,
+    "height": 630
   },
-  "keywords": "CNN, Transformers, Explainability, ViT, ResNet, Attention",
-  "articleSection": "Machine Learning, Explainability, Computer Vision",
-  "wordCount": "2119",
-  "inLanguage": "en",
-  "articleBody": "A Hugging Face Space to compare ResNet Class Activation Map to Vit Attention Rollout"
+  "keywords": ["CNN","Transformers","Explainability","ViT","ResNet","Attention"],
+  "articleSection": "Machine Learning",
+  "wordCount": 1887,
+  "inLanguage": "en"
 }
 </script>
 
-
-<!-- Schema.org BreadcrumbList markup -->
+  <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -206,51 +207,28 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://miguel-mendez-ai.com"
+      "item": "https://miguel-mendez-ai.com/"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Blog",
-      "item": "https://miguel-mendez-ai.com/#posts"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
       "name": "CNNs & Transformers Explainability: What do they see?",
       "item": "https://miguel-mendez-ai.com/2021/12/09/cnn-vs-transformers"
     }
   ]
 }
 </script>
+  
 
+</head>
 
-<!-- Open Graph Article Meta Tags -->
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-12-09T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-12-09T00:00:00+00:00">
-<meta property="article:author" content="Miguel Mendez">
+<body>
 
-<meta property="article:section" content="Machine Learning">
-
-
-<meta property="article:tag" content="CNN">
-
-<meta property="article:tag" content="Transformers">
-
-<meta property="article:tag" content="Explainability">
-
-<meta property="article:tag" content="ViT">
-
-<meta property="article:tag" content="ResNet">
-
-<meta property="article:tag" content="Attention">
-
-
-<header class="the-post-header">
+  <main>
+  <header class="the-post-header">
     <div class="container">
       <a href="/">
-        <h3>Miguel Méndez</h3>
+        <h3>Miguel Mendez</h3>
       </a>
       <div>
         <a  href=/index.html#posts>

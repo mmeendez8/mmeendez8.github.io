@@ -8,26 +8,49 @@
 
   <meta charset="utf-8">
 
+  
+
   <title>MLFlow Deployment on AWS with Terraform</title>
 
+  <meta name="description" content="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize an MLFlow Docker image. Improve your Machine Learning experiment tracking and model management in the cloud.">
   <meta name="author" content="Miguel Mendez">
-  <meta property="og:website" content="Miguel Mendez personal website">
-  <meta name="robots" content="max-image-preview:large">
-  <meta name="title" property="og:title" content="MLFlow Deployment on AWS with Terraform">
-
   
-  <meta name="description" property="og:description" content="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   
 
-  
-  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg">
-  
-
-  <meta property="og:url" content="https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform">
-  <meta property="og:type" content="website">
-
-  <!-- Set canonical link to avoid duplication in google search -->
+  <!-- Canonical URL (posts republished elsewhere point to the original via `external-url`) -->
   <link rel="canonical" href="https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Miguel Mendez AI Blog">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MLFlow Deployment on AWS with Terraform">
+  <meta property="og:description" content="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize an MLFlow Docker image. Improve your Machine Learning experiment tracking and model management in the cloud.">
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform">
+  <meta property="og:image" content="https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1200-3b891cc43.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MLFlow Deployment on AWS with Terraform">
+  
+  <meta property="article:published_time" content="2023-11-22T00:00:00+00:00">
+  <meta property="article:modified_time" content="2023-11-22T00:00:00+00:00">
+  <meta property="article:author" content="https://miguel-mendez-ai.com/">
+  
+  <meta property="article:section" content="Machine Learning">
+  
+  
+  <meta property="article:tag" content="MLFlow">
+  
+  <meta property="article:tag" content="AWS">
+  
+  <meta property="article:tag" content="Terraform">
+  
+  <meta property="article:tag" content="Machine Learning">
+  
+  <meta property="article:tag" content="DevOps">
+  
+  
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -39,7 +62,9 @@
   <!-- preload fonts -->
   <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  
   <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  
 
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
@@ -92,22 +117,16 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- Twitter cards -->
+    <!-- Twitter cards (values computed in page_meta.html) -->
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@mmeendez8">
+  <meta name="twitter:creator" content="@mmeendez8">
   <meta name="twitter:title" content="MLFlow Deployment on AWS with Terraform">
-  
-  
-  <meta name="twitter:description" content="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud.">
-  
-  
-
-  
-  <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg">
-  
-
+  <meta name="twitter:description" content="Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize an MLFlow Docker image. Improve your Machine Learning experiment tracking and model management in the cloud.">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1200-3b891cc43.jpg">
+  <meta name="twitter:image:alt" content="MLFlow Deployment on AWS with Terraform">
   <!-- end of Twitter cards -->
-  
+
 
   <!-- Schema.org WebSite markup -->
 <script type="application/ld+json">
@@ -115,15 +134,16 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Miguel Mendez AI Blog",
-  "url": "https://miguel-mendez-ai.com",
+  "url": "https://miguel-mendez-ai.com/",
   "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+  "inLanguage": "en",
   "author": {
     "@type": "Person",
     "@id": "https://miguel-mendez-ai.com/#person",
     "name": "Miguel Mendez",
-    "url": "https://miguel-mendez-ai.com",
+    "url": "https://miguel-mendez-ai.com/",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "Senior Machine Learning Engineer, Hudl",
+    "jobTitle": "Senior Machine Learning Engineer",
     "sameAs": [
       "https://www.linkedin.com/in/miguel-mendez/",
       "https://github.com/mmeendez8",
@@ -131,72 +151,51 @@
       "https://medium.com/@miguelmendez_",
       "https://stackoverflow.com/users/8380638/m33n"
     ]
-  },
-  "inLanguage": "en"
+  }
 }
 </script>
 
-
-</head>
-
-<body>
-
-  <main>
-  <!-- schema.org markup to help SEO -->
+  
+  <!-- schema.org markup to help SEO (values computed in page_meta.html) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "MLFlow Deployment on AWS with Terraform",
-  "datePublished": "2023-11-22T00:00:00+00:00",
-  "dateModified": "2023-11-22T00:00:00+00:00",
+  "description": "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize an MLFlow Docker image. Improve your Machine Learning experiment tracking and model management in the cloud.",
+  "url": "https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform"
   },
+  "datePublished": "2023-11-22T00:00:00+00:00",
+  "dateModified": "2023-11-22T00:00:00+00:00",
   "author": {
     "@type": "Person",
     "@id": "https://miguel-mendez-ai.com/#person",
     "name": "Miguel Mendez",
-    "url": "https://miguel-mendez-ai.com",
-    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "Senior Machine Learning Engineer, Hudl",
-    "sameAs": [
-      "https://www.linkedin.com/in/miguel-mendez/",
-      "https://github.com/mmeendez8",
-      "https://twitter.com/mmeendez8",
-      "https://medium.com/@miguelmendez_",
-      "https://stackoverflow.com/users/8380638/m33n"
-    ]
+    "url": "https://miguel-mendez-ai.com/"
   },
   "publisher": {
-    "@type": "Organization",
-    "name": "Miguel Mendez Blog",
-    "url": "https://miguel-mendez-ai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-      "width": 691,
-      "height": 691
-    }
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
+    "url": "https://miguel-mendez-ai.com/"
   },
-  "description": "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud.",
   "image": {
     "@type": "ImageObject",
-    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail.jpg",
-    "width": 2000,
-    "height": 1200
+    "url": "https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2023-11-22-deploy-mlflow-terraform/thumbnail-1200-3b891cc43.jpg",
+    "width": 1200,
+    "height": 630
   },
-  "keywords": "MLFlow, AWS, Terraform, Machine Learning, DevOps",
-  "articleSection": "Machine Learning, DevOps, Cloud",
-  "wordCount": "1995",
-  "inLanguage": "en",
-  "articleBody": "Follow this step-by-step guide on deploying MLFlow in AWS using Terraform. Learn how to effectively manage your machine learning lifecycle, set up a Postgres database, create a secure S3 bucket, and customize a MLFlow Docker image. Improve you Machine Learning experiment tracking and model management in the cloud."
+  "keywords": ["MLFlow","AWS","Terraform","Machine Learning","DevOps"],
+  "articleSection": "Machine Learning",
+  "wordCount": 1928,
+  "inLanguage": "en"
 }
 </script>
 
-
-<!-- Schema.org BreadcrumbList markup -->
+  <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -206,49 +205,28 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://miguel-mendez-ai.com"
+      "item": "https://miguel-mendez-ai.com/"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Blog",
-      "item": "https://miguel-mendez-ai.com/#posts"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
       "name": "MLFlow Deployment on AWS with Terraform",
       "item": "https://miguel-mendez-ai.com/2023/11/22/deploy-mlflow-terraform"
     }
   ]
 }
 </script>
+  
 
+</head>
 
-<!-- Open Graph Article Meta Tags -->
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2023-11-22T00:00:00+00:00">
-<meta property="article:modified_time" content="2023-11-22T00:00:00+00:00">
-<meta property="article:author" content="Miguel Mendez">
+<body>
 
-<meta property="article:section" content="Machine Learning">
-
-
-<meta property="article:tag" content="MLFlow">
-
-<meta property="article:tag" content="AWS">
-
-<meta property="article:tag" content="Terraform">
-
-<meta property="article:tag" content="Machine Learning">
-
-<meta property="article:tag" content="DevOps">
-
-
-<header class="the-post-header">
+  <main>
+  <header class="the-post-header">
     <div class="container">
       <a href="/">
-        <h3>Miguel Méndez</h3>
+        <h3>Miguel Mendez</h3>
       </a>
       <div>
         <a  href=/index.html#posts>
@@ -699,19 +677,6 @@ spec:
   
   
   <!-- Mathjax -->
-  
-    <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [["$", "$"], ["\\(", "\\)"]],
-      processEscapes: true,
-      tags: "all"    // Enable automatic equation numbering
-    }
-  };
-</script>
-
-<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
-</script>
   
 
   <!-- Highlight.js -->

@@ -8,26 +8,49 @@
 
   <meta charset="utf-8">
 
+  
+
   <title>Image Normalization: Comparing CPU vs GPU Performance in PyTorch</title>
 
+  <meta name="description" content="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This post explores these factors and provides insights on how to optimize your data pipeline.">
   <meta name="author" content="Miguel Mendez">
-  <meta property="og:website" content="Miguel Mendez personal website">
-  <meta name="robots" content="max-image-preview:large">
-  <meta name="title" property="og:title" content="Image Normalization: Comparing CPU vs GPU Performance in PyTorch">
-
   
-  <meta name="description" property="og:description" content="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   
 
-  
-  <meta name="image" property="og:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg">
-  
-
-  <meta property="og:url" content="https://miguel-mendez-ai.com/2024/12/05/gpu-normalization">
-  <meta property="og:type" content="website">
-
-  <!-- Set canonical link to avoid duplication in google search -->
+  <!-- Canonical URL (posts republished elsewhere point to the original via `external-url`) -->
   <link rel="canonical" href="https://miguel-mendez-ai.com/2024/12/05/gpu-normalization">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Miguel Mendez AI Blog">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Image Normalization: Comparing CPU vs GPU Performance in PyTorch">
+  <meta property="og:description" content="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This post explores these factors and provides insights on how to optimize your data pipeline.">
+  <meta property="og:url" content="https://miguel-mendez-ai.com/2024/12/05/gpu-normalization">
+  <meta property="og:image" content="https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-1200-b5b87e75b.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Image Normalization: Comparing CPU vs GPU Performance in PyTorch">
+  
+  <meta property="article:published_time" content="2024-12-05T00:00:00+00:00">
+  <meta property="article:modified_time" content="2024-12-05T00:00:00+00:00">
+  <meta property="article:author" content="https://miguel-mendez-ai.com/">
+  
+  <meta property="article:section" content="Deep Learning">
+  
+  
+  <meta property="article:tag" content="PyTorch">
+  
+  <meta property="article:tag" content="GPU">
+  
+  <meta property="article:tag" content="Performance">
+  
+  <meta property="article:tag" content="Computer Vision">
+  
+  <meta property="article:tag" content="Python">
+  
+  
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -39,7 +62,9 @@
   <!-- preload fonts -->
   <link rel="preload" href="/libs/external/fonts/Graphik-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  
   <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  
 
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
@@ -92,22 +117,16 @@
 
   gtag('config', 'G-LMHYVFNF1J');
 </script>
-    <!-- Twitter cards -->
+    <!-- Twitter cards (values computed in page_meta.html) -->
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@mmeendez8">
+  <meta name="twitter:creator" content="@mmeendez8">
   <meta name="twitter:title" content="Image Normalization: Comparing CPU vs GPU Performance in PyTorch">
-  
-  
-  <meta name="twitter:description" content="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline.">
-  
-  
-
-  
-  <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg">
-  
-
+  <meta name="twitter:description" content="A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This post explores these factors and provides insights on how to optimize your data pipeline.">
+  <meta name="twitter:image" content="https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-1200-b5b87e75b.jpg">
+  <meta name="twitter:image:alt" content="Image Normalization: Comparing CPU vs GPU Performance in PyTorch">
   <!-- end of Twitter cards -->
-  
+
 
   <!-- Schema.org WebSite markup -->
 <script type="application/ld+json">
@@ -115,15 +134,16 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Miguel Mendez AI Blog",
-  "url": "https://miguel-mendez-ai.com",
+  "url": "https://miguel-mendez-ai.com/",
   "description": "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning.",
+  "inLanguage": "en",
   "author": {
     "@type": "Person",
     "@id": "https://miguel-mendez-ai.com/#person",
     "name": "Miguel Mendez",
-    "url": "https://miguel-mendez-ai.com",
+    "url": "https://miguel-mendez-ai.com/",
     "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "Senior Machine Learning Engineer, Hudl",
+    "jobTitle": "Senior Machine Learning Engineer",
     "sameAs": [
       "https://www.linkedin.com/in/miguel-mendez/",
       "https://github.com/mmeendez8",
@@ -131,72 +151,51 @@
       "https://medium.com/@miguelmendez_",
       "https://stackoverflow.com/users/8380638/m33n"
     ]
-  },
-  "inLanguage": "en"
+  }
 }
 </script>
 
-
-</head>
-
-<body>
-
-  <main>
-  <!-- schema.org markup to help SEO -->
+  
+  <!-- schema.org markup to help SEO (values computed in page_meta.html) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "Image Normalization: Comparing CPU vs GPU Performance in PyTorch",
-  "datePublished": "2024-12-05T00:00:00+00:00",
-  "dateModified": "2024-12-05T00:00:00+00:00",
+  "description": "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This post explores these factors and provides insights on how to optimize your data pipeline.",
+  "url": "https://miguel-mendez-ai.com/2024/12/05/gpu-normalization",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://miguel-mendez-ai.com/2024/12/05/gpu-normalization"
   },
+  "datePublished": "2024-12-05T00:00:00+00:00",
+  "dateModified": "2024-12-05T00:00:00+00:00",
   "author": {
     "@type": "Person",
     "@id": "https://miguel-mendez-ai.com/#person",
     "name": "Miguel Mendez",
-    "url": "https://miguel-mendez-ai.com",
-    "image": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-    "jobTitle": "Senior Machine Learning Engineer, Hudl",
-    "sameAs": [
-      "https://www.linkedin.com/in/miguel-mendez/",
-      "https://github.com/mmeendez8",
-      "https://twitter.com/mmeendez8",
-      "https://medium.com/@miguelmendez_",
-      "https://stackoverflow.com/users/8380638/m33n"
-    ]
+    "url": "https://miguel-mendez-ai.com/"
   },
   "publisher": {
-    "@type": "Organization",
-    "name": "Miguel Mendez Blog",
-    "url": "https://miguel-mendez-ai.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://miguel-mendez-ai.com/assets/images/fullsize/profile-pics/main_circle.webp",
-      "width": 691,
-      "height": 691
-    }
+    "@type": "Person",
+    "@id": "https://miguel-mendez-ai.com/#person",
+    "name": "Miguel Mendez",
+    "url": "https://miguel-mendez-ai.com/"
   },
-  "description": "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline.",
   "image": {
     "@type": "ImageObject",
-    "url": "https://miguel-mendez-ai.com/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail.jpg",
-    "width": 2000,
-    "height": 1200
+    "url": "https://miguel-mendez-ai.com/generated/assets/images/fullsize/posts/2024-12-05-gpu-normalization/thumbnail-1200-b5b87e75b.jpg",
+    "width": 1200,
+    "height": 630
   },
-  "keywords": "PyTorch, GPU, Performance, Computer Vision, Python",
-  "articleSection": "Deep Learning, Performance, CUDA",
-  "wordCount": "2054",
-  "inLanguage": "en",
-  "articleBody": "A profiling comparison between CPU and GPU performance when normalizing images in PyTorch. There are several factors to consider when optimizing preprocessing pipelines, such as data types, data transfer, and parallel processing capabilities. This posts explores these factors and provides insights on how to optimize your data pipeline."
+  "keywords": ["PyTorch","GPU","Performance","Computer Vision","Python"],
+  "articleSection": "Deep Learning",
+  "wordCount": 2007,
+  "inLanguage": "en"
 }
 </script>
 
-
-<!-- Schema.org BreadcrumbList markup -->
+  <!-- Schema.org BreadcrumbList markup -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -206,49 +205,28 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://miguel-mendez-ai.com"
+      "item": "https://miguel-mendez-ai.com/"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Blog",
-      "item": "https://miguel-mendez-ai.com/#posts"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
       "name": "Image Normalization: Comparing CPU vs GPU Performance in PyTorch",
       "item": "https://miguel-mendez-ai.com/2024/12/05/gpu-normalization"
     }
   ]
 }
 </script>
+  
 
+</head>
 
-<!-- Open Graph Article Meta Tags -->
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2024-12-05T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-12-05T00:00:00+00:00">
-<meta property="article:author" content="Miguel Mendez">
+<body>
 
-<meta property="article:section" content="Deep Learning">
-
-
-<meta property="article:tag" content="PyTorch">
-
-<meta property="article:tag" content="GPU">
-
-<meta property="article:tag" content="Performance">
-
-<meta property="article:tag" content="Computer Vision">
-
-<meta property="article:tag" content="Python">
-
-
-<header class="the-post-header">
+  <main>
+  <header class="the-post-header">
     <div class="container">
       <a href="/">
-        <h3>Miguel Méndez</h3>
+        <h3>Miguel Mendez</h3>
       </a>
       <div>
         <a  href=/index.html#posts>
@@ -595,19 +573,6 @@ Speedup: 3.69x
   
   
   <!-- Mathjax -->
-  
-    <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [["$", "$"], ["\\(", "\\)"]],
-      processEscapes: true,
-      tags: "all"    // Enable automatic equation numbering
-    }
-  };
-</script>
-
-<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
-</script>
   
 
   <!-- Highlight.js -->
