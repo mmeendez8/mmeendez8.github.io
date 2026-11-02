@@ -18,8 +18,8 @@ presets:
     attributes:
       img: 'fetchpriority="high"'
     sizes:
-      desktop: 250px
-      mobile: 200px
+      desktop: 280px
+      mobile: 220px
     size: 400px
     fallback_width: 400
 

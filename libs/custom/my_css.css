@@ -1,6 +1,9 @@
 /*  ================ Fonts  ================ */
+/* Headings use a tighter line-height than body text: 1.6 is right for
+   paragraphs but makes multi-line titles look like separate lines. */
 h1,.h1{
   font-size: 3.5rem;
+  line-height: 1.15;
   color: #030303;
   margin-top: 0;
   margin-bottom: 1rem;
@@ -10,12 +13,12 @@ h1,.h1{
 @media (min-width: 768px){
   h1,.h1{
     font-size: 6rem;
-    color: #030303;
   }
 }
 
 h2,.h2{
-  font-size: 3rem;;
+  font-size: 3rem;
+  line-height: 1.25;
   color: #030303;
   font-weight: 600;
   margin-top: 0;
@@ -25,9 +28,10 @@ h2,.h2{
 
 .h3, h3 {
   font-size: 2rem;
+  line-height: 1.3;
   margin-top: 0;
   margin-bottom: 1rem;
-  font-weight: regular;
+  font-weight: 600;
 }
 
 h4 {
@@ -54,14 +58,12 @@ html {
 }
 
 body{
-  color: #767676;
   margin: 0px;
-  line-height: 1.5;
-  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+  font-size: 1.6em; /* 16px; ems because of an old Chrome bug with rems on body */
   line-height: 1.6;
   font-weight: 400;
   font-family: Graphik,Arial,sans-serif;
-  color: #222; 
+  color: #222;
 }
 
 a {
@@ -155,76 +157,387 @@ table thead {
 }
 
 
-/*  ================ Header  ================ */
+/*  ================ Header (hero)  ================ */
 
-.header-container{
+.hero {
+  position: relative;
+  display: grid;
+  gap: 3.2rem;
+  align-items: center;
+  padding: 4rem 0 7.2rem;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr 28rem;
+    gap: 6.4rem;
+    padding: 8rem 0 9.6rem;
+  }
+}
+
+.hero-eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.25rem;
+  color: #5b63fe;
+  margin: 0 0 1.6rem;
+}
+
+.hero-name {
+  font-family: "Tiempos Headline", Georgia, serif;
+  font-weight: 400; /* the file is already the semibold cut */
+  font-size: 5.2rem;
+  line-height: 1.02;
+  letter-spacing: -.02em;
+  margin: 0 0 2rem;
+}
+
+@media (min-width: 768px) {
+  .hero-name {
+    font-size: 7.6rem;
+  }
+}
+
+.hero-lede {
+  font-size: 1.9rem;
+  line-height: 1.55;
+  color: #767676;
+  max-width: 32em;
+  margin: 0 0 3.2rem;
+}
+
+.hero-lede strong {
+  color: #030303;
+  font-weight: 600;
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+}
+
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 1.1rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid #e4e4e4;
+  background: #fff;
+  color: #030303;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background-color .2s, transform .2s;
+}
+
+.hero-link:hover {
+  border-color: #5b63fe;
+  color: #5b63fe;
+  transform: translateY(-1px);
+}
+
+.hero-link.is-primary {
+  background: #030303;
+  border-color: #030303;
+  color: #fff;
+}
+
+.hero-link.is-primary:hover {
+  background: #5b63fe;
+  border-color: #5b63fe;
+  color: #fff;
+}
+
+.hero-link svg {
+  width: 1em;
+  height: 1em;
+}
+
+.hero-link i::before {
+  margin: 0;
+}
+
+/* --- photo with a fake live detector on top --- */
+
+.hero-cam {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  justify-self: center;
+}
+
+@media (max-width: 767px) {
+  .hero-cam {
+    order: -1;
+    justify-self: start;
+    max-width: 22rem;
+  }
+}
+
+.hero-cam img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 864 / 1024;
+  object-fit: cover;
+  border-radius: 2rem;
+}
+
+.hero-scan {
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30%;
+  /* Moved with transform, not top, so the sweep never counts as a layout shift */
+  transform: translateY(-100%);
+  background: linear-gradient(to bottom, transparent, rgba(200,194,255,.55) 85%, rgba(255,255,255,.9));
+  animation: hero-scan 1.6s .4s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes hero-scan {
+  to { transform: translateY(334%); }
+}
+
+.hero-hud,
+.hero-tag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-hud {
+  position: absolute;
+  left: 1.2rem;
+  top: 1.2rem;
   display: flex;
   flex-direction: column;
-  text-align: center;
+  gap: .1rem;
+  padding: .5rem .8rem;
+  border-radius: .6rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(3,3,3,.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.hero-hud-row {
+  display: flex;
   align-items: center;
-  margin-top: 30px;
-  margin-bottom: 40px;
+  gap: .6rem;
 }
 
-@media (min-width: 768px){
-  .header-container{
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    align-items: center;
-    margin-top: 60px;
-    margin-bottom: 60px;
+.hero-hud-dim {
+  color: rgba(255,255,255,.65);
+}
+
+.hero-rec {
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  background: #ff5a5a;
+  flex: none;
+  animation: hero-blink 1.4s steps(2) infinite;
+}
+
+@keyframes hero-blink {
+  50% { opacity: 0; }
+}
+
+/* Person spans x 35-74%, y 51-100% of main_full.jpg; the face x 48-62%, y 51-67% */
+.hero-box {
+  position: absolute;
+  left: 34%;
+  top: 50%;
+  width: 41%;
+  height: 50%;
+  border: 1.5px solid #5b63fe;
+  border-bottom: 0;
+  border-radius: .4rem .4rem 0 0;
+  background: rgba(91,99,254,.08);
+  animation: hero-lock .5s 1.6s cubic-bezier(.2,.7,.2,1) backwards;
+  transition: transform .12s linear;
+}
+
+.hero-box.is-face {
+  left: 47.5%;
+  top: 50.5%;
+  width: 15.5%;
+  height: 17%;
+  border: 1.5px solid #c8c2ff;
+  border-radius: .4rem;
+  background: none;
+  animation-delay: 1.8s;
+}
+
+@keyframes hero-lock {
+  from { opacity: 0; transform: scale(1.25); }
+  to { opacity: 1; transform: none; }
+}
+
+.hero-tag {
+  position: absolute;
+  left: -1.5px;
+  bottom: 100%;
+  margin-bottom: .4rem;
+  white-space: nowrap;
+  font-size: 1.15rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: .02em;
+  padding: .45rem .7rem;
+  border-radius: .4rem;
+  background: #5b63fe;
+  color: #fff;
+}
+
+.hero-box.is-face .hero-tag {
+  left: 100%;
+  bottom: auto;
+  top: -1.5px;
+  margin: 0 0 0 .4rem;
+  background: #c8c2ff;
+  color: #030303;
+}
+
+@media (max-width: 767px) {
+  .hero-box.is-face .hero-tag {
+    display: none;
   }
 }
 
-@media (min-width: 768px){
-  .header-img{
-    flex-basis: 40%;
-    overflow: hidden;
-    line-height: 0;
-    max-width: 250px;
-    margin-bottom: 0px;;
+/* --- visitor tracker (mouse only, driven by myjs.js) --- */
+
+/* overflow: hidden keeps the box and trail from ever widening the page */
+.hero-tracker {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Desktop with a real mouse only: no tracker on phones, tablets or touch */
+@media (max-width: 767px), (hover: none), (pointer: coarse) {
+  .hero-tracker {
+    display: none;
   }
 }
 
-@media (max-width: 768px){
-  .header-img{
-    overflow: hidden;
-    line-height: 0;
-    max-width: 200px;
-    margin-bottom: 20px;
+.hero-trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hero-trail polyline {
+  fill: none;
+  stroke: #c8c2ff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2 5;
+}
+
+.hero-visitor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  border: 1.5px solid #5b63fe;
+  border-radius: .6rem;
+  background: rgba(91,99,254,.06);
+  transition: opacity .25s;
+}
+
+.hero-visitor.is-on {
+  opacity: 1;
+}
+
+.hero-visitor .hero-tag {
+  background: #c8c2ff;
+  color: #030303;
+}
+
+.hero-visitor.is-lost {
+  border-style: dashed;
+}
+
+.hero-visitor.is-lost .hero-tag {
+  background: #e4e4e4;
+  color: #767676;
+}
+
+/* Entrance: the text rises in line by line. The photo is not faded in: it is
+   the page's LCP element, and an opacity animation would delay LCP until it ends. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-text > * {
+    animation: hero-rise .7s cubic-bezier(.2,.7,.2,1) backwards;
   }
+  .hero-text > :nth-child(2) { animation-delay: .08s; }
+  .hero-text > :nth-child(3) { animation-delay: .16s; }
+  .hero-text > :nth-child(4) { animation-delay: .24s; }
 }
 
-.header-img:hover img {
-  opacity: 0.3;
-  transition-duration: 500ms;
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(12px); }
 }
 
-.header-title{
-  flex-basis: 60%;
-}
-
-.header-title p{
-  margin-bottom: .5em;
+@media (prefers-reduced-motion: reduce) {
+  .hero-scan { display: none; }
+  .hero-box, .hero-rec { animation: none; }
 }
 
 /*  ================ Sections  ================ */
 
+/* A section heading should sit clearly closer to its own content than to
+   the section above it, so the gap between sections is ~3x the gap under
+   the heading. */
 .section {
-  margin-bottom: 2.4rem;
+  margin-bottom: 5.6rem;
 }
 
 @media (min-width: 768px){
   .section {
-    margin-bottom: 7.2rem;
+    margin-bottom: 8rem;
   }
 }
 
+.section > h2 {
+  margin-bottom: 1.6rem;
+}
+
+/* h2 is inline-block, so the next element's top margin would not collapse
+   into it and some sections would sit further from their heading than others. */
+.section > h2 + * {
+  margin-top: 0;
+}
+
 @media (min-width: 768px){
-  .section h2{
-    padding-bottom: 35px;
+  .section > h2 {
+    margin-bottom: 2.4rem;
   }
+}
+
+#news li p {
+  margin: 0 0 .8em;
 }
 
 .section a::after {
@@ -258,16 +571,19 @@ table thead {
   list-style: none;
 }
 
-@media (max-width: 768px){
+@media (max-width: 767px){
   .posts li{
-    margin-bottom: 20px;
+    margin-bottom: 4rem;
   }
 }
 
+/* More space between rows than between columns, so each card's
+   description reads as belonging to the image above it, not the one below. */
 @media (min-width: 768px){
   .posts {
     grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
+    column-gap: 3.2rem;
+    row-gap: 4.8rem;
     display: grid;
   }
 }
@@ -288,23 +604,22 @@ table thead {
   color: #5b63fe;
 }
 
+/* The Tiempos file is already the semibold cut but is registered as weight
+   400, so anything above 400 made the browser fake-bold it. */
 .post-title{
   font-family: Tiempos Headline,Arial,sans-serif;
-  padding-top: 1rem;
-  font-size: 2.5rem;
-  -webkit-transition: color .3s;
-  transition: color .3s;
-  transition-property: color;
-  transition-duration: 0.3s;
-  transition-timing-function: ease;
-  transition-delay: 0s;
-  color: #030303
-
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1.25;
+  margin: 1.6rem 0 .6rem;
+  transition: color .3s ease;
+  color: #030303;
 }
 
 .post-description {
   color: #767676;
   margin: 0px;
+  line-height: 1.5;
 }
 
 .post-center-image {
@@ -489,7 +804,7 @@ table thead {
 }
 .vitae-title{
   color: #030303;
-  font-size: medium;
+  font-size: 1.7rem;
 }
 
 @media (min-width: 768px){
@@ -518,20 +833,20 @@ table thead {
 }
 
 .publications-content li, .other-projects-content li{
-  margin-bottom: 5rem;
+  margin-bottom: 3.6rem;
 }
 
 .publication-title, .other-project-title{
-  font-size: medium;
-  margin-bottom: .3rem;
+  font-size: 1.7rem;
+  margin-bottom: .4rem;
   color: #030303
 }
 
-.publication-venue, .other-project-description {
-  margin-bottom: 1rem;
+.publications-content p, .other-projects-content p {
+  margin: 0 0 .4rem;
 }
 
-.publication-authors, .other-project-description{
+.other-project-description{
   color: #767676
 }
 
@@ -643,23 +958,37 @@ table thead {
   max-width: 100% !important;
 }
 .the-post-title{
-  font-size: 3rem;
+  font-size: 3.2rem;
+  font-weight: 400; /* see .post-title: the file is already semibold */
+  line-height: 1.2;
   font-family: Tiempos Headline,Arial,sans-serif;
-  color: #030303
+  color: #030303;
+  margin-bottom: 1.2rem;
 }
 
 @media (min-width: 768px) {
   .the-post-title{
-    font-size: 4rem;
+    font-size: 4.4rem;
   }
 }
 
 .the-post-date{
+  display: block;
+  margin-bottom: 1rem;
   color:#5c68ff
 }
 
 .the-post-subtitle{
-  font-size: 1.3em;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  color: #767676;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .the-post-subtitle{
+    font-size: 2rem;
+  }
 }
 
 .the-post-image{
@@ -698,11 +1027,13 @@ table thead {
   width: 100%;
 }
 
+/* 768px minus the 2.4rem side padding leaves a 720px column, about 75-80
+   characters per line at 19px. */
 .the-post-content{
-  font-size: 16px;
+  font-size: 17px;
   color: #030303;
   line-height: 1.7;
-  max-width: 800px;
+  max-width: 768px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -711,6 +1042,37 @@ table thead {
   .the-post-content{
     font-size: 19px;
   }
+}
+
+/* Headings get more space above than below, so they visibly start a new
+   section instead of hugging the end of the previous one. */
+.the-post-content h2 {
+  display: block;
+  font-size: 2.6rem;
+  margin: 2em 0 .6em;
+}
+
+.the-post-content h3 {
+  font-size: 2.1rem;
+  margin: 1.8em 0 .5em;
+}
+
+@media (min-width: 768px) {
+  .the-post-content h2 {
+    font-size: 3rem;
+  }
+
+  .the-post-content h3 {
+    font-size: 2.3rem;
+  }
+}
+
+.the-post-content > :first-child {
+  margin-top: 0;
+}
+
+.the-post-content li + li {
+  margin-top: .4em;
 }
 
 .the-post-container{
@@ -732,6 +1094,9 @@ table thead {
 .image-caption {
   text-align: center;
   font-size: 16px;
+  line-height: 1.5;
+  color: #767676;
+  margin-top: .6em;
 }
 
 .share-button {
