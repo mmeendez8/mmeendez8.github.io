@@ -5,6 +5,8 @@ baseurl: null
 relative_url: "https://miguel-mendez-ai.com"
 url: "https://miguel-mendez-ai.com"
 permalink: /:year/:month/:day/:title
+# Netlify headers file (Jekyll skips files starting with "_" unless included)
+include: [_headers]
 title: "Miguel Mendez AI Blog"
 description: "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning."
 

@@ -64,21 +64,65 @@ pointsTemplateCanvas.width = templateCanvas.width;
 pointsTemplateCanvas.height = templateCanvas.height;
 
 
-// Wait for opencv to load
-cv.onRuntimeInitialized = function() {
-    drawTemplate();
+// OpenCV.js is ~3 MB, so it is only downloaded when the tool is about to be
+// used: when it scrolls near the viewport, or as soon as the user interacts.
+const OPENCV_URL = 'https://cdn.jsdelivr.net/npm/@techstark/opencv-js@4.10.0-release.1/dist/opencv.js';
+let openCVReady = null;
 
-    // Load template image from canvas to opencv matrix
-    let imgData = ctxTemplate.getImageData(0, 0, ctxTemplate.canvas.width, ctxTemplate.canvas.height);
-    let data = new Uint8Array(imgData.data.buffer);
-    templateImage = new cv.Mat(ctxTemplate.canvas.height, ctxTemplate.canvas.width, cv.CV_8UC4);
-    templateImage.data.set(data);
-};
+function loadOpenCV() {
+    if (openCVReady) return openCVReady;
+
+    openCVReady = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = OPENCV_URL;
+        script.async = true;
+        script.onload = () => {
+            // Depending on the build, `cv` is a promise, a ready module, or a module still initializing
+            if (typeof cv.then === 'function') {
+                cv.then(module => { window.cv = module; resolve(); });
+            } else if (cv.Mat) {
+                resolve();
+            } else {
+                cv.onRuntimeInitialized = resolve;
+            }
+        };
+        script.onerror = () => reject(new Error('Failed to load OpenCV.js from ' + OPENCV_URL));
+        document.head.appendChild(script);
+    }).then(() => {
+        // Load template image from canvas to opencv matrix
+        let imgData = ctxTemplate.getImageData(0, 0, ctxTemplate.canvas.width, ctxTemplate.canvas.height);
+        let data = new Uint8Array(imgData.data.buffer);
+        templateImage = new cv.Mat(ctxTemplate.canvas.height, ctxTemplate.canvas.width, cv.CV_8UC4);
+        templateImage.data.set(data);
+    }).catch(error => {
+        openCVReady = null; // allow a retry on the next interaction
+        throw error;
+    });
+
+    return openCVReady;
+}
+
+// The template is plain canvas drawing, so show it right away
+drawTemplate();
+
+const toolContainer = document.getElementById('button-container').closest('.app-container');
+if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+            observer.disconnect();
+            loadOpenCV().catch(console.error);
+        }
+    }, { rootMargin: '600px 0px' });
+    observer.observe(toolContainer);
+} else {
+    loadOpenCV().catch(console.error);
+}
 
 function handleImage(e) {
     var reader = new FileReader();
     reader.onload = function(event) {
-        img.onload = function() {
+        img.onload = async function() {
+            await loadOpenCV();
             sourceImage = cv.imread(img);
             var container = document.getElementById('canvasContainer');
             
@@ -253,12 +297,14 @@ function printMatrix(mat) {
     }
 }
 
-function computeHomography() {
+async function computeHomography() {
     // Check that both lists of points have the same size and that their size is at least 4
     if (pointsImage.length !== pointsTemplate.length || pointsImage.length < 4) {
         alert('Both lists of points must have the same size and contain at least 4 points');
         return;
     }
+
+    await loadOpenCV();
 
     // Convert points to cv.Mat format
     let imagePoints = cv.matFromArray(pointsImage.length, 1, cv.CV_32FC2, pointsImage.flatMap(point => [Math.round(point.x), Math.round(point.y)]));
