@@ -56,11 +56,10 @@
   <!-- preload fonts -->
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Regular.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
-  {% if page.layout == "post" %}
   <link rel="preload" href="{{ "/libs/external/fonts/Tiempos-Headline-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
-  {% else %}
+  {% unless page.layout == "post" %}
   <link rel="preload" href="{{ "/libs/external/fontello-bb2d1770/font/fontello.woff2?82615072" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
-  {% endif %}
+  {% endunless %}
 
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
