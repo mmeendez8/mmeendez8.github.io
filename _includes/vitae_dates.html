@@ -1,0 +1,52 @@
+{% comment %}
+  Parses an experience `time` string like "Aug'24 - now", "Feb'22 - Jul'24" or
+  "Feb 2022 - Jul 2024" (include.time) and assigns, for the caller to use:
+    vd_start_year, vd_end_year, vd_is_now,
+    vd_range ("2024.08 → now"), vd_duration ("2y 6m", empty if the range is invalid)
+  Jekyll includes share the caller's scope, so these are visible after the include.
+{% endcomment %}
+{%- assign vd_months = "jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec" | split: "," -%}
+{%- assign vd_time = include.time | replace: "–", "-" | replace: "—", "-" | replace: "’", "'" -%}
+{%- assign vd_parts = vd_time | split: "-" -%}
+{%- assign vd_a = vd_parts[0] | strip | downcase -%}
+{%- assign vd_b = vd_parts[1] | strip | downcase -%}
+{%- if vd_parts.size < 2 -%}{%- assign vd_b = vd_a -%}{%- endif -%}
+
+{%- assign vd_a_mon = vd_a | slice: 0, 3 -%}
+{%- assign vd_yy = vd_a | split: "'" | last | split: " " | last -%}
+{%- if vd_yy.size == 2 -%}{%- assign vd_yy = vd_yy | prepend: "20" -%}{%- endif -%}
+{%- assign vd_start_year = vd_yy | plus: 0 -%}
+{%- assign vd_start_m = 1 -%}
+{%- for m in vd_months -%}{%- if m == vd_a_mon -%}{%- assign vd_start_m = forloop.index -%}{%- endif -%}{%- endfor -%}
+
+{%- if vd_b == "now" or vd_b == "present" -%}
+  {%- assign vd_is_now = true -%}
+  {%- assign vd_end_year = site.time | date: "%Y" | plus: 0 -%}
+  {%- assign vd_end_m = site.time | date: "%-m" | plus: 0 -%}
+{%- else -%}
+  {%- assign vd_is_now = false -%}
+  {%- assign vd_b_mon = vd_b | slice: 0, 3 -%}
+  {%- assign vd_yy = vd_b | split: "'" | last | split: " " | last -%}
+  {%- if vd_yy.size == 2 -%}{%- assign vd_yy = vd_yy | prepend: "20" -%}{%- endif -%}
+  {%- assign vd_end_year = vd_yy | plus: 0 -%}
+  {%- assign vd_end_m = 1 -%}
+  {%- for m in vd_months -%}{%- if m == vd_b_mon -%}{%- assign vd_end_m = forloop.index -%}{%- endif -%}{%- endfor -%}
+{%- endif -%}
+
+{%- assign vd_start_pad = vd_start_m | prepend: "0" | slice: -2, 2 -%}
+{%- assign vd_end_pad = vd_end_m | prepend: "0" | slice: -2, 2 -%}
+{%- if vd_is_now -%}
+  {%- capture vd_range -%}{{ vd_start_year }}.{{ vd_start_pad }} → now{%- endcapture -%}
+{%- else -%}
+  {%- capture vd_range -%}{{ vd_start_year }}.{{ vd_start_pad }} → {{ vd_end_year }}.{{ vd_end_pad }}{%- endcapture -%}
+{%- endif -%}
+
+{%- assign vd_total = vd_end_year | minus: vd_start_year | times: 12 | plus: vd_end_m | minus: vd_start_m | plus: 1 -%}
+{%- assign vd_duration = "" -%}
+{%- if vd_total > 0 -%}
+  {%- assign vd_y = vd_total | divided_by: 12 -%}
+  {%- assign vd_mo = vd_total | modulo: 12 -%}
+  {%- assign vd_duration = "" -%}
+  {%- if vd_y > 0 -%}{%- assign vd_duration = vd_y | append: "y" -%}{%- endif -%}
+  {%- if vd_mo > 0 -%}{%- assign vd_duration = vd_duration | append: " " | append: vd_mo | append: "m" | strip -%}{%- endif -%}
+{%- endif -%}

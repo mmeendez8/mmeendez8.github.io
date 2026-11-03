@@ -1,0 +1,43 @@
+{% comment %}
+  Vitae as "detect rows": each experience is a row that gets a bounding box
+  (the hero detector's visual language) on hover and when open. Only one row
+  is open at a time (libs/custom/myjs.js). Without JS every row is shown open.
+{% endcomment %}
+{%- assign vitae_exps = site.data.experience.experiences -%}
+{%- assign vitae_pre = include.id | default: 'vitae' -%}
+<ol class="vitae{% if include.class %} {{ include.class }}{% endif %}" data-vitae>
+  {%- for exp in vitae_exps %}
+  {%- include vitae_dates.html time=exp.time -%}
+  {%- assign vitae_id = forloop.rindex | prepend: '0' | slice: -2, 2 -%}
+  {%- assign vitae_slug = exp.image | split: '/' | last | split: '.' | first -%}
+  {%- assign vitae_open = forloop.first %}
+  <li class="vitae-row{% if vitae_open %} is-open{% endif %}">
+    <span class="vitae-box" aria-hidden="true"><span class="vitae-tag">ID {{ vitae_id }} · {{ vitae_slug }}{% if vd_is_now or vd_duration != "" %} · {% endif %}{% if vd_is_now %}live{% elsif vd_duration != "" %}{{ vd_duration }}{% endif %}</span></span>
+    <span class="vitae-cross" aria-hidden="true"></span>
+    <h3 class="vitae-heading">
+      <button class="vitae-toggle" type="button" id="{{ vitae_pre }}-t-{{ forloop.index }}" aria-expanded="{{ vitae_open }}" aria-controls="{{ vitae_pre }}-p-{{ forloop.index }}">
+        <span class="vitae-years">{{ vd_start_year }}{% if vd_is_now %}<small> → now</small>{% elsif vd_end_year != vd_start_year %}<small> → {{ vd_end_year }}</small>{% endif %}</span>
+        <span class="vitae-logo" aria-hidden="true">{% picture exp-logos {{ exp.image }} --alt {{ exp.company }} logo %}</span>
+        <span class="vitae-what">
+          <span class="vitae-title">{{ exp.title }}</span>
+          <span class="vitae-company">{{ exp.company }}</span>
+        </span>
+        <span class="vitae-loc">{{ exp.location }}</span>
+        <span class="vitae-plus" aria-hidden="true"></span>
+      </button>
+    </h3>
+    <div class="vitae-panel" id="{{ vitae_pre }}-p-{{ forloop.index }}" role="region" aria-labelledby="{{ vitae_pre }}-t-{{ forloop.index }}">
+      <div><div class="vitae-panel-inner">
+        <div class="vitae-meta">
+          <span class="vitae-range">{{ vd_range }}</span>
+          {% if vd_is_now %}<span class="vitae-live">current</span>{% elsif vd_duration != "" %}<span class="vitae-dur">{{ vd_duration }}</span>{% endif %}
+          <span class="vitae-meta-loc">{{ exp.location }}</span>
+        </div>
+        <p class="vitae-desc">{{ exp.description | strip }}</p>
+        <a class="vitae-link" href="{{ exp.url }}" target="_blank" rel="noopener">{{ exp.url | remove: 'https://' | remove: 'http://' | remove: 'www.' | split: '/' | first }} <span aria-hidden="true">↗</span></a>
+      </div></div>
+    </div>
+  </li>
+  {%- endfor %}
+</ol>
+<noscript><style>.vitae-panel { grid-template-rows: 1fr !important; visibility: visible !important; } .vitae-plus { display: none; }</style></noscript>
