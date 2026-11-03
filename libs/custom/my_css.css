@@ -838,9 +838,14 @@ table thead {
   transition: opacity .18s, transform .3s cubic-bezier(.2,.8,.2,1), background-color .2s;
 }
 
+/* The box reaches 2rem into the container's 2.4rem padding, leaving 4px.
+   The hidden state's 2.5% horizontal zoom would push past that and make the
+   page scroll sideways, so wide boxes keep the vertical lock-on but barely
+   grow horizontally (≤ 3px a side at the 1000px container). */
 @media (min-width: 768px) {
   .vitae-box {
     inset: 0 -2rem;
+    transform: scale(1.006, 1.08);
   }
 }
 
