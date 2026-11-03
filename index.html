@@ -135,42 +135,6 @@ title: Miguel Mendez | Personal Webpage
 
   </div>
 
-  <!-- ========== Publications ========== -->
-  <div class="section" id="publications">
-    <h2>Publications</h2>
-
-    <ul class="publications-content">
-      {% for paper in site.data.publications.publications %}
-      <li class="publications-item">
-        <h3 class="publication-title">{{ paper.title }}</h3>
-        <a target="_blank" rel="noopener" href="{{paper.paper}}">
-          <p class="publication-venue">{{ paper.venue }}</p>
-        </a>
-      </li>
-      {% endfor %}
-      </ul>
-  </div>
-
-  <!-- ========== Other Projects ========== -->
-
-  {% include schema/projects.html %}
-
-  <div class="section" id="other-projects">
-    <h2>Other Projects</h2>
-
-    <ul class="other-projects-content">
-      {% for project in site.data.other_projects.other_projects %}
-      <li class="other-projects-item">
-        <a target="_blank" rel="noopener" href="{{project.code}}">
-          <h3 class="other-project-title">{{ project.title }}</h3>
-        </a>
-        <p class="other-project-description">{{ project.description }}</p>
-        <p>Tags: <span class="bio-highlight">{{ project.tags }}</span></p>
-      </li>
-      {% endfor %}
-      </ul>
-  </div>
-
 </div>
 
 <script type="text/javascript" src="{{ '/libs/custom/myjs.js' | prepend: site.baseurl }}" defer></script>

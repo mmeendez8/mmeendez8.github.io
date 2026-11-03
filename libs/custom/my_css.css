@@ -1034,6 +1034,45 @@ table thead {
   justify-self: start;
 }
 
+/* chips for notable outputs (papers, awards, open source) under a role */
+.vitae-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vitae-highlights a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .3rem 1rem;
+  border: 1px solid #e3e1fb;
+  border-radius: 999px;
+  background: #f6f5ff;
+  color: #3b3f9e;
+  font-size: 1.35rem;
+  text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+
+.vitae-highlights a:hover,
+.vitae-highlights a:focus-visible {
+  border-color: #5b63fe;
+  background: #eeedff;
+}
+
+.vitae-highlights a span {
+  display: inline-block;
+  transition: transform .2s;
+}
+
+.vitae-highlights a:hover span {
+  transform: translate(2px, -2px);
+}
+
 .vitae-link span {
   display: inline-block;
   transition: transform .2s;
@@ -1049,36 +1088,6 @@ table thead {
     animation: none !important;
     transition: none !important;
   }
-}
-
-/*  ================ Publications / Other Projects================ */
-
-.publications-content, .other-projects-content{
-  vertical-align: middle;
-  list-style: none;
-  padding-left: 0px;
-}
-
-.publications-content li, .other-projects-content li{
-  margin-bottom: 3.6rem;
-}
-
-.publication-title, .other-project-title{
-  font-size: 1.7rem;
-  margin-bottom: .4rem;
-  color: #030303
-}
-
-.publications-content p, .other-projects-content p {
-  margin: 0 0 .4rem;
-}
-
-.other-project-description{
-  color: #767676
-}
-
-.other-projects-content a:hover h3:hover {
-  color: #5b63fe;
 }
 
 /*  ================ Footer  ================ */
