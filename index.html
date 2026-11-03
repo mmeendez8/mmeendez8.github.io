@@ -69,13 +69,7 @@ title: Miguel Mendez | Personal Webpage
   <div class="section" id="news">
     <h2>News</h2>
 
-    <ul>
-      {% for new in site.data.news.news %}
-      <li>
-        <p><span class="bio-highlight"><b>{{new.month}} {{new.year}}</b></span>. {{new.text}}</p>
-      </li>
-      {% endfor %}
-    </ul>
+    {% include news/list.html %}
 
   </div>
 

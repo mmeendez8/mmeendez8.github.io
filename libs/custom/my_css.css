@@ -543,10 +543,6 @@ table thead {
   }
 }
 
-#news li p {
-  margin: 0 0 .8em;
-}
-
 .section a::after {
   border-radius: 1em;
   border-top: .1em solid #c8c2ff;
@@ -563,6 +559,138 @@ table thead {
   border-color: #c8c2ff;
   right: 0;
 }
+
+/*  ================ News (split rail)  ================ */
+/* _includes/news/list.html: date + type on the left of a thin line, headline
+   and text on the right, one dot per entry coloured by type. The newest dot
+   is filled and pulses. Below 768px it becomes a single column with the line
+   on the left. */
+
+.news-list .t-release { --tc: #5b63fe; }
+.news-list .t-career  { --tc: #030303; }
+.news-list .t-paper   { --tc: #9333ea; }
+.news-list .t-award   { --tc: #a16207; }
+.news-list .t-oss     { --tc: #0f7a46; }
+.news-list .t-writing { --tc: #0369a1; }
+
+.news-list {
+  --date-w: 8.8rem;
+  --rail-x: calc(var(--date-w) + 1.2rem);
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* the rail */
+.news-list::before {
+  content: "";
+  position: absolute;
+  left: var(--rail-x);
+  top: .9rem;
+  bottom: .9rem;
+  width: 1px;
+  background: #e4e4ec;
+}
+
+.news-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--date-w) 1fr;
+  column-gap: 2.8rem;
+  padding-bottom: 2.8rem;
+}
+
+.news-entry:last-child { padding-bottom: 0; }
+
+/* the dot */
+.news-entry::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--rail-x) - .5rem);
+  top: .5rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px solid var(--tc, #9a9aa8);
+  background: #fff;
+}
+
+.news-entry.is-latest::before { background: var(--tc, #5b63fe); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .news-entry.is-latest::before { animation: news-pulse 2s ease-out infinite; }
+}
+
+@keyframes news-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(91,99,254,.4); }
+  100% { box-shadow: 0 0 0 .9rem rgba(91,99,254,0); }
+}
+
+.news-meta {
+  padding-top: .2rem;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #767676;
+}
+
+.news-type {
+  display: block;
+  margin-top: .2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--tc, #767676);
+}
+
+.news-body h3 {
+  font-size: 1.8rem;
+  line-height: 1.35;
+  font-weight: 600;
+  margin: 0 0 .3rem;
+  color: #030303;
+}
+
+.news-body p {
+  margin: 0;
+  max-width: 42em;
+  font-size: 1.5rem;
+  color: #767676;
+}
+
+/* collapsed only once myjs.js has added the class, so no-JS shows everything */
+.news-list.is-collapsed .news-entry.is-more { display: none; }
+.news-list.is-collapsed .news-entry:nth-last-child(1 of :not(.is-more)) { padding-bottom: 0; }
+
+.news-more {
+  margin-top: 2rem;
+  margin-left: 11.6rem; /* date column + gap, lines up with the text */
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 1.4rem;
+  color: #5b63fe;
+  cursor: pointer;
+}
+
+.news-more:hover { color: #030303; }
+.news-more:focus-visible { outline: 2px solid #5b63fe; outline-offset: 4px; border-radius: .2rem; }
+
+@media (max-width: 767px) {
+  .news-list { --rail-x: .5rem; padding-left: 2.8rem; }
+  .news-entry { display: block; }
+  .news-entry::before { left: calc(var(--rail-x) - .5rem - 2.8rem); }
+  .news-meta { display: block; text-align: left; margin-bottom: .4rem; padding: 0; }
+  .news-type { display: inline; margin: 0 0 0 .6rem; }
+  .news-more { margin-left: 2.8rem; }
+}
+
 
 /*  ================ Bio  ================ */
 .bio-highlight{

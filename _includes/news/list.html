@@ -1,0 +1,36 @@
+{%- comment -%}
+  News as a split rail: date and type on the left of a thin line, headline and
+  text on the right, one dot per entry coloured by type (the newest one filled).
+  Reads _data/news.yaml (newest first; each entry has month, year, type, title,
+  text). All entries are in the HTML; myjs.js collapses the list to the first
+  `news_visible` and reveals the "All news" button, so without JS everything shows.
+{%- endcomment -%}
+{%- assign news_items = site.data.news.news -%}
+{%- assign news_visible = 5 -%}
+{%- assign month_names = "january,february,march,april,may,june,july,august,september,october,november,december" | split: "," -%}
+<ol class="news-list" id="news-list" data-news-list>
+  {%- for n in news_items -%}
+  {%- assign m = n.month | downcase | strip -%}
+  {%- assign mi = 1 -%}
+  {%- for x in month_names -%}{%- if x == m -%}{%- assign mi = forloop.index -%}{%- endif -%}{%- endfor -%}
+  {%- case n.type -%}
+    {%- when "release" -%}{%- assign label = "release" -%}
+    {%- when "career" -%}{%- assign label = "career" -%}
+    {%- when "paper" -%}{%- assign label = "paper" -%}
+    {%- when "award" -%}{%- assign label = "award" -%}
+    {%- when "oss" -%}{%- assign label = "open source" -%}
+    {%- when "writing" -%}{%- assign label = "article" -%}
+    {%- else -%}{%- assign label = "" -%}
+  {%- endcase %}
+  <li class="news-entry t-{{ n.type | default: 'news' }}{% if forloop.first %} is-latest{% endif %}{% if forloop.index > news_visible %} is-more{% endif %}">
+    <span class="news-meta"><time datetime="{{ n.year }}-{{ mi | prepend: '0' | slice: -2, 2 }}">{{ n.month | slice: 0, 3 }} {{ n.year }}</time>{% if label != "" %}<span class="news-type">{{ label }}</span>{% endif %}</span>
+    <div class="news-body">
+      {% if n.title %}<h3>{{ n.title }}</h3>{% endif %}
+      <p>{{ n.text }}</p>
+    </div>
+  </li>
+  {%- endfor %}
+</ol>
+{%- if news_items.size > news_visible %}
+<button type="button" class="news-more" data-news-more aria-controls="news-list" aria-expanded="false" hidden>All news ({{ news_items.size }}) ↓</button>
+{%- endif %}
