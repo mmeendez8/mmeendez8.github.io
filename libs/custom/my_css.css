@@ -1092,49 +1092,68 @@ table thead {
 
 /*  ================ Footer  ================ */
 
-.footer{
-  display: flex;
-  text-align: center;
+.site-footer {
   border-top: 1px solid #eee;
-  padding: 15px 0 40px 0;
-  vertical-align: middle;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding-left: 2.4rem;
-  padding-right: 2.4rem;
+  padding: 3.6rem 0 4.4rem;
 }
 
-@media (min-width: 768px) {
-  .footer{
-    flex-direction: row;
-  }
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem 3.2rem;
 }
 
-.footer p{
-  margin-bottom: 0px;
+.site-footer-who {
+  display: grid;
+  gap: .9rem;
 }
 
-.footer-icons, .footer-sign{
-  width:100%;
-  margin-bottom: 10px;
+.site-footer-name {
+  font-family: "Tiempos Headline", Georgia, serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: #030303;
 }
 
-@media (min-width: 768px) {
-  .footer-icons, .footer-sign{
-    width:30%;
-  }
+.site-footer-name:hover {
+  color: #5b63fe;
 }
 
-.footer-thanks{
-  width:100%;
-  margin-bottom: 10px;
+.site-footer-byline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: #767676;
 }
 
-@media (min-width: 768px) {
-  .footer-thanks{
-    width: 40%;
-  }
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+  font-size: 1.5rem;
+}
+
+/* underline draws in from the left on hover */
+.site-footer-links a {
+  color: #030303;
+  padding-bottom: 2px;
+  background: linear-gradient(#5b63fe, #5b63fe) left bottom / 0 1px no-repeat;
+  transition: background-size .25s, color .2s;
+}
+
+.site-footer-links a:hover,
+.site-footer-links a:focus-visible {
+  color: #5b63fe;
+  background-size: 100% 1px;
+}
+
+.site-footer a:focus-visible {
+  outline: 2px solid #5b63fe;
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 
