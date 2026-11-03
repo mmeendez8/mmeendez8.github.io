@@ -219,3 +219,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 })();
+
+// News: show the latest entries and an "All news" toggle for the rest. The
+// list is only collapsed here, so without JS every entry stays visible.
+(function () {
+    var list = document.querySelector("[data-news-list]");
+    var more = document.querySelector("[data-news-more]");
+    if (!list || !more) return;
+    var label = more.textContent;
+    list.classList.add("is-collapsed");
+    more.hidden = false;
+    more.addEventListener("click", function () {
+        var open = list.classList.toggle("is-collapsed") === false;
+        more.setAttribute("aria-expanded", open);
+        more.textContent = open ? "Show less ↑" : label;
+    });
+})();
