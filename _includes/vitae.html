@@ -34,6 +34,13 @@
           <span class="vitae-meta-loc">{{ exp.location }}</span>
         </div>
         <p class="vitae-desc">{{ exp.description | strip }}</p>
+        {%- if exp.highlights %}
+        <ul class="vitae-highlights" aria-label="Highlights at {{ exp.company }}">
+          {%- for h in exp.highlights %}
+          <li><a href="{{ h.url }}" target="_blank" rel="noopener noreferrer">{{ h.label }} <span aria-hidden="true">↗</span></a></li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
         <a class="vitae-link" href="{{ exp.url }}" target="_blank" rel="noopener">{{ exp.url | remove: 'https://' | remove: 'http://' | remove: 'www.' | split: '/' | first }} <span aria-hidden="true">↗</span></a>
       </div></div>
     </div>
