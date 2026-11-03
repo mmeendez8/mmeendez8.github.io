@@ -115,7 +115,7 @@ where $$ϵ$$ is drawn from a standard normal. Why is this helping us? Think that
 
 In this video you can find a good visual explanation of the whole network!
 
-<center><iframe width="560" height="315" src="https://www.youtube.com/embed/9zKuYvjFFS8" frameborder="0" allowfullscreen></iframe></center>
+<center><iframe loading="lazy" width="560" height="315" src="https://www.youtube.com/embed/9zKuYvjFFS8" title="YouTube video player" frameborder="0" allowfullscreen></iframe></center>
 
 ***
 
