@@ -85,6 +85,13 @@ iframe {
   margin-bottom: 2.5rem
 }
 
+/* YouTube embeds keep their 560x315 attributes but shrink to fit narrow screens */
+iframe[src*="youtube.com/embed"] {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
 ul {
   list-style: none;
   padding-left: 1.1em;
@@ -1359,7 +1366,15 @@ pre > code {
 code, pre {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-} 
+}
+
+/* on phones, let long inline code (file paths, URLs) wrap instead of widening the page */
+@media (max-width: 767px) {
+  :not(pre) > code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
 
 /*  ================ Comments  ================ */
 
