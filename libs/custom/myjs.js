@@ -179,3 +179,43 @@ document.addEventListener("DOMContentLoaded", function () {
         hideTimer = setTimeout(function () { box.classList.remove("is-on"); }, 900);
     });
 });
+
+// Vitae: single-open accordion; the clicked row stays put while others collapse
+(function () {
+    document.querySelectorAll("[data-vitae]").forEach(function (list) {
+        const rows = Array.from(list.querySelectorAll(".vitae-row"));
+
+        function setOpen(row, open) {
+            row.classList.toggle("is-open", open);
+            row.querySelector(".vitae-toggle").setAttribute("aria-expanded", open);
+        }
+
+        // Rows above the clicked one collapse as it opens, which would push it
+        // up the screen; compensate scroll during the 350ms transition.
+        function anchor(el) {
+            const y0 = el.getBoundingClientRect().top;
+            const until = performance.now() + 450;
+            (function step() {
+                const dy = el.getBoundingClientRect().top - y0;
+                if (Math.abs(dy) > .5) window.scrollBy({ top: dy, behavior: "instant" });
+                if (performance.now() < until) requestAnimationFrame(step);
+            })();
+        }
+
+        rows.forEach(function (row) {
+            const toggle = row.querySelector(".vitae-toggle");
+            toggle.addEventListener("click", function () {
+                const open = !row.classList.contains("is-open");
+                anchor(toggle);
+                rows.forEach(function (r) { setOpen(r, r === row && open); });
+            });
+
+            // Crosshair follows the pointer over the row header (transform only, no layout)
+            const cross = row.querySelector(".vitae-cross");
+            toggle.addEventListener("pointermove", function (e) {
+                const r = row.getBoundingClientRect();
+                cross.style.transform = "translate(" + (e.clientX - r.left) + "px," + (e.clientY - r.top) + "px)";
+            });
+        });
+    });
+})();
