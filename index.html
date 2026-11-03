@@ -250,41 +250,73 @@
   <div class="section" id="news">
     <h2>News</h2>
 
-    <ul>
-      
-      <li>
-        <p><span class="bio-highlight"><b>June 2026</b></span>. Hudl released its <a href='https://www.hudl.com/blog/hudl-raw-xy-data-release-api' target='_blank' rel='noopener noreferrer'>Raw Tracking (XY) Data API</a>! Automated player tracking from single-camera broadcast footage at scale (120+ competitions). I've been working on the computer vision behind it since joining Hudl.</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>August 2024</b></span>. <a href='https://x.com/mmeendez8/status/1823003417670762904' target='_blank' rel='noopener noreferrer'> Statsbomb have been acquired by Hudl!</a> I am excited to continue working on the future of sports analytics with the Hudl team.</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>September 2023</b></span>. Published a blog post about homography estimation in Statsbomb blog [<a href='https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/' target='_blank' rel='noopener noreferrer'>English</a>, <a href='https://statsbomb.com/es/articulos/futbol/nuevas-tecnologias/ia-y-los-datos-deportivos-la-estimacion-de-homografia/' target='_blank' rel='noopener noreferrer'>Spanish</a>].</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>February 2022</b></span>. I am joining <a href='https://statsbomb.com/' target='_blank' rel='noopener noreferrer'>Statsbomb</a> as a Machine Learning Engineer .</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>April 2021</b></span>. Drone vs Bird paper is out! Check <a href='https://www.mdpi.com/1424-8220/21/8/2824' target='_blank' rel='noopener noreferrer'>our awarded solution</a>.</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>February 2021</b></span>. We have open sourced <a href='https://github.com/Gradiant/pyodi/' target='_blank' rel='noopener noreferrer'>Pyodi</a> our Python Object Detecion Insights library.</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>September 2020</b></span>. We have won <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank' rel='noopener noreferrer'>2020 Drone vs Bird Detection Challenge</a>.</p>
-      </li>
-      
-      <li>
-        <p><span class="bio-highlight"><b>September 2019</b></span>. Paper from <a href='https://ieeexplore.ieee.org/abstract/document/8909876' target='_blank' rel='noopener noreferrer'>IEEE AVSS2019 Drone-vs-Bird Detection Challenge</a> is out.</p>
-      </li>
-      
-    </ul>
+    <ol class="news-list" id="news-list" data-news-list>
+  <li class="news-entry t-release is-latest">
+    <span class="news-meta"><time datetime="2026-10">Oct 2026</time><span class="news-type">release</span></span>
+    <div class="news-body">
+      <h3>StatsBomb 360 adds AI-powered player ID</h3>
+      <p>Hudl <a href='https://www.hudl.com/blog/statsbomb-360-upgrade-adds-ai-powered-player-id' target='_blank' rel='noopener noreferrer'>upgraded StatsBomb 360 with AI-powered player identification</a>: every player in each 360 freeze frame is now named and linked to the event data. Built on the broadcast tracking I've been developing at Hudl.</p>
+    </div>
+  </li>
+  <li class="news-entry t-release">
+    <span class="news-meta"><time datetime="2026-06">Jun 2026</time><span class="news-type">release</span></span>
+    <div class="news-body">
+      <h3>Hudl Raw Tracking (XY) Data API ships</h3>
+      <p>Hudl released its <a href='https://www.hudl.com/blog/hudl-raw-xy-data-release-api' target='_blank' rel='noopener noreferrer'>Raw Tracking (XY) Data API</a>! Automated player tracking from single-camera broadcast footage at scale (120+ competitions). I've been working on the computer vision behind it since joining Hudl.</p>
+    </div>
+  </li>
+  <li class="news-entry t-career">
+    <span class="news-meta"><time datetime="2024-08">Aug 2024</time><span class="news-type">career</span></span>
+    <div class="news-body">
+      <h3>Statsbomb joins Hudl</h3>
+      <p><a href='https://x.com/mmeendez8/status/1823003417670762904' target='_blank' rel='noopener noreferrer'> Statsbomb have been acquired by Hudl!</a> I am excited to continue working on the future of sports analytics with the Hudl team.</p>
+    </div>
+  </li>
+  <li class="news-entry t-writing">
+    <span class="news-meta"><time datetime="2023-09">Sep 2023</time><span class="news-type">article</span></span>
+    <div class="news-body">
+      <h3>Homography estimation on the Statsbomb blog</h3>
+      <p>Published a blog post about homography estimation in Statsbomb blog [<a href='https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/' target='_blank' rel='noopener noreferrer'>English</a>, <a href='https://statsbomb.com/es/articulos/futbol/nuevas-tecnologias/ia-y-los-datos-deportivos-la-estimacion-de-homografia/' target='_blank' rel='noopener noreferrer'>Spanish</a>].</p>
+    </div>
+  </li>
+  <li class="news-entry t-career">
+    <span class="news-meta"><time datetime="2022-02">Feb 2022</time><span class="news-type">career</span></span>
+    <div class="news-body">
+      <h3>Joining Statsbomb as ML Engineer</h3>
+      <p>I am joining <a href='https://statsbomb.com/' target='_blank' rel='noopener noreferrer'>Statsbomb</a> as a Machine Learning Engineer.</p>
+    </div>
+  </li>
+  <li class="news-entry t-paper is-more">
+    <span class="news-meta"><time datetime="2021-04">Apr 2021</time><span class="news-type">paper</span></span>
+    <div class="news-body">
+      <h3>Drone vs Bird paper published in Sensors</h3>
+      <p>Drone vs Bird paper is out! Check <a href='https://www.mdpi.com/1424-8220/21/8/2824' target='_blank' rel='noopener noreferrer'>our awarded solution</a>.</p>
+    </div>
+  </li>
+  <li class="news-entry t-oss is-more">
+    <span class="news-meta"><time datetime="2021-02">Feb 2021</time><span class="news-type">open source</span></span>
+    <div class="news-body">
+      <h3>Pyodi goes open source</h3>
+      <p>We have open sourced <a href='https://github.com/Gradiant/pyodi/' target='_blank' rel='noopener noreferrer'>Pyodi</a> our Python Object Detection Insights library.</p>
+    </div>
+  </li>
+  <li class="news-entry t-award is-more">
+    <span class="news-meta"><time datetime="2020-09">Sep 2020</time><span class="news-type">award</span></span>
+    <div class="news-body">
+      <h3>Winners of the Drone vs Bird Challenge</h3>
+      <p>We have won <a href='https://www.gradiant.org/en/news/drone-vs-bird-detection-challenge/' target='_blank' rel='noopener noreferrer'>2020 Drone vs Bird Detection Challenge</a>.</p>
+    </div>
+  </li>
+  <li class="news-entry t-paper is-more">
+    <span class="news-meta"><time datetime="2019-09">Sep 2019</time><span class="news-type">paper</span></span>
+    <div class="news-body">
+      <h3>AVSS 2019 Drone-vs-Bird paper out</h3>
+      <p>Paper from <a href='https://ieeexplore.ieee.org/abstract/document/8909876' target='_blank' rel='noopener noreferrer'>IEEE AVSS2019 Drone-vs-Bird Detection Challenge</a> is out.</p>
+    </div>
+  </li>
+</ol>
+<button type="button" class="news-more" data-news-more aria-controls="news-list" aria-expanded="false" hidden>All news (9) ↓</button>
+
 
   </div>
 
