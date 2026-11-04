@@ -1,22 +1,31 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const seeMoreLink = document.querySelector(".see-more-link");
-    // Only rendered when there are more posts than posts_to_show
-    if (!seeMoreLink) return;
+// Posts: show the first posts_to_show cards and an "All posts" toggle for the
+// rest. The list is only collapsed here, so without JS every post is visible.
+(function () {
+    var list = document.querySelector("[data-posts-list]");
+    if (!list) return;
 
-    const hiddenPosts = document.querySelectorAll(".post.hidden");
-
-    seeMoreLink.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        hiddenPosts.forEach(post => {
-            post.classList.remove("hidden");
+    var more = document.querySelector("[data-posts-more]");
+    if (more) {
+        var label = more.textContent;
+        list.classList.add("is-collapsed");
+        more.hidden = false;
+        more.addEventListener("click", function () {
+            var open = list.classList.toggle("is-collapsed") === false;
+            more.setAttribute("aria-expanded", open);
+            more.textContent = open ? "Show fewer ↑" : label;
+            // collapsing removes a long stretch of page: keep the button in view
+            if (!open) more.scrollIntoView({ block: "nearest" });
         });
+    }
 
-        // Remove the whole <li>, not just the link: the empty item would
-        // otherwise keep its cell in the posts grid and leave a gap
-        seeMoreLink.closest(".see-more-item").remove();
-    });
-});
+    // Touch screens have no hover, so the card crossing the middle band of
+    // the viewport gets the detection box instead (CSS: .pcard.is-live).
+    if (!window.matchMedia("(hover: none)").matches || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { e.target.classList.toggle("is-live", e.isIntersecting); });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    list.querySelectorAll(".pcard").forEach(function (card) { io.observe(card); });
+})();
 
 // Header: copy the email address. It is assembled here rather than written in
 // the HTML so scrapers can't read it; falls back to mailto if copying fails.
