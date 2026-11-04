@@ -429,9 +429,12 @@ table thead {
 /* --- visitor tracker (mouse only, driven by myjs.js) --- */
 
 /* overflow: hidden keeps the box and trail from ever widening the page */
+/* Wider than the hero so the box snapped onto the edge links (6px outset)
+   isn't clipped; 1.6rem stays inside the container's 2.4rem padding, so it
+   can't cause a sideways scroll. */
 .hero-tracker {
   position: absolute;
-  inset: 0;
+  inset: 0 -1.6rem;
   overflow: hidden;
   pointer-events: none;
   z-index: 3;
@@ -691,9 +694,112 @@ table thead {
 }
 
 
-/*  ================ Bio  ================ */
-.bio-highlight{
+/*  ================ Bio (NER annotated)  ================ */
+/* index.html marks key terms as entities. Each one gets a faint highlighter
+   underline; on hover, keyboard focus (links) or tap (.is-active) it draws a
+   box with a "TYPE score" tag above it, echoing the hero detector. The tag is
+   generated content with empty alt text, so screen readers only hear the
+   prose. Line-height leaves room for the tag above each line. */
+
+.bio-ner p {
+  line-height: 2;
+  margin: 0 0 1.6rem;
+}
+
+.bio-ner p:last-child { margin-bottom: 0; }
+
+.bio-ner .t-org,   .bio-legend .t-org   { --ec: #5b63fe; }
+.bio-ner .t-role,  .bio-legend .t-role  { --ec: #030303; }
+.bio-ner .t-loc,   .bio-legend .t-loc   { --ec: #0f7a46; }
+.bio-ner .t-skill, .bio-legend .t-skill { --ec: #9333ea; }
+.bio-ner .t-edu,   .bio-legend .t-edu   { --ec: #a16207; }
+
+.bio-ner .ent {
+  position: relative;
+  padding: .1rem .2rem;
+  margin: 0 -.2rem;
+  border-radius: .3rem;
   color: #030303;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: linear-gradient(transparent 62%, color-mix(in srgb, var(--ec) 16%, transparent) 62%);
+  transition: background .25s ease, box-shadow .25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bio-ner span.ent { cursor: default; }
+.bio-ner a.ent:hover { color: #030303; }
+.bio-ner a.ent:focus-visible { outline: none; }
+
+/* the tag; also overrides the .section a::after link underline */
+.bio-ner .ent::after {
+  content: attr(data-t) " " attr(data-s);
+  content: attr(data-t) " " attr(data-s) / "";
+  position: absolute;
+  left: -1px;
+  right: auto;
+  top: auto;
+  bottom: calc(100% + .1rem);
+  border: 0;
+  border-radius: .3rem .3rem .3rem 0;
+  padding: .3rem .45rem;
+  font: 600 1rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .03em;
+  white-space: nowrap;
+  background: var(--ec);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+
+/* near the right edge the tag hangs leftwards instead (set by myjs.js) */
+.bio-ner .ent.is-flip::after {
+  left: auto;
+  right: -1px;
+  border-radius: .3rem .3rem 0 .3rem;
+}
+
+.bio-ner .ent.is-active,
+.bio-ner a.ent:focus-visible {
+  background: color-mix(in srgb, var(--ec) 8%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--ec);
+}
+
+.bio-ner .ent.is-active::after,
+.bio-ner a.ent:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+
+/* real hover only, so a tap on touch screens doesn't leave a sticky box */
+@media (hover: hover) {
+  .bio-ner .ent:hover {
+    background: color-mix(in srgb, var(--ec) 8%, transparent);
+    box-shadow: inset 0 0 0 1.5px var(--ec);
+  }
+  .bio-ner .ent:hover::after { opacity: 1; transform: none; }
+}
+
+.bio-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem 1.6rem;
+  margin-top: 2.4rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.15rem;
+  color: #767676;
+}
+
+.bio-legend i {
+  display: inline-block;
+  width: .9rem;
+  height: .9rem;
+  margin-right: .5rem;
+  border-radius: .2rem;
+  vertical-align: -.05rem;
+  background: var(--ec);
 }
 
 

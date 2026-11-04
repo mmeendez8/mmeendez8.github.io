@@ -48,19 +48,25 @@ title: Miguel Mendez | Personal Webpage
   <div class="section" id="bio">
 
     <h2>Bio</h2>
-    <p>
-      I am a <span class="bio-highlight">Senior Machine Learning Engineer</span> at <a href="https://www.hudl.com" target="_blank" rel="noopener">Hudl</a>, based in Vigo, Spain.
-      I build production computer vision systems for sports analytics, with expertise in multi-object tracking, camera calibration, object detection, and generative models.
-      My work spans model research, deployment, and the pipelines that turn match footage into tracking data.
-    </p>
+    <!-- Reads like NER output: each entity carries its type/score in data-*, shown as a tag on hover/tap (my_css.css, myjs.js) -->
+    <div class="bio-ner" data-bio-ner>
+      <p>
+        I am a <span class="ent t-role" data-t="ROLE" data-s="0.99">Senior Machine Learning Engineer</span> at <a class="ent t-org" href="https://www.hudl.com" target="_blank" rel="noopener" data-t="ORG" data-s="0.99">Hudl</a>, based in <span class="ent t-loc" data-t="LOC" data-s="0.98">Vigo, Spain</span>.
+        I build production computer vision systems for sports analytics, with expertise in <span class="ent t-skill" data-t="SKILL" data-s="0.97">multi-object tracking</span>, <span class="ent t-skill" data-t="SKILL" data-s="0.96">camera calibration</span>, <span class="ent t-skill" data-t="SKILL" data-s="0.96">object detection</span>, and <span class="ent t-skill" data-t="SKILL" data-s="0.91">generative models</span>.
+        My work spans model research, deployment, and the pipelines that turn match footage into tracking data.
+      </p>
 
-    <p>
-      Previously, I developed sports analytics systems at Statsbomb, researched computer vision at <a href="https://www.gradiant.org/en/" target="_blank" rel="noopener">Gradiant</a>, and built machine learning solutions for retail at <a href="https://www.desigual.com" target="_blank" rel="noopener">Desigual</a>.
-    </p>
+      <p>
+        Previously, I developed sports analytics systems at <span class="ent t-org" data-t="ORG" data-s="0.98">Statsbomb</span>, researched computer vision at <a class="ent t-org" href="https://www.gradiant.org/en/" target="_blank" rel="noopener" data-t="ORG" data-s="0.97">Gradiant</a>, and built machine learning solutions for retail at <a class="ent t-org" href="https://www.desigual.com" target="_blank" rel="noopener" data-t="ORG" data-s="0.96">Desigual</a>.
+      </p>
 
-    <p>
-      I hold an M.Sc. in Artificial Intelligence from the Polytechnic University of Catalonia, with a year at Purdue University, and a B.Sc. in Computer Science from the University of A Coruña.
-    </p>
+      <p>
+        I hold an <span class="ent t-edu" data-t="EDU" data-s="0.97">M.Sc. in Artificial Intelligence</span> from the <span class="ent t-org" data-t="ORG" data-s="0.95">Polytechnic University of Catalonia</span>, with a year at <span class="ent t-org" data-t="ORG" data-s="0.94">Purdue University</span>, and a <span class="ent t-edu" data-t="EDU" data-s="0.96">B.Sc. in Computer Science</span> from the <span class="ent t-org" data-t="ORG" data-s="0.93">University of A Coruña</span>.
+      </p>
+    </div>
+    <div class="bio-legend" aria-hidden="true">
+      <span><i class="t-org"></i>ORG</span><span><i class="t-role"></i>ROLE</span><span><i class="t-loc"></i>LOC</span><span><i class="t-skill"></i>SKILL</span><span><i class="t-edu"></i>EDU</span>
+    </div>
 
 
   </div>

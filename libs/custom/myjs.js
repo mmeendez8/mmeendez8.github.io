@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Same condition as the CSS that shows .hero-tracker: desktop with a real mouse
     const enabled = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)");
 
+    const tracker = hero.querySelector(".hero-tracker");
     const label = box.querySelector("[data-visitor-label]");
     const line = hero.querySelector(".hero-trail polyline");
     const SMOOTHING = 0.18;
@@ -143,7 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     hero.addEventListener("pointermove", function (e) {
         if (e.pointerType !== "mouse" || !enabled.matches) return;
-        const rect = hero.getBoundingClientRect();
+        // Coordinates are relative to the tracker layer, which extends past the hero
+        const rect = tracker.getBoundingClientRect();
         const link = e.target.closest(".hero-link");
 
         if (link) {
@@ -233,5 +235,36 @@ document.addEventListener("DOMContentLoaded", function () {
         var open = list.classList.toggle("is-collapsed") === false;
         more.setAttribute("aria-expanded", open);
         more.textContent = open ? "Show less ↑" : label;
+    });
+})();
+
+// Bio: entities show their "TYPE score" tag on hover (CSS), keyboard focus
+// and tap. Tags that would overflow the right edge hang leftwards instead.
+(function () {
+    var root = document.querySelector("[data-bio-ner]");
+    if (!root) return;
+    var ents = root.querySelectorAll(".ent");
+
+    function fit() {
+        var limit = root.getBoundingClientRect().right;
+        ents.forEach(function (el) {
+            // rough tag width: ~7px per mono character of "TYPE 0.99" plus padding
+            var tagW = ((el.dataset.t || "").length + 5) * 7 + 10;
+            var first = el.getClientRects()[0];
+            el.classList.toggle("is-flip", !!first && first.left + tagW > limit);
+        });
+    }
+    fit();
+    var t;
+    window.addEventListener("resize", function () { clearTimeout(t); t = setTimeout(fit, 150); });
+
+    // Tap toggles a tag on plain-text entities; links keep their normal behaviour
+    root.addEventListener("click", function (e) {
+        var el = e.target.closest("span.ent");
+        ents.forEach(function (x) { if (x !== el) x.classList.remove("is-active"); });
+        if (el) el.classList.toggle("is-active");
+    });
+    document.addEventListener("click", function (e) {
+        if (!root.contains(e.target)) ents.forEach(function (x) { x.classList.remove("is-active"); });
     });
 })();
