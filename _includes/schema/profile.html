@@ -14,7 +14,6 @@
       "name": {{ site.data.main_info.employer | jsonify }},
       "url": {{ site.data.main_info.employer_url | jsonify }}
     },
-    "email": {{ site.data.main_info.email | prepend: 'mailto:' | jsonify }},
     "image": {{ site.data.main_info.profile_pic | absolute_url | jsonify }},
     "url": {{ '/' | absolute_url | jsonify }},
     "sameAs": [
