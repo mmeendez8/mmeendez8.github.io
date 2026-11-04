@@ -803,75 +803,201 @@ table thead {
 }
 
 
-/*  ================ Posts grid styling  ================ */
+/*  ================ Posts (detect cards)  ================ */
+/* _includes/posts/grid.html. A card is "live" on mouse hover, keyboard focus,
+   or (touch screens, myjs.js) while it crosses the middle of the viewport:
+   a corner-bracket box with an ID tag locks onto the image and the hero's
+   scan sweep runs over it. */
 
-.posts{
-  margin: 0px;
-  padding: 0;
+.pgrid {
   list-style: none;
+  margin: 0;
+  padding: 1.2rem 0 0; /* room for the tag above the first row */
+  display: grid;
+  gap: 4rem;
 }
 
-@media (max-width: 767px){
-  .posts li{
-    margin-bottom: 4rem;
-  }
-}
-
-/* More space between rows than between columns, so each card's
-   description reads as belonging to the image above it, not the one below. */
-@media (min-width: 768px){
-  .posts {
+/* More space between rows than between columns, so each card's text reads
+   as belonging to the image above it, not the one below. */
+@media (min-width: 768px) {
+  .pgrid {
     grid-template-columns: 1fr 1fr;
-    column-gap: 3.2rem;
-    row-gap: 4.8rem;
-    display: grid;
+    gap: 4.8rem 3.2rem;
   }
 }
 
-.post{
-  padding-bottom: 0;
+.pgrid.is-collapsed .pcard.is-more { display: none; }
+
+.pcard-link,
+.pcard-link:hover {
+  display: block;
+  color: inherit;
 }
 
-.post-image-placeholder {
+.pcard .pcard-link::after { content: none; } /* no .section link underline */
+
+.pcard-link:focus-visible {
+  outline: none; /* the box below is the focus indicator */
+}
+
+.pcard-frame {
+  position: relative;
+  margin-bottom: 1.6rem;
+}
+
+.pcard-img {
+  position: relative;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
+  border-radius: .4rem;
+  background: #f3f3f6;
   line-height: 0;
-  max-height: 200px;
-  display: flex;
-  align-items: center;
 }
 
-.post a:hover h3:hover {
-  color: #5b63fe;
+.pcard-img picture,
+.pcard-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* scan sweep */
+.pcard-img::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(200,194,255,.5));
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+/* bounding box: corner brackets drawn with gradients, like .vitae-box. It
+   reaches .8rem (+3% while hidden) past the image, well inside the
+   container's 2.4rem padding, so it never causes sideways scroll. */
+.pcard-box {
+  --c: #5b63fe;
+  --l: 2rem;
+  --t: 2px;
+  position: absolute;
+  inset: -.8rem;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--c),var(--c)) top left / var(--l) var(--t),
+    linear-gradient(var(--c),var(--c)) top left / var(--t) var(--l),
+    linear-gradient(var(--c),var(--c)) top right / var(--l) var(--t),
+    linear-gradient(var(--c),var(--c)) top right / var(--t) var(--l),
+    linear-gradient(var(--c),var(--c)) bottom left / var(--l) var(--t),
+    linear-gradient(var(--c),var(--c)) bottom left / var(--t) var(--l),
+    linear-gradient(var(--c),var(--c)) bottom right / var(--l) var(--t),
+    linear-gradient(var(--c),var(--c)) bottom right / var(--t) var(--l);
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity .18s, transform .3s cubic-bezier(.2,.8,.2,1);
+}
+
+.pcard-tag {
+  position: absolute;
+  left: 0;
+  top: -2rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: .4rem .5rem;
+  border-radius: .3rem;
+  background: #5b63fe;
+  color: #fff;
+}
+
+.pcard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem .9rem;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: #767676;
 }
 
 /* The Tiempos file is already the semibold cut but is registered as weight
    400, so anything above 400 made the browser fake-bold it. */
-.post-title{
-  font-family: Tiempos Headline,Arial,sans-serif;
+.pcard-title {
+  font-family: "Tiempos Headline", Georgia, serif;
   font-weight: 400;
-  font-size: 2.4rem;
-  line-height: 1.25;
-  margin: 1.6rem 0 .6rem;
-  transition: color .3s ease;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  margin: .6rem 0;
   color: #030303;
+  transition: color .25s;
 }
 
-.post-description {
-  color: #767676;
-  margin: 0px;
-  line-height: 1.5;
+@media (min-width: 768px) {
+  .pcard-title { font-size: 2.4rem; }
 }
+
+.pcard-sub {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: #767676;
+}
+
+/* live state: the same rules for hover, focus and the touch-scroll class */
+.pcard.is-live .pcard-box,
+.pcard-link:focus-visible .pcard-box { opacity: 1; transform: none; }
+.pcard.is-live .pcard-title,
+.pcard-link:focus-visible .pcard-title { color: #5b63fe; }
+.pcard.is-live .pcard-img::after,
+.pcard-link:focus-visible .pcard-img::after { animation: pcard-scan .9s cubic-bezier(.4,0,.2,1); }
+
+/* real hover only, so a tap on touch screens doesn't leave a sticky box */
+@media (hover: hover) {
+  .pcard-link:hover { cursor: crosshair; }
+  .pcard-link:hover .pcard-box { opacity: 1; transform: none; }
+  .pcard-link:hover .pcard-title { color: #5b63fe; }
+  .pcard-link:hover .pcard-img::after { animation: pcard-scan .9s cubic-bezier(.4,0,.2,1); }
+}
+
+@keyframes pcard-scan {
+  0% { opacity: 1; transform: translateY(-100%); }
+  100% { opacity: 0; transform: translateY(260%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard-box { transform: none; transition: opacity .18s; }
+  .pcard .pcard-img::after { animation: none !important; }
+}
+
+.posts-more {
+  margin-top: 3.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 1.4rem;
+  color: #5b63fe;
+  cursor: pointer;
+}
+
+.posts-more:hover { color: #030303; }
+.posts-more:focus-visible { outline: 2px solid #5b63fe; outline-offset: 4px; border-radius: .2rem; }
 
 .post-center-image {
   text-align: center;
-}
-
-.hidden{
-  display: none;
-}
-
-.posts li.see-more-item {
-  margin-bottom: 0;
 }
 
 
@@ -1459,7 +1585,7 @@ table thead {
 }
 .the-post-title{
   font-size: 3.2rem;
-  font-weight: 400; /* see .post-title: the file is already semibold */
+  font-weight: 400; /* see .pcard-title: the file is already semibold */
   line-height: 1.2;
   font-family: Tiempos Headline,Arial,sans-serif;
   color: #030303;

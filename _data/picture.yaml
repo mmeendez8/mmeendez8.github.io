@@ -28,11 +28,12 @@ presets:
     widths: [400, 600, 700, 800, 1000, 1500]
     dimension_attributes: true
     attributes:
-      img: 'loading="lazy"' 
+      img: 'loading="lazy" decoding="async"'
+    # Card width: full width minus the 2.4rem gutters on phones; two columns
+    # (gap 3.2rem) of the container on desktop, capped at the 1000px container.
     sizes:
-      desktop: 25vw
-      mobile: calc(100vw - 38px)
-    size: 400px
+      mobile: calc(100vw - 48px)
+    size: min(460px, calc(50vw - 40px))
 
   exp-logos:
     formats: [webp]

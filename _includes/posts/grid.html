@@ -1,0 +1,31 @@
+{%- comment -%}
+  Posts as "detect cards": 16:9 image, date, title and subtitle.
+  Hovering (mouse), focusing (keyboard) or scrolling a card into the middle of
+  the screen (touch, myjs.js) locks a corner-bracket box with an
+  "ID · class · score" tag onto the image, echoing the hero detector. The class
+  is the post's first category; the score is derived from the title so it stays
+  stable between builds. All posts are in the HTML; myjs.js collapses the list
+  to the first `posts_to_show` and reveals the "All posts" button, so without
+  JS every post is visible.
+{%- endcomment -%}
+{%- assign selected_posts = site.posts | where: "selected", "y" -%}
+{%- assign posts_visible = site.data.main_info.posts_to_show -%}
+<ul class="pgrid" id="posts-list" data-posts-list>
+  {%- for post in selected_posts -%}
+  {%- assign score = post.title | size | modulo: 19 | plus: 80 %}
+  <li class="pcard{% if forloop.index > posts_visible %} is-more{% endif %}">
+    <a class="pcard-link" href="{{ post.external-url | default: post.url | relative_url }}"{% if post.external-url %} target="_blank" rel="noopener"{% endif %}>
+      <div class="pcard-frame">
+        <div class="pcard-img">{% picture posts-grid {{ post.image }} --alt {{ post.description }} %}</div>
+        <span class="pcard-box" aria-hidden="true"><span class="pcard-tag">ID {{ forloop.index | prepend: '0' | slice: -2, 2 }} · {{ post.categories | first | downcase }} 0.{{ score }}</span></span>
+      </div>
+      <p class="pcard-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>{% if post.external-url %}<span aria-hidden="true">·</span><span>{{ post.external-url | split: "/" | slice: 2 | first | remove: "www." }} ↗</span>{% endif %}</p>
+      <h3 class="pcard-title">{{ post.title }}</h3>
+      <p class="pcard-sub">{{ post.subtitle }}</p>
+    </a>
+  </li>
+  {%- endfor %}
+</ul>
+{%- if selected_posts.size > posts_visible %}
+<button type="button" class="posts-more" data-posts-more aria-controls="posts-list" aria-expanded="false" hidden>All posts ↓</button>
+{%- endif %}
