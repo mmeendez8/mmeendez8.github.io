@@ -61,8 +61,10 @@ presets:
     attributes:
       img: 'loading="lazy"' 
     noscript: true
+    # Post content column: .the-post-content is max 768px minus 2.4rem padding
+    # on each side, so images never render wider than 720px.
     sizes:
-      mobile: 100vw
-    size: 80vw
+      mobile: calc(100vw - 48px)
+    size: 720px
     link_source: true
     nomarkdown: false
