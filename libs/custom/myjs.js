@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Same condition as the CSS that shows .hero-tracker: desktop with a real mouse
     const enabled = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)");
 
+    const tracker = hero.querySelector(".hero-tracker");
     const label = box.querySelector("[data-visitor-label]");
     const line = hero.querySelector(".hero-trail polyline");
     const SMOOTHING = 0.18;
@@ -143,7 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     hero.addEventListener("pointermove", function (e) {
         if (e.pointerType !== "mouse" || !enabled.matches) return;
-        const rect = hero.getBoundingClientRect();
+        // Coordinates are relative to the tracker layer, which extends past the hero
+        const rect = tracker.getBoundingClientRect();
         const link = e.target.closest(".hero-link");
 
         if (link) {

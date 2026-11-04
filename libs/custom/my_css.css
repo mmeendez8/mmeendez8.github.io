@@ -429,9 +429,12 @@ table thead {
 /* --- visitor tracker (mouse only, driven by myjs.js) --- */
 
 /* overflow: hidden keeps the box and trail from ever widening the page */
+/* Wider than the hero so the box snapped onto the edge links (6px outset)
+   isn't clipped; 1.6rem stays inside the container's 2.4rem padding, so it
+   can't cause a sideways scroll. */
 .hero-tracker {
   position: absolute;
-  inset: 0;
+  inset: 0 -1.6rem;
   overflow: hidden;
   pointer-events: none;
   z-index: 3;
