@@ -1,6 +1,7 @@
 // Post page behaviour (_layouts/post.html):
 //  - "#" anchors on h2/h3
 //  - code block header: language or data-title label + copy button
+//  - tables: scroll wrapper, number / yes-no column alignment, ✅/❌ marks
 //  - "On this page" index (sidebar + mobile card) built from the h2s
 //  - reading progress bar, title in the sticky bar, and the index's
 //    active section with a per-section fill (--p)
@@ -71,6 +72,64 @@ document.addEventListener("DOMContentLoaded", function () {
             head.appendChild(btn);
         }
         block.prepend(head);
+    });
+
+    // ---- tables
+    const YES = "\u2705", NO = "\u274C";
+    const NUM = /^[-+]?[\d.,]+\s*(%|ms|s|x)?(\s*\(x?[\d.,]+\))?$/i;
+    const PLACEHOLDER = /^(x|-|\u2014|n\/a)$/i;
+    prose.querySelectorAll("table").forEach(function (table) {
+        if (!table.parentElement.classList.contains("table-wrapper")) {
+            const wrap = document.createElement("div");
+            wrap.className = "table-wrapper";
+            table.parentNode.insertBefore(wrap, table);
+            wrap.appendChild(table);
+        }
+        const rows = Array.from(table.rows);
+        const cols = rows.reduce(function (n, r) { return Math.max(n, r.cells.length); }, 0);
+        for (let c = 0; c < cols; c++) {
+            const body = rows.slice(1).map(function (r) { return r.cells[c]; }).filter(Boolean);
+            const filled = body.filter(function (td) { return td.textContent.trim() !== ""; });
+            if (!filled.length) continue;
+            const isMark = filled.every(function (td) {
+                const t = td.textContent.trim();
+                return t.indexOf(YES) === 0 || t.indexOf(NO) === 0;
+            });
+            // placeholders ("X", "-", "n/a") may sit in a number column
+            const values = filled.filter(function (td) { return !PLACEHOLDER.test(td.textContent.trim()); });
+            const isNum = !isMark && c > 0 && values.length > 0 &&
+                values.every(function (td) { return NUM.test(td.textContent.trim()); });
+            const cls = isMark ? "is-mark" : (isNum ? "is-num" : "");
+            rows.forEach(function (r) {
+                const cell = r.cells[c];
+                if (!cell) return;
+                if (cls) cell.classList.add(cls);
+                if (isMark && cell.tagName === "TD") {
+                    const t = cell.textContent.trim();
+                    if (!t) return;
+                    const yes = t.indexOf(YES) === 0;
+                    const note = t.slice((yes ? YES : NO).length).trim();
+                    cell.textContent = "";
+                    const m = document.createElement("span");
+                    m.className = "mark " + (yes ? "is-yes" : "is-no");
+                    m.textContent = yes ? "\u2713" : "\u2715";
+                    m.setAttribute("role", "img");
+                    m.setAttribute("aria-label", yes ? "Yes" : "No");
+                    cell.appendChild(m);
+                    if (note) {
+                        const n = document.createElement("span");
+                        n.className = "mark-note";
+                        n.textContent = note;
+                        cell.appendChild(n);
+                    }
+                }
+            });
+        }
+        table.querySelectorAll("td").forEach(function (td) {
+            const t = td.textContent.trim();
+            if (t === "" && !td.children.length) td.classList.add("is-empty");
+            else if (PLACEHOLDER.test(t)) td.classList.add("is-na");
+        });
     });
 
     // ---- "On this page"

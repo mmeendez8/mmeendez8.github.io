@@ -1879,32 +1879,98 @@ table thead {
   color: #33334a;
 }
 
-.post-prose table {
-  display: block;
+/* Tables: open and editorial rather than a boxed spreadsheet. Sentence-case
+   header on a dark rule, hairlines between rows, edges flush with the text.
+   post.js wraps every table in .table-wrapper (scrolls on narrow screens,
+   with the same edge shadows as code), right-aligns number columns
+   (.is-num), centres yes/no columns (.is-mark, ✅/❌ become .mark) and
+   marks empty cells (.is-empty). */
+.post-prose .table-wrapper {
   overflow-x: auto;
-  font-size: 15px;
-  border: 1px solid #ececf1;
-  border-radius: .8rem;
+  background:
+    linear-gradient(to right, #fff 30%, rgba(255,255,255,0)) left center / 4rem 100% no-repeat local,
+    linear-gradient(to left, #fff 30%, rgba(255,255,255,0)) right center / 4rem 100% no-repeat local,
+    linear-gradient(to right, rgba(36,36,58,.10), rgba(36,36,58,0)) left center / 1.2rem 100% no-repeat scroll,
+    linear-gradient(to left, rgba(36,36,58,.10), rgba(36,36,58,0)) right center / 1.2rem 100% no-repeat scroll;
 }
+
+.post-prose table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  font-size: 15.5px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+.post-prose thead { border: 0; }
 
 .post-prose th,
 .post-prose td {
-  padding: .9rem 1.4rem;
-  border-bottom: 1px solid #ececf1;
+  padding: 1.1rem 1.6rem;
   text-align: left;
-  color: #1c1c22;
+  vertical-align: middle;
 }
+
+.post-prose :is(th, td):first-child { padding-left: 0; }
+.post-prose :is(th, td):last-child { padding-right: 0; }
 
 .post-prose th {
-  background: #f8f8fb;
-  font-size: 13px;
+  padding-top: 0;
+  border-bottom: 1px solid #1c1c22;
+  font-size: 13.5px;
   font-weight: 600;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  color: #555;
+  line-height: 1.35;
+  color: #1c1c22;
+  vertical-align: bottom;
 }
 
-.post-prose tr:last-child td { border-bottom: 0; }
+.post-prose td {
+  border-bottom: 1px solid #ececf1;
+  color: #3a3a4c;
+}
+
+.post-prose td:first-child { font-weight: 500; color: #030303; }
+.post-prose td a { text-decoration-color: rgba(91,99,254,.25) !important; }
+.post-prose td strong { font-weight: 600; color: #4f57e8; }
+
+.post-prose :is(th, td).is-num { text-align: right; white-space: nowrap; }
+.post-prose :is(th, td).is-mark { text-align: center; }
+.post-prose td.is-empty::before { content: "—"; color: #c3c3cc; }
+.post-prose td.is-na { color: #a3a3b0; }
+
+/* captions written inside the wrapper, after the table (older posts) */
+.post-prose .table-wrapper > table + p {
+  margin-top: var(--cap);
+  font-size: 14.5px;
+  line-height: 1.5;
+  text-align: center;
+  color: #767676;
+}
+
+.post-prose .mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.post-prose .mark.is-yes { background: #e3f4ea; color: #0f7a46; }
+.post-prose .mark.is-no { background: #f1f1f6; color: #9a9aab; }
+.post-prose .mark-note { margin-left: .4rem; font-size: 13px; color: #767676; }
+
+@media (max-width: 767px) {
+  .post-prose table { font-size: 14.5px; }
+  .post-prose th, .post-prose td { padding: 1rem 1.2rem; }
+}
 .post-prose picture img { border-radius: .8rem; }
 
 .image-caption {

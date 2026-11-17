@@ -16,7 +16,7 @@ categories: [Computer Vision, Machine Learning]
 
 <div class="table-wrapper" markdown="block">
 
-|                           | Year | Appearence Features | Camera Compensation | HOTA MOT20 | Extra data |
+|                           | Year | Appearance Features | Camera Compensation | HOTA MOT20 | Extra data |
 |---------------------------|------|---------------------|---------------------|------------|------------|
 | [SORT](#sort)             | 2016 | ❌                   | ❌                   |            | ❌          |
 | [DeepSORT](#deepsort)     | 2017 | ✅                   | ❌                   |            | ✅          |
