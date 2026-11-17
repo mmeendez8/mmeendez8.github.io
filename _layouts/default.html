@@ -57,16 +57,16 @@
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Regular.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "/libs/external/fonts/Tiempos-Headline-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
-  {% unless page.layout == "post" or page.url == "/404.html" %}
+  {% unless page.layout == "post" or page.icons == false %}
   <link rel="preload" href="{{ "/libs/external/fontello-bb2d1770/font/fontello.woff2?82615072" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   {% endunless %}
 
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
 
-  <!-- Fontello (icons only appear on the homepage, not on posts or the 404)
+  <!-- Fontello: icon font, skipped on posts and on pages with `icons: false`
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  {% unless page.layout == "post" or page.url == "/404.html" %}
+  {% unless page.layout == "post" or page.icons == false %}
   <link rel="stylesheet"
     href={{ "/libs/external/fontello-bb2d1770/css/fontello.css" | prepend: site.baseurl }}>
   {% endunless %}

@@ -1674,12 +1674,14 @@ table thead {
    width/height attributes from the picture tag reserve the space. */
 .post-hero picture { display: block; }
 
+/* --hero-w / --hero-h come from the image's real size (post.html), so the
+   box is reserved before the image loads: as wide as the column, unless
+   that would make it taller than 62vh. */
 .post-hero img {
   display: block;
-  width: auto;
-  max-width: 100%;
+  width: min(100%, calc(62vh * var(--hero-w) / var(--hero-h)));
   height: auto;
-  max-height: 62vh;
+  aspect-ratio: var(--hero-w) / var(--hero-h);
   margin: 0 auto;
   border-radius: 1.2rem;
 }
@@ -1859,8 +1861,7 @@ table thead {
   transition: opacity .15s;
 }
 
-.post-prose :is(h2, h3):hover .post-anchor,
-.post-anchor:focus-visible { opacity: 1; }
+.post-prose :is(h2, h3):hover .post-anchor { opacity: 1; }
 
 @media (max-width: 767px) {
   .post-anchor { display: none; }
@@ -1868,9 +1869,9 @@ table thead {
 
 /* flow-root: a short opener grows to contain the cap instead of letting
    it hang into the next paragraph */
-.post-prose > p:first-of-type { display: flow-root; }
+.post-prose.has-dropcap > p:first-of-type { display: flow-root; }
 
-.post-prose > p:first-of-type::first-letter {
+.post-prose.has-dropcap > p:first-of-type::first-letter {
   float: left;
   margin: .08em .1em 0 0;
   font-family: "Tiempos Headline", Georgia, serif;
@@ -2341,4 +2342,3 @@ mjx-container[display] {
 /*  ================ 404  ================ */
 
 .post-404 { margin-top: 4.8rem; margin-bottom: 9.6rem; }
-.post-404 > p:first-of-type::first-letter { float: none; font: inherit; margin: 0; color: inherit; }

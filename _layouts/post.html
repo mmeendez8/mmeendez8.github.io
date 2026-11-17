@@ -34,8 +34,20 @@ layout: default
       </div>
     </header>
 
-    <div class="post-hero">
-      {% picture thumbnail {{ page.image }} --alt {{ page.title }} %}
+    {%- comment -%}
+      The hero keeps the thumbnail's own ratio and is capped at 62vh, so its
+      rendered width depends on that ratio. Read width/height from the
+      picture tag's output: CSS uses them to reserve the exact box before the
+      image loads, and `sizes` gets the real rendered width so browsers don't
+      download a file sized for 1040px when the hero shows narrower.
+    {%- endcomment -%}
+    {%- capture hero %}{% picture thumbnail {{ page.image }} --alt {{ page.title }} %}{% endcapture -%}
+    {%- assign hero_w = hero | split: 'width="' | last | split: '"' | first -%}
+    {%- assign hero_h = hero | split: 'height="' | last | split: '"' | first -%}
+    {%- capture hero_sizes %}sizes="min(1040px, calc(100vw - 48px), calc(62vh * {{ hero_w }} / {{ hero_h }}))"{% endcapture -%}
+    {%- assign hero = hero | replace: 'sizes="(max-width: 767px) calc(100vw - 48px), min(1040px, calc(100vw - 48px))"', hero_sizes %}
+    <div class="post-hero" style="--hero-w: {{ hero_w }}; --hero-h: {{ hero_h }}">
+      {{ hero }}
     </div>
 
     <div class="post-body">
@@ -48,7 +60,8 @@ layout: default
           <summary>On this page</summary>
           <ol></ol>
         </details>
-        <div class="post-prose">
+        {%- assign opening = content | strip | slice: 0, 7 %}
+        <div class="post-prose{% unless opening == '<p><em>' %} has-dropcap{% endunless %}">
           {{ content }}
         </div>
       </div>
