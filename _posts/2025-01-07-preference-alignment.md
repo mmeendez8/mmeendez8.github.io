@@ -13,13 +13,6 @@ categories: [Deep Learning, Machine Learning, Natural Language Processing, AI, T
 
 I am trying to keep myself updated with the LLM literature and recently found an [interesting course](https://github.com/huggingface/smol-course){:target="_blank"}{:rel="noopener noreferrer"} from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.
 
-## Table of contents
-
-1. [What is preference alignment?](#what-is-preference-alignment)
-2. [PPO: Proximal Policy Optimization](#ppo)
-3. [DPO: Direct Preference Optimization](#dpo)
-4. [ORPO: Monolithic Preference Optimization without Reference Model](#orpo)
-
 ## What is preference alignment?
 
 Training a large language model (LLM) can involve several steps:

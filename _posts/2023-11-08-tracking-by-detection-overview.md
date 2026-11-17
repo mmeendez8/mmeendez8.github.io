@@ -12,7 +12,7 @@ categories: [Computer Vision, Machine Learning]
 ---
 
 
-## Table of Contents
+## Methods at a glance
 
 <div class="table-wrapper" markdown="block">
 

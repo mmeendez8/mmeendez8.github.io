@@ -2009,7 +2009,8 @@ table thead {
 .post-prose > :where(.post-center-image, div.highlighter-rouge, pre, .table-wrapper, table, blockquote, mjx-container, iframe, center, .app-container, p:has(> picture, > img, > a > picture, > a > img), div:has(> .twitter-tweet), .image-caption) + * { margin-top: var(--fig); }
 
 .post-prose > :where(.post-center-image, center, iframe, .table-wrapper, mjx-container, div.highlighter-rouge, pre, p:has(> picture, > img, > a > picture, > a > img)) + .image-caption { margin-top: var(--cap); }
-.post-prose > .image-caption + .image-caption { margin-top: .3em; }
+/* a caption split over two paragraphs */
+.post-prose > .image-caption:not(:has(img)) + .image-caption:not(:has(img)) { margin-top: .3em; }
 
 /* old posts put the image itself inside the caption paragraph */
 .post-prose > .image-caption:has(img) { margin-top: var(--fig); }
