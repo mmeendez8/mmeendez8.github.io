@@ -42,11 +42,19 @@ layout: default
       download a file sized for 1040px when the hero shows narrower.
     {%- endcomment -%}
     {%- capture hero %}{% picture thumbnail {{ page.image }} --alt {{ page.title }} %}{% endcapture -%}
-    {%- assign hero_w = hero | split: 'width="' | last | split: '"' | first -%}
-    {%- assign hero_h = hero | split: 'height="' | last | split: '"' | first -%}
-    {%- capture hero_sizes %}sizes="min(1040px, calc(100vw - 48px), calc(62vh * {{ hero_w }} / {{ hero_h }}))"{% endcapture -%}
-    {%- assign hero = hero | replace: 'sizes="(max-width: 767px) calc(100vw - 48px), min(1040px, calc(100vw - 48px))"', hero_sizes %}
-    <div class="post-hero" style="--hero-w: {{ hero_w }}; --hero-h: {{ hero_h }}">
+    {%- assign hero_w = 0 -%}{%- assign hero_h = 0 -%}
+    {%- if hero contains ' width="' and hero contains ' height="' -%}
+      {%- assign hero_w = hero | split: ' width="' | last | split: '"' | first | plus: 0 -%}
+      {%- assign hero_h = hero | split: ' height="' | last | split: '"' | first | plus: 0 -%}
+    {%- endif -%}
+    {%- if hero_w > 0 and hero_h > 0 and hero contains ' sizes="' -%}
+      {%- comment -%} swap whatever sizes the plugin wrote, whatever its value {%- endcomment -%}
+      {%- assign hero_head = hero | split: ' sizes="' | first -%}
+      {%- assign hero_tail = hero | split: ' sizes="' | last | split: '"' -%}
+      {%- assign hero_rest = hero_tail | shift | join: '"' -%}
+      {%- capture hero %}{{ hero_head }} sizes="min(1040px, calc(100vw - 48px), calc(62vh * {{ hero_w }} / {{ hero_h }}))"{{ hero_rest }}{% endcapture -%}
+    {%- endif %}
+    <div class="post-hero{% if hero_w > 0 and hero_h > 0 %} has-ratio" style="--hero-w: {{ hero_w }}; --hero-h: {{ hero_h }}{% endif %}">
       {{ hero }}
     </div>
 
@@ -60,8 +68,17 @@ layout: default
           <summary>On this page</summary>
           <ol></ol>
         </details>
-        {%- assign opening = content | strip | slice: 0, 7 %}
-        <div class="post-prose{% unless opening == '<p><em>' %} has-dropcap{% endunless %}">
+        {%- comment -%} drop cap only when the post opens with a paragraph
+          that starts with text or a link (not a heading, table, note or image) {%- endcomment -%}
+        {%- assign opening = content | strip -%}
+        {%- assign dropcap = false -%}
+        {%- assign open3 = opening | slice: 0, 3 -%}
+        {%- assign open4 = opening | slice: 3, 1 -%}
+        {%- assign open6 = opening | slice: 0, 6 -%}
+        {%- if open3 == '<p>' -%}
+          {%- if open4 != '<' or open6 == '<p><a ' -%}{%- assign dropcap = true -%}{%- endif -%}
+        {%- endif %}
+        <div class="post-prose{% if dropcap %} has-dropcap{% endif %}">
           {{ content }}
         </div>
       </div>

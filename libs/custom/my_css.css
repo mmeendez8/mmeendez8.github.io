@@ -1679,11 +1679,15 @@ table thead {
    that would make it taller than 62vh. */
 .post-hero img {
   display: block;
-  width: min(100%, calc(62vh * var(--hero-w) / var(--hero-h)));
+  width: 100%;
   height: auto;
-  aspect-ratio: var(--hero-w) / var(--hero-h);
   margin: 0 auto;
   border-radius: 1.2rem;
+}
+
+.post-hero.has-ratio img {
+  width: min(100%, calc(62vh * var(--hero-w) / var(--hero-h)));
+  aspect-ratio: var(--hero-w) / var(--hero-h);
 }
 
 /* ---------- body grid + index ---------- */
