@@ -1978,7 +1978,7 @@ table thead {
 
 .post-end {
   max-width: 680px;
-  margin: 6.4rem auto 0;
+  margin: 6.4rem auto 9.6rem;
   padding: 0 2.4rem;
   box-sizing: content-box;
 }
@@ -2095,12 +2095,7 @@ table thead {
 .post-pn-t { font-family: "Tiempos Headline", Georgia, serif; font-size: 1.8rem; line-height: 1.3; }
 .post-pn .is-next { grid-column: -2; text-align: right; }
 
-.post-comments {
-  max-width: 728px;
-  margin: 0 auto 6.4rem;
-  padding: 0 2.4rem;
-  box-sizing: border-box;
-}
+.post-end > :last-child { margin-bottom: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .post-progress, .post-toc, .post-pn a { transition: none; }
