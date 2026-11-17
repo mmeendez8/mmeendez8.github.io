@@ -17,7 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
         a.className = "post-anchor";
         a.href = "#" + h.id;
         a.textContent = "#";
-        a.setAttribute("aria-label", "Link to this section");
+        // decorative: keeps the heading's accessible name clean; the
+        // "On this page" index is the keyboard/screen-reader route
+        a.setAttribute("aria-hidden", "true");
+        a.tabIndex = -1;
         h.prepend(a);
     });
 
@@ -208,12 +211,13 @@ document.addEventListener("DOMContentLoaded", function () {
         ticking = false;
     }
 
-    window.addEventListener("scroll", function () {
+    function schedule() {
         if (!ticking) {
             ticking = true;
             window.requestAnimationFrame(update);
         }
-    }, { passive: true });
-    window.addEventListener("resize", update);
+    }
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
     update();
 });

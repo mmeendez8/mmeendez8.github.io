@@ -1866,6 +1866,10 @@ table thead {
   .post-anchor { display: none; }
 }
 
+/* flow-root: a short opener grows to contain the cap instead of letting
+   it hang into the next paragraph */
+.post-prose > p:first-of-type { display: flow-root; }
+
 .post-prose > p:first-of-type::first-letter {
   float: left;
   margin: .08em .1em 0 0;
@@ -2262,8 +2266,6 @@ pre code {
   font: 500 1.2rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
   color: #77778c;
 }
-
-.code-head:empty { display: none; }
 
 .code-copy {
   margin-left: auto;
