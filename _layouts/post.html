@@ -1,46 +1,103 @@
 ---
 layout: default
 ---
+{%- comment -%}
+  Editorial post layout: sticky bar with reading progress, centred header and
+  hero, a 728px reading column and a numbered "On this page" index in the
+  left margin (built by libs/custom/post.js from the h2s; a collapsible card
+  below 1200px). Styles: "Post pages" and "Code" in my_css.css.
+{%- endcomment -%}
+<div class="post" data-post>
 
-<header class="the-post-header">
-    <div class="container">
-      <a href="{{ site.baseurl }}/">
-        <h3>{{ site.data.main_info.name }}</h3>
-      </a>
-      <div>
-        <a  href={{ "/index.html#posts" | prepend: site.baseurl }}>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="{{ '/' | relative_url }}">{{ site.data.main_info.name }}</a>
+      <span class="post-bar-title" aria-hidden="true">{{ page.title }}</span>
+      <a href="{{ '/#posts' | relative_url }}">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      {%- if page.categories.size > 0 %}
+      <p class="post-kicker">{{ page.categories | join: " · " }}</p>
+      {%- endif %}
+      <h1 class="post-title">{{ page.title }}</h1>
+      {%- if page.subtitle %}
+      <p class="post-subtitle">{{ page.subtitle }}</p>
+      {%- endif %}
+      <div class="post-byline">
+        {% picture byline /assets/images/fullsize/profile-pics/avatar.jpg --alt {{ site.data.main_info.name }} %}
+        <span><b>{{ page.author | default: site.data.main_info.name }}</b> · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></span>
+      </div>
+    </header>
+
+    <div class="post-hero">
+      {% picture thumbnail {{ page.image }} --alt {{ page.title }} %}
+    </div>
+
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose">
+          {{ content }}
+        </div>
       </div>
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">{{ page.date | date: '%B %d, %Y' }} </span>
-      <h1 class="the-post-title">{{ page.title }}</h1>
-      <p class="the-post-subtitle">{{ page.subtitle }}</p>
-    </div>
+    <footer class="post-end">
+      {%- if page.tags.size > 0 %}
+      <ul class="post-tags" aria-label="Tags">
+        {%- for tag in page.tags %}<li>{{ tag }}</li>{% endfor %}
+      </ul>
+      {%- endif %}
+
+      <aside class="post-author" aria-label="About the author">
+        {% picture avatar /assets/images/fullsize/profile-pics/avatar.jpg --alt {{ site.data.main_info.name }} %}
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">{{ site.data.main_info.name }}</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="{{ site.data.main_info.github }}" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="{{ site.data.main_info.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="{{ site.data.main_info.twitter_url }}" target="_blank" rel="noopener">X</a></li>
+            <li><a href="{{ site.data.main_info.rss | relative_url }}">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      {%- if page.previous or page.next %}
+      <nav class="post-pn" aria-label="More posts">
+        {%- if page.previous %}
+        {%- assign prev = page.previous %}
+        <a href="{{ prev.external-url | default: prev.url | relative_url }}"{% if prev.external-url %} target="_blank" rel="noopener"{% endif %}><span class="post-pn-k">← Previous</span><span class="post-pn-t">{{ prev.title }}</span></a>
+        {%- endif %}
+        {%- if page.next %}
+        {%- assign next = page.next %}
+        <a class="is-next" href="{{ next.external-url | default: next.url | relative_url }}"{% if next.external-url %} target="_blank" rel="noopener"{% endif %}><span class="post-pn-k">Next →</span><span class="post-pn-t">{{ next.title }}</span></a>
+        {%- endif %}
+      </nav>
+      {%- endif %}
+    </footer>
+  </article>
+
+  <div class="post-comments">
+    <script src="https://utteranc.es/client.js"
+          repo="mmeendez8/mmeendez8.github.io"
+          issue-term="url"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
   </div>
-
-  <div class="the-post-title-image">
-    {% picture thumbnail {{ page.image}} --alt {{ page.title }} %}
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  {{ content }}
-  
-</div>
-
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
 </div>

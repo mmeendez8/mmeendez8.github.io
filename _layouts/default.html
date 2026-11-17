@@ -70,26 +70,9 @@
     href={{ "/libs/external/fontello-bb2d1770/css/fontello.css" | prepend: site.baseurl }}>
 
   {% if page.layout == "post" %}
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href={{ "/libs/external/lightbox/lightbox.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href={{ "/libs/external/lightbox/lightbox.css" | prepend: site.baseurl }}></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   {% endif %}
 
 
@@ -139,6 +122,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   {% if page.layout == "post" %}
   <script type="text/javascript" src={{ "/libs/external/lightbox/lightbox.js" | prepend: site.baseurl }} defer></script>
+  <script src={{ "/libs/custom/post.js" | prepend: site.baseurl }} defer></script>
   {% endif %}
   
   <!-- Mathjax -->
@@ -146,10 +130,6 @@
     {% include mathjax.html %}
   {% endif %}
 
-  <!-- Highlight.js -->
-  {% if page.layout == "post" %}
-  {% include code_highlight.html %}
-  {% endif %}
 
 </body>
 

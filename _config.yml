@@ -11,9 +11,13 @@ title: "Miguel Mendez AI Blog"
 description: "Miguel Mendez personal website. Posts about Machine Learning and Deep Learning."
 
 markdown: kramdown
-highlighter: none
+highlighter: rouge
 kramdown:
   input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    # spans only (no line-number tables); colours come from my_css.css
+    default_lang: plaintext
 
 # Removes content from rss feed https://github.com/jekyll/jekyll-feed?tab=readme-ov-file#excerpt-only-flag
 feed:

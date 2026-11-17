@@ -49,10 +49,29 @@ presets:
     widths: [480, 640, 800, 1000, 1200, 1500, 2000]
     dimension_attributes: true
     attributes:
-      img: 'fetchpriority="high"' 
+      img: 'fetchpriority="high"'
+    # Hero spans the 1040px column minus the 2.4rem gutters
     sizes:
-      mobile: 100vw
-    size: 50vw
+      mobile: calc(100vw - 48px)
+    size: min(1040px, calc(100vw - 48px))
+
+  # Author avatar in the post byline (40px, above the fold)
+  byline:
+    formats: [webp]
+    widths: [80, 120]
+    dimension_attributes: true
+    attributes:
+      img: 'decoding="async"'
+    size: 40px
+
+  # Author card at the end of posts (72px)
+  avatar:
+    formats: [webp]
+    widths: [80, 160, 240]
+    dimension_attributes: true
+    attributes:
+      img: 'loading="lazy" decoding="async"'
+    size: 72px
 
   pimage:
     formats: [webp]
