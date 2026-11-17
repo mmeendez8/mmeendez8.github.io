@@ -72,32 +72,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -226,41 +208,50 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">Managing Multiple GitHub Accounts with SSH</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Software Development · DevOps · Git · Programming · Productivity · Tech Guides</p>
+      <h1 class="post-title">Managing Multiple GitHub Accounts with SSH</h1>
+      <p class="post-subtitle">Easily switch between GitHub accounts using different SSH keys</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2025-02-19T00:00:00+00:00">February 19, 2025</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2000; --hero-h: 1287">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-82770cd6f.jpg" alt="Managing Multiple GitHub Accounts with SSH" srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-480-3eeff7720.webp 480w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-640-3eeff7720.webp 640w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-3eeff7720.webp 800w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1000-3eeff7720.webp 1000w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1200-3eeff7720.webp 1200w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1500-3eeff7720.webp 1500w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-2000-3eeff7720.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2000 / 1287))" width="2000" height="1287">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">February 19, 2025 </span>
-      <h1 class="the-post-title">Managing Multiple GitHub Accounts with SSH</h1>
-      <p class="the-post-subtitle">Easily switch between GitHub accounts using different SSH keys</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-82770cd6f.jpg" alt="Managing Multiple GitHub Accounts with SSH" srcset="/generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-480-3eeff7720.webp 480w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-640-3eeff7720.webp 640w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-800-3eeff7720.webp 800w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1000-3eeff7720.webp 1000w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1200-3eeff7720.webp 1200w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-1500-3eeff7720.webp 1500w, /generated/assets/images/fullsize/posts/2025-02-19-configure-multiple-ssh-keys-git/thumbnail-2000-3eeff7720.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1287">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p>Each time I change my laptop, I spend at least an hour configuring permissions for my GitHub accounts. Most people probably don’t have this problem, but I need a separate account for work and another for my personal projects. So this is a quick guide that I hope will at least help me in the future to do this without spending so much time searching for how to do it.</p>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p>Each time I change my laptop, I spend at least an hour configuring permissions for my GitHub accounts. Most people probably don’t have this problem, but I need a separate account for work and another for my personal projects. So this is a quick guide that I hope will at least help me in the future to do this without spending so much time searching for how to do it.</p>
 
 <p>This solution assumes the following file structure:</p>
 
-<pre><code class="language-bash">.
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
 ├── work/
 │   ├── work-repo1
 │   ├── work-repo2
@@ -269,102 +260,120 @@
     ├── personal-repo1
     ├── personal-repo2
     └── ...
-</code></pre>
+</code></pre></div></div>
 
-<p>Where <code>work</code> and <code>personal</code> are the folders assigned to each account. When I want to work with a specific account I need to clone the repository in the corresponding folder.</p>
+<p>Where <code class="language-plaintext highlighter-rouge">work</code> and <code class="language-plaintext highlighter-rouge">personal</code> are the folders assigned to each account. When I want to work with a specific account I need to clone the repository in the corresponding folder.</p>
 
 <h2 id="step-1-generate-ssh-keys">Step 1: Generate SSH keys</h2>
 
 <p>First, you need to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener noreferrer">generate SSH keys</a> for each account. You can do this by running the following command:</p>
 
-<pre><code class="language-bash">ssh-keygen -t ed25519 -C "your_email@example.com"
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-t</span> ed25519 <span class="nt">-C</span> <span class="s2">"your_email@example.com"</span>
+</code></pre></div></div>
 
-<p>When you run this command, you will be prompted to enter a file in which to save the key. You can specify a different file for each account. For example, you could save the key for your work account as <code>id_rsa_work</code> and the key for your personal account as <code>id_rsa_personal</code>.</p>
+<p>When you run this command, you will be prompted to enter a file in which to save the key. You can specify a different file for each account. For example, you could save the key for your work account as <code class="language-plaintext highlighter-rouge">id_rsa_work</code> and the key for your personal account as <code class="language-plaintext highlighter-rouge">id_rsa_personal</code>.</p>
 
 <h2 id="step-2-add-ssh-keys-to-the-ssh-agent">Step 2: Add SSH keys to the SSH agent</h2>
 
 <p>Next, you need to add the SSH keys to the SSH agent. You can do this by running the following commands:</p>
 
-<pre><code class="language-bash">eval "$(ssh-agent -s)"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>ssh-agent <span class="nt">-s</span><span class="si">)</span><span class="s2">"</span>
 ssh-add ~/.ssh/id_rsa_work
 ssh-add ~/.ssh/id_rsa_personal
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="step-3-add-ssh-keys-to-your-github-accounts">Step 3: Add SSH keys to your Github accounts</h2>
 
-<p>Finally, you need to add the SSH keys to your Github accounts. You can do this by copying the contents of the public key file (e.g., <code>id_rsa_work.pub</code> and <code>id_rsa_personal.pub</code>) and pasting them into the SSH keys section of your Github account settings.</p>
+<p>Finally, you need to add the SSH keys to your Github accounts. You can do this by copying the contents of the public key file (e.g., <code class="language-plaintext highlighter-rouge">id_rsa_work.pub</code> and <code class="language-plaintext highlighter-rouge">id_rsa_personal.pub</code>) and pasting them into the SSH keys section of your Github account settings.</p>
 
 <p><strong>Note</strong>: If you belong to an organization, you may need to configure SSO and authorize the key. This can be done from the key settings page.</p>
 
 <h2 id="step-4-configuring-ssh">Step 4: Configuring SSH</h2>
 
-<p>Now we need to configure SSH to use the correct key for each repository. For this we are going to first modify the <code>~/.ssh/config</code> file to include the following:</p>
+<p>Now we need to configure SSH to use the correct key for each repository. For this we are going to first modify the <code class="language-plaintext highlighter-rouge">~/.ssh/config</code> file to include the following:</p>
 
-<pre><code class="language-bash">Host github.com
-  AddKeysToAgent yes
-  IdentitiesOnly yes  
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host github.com
+  AddKeysToAgent <span class="nb">yes
+  </span>IdentitiesOnly <span class="nb">yes</span>  
+</code></pre></div></div>
 
-<p>The <code>IdentityOnly</code> option is important because it tells SSH to only use the key specified in the configuration file.</p>
+<p>The <code class="language-plaintext highlighter-rouge">IdentityOnly</code> option is important because it tells SSH to only use the key specified in the configuration file.</p>
 
 <h2 id="step-5-configuring-git">Step 5: Configuring Git</h2>
 
-<p>Now we need to configure git to use the correct key for each repository. For this we are going to first modify the <code>~/.gitconfig</code> file to include the following:</p>
+<p>Now we need to configure git to use the correct key for each repository. For this we are going to first modify the <code class="language-plaintext highlighter-rouge">~/.gitconfig</code> file to include the following:</p>
 
-<pre><code class="language-bash">[includeIf "gitdir:~/personal/"]
-  path = ~/.gituser-personal
-[includeIf "gitdir:~/work/"]
-  path = ~/.gituser-work
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>includeIf <span class="s2">"gitdir:~/personal/"</span><span class="o">]</span>
+  path <span class="o">=</span> ~/.gituser-personal
+<span class="o">[</span>includeIf <span class="s2">"gitdir:~/work/"</span><span class="o">]</span>
+  path <span class="o">=</span> ~/.gituser-work
+</code></pre></div></div>
 
-<p>This just tells git to include the corresponding file when we are in the <code>personal</code> or <code>work</code> folder. Now let’s create the files <code>~/.gituser-personal</code> and <code>~/.gituser-work</code> with the following content:</p>
+<p>This just tells git to include the corresponding file when we are in the <code class="language-plaintext highlighter-rouge">personal</code> or <code class="language-plaintext highlighter-rouge">work</code> folder. Now let’s create the files <code class="language-plaintext highlighter-rouge">~/.gituser-personal</code> and <code class="language-plaintext highlighter-rouge">~/.gituser-work</code> with the following content:</p>
 
-<pre><code class="language-bash"># ~/.gituser-personal
-[user]
-    email = personal@mail.com # Replace with you personal email
-    name = Miguel Mendez
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ~/.gituser-personal</span>
+<span class="o">[</span>user]
+    email <span class="o">=</span> personal@mail.com <span class="c"># Replace with you personal email</span>
+    name <span class="o">=</span> Miguel Mendez
 
-[core]
-    sshCommand = ssh -i ~/.ssh/id_rsa_personal
-</code></pre>
+<span class="o">[</span>core]
+    sshCommand <span class="o">=</span> ssh <span class="nt">-i</span> ~/.ssh/id_rsa_personal
+</code></pre></div></div>
 
-<pre><code class="language-bash"># ~/.gituser-work
-[user]
-    email = work@mail.com  # Replace with your work email
-    name = Miguel Mendez
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ~/.gituser-work</span>
+<span class="o">[</span>user]
+    email <span class="o">=</span> work@mail.com  <span class="c"># Replace with your work email</span>
+    name <span class="o">=</span> Miguel Mendez
 
-[core]
-    sshCommand = ssh -i ~/.ssh/id_rsa_work
-</code></pre>
+<span class="o">[</span>core]
+    sshCommand <span class="o">=</span> ssh <span class="nt">-i</span> ~/.ssh/id_rsa_work
+</code></pre></div></div>
 
 <p>This will tell git to use the correct key for each repository.</p>
 
 <h2 id="step-6-clone-the-repository">Step 6: Clone the repository</h2>
 
-<p>You are almost all set. There is just a hacky part that we are forced to do with this solution. All the previous git configurations will only work if we are under a git repository. So we need to basically run <code>git init</code> in both <code>work</code> and <code>personal</code> folders. This is a bit annoying but it is the only way I found to make this work.</p>
+<p>You are almost all set. There is just a hacky part that we are forced to do with this solution. All the previous git configurations will only work if we are under a git repository. So we need to basically run <code class="language-plaintext highlighter-rouge">git init</code> in both <code class="language-plaintext highlighter-rouge">work</code> and <code class="language-plaintext highlighter-rouge">personal</code> folders. This is a bit annoying but it is the only way I found to make this work.</p>
 
-<pre><code class="language-bash">cd ~/work
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/work
 git init
 
-cd ~/personal
+<span class="nb">cd</span> ~/personal
 git init
-</code></pre>
+</code></pre></div></div>
 
 <p>That’s all! You can now clone your repositories in the corresponding folder and git will use the correct key for each one.</p>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>GitHub</li><li>SSH</li><li>Git</li><li>Git-Configuration</li><li>Multiple-GitHub-Accounts</li><li>SSH-Keys</li><li>Version-Control</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2025/01/07/preference-alignment"><span class="post-pn-k">← Previous</span><span class="post-pn-t">LLM Preference Alignment</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -386,19 +395,15 @@ git init
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

@@ -66,32 +66,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -220,37 +202,46 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">Exploring Transformer-Based Methods in Video Instance Segmentation</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Computer Vision · Deep Learning</p>
+      <h1 class="post-title">Exploring Transformer-Based Methods in Video Instance Segmentation</h1>
+      <p class="post-subtitle">A comparison of the latest research and innovations in Video Instance Segmentation</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2024-04-15T00:00:00+00:00">April 15, 2024</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 1500; --hero-h: 875">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-4e0de4c5d.jpg" alt="Exploring Transformer-Based Methods in Video Instance Segmentation" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-480-8c96cc2ae.webp 480w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-640-8c96cc2ae.webp 640w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-8c96cc2ae.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1000-8c96cc2ae.webp 1000w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1200-8c96cc2ae.webp 1200w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1500-8c96cc2ae.webp 1500w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 1500 / 875))" width="1500" height="875">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">April 15, 2024 </span>
-      <h1 class="the-post-title">Exploring Transformer-Based Methods in Video Instance Segmentation</h1>
-      <p class="the-post-subtitle">A comparison of the latest research and innovations in Video Instance Segmentation</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-4e0de4c5d.jpg" alt="Exploring Transformer-Based Methods in Video Instance Segmentation" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-480-8c96cc2ae.webp 480w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-640-8c96cc2ae.webp 640w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-800-8c96cc2ae.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1000-8c96cc2ae.webp 1000w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1200-8c96cc2ae.webp 1200w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/thumbnail-1500-8c96cc2ae.webp 1500w" sizes="(max-width: 767px) 100vw, 50vw" width="1500" height="875">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p>I had recently visited the most recent literature on Video Segmentation and I was startled by how lost I found myself. If you are versed in this field, you are probably familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not, then you will probably find yourself as lost as I was a few weeks ago.</p>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p>I had recently visited the most recent literature on Video Segmentation and I was startled by how lost I found myself. If you are versed in this field, you are probably familiar with terms such as SVOS, UVOS, VIS, Zero-Shot, One-Shot, etc. If you are not, then you will probably find yourself as lost as I was a few weeks ago.</p>
 
 <p>My main intention was to focus solely on the specific topic I was interested in. This is Video instance Segmentation (VIS), which extends the image instance segmentation task from the image domain to the video domain. The goal is to segment object instances from a predefined category set in videos, then associate the instance identities across frames. It can also be seen as a combination of instance segmentation and object tracking in videos.</p>
 
@@ -409,7 +400,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-32d23dc52.png" alt="VisTR architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-400-9bdfeb185.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-9bdfeb185.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-1366-9bdfeb185.webp 1366w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="1366" height="470" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-32d23dc52.png" alt="VisTR architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-400-9bdfeb185.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-800-9bdfeb185.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/vistr-1366-9bdfeb185.webp 1366w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="1366" height="470" />
 </a>
 
 </div>
@@ -435,7 +426,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-f24fde520.png" alt="IFC architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-400-691dbc6bb.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-691dbc6bb.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-1065-691dbc6bb.webp 1065w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="1065" height="477" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-f24fde520.png" alt="IFC architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-400-691dbc6bb.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-800-691dbc6bb.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/ifc-1065-691dbc6bb.webp 1065w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="1065" height="477" />
 </a>
 
 </div>
@@ -463,7 +454,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-21694f269.png" alt="TeViT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-400-fd261f96c.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-fd261f96c.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1500-fd261f96c.webp 1500w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1546-fd261f96c.webp 1546w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="1546" height="736" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-21694f269.png" alt="TeViT architecture diagram" srcset="/generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-400-fd261f96c.webp 400w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-800-fd261f96c.webp 800w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1500-fd261f96c.webp 1500w, /generated/assets/images/fullsize/posts/2024-04-15-video-segmentation/tevit-1546-fd261f96c.webp 1546w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="1546" height="736" />
 </a>
 
 </div>
@@ -480,7 +471,7 @@
 
 <p>Exploring the literature around video instance segmentation (VIS) has been a fun experience. Transformers are now showing up in most of the research in this area. It is quite fascinating to observe ongoing efforts aimed at reducing the complexities associated with video processing, such as minimizing the number of parameters needed to merge time-related features effectively. The influence of the DETR paper on all the methods discussed is also noteworthy.</p>
 
-<p>I will keep updating this post with new and relevant research findings. Feel free to share your thoughts in the comments below or suggest any papers you would like me to explore next.</p>
+<p>I will keep updating this post with new and relevant research findings. Feel free to share your thoughts or suggest any papers you would like me to explore next on <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">X</a> or <a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
 
 <h2 id="references">References</h2>
 
@@ -496,18 +487,37 @@
 </ul>
 
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>Video Segmentation</li><li>Transformers</li><li>Computer Vision</li><li>Deep Learning</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2024/03/12/poetry-torch-docker"><span class="post-pn-k">← Previous</span><span class="post-pn-t">Building an Efficient Docker Image with Poetry and PyTorch</span></a>
+        <a class="is-next" href="/2024/04/28/kubernetes-horizontal-pod-autoscaler-guide"><span class="post-pn-k">Next →</span><span class="post-pn-t">A Guide to Horizontal Pod Autoscaler</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -529,19 +539,15 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

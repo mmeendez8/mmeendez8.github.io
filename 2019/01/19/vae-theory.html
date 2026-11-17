@@ -66,32 +66,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -187,7 +169,7 @@
   },
   "keywords": ["Deep Learning","Variational Autoencoders","Machine Learning","Theory"],
   "articleSection": "Machine Learning",
-  "wordCount": 1396,
+  "wordCount": 1395,
   "inLanguage": "en"
 }
 </script>
@@ -220,37 +202,46 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">The theory behind Variational Autoencoders</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Machine Learning · Deep Learning</p>
+      <h1 class="post-title">The theory behind Variational Autoencoders</h1>
+      <p class="post-subtitle">Learn the math</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2019-01-19T00:00:00+00:00">January 19, 2019</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2002; --hero-h: 1497">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="The theory behind Variational Autoencoders" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-480-b3e614e1f.webp 480w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-640-b3e614e1f.webp 640w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1000-b3e614e1f.webp 1000w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1200-b3e614e1f.webp 1200w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1500-b3e614e1f.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-2000-b3e614e1f.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2002 / 1497))" width="2002" height="1497">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">January 19, 2019 </span>
-      <h1 class="the-post-title">The theory behind Variational Autoencoders</h1>
-      <p class="the-post-subtitle">Learn the math</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-fb39ec6c8.jpg" alt="The theory behind Variational Autoencoders" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-480-b3e614e1f.webp 480w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-640-b3e614e1f.webp 640w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-800-b3e614e1f.webp 800w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1000-b3e614e1f.webp 1000w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1200-b3e614e1f.webp 1200w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-1500-b3e614e1f.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/thumbnail-2000-b3e614e1f.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2002" height="1497">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p>Generative models are one of the cooler branches of Deep Learning. During the last few weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of posts, I will try to transmit and also provide useful resources which I have found and feel the need to share! You can read the other posts in this series here:</p>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p>Generative models are one of the cooler branches of Deep Learning. During the last few weeks Generative Adversarial Networks (GANs) have been present in a large number of posts (most of them related with Nvidia’s last work). Thanks to this I realized that, although I had studied generative models at University, I had never code even one of them! So I decide to change this panorama and spend a couple hours (re)learning about Variational Autoencoders. In these series of posts, I will try to transmit and also provide useful resources which I have found and feel the need to share! You can read the other posts in this series here:</p>
 
 <ul>
   <li><a href="/2019/01/24/vae-tensorflow">Post 2: VAEs! Generating images with Tensorflow</a></li>
@@ -271,7 +262,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/fake.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-410396935.jpg" alt="Fake news image" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-400-0d7a34b13.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-0d7a34b13.webp 624w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="624" height="351" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-410396935.jpg" alt="Fake news image" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-400-0d7a34b13.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/fake-624-0d7a34b13.webp 624w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="624" height="351" />
 </a>
 
 </div>
@@ -303,7 +294,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-5d6bb6d30.jpg" alt="KL divergence formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-400-388f4102b.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-388f4102b.webp 450w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="450" height="107" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-5d6bb6d30.jpg" alt="KL divergence formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-400-388f4102b.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/kl_formula-450-388f4102b.webp 450w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="450" height="107" />
 </a>
 
 </div>
@@ -312,7 +303,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-3798e4a84.jpg" alt="ELBO formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-400-5a455e3a8.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-5a455e3a8.webp 462w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="462" height="35" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-3798e4a84.jpg" alt="ELBO formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-400-5a455e3a8.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo-462-5a455e3a8.webp 462w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="462" height="35" />
 </a>
 
 </div>
@@ -321,7 +312,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-7aa21b89d.jpg" alt="Log formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-400-9689f96fb.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-9689f96fb.webp 471w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="471" height="35" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-7aa21b89d.jpg" alt="Log formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-400-9689f96fb.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/log_lik-471-9689f96fb.webp 471w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="471" height="35" />
 </a>
 
 </div>
@@ -332,7 +323,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-d41a1b2d2.jpg" alt="Elbo" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-400-ec287e278.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-ec287e278.webp 595w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="595" height="31" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-d41a1b2d2.jpg" alt="Elbo" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-400-ec287e278.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/elbo_opt-595-ec287e278.webp 595w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="595" height="31" />
 </a>
 
 </div>
@@ -347,7 +338,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-0f1952f53.jpg" alt="Architecture VAE" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-400-48a7b5dcf.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-48a7b5dcf.webp 460w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="460" height="327" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-0f1952f53.jpg" alt="Architecture VAE" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-400-48a7b5dcf.webp 400w, /generated/assets/images/fullsize/posts/2019-01-19-vae-theory/architecture-460-48a7b5dcf.webp 460w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="460" height="327" />
 </a>
 
 </div>
@@ -356,14 +347,14 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-ab0d9328e.jpg" alt="Z sample formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-fdeba3d78.webp 160w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="160" height="21" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-ab0d9328e.jpg" alt="Z sample formula" srcset="/generated/assets/images/fullsize/posts/2019-01-19-vae-theory/z_formula-160-fdeba3d78.webp 160w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="160" height="21" />
 </a>
 
 </div>
 
 <p>where \(ϵ\) is drawn from a standard normal. Why is this helping us? Think that now we are dealing with fixed values for \(μ\) and \(σ\), we are moving all the stochasticity to the epsilon term so the derivatives can flow through the deterministic nodes! (Note that in image below \(ϕ\) corresponds with our \(θ\) term)</p>
 
-<p class="image-caption"><img src="https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png" alt="Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target=&quot;_blank&quot;}{:rel=&quot;noopener noreferrer&quot;}" />*</p>
+<p class="image-caption"><img src="https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png" alt="Diagram of the reparameterization trick: the random node is moved to an external noise term so gradients can flow through the encoder, from Kingma's NIPS 2015 workshop talk" /></p>
 
 <p class="image-caption"><em>Image obtained from <a href="http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf" target="_blank" rel="noopener noreferrer">Kingma’s talk</a></em></p>
 
@@ -379,18 +370,36 @@
 
 <p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>Deep Learning</li><li>Variational Autoencoders</li><li>Machine Learning</li><li>Theory</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a class="is-next" href="/2019/01/24/vae-tensorflow"><span class="post-pn-k">Next →</span><span class="post-pn-t">VAEs! Generating images with Tensorflow</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -412,8 +421,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
     <script>
@@ -430,14 +443,6 @@
 </script>
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

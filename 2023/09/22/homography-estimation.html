@@ -66,32 +66,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -200,50 +182,78 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">Creating Better Data: AI & Homography Estimation</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">AI · Sports Analytics · Deep Learning</p>
+      <h1 class="post-title">Creating Better Data: AI & Homography Estimation</h1>
+      <p class="post-subtitle">The cornerstone of Statsbomb tracking data collection methodology</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2023-09-22T00:00:00+00:00">September 22, 2023</time></span>
+      </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 1500; --hero-h: 1145">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ecf6e2541.jpg" alt="Creating Better Data: AI & Homography Estimation" srcset="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-480-ef622fa41.webp 480w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-640-ef622fa41.webp 640w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ef622fa41.webp 800w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1000-ef622fa41.webp 1000w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1200-ef622fa41.webp 1200w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1500-ef622fa41.webp 1500w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 1500 / 1145))" width="1500" height="1145">
+
+    </div>
+
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose">
+          
+
+        </div>
       </div>
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">September 22, 2023 </span>
-      <h1 class="the-post-title">Creating Better Data: AI & Homography Estimation</h1>
-      <p class="the-post-subtitle">The cornerstone of Statsbomb tracking data collection methodology</p>
-    </div>
-  </div>
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>AI</li><li>Homography Estimation</li><li>Sports Analytics</li><li>Deep Learning</li>
+      </ul>
 
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ecf6e2541.jpg" alt="Creating Better Data: AI & Homography Estimation" srcset="/generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-480-ef622fa41.webp 480w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-640-ef622fa41.webp 640w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-800-ef622fa41.webp 800w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1000-ef622fa41.webp 1000w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1200-ef622fa41.webp 1200w, /generated/assets/images/fullsize/posts/2023-09-22-homography-estimation/thumbnail-1500-ef622fa41.webp 1500w" sizes="(max-width: 767px) 100vw, 50vw" width="1500" height="1145">
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
 
-  </div>
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2023/02/24/torchserve-grpc"><span class="post-pn-k">← Previous</span><span class="post-pn-t">Image Transmission for Computer Vision: A Comparison of Torchserve's REST and gRPC</span></a>
+        <a class="is-next" href="/2023/11/08/tracking-by-detection-overview"><span class="post-pn-k">Next →</span><span class="post-pn-t">Multi-Object Tracking by Detection: A Comprehensive Guide</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="container the-post-content">
-
-  
-
-  
-</div>
-
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -265,19 +275,15 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

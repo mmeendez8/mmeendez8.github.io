@@ -68,32 +68,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -222,63 +204,72 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">Building an Efficient Docker Image with Poetry and PyTorch</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">DevOps · Deep Learning</p>
+      <h1 class="post-title">Building an Efficient Docker Image with Poetry and PyTorch</h1>
+      <p class="post-subtitle">A guide for your Deep Learning environment setup</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2024-03-12T00:00:00+00:00">March 12, 2024</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2048; --hero-h: 1365">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-24020353f.jpg" alt="Building an Efficient Docker Image with Poetry and PyTorch" srcset="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-480-3e0bc6e32.webp 480w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-640-3e0bc6e32.webp 640w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-3e0bc6e32.webp 800w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1000-3e0bc6e32.webp 1000w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1200-3e0bc6e32.webp 1200w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1500-3e0bc6e32.webp 1500w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-2000-3e0bc6e32.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2048 / 1365))" width="2048" height="1365">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">March 12, 2024 </span>
-      <h1 class="the-post-title">Building an Efficient Docker Image with Poetry and PyTorch</h1>
-      <p class="the-post-subtitle">A guide for your Deep Learning environment setup</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-24020353f.jpg" alt="Building an Efficient Docker Image with Poetry and PyTorch" srcset="/generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-480-3e0bc6e32.webp 480w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-640-3e0bc6e32.webp 640w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-800-3e0bc6e32.webp 800w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1000-3e0bc6e32.webp 1000w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1200-3e0bc6e32.webp 1200w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-1500-3e0bc6e32.webp 1500w, /generated/assets/images/fullsize/posts/2024-03-12-poetry-torch-docker/thumbnail-2000-3e0bc6e32.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2048" height="1365">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p>The goal of this post is straightforward: to guide you through the creation of a Docker image equipped with Poetry for dependency management and Torch for running deep learning models, specifically utilizing Python 3.11. While the task may seem simple at first glance, it involves several tricks that I believe can be very useful to share. This guide will utilize Docker Buildx, a powerful feature that might be unfamiliar to some, yet it is enabled by default in newer Docker releases.</p>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p>The goal of this post is straightforward: to guide you through the creation of a Docker image equipped with Poetry for dependency management and Torch for running deep learning models, specifically utilizing Python 3.11. While the task may seem simple at first glance, it involves several tricks that I believe can be very useful to share. This guide will utilize Docker Buildx, a powerful feature that might be unfamiliar to some, yet it is enabled by default in newer Docker releases.</p>
 
 <h2 id="docker-ubuntu-and-python-311">Docker, Ubuntu, and Python 3.11</h2>
 
 <p>I was surprised by the scarcity of information available on creating a Docker image with Python 3.11 as the system’s default Python version. While one could use the official Python images, I personally prefer to have complete control over and understanding of my Docker images. This practice helps avoid unnecessary dependencies and can be particularly beneficial when addressing issues as unknown environment variables or extra packages that may be set in the base images.</p>
 
-<p>Note that for building our images we will use Docker Buildx, which is a Docker CLI plugin that extends the capabilities of the Docker CLI. There are two different ways of building images with Docker Buildx: using the <code>docker buildx build</code> command or setting up the <code>DOCKER_BUILDKIT</code> environment variable.</p>
+<p>Note that for building our images we will use Docker Buildx, which is a Docker CLI plugin that extends the capabilities of the Docker CLI. There are two different ways of building images with Docker Buildx: using the <code class="language-plaintext highlighter-rouge">docker buildx build</code> command or setting up the <code class="language-plaintext highlighter-rouge">DOCKER_BUILDKIT</code> environment variable.</p>
 
-<pre><code class="language-bash"># Using the docker buildx build command
-docker buildx build -t my-image:latest -f my-file .
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using the docker buildx build command</span>
+docker buildx build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
 
-# Setting up the DOCKER_BUILDKIT environment variable
-export DOCKER_BUILDKIT=1
-docker build -t my-image:latest -f my-file .
-</code></pre>
+<span class="c"># Setting up the DOCKER_BUILDKIT environment variable</span>
+<span class="nb">export </span><span class="nv">DOCKER_BUILDKIT</span><span class="o">=</span>1
+docker build <span class="nt">-t</span> my-image:latest <span class="nt">-f</span> my-file <span class="nb">.</span>
+</code></pre></div></div>
 
 <p>Let’s begin by configuring our Dockerfile:</p>
 
-<pre><code class="language-dockerfile">FROM ubuntu:22.04
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
 
-# Set non-interactive mode to avoid prompts during build
-ARG DEBIAN_FRONTEND=noninteractive
+<span class="c"># Set non-interactive mode to avoid prompts during build</span>
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
 
-# Install system tools and libraries.
-# Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads
-RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
-    apt-get update &amp;&amp; \ 
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
     apt-get install -y software-properties-common &amp;&amp; \
     # Add the Deadsnakes PPA for Python 3.11
     add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
@@ -297,12 +288,12 @@ RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
     update-alternatives --set python /usr/bin/python3.11
 
-ENTRYPOINT [ "/bin/bash" ]
-</code></pre>
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
 
 <p>This Dockerfile is relatively standard. We are utilizing Ubuntu 22.04 as our base image and installing Python 3.11 from the Deadsnakes PPA. Moreover, we’re setting Python 3.11 as our default Python version using update-alternatives.</p>
 
-<p>For those curious about the <code>--mount</code> flag, it’s a Docker Buildx feature that caches downloaded packages, preventing them from being downloaded again when adding new packages. This feature can significantly reduce the time required to build your images.</p>
+<p>For those curious about the <code class="language-plaintext highlighter-rouge">--mount</code> flag, it’s a Docker Buildx feature that caches downloaded packages, preventing them from being downloaded again when adding new packages. This feature can significantly reduce the time required to build your images.</p>
 
 <h2 id="poetry">Poetry</h2>
 
@@ -310,12 +301,12 @@ ENTRYPOINT [ "/bin/bash" ]
 
 <p>If you’re curious about the need for a virtual environment in our Docker image, there are a couple of reasons. Firstly, isolating your project’s dependencies from the system Python ensures a clean, conflict-free environment. Secondly, you might consider using a multi-stage build. This means first installing everything needed in an initial stage and then copying the final virtual environment to the second clean stage. This would make our image smaller and faster to build. However, this is not the focus of this post and I will not cover it here.</p>
 
-<pre><code class="language-dockerfile">FROM ubuntu:22.04
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
 
-ARG DEBIAN_FRONTEND=noninteractive
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
+<span class="c"># Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.7.1 \
@@ -324,10 +315,10 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
 
-# Install system tools and libraries.
-# Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads
-RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
-    apt-get update &amp;&amp; \ 
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
     apt-get install -y software-properties-common &amp;&amp; \
     # Add the Deadsnakes PPA for Python 3.11
     add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
@@ -346,55 +337,55 @@ RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
     update-alternatives --set python /usr/bin/python3.11
 
-# Set PATH to include Poetry and custom venv
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+<span class="c"># Set PATH to include Poetry and custom venv</span>
+<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
 
-# Install poetry
-RUN curl -sSL https://install.python-poetry.org | python - --version $POETRY_VERSION
+<span class="c"># Install poetry</span>
+<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
 
-# Create and prepare the virtual environment
-RUN python -m venv $VENV_PATH &amp;&amp; \
-    python -m pip install --upgrade pip &amp;&amp; \
-    pip cache purge &amp;&amp; rm -Rf /root/.cache/pip/http
+<span class="c"># Create and prepare the virtual environment</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
     
-WORKDIR /app
+<span class="k">WORKDIR</span><span class="s"> /app</span>
 
-ENTRYPOINT [ "/bin/bash" ]
-</code></pre>
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
 
-<p>I’ve set <code>VENV_PATH</code> to <code>{project-dir}/.venv</code>. This is because Poetry might not follow the environment variable we set earlier, as mentioned in the <a href="https://python-poetry.org/docs/configuration/#virtualenvscreate" target="_blank" rel="noopener noreferrer">official docs</a>, and instead creates its own environment. Everything else in the setup is quite standard. If you have any questions, please feel free to ask.</p>
+<p>I’ve set <code class="language-plaintext highlighter-rouge">VENV_PATH</code> to <code class="language-plaintext highlighter-rouge">{project-dir}/.venv</code>. This is because Poetry might not follow the environment variable we set earlier, as mentioned in the <a href="https://python-poetry.org/docs/configuration/#virtualenvscreate" target="_blank" rel="noopener noreferrer">official docs</a>, and instead creates its own environment. Everything else in the setup is quite standard. If you have any questions, please feel free to ask.</p>
 
 <h2 id="pytorch">Pytorch</h2>
 
 <p>Installing Torch with Poetry can be tricky because Torch can be installed with or without GPU support, making it challenging to support both CPU and GPU versions in your pyproject.toml file. For example, you might use the CPU version for Continuous Integration (CI) and the GPU version for running your models in production. Many issues related to this are discussed on the <a href="https://github.com/python-poetry/poetry/issues/6409" target="_blank" rel="noopener noreferrer">Poetry GitHub</a>. After trying different methods, my preferred solution is to install dependencies using Poetry and then install Torch using pip. We need to ensure Torch is installed inside our virtual environment (venv), which requires setting the correct paths in advance (apologies if you were expecting a more complex solution 😑). Here’s what you need to add:</p>
 
-<pre><code class="language-dockerfile"># Copy dependency files to the app directory
-COPY poetry.lock pyproject.toml /app
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Copy dependency files to the app directory</span>
+<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
 
-# Install dependencies with Poetry and Torch with pip, caching downloaded packages
-RUN --mount=type=cache,target=/root/.cache \
-    poetry install --without dev &amp;&amp; \
-    # Install torch GPU
+<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
+</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="c"># Install torch GPU</span>
     pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html 
 
-# Copy the entire project code to the container
-COPY ./ /source/
-</code></pre>
+<span class="c"># Copy the entire project code to the container</span>
+<span class="k">COPY</span><span class="s"> ./ /source/</span>
+</code></pre></div></div>
 
-<p>Note that we first copy the <code>poetry.lock</code> and <code>pyproject.toml</code> to the image and then we run <code>poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code>--mount</code> flag to cache the downloaded packages.</p>
+<p>Note that we first copy the <code class="language-plaintext highlighter-rouge">poetry.lock</code> and <code class="language-plaintext highlighter-rouge">pyproject.toml</code> to the image and then we run <code class="language-plaintext highlighter-rouge">poetry install --without dev</code>. Only after deps have been installed we copy our code to the image. This is a good practice to avoid installing the dependencies every time we change our code. Once again we are using the <code class="language-plaintext highlighter-rouge">--mount</code> flag to cache the downloaded packages.</p>
 
-<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code>cu118</code> in the installation command to ensure compatibility. This is what makes the torch wheel huge, because it includes code for multiple CUDA architectures so the same binary can be used on different GPUs. If you want to obtain a smaller image, you can build torch from source and only specify the architecture you need for your GPU. <a href="https://github.com/pytorch/pytorch/issues/17621" target="_blank" rel="noopener noreferrer">This</a> is a good thread about this topic.</p>
+<p>Although we install Torch with GPU support, we do not install the CUDA toolkit separately. This is because all necessary CUDA binaries are included in the Torch wheel; hence, we specify <code class="language-plaintext highlighter-rouge">cu118</code> in the installation command to ensure compatibility. This is what makes the torch wheel huge, because it includes code for multiple CUDA architectures so the same binary can be used on different GPUs. If you want to obtain a smaller image, you can build torch from source and only specify the architecture you need for your GPU. <a href="https://github.com/pytorch/pytorch/issues/17621" target="_blank" rel="noopener noreferrer">This</a> is a good thread about this topic.</p>
 
 <h2 id="final-solution">Final solution</h2>
 
 <p>Here’s the final Dockerfile that puts everything we’ve talked about into action, hope this can help you to build your own image.</p>
 
-<pre><code class="language-dockerfile">FROM ubuntu:22.04
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
 
-ARG DEBIAN_FRONTEND=noninteractive
+<span class="k">ARG</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
+<span class="c"># Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.7.1 \
@@ -403,10 +394,10 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     VENV_PATH="/app/.venv" # Use custom venv, avoid auto-creation by Poetry
 
-# Install system tools and libraries.
-# Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads
-RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
-    apt-get update &amp;&amp; \ 
+<span class="c"># Install system tools and libraries.</span>
+<span class="c"># Utilize --mount flag of Docker Buildx to cache downloaded packages, avoiding repeated downloads</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,id<span class="o">=</span>apt-build,target<span class="o">=</span>/var/cache/apt <span class="se">\
+</span>    apt-get update <span class="o">&amp;&amp;</span> <span class="se">\ </span>
     apt-get install -y software-properties-common &amp;&amp; \
     # Add the Deadsnakes PPA for Python 3.11
     add-apt-repository ppa:deadsnakes/ppa &amp;&amp; \
@@ -425,47 +416,66 @@ RUN --mount=type=cache,id=apt-build,target=/var/cache/apt \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &amp;&amp; \
     update-alternatives --set python /usr/bin/python3.11
 
-# Set PATH to include Poetry and custom venv
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+<span class="c"># Set PATH to include Poetry and custom venv</span>
+<span class="k">ENV</span><span class="s"> PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"</span>
 
-# Install poetry
-RUN curl -sSL https://install.python-poetry.org | python - --version $POETRY_VERSION
+<span class="c"># Install poetry</span>
+<span class="k">RUN </span>curl <span class="nt">-sSL</span> https://install.python-poetry.org | python - <span class="nt">--version</span> <span class="nv">$POETRY_VERSION</span>
 
-# Create and prepare the virtual environment
-RUN python -m venv $VENV_PATH &amp;&amp; \
-    python -m pip install --upgrade pip &amp;&amp; \
-    pip cache purge &amp;&amp; rm -Rf /root/.cache/pip/http
+<span class="c"># Create and prepare the virtual environment</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VENV_PATH</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip cache purge <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-Rf</span> /root/.cache/pip/http
     
-WORKDIR /app
+<span class="k">WORKDIR</span><span class="s"> /app</span>
 
-# Copy dependency files to the app directory
-COPY poetry.lock pyproject.toml /app
+<span class="c"># Copy dependency files to the app directory</span>
+<span class="k">COPY</span><span class="s"> poetry.lock pyproject.toml /app</span>
 
-# Install dependencies with Poetry and Torch with pip, caching downloaded packages
-RUN --mount=type=cache,target=/root/.cache \
-    poetry install --without dev &amp;&amp; \
-    pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html 
+<span class="c"># Install dependencies with Poetry and Torch with pip, caching downloaded packages</span>
+<span class="k">RUN </span><span class="nt">--mount</span><span class="o">=</span><span class="nb">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache <span class="se">\
+</span>    poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install </span><span class="nv">torch</span><span class="o">==</span>2.0.1+cu118 <span class="nv">torchvision</span><span class="o">==</span>0.15.2+cu118 <span class="nt">-f</span> https://download.pytorch.org/whl/torch_stable.html 
 
-# Copy the entire project code to the container
-COPY ./ /source/
+<span class="c"># Copy the entire project code to the container</span>
+<span class="k">COPY</span><span class="s"> ./ /source/</span>
 
-ENTRYPOINT [ "/bin/bash" ]
-</code></pre>
+<span class="k">ENTRYPOINT</span><span class="s"> [ "/bin/bash" ]</span>
+</code></pre></div></div>
 
 <p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>Docker</li><li>Poetry</li><li>PyTorch</li><li>Deep Learning</li><li>Python</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2024/02/07/nfl-field-mapping"><span class="post-pn-k">← Previous</span><span class="post-pn-t">Image Registration in Sports Analytics: Mapping NFL Fields with Homography</span></a>
+        <a class="is-next" href="/2024/04/15/video-segmentation"><span class="post-pn-k">Next →</span><span class="post-pn-t">Exploring Transformer-Based Methods in Video Instance Segmentation</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -487,19 +497,15 @@ ENTRYPOINT [ "/bin/bash" ]
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

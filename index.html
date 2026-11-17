@@ -52,10 +52,12 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
   <link rel="stylesheet"
     href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
 
@@ -1093,11 +1095,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
 
 </body>
 

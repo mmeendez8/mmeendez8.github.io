@@ -46,16 +46,13 @@
   <link rel="preload" href="/libs/external/fonts/Graphik-Semibold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/libs/external/fonts/Tiempos-Headline-Semibold.woff2" as="font" type="font/woff2" crossorigin>
   
-  <link rel="preload" href="/libs/external/fontello-bb2d1770/font/fontello.woff2?82615072" as="font" type="font/woff2" crossorigin>
-  
 
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
 
@@ -124,40 +121,28 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-  <div class="container">
-    <a href="/">
-      <h3>Miguel Mendez</h3>
-    </a>
-    <div>
-      <a href="/#posts">
-        <h3 class="posts-link">Posts</h3>
-      </a>
+  <div>
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <a href="/#posts">All posts</a>
     </div>
+  </nav>
+
+  <div class="post-head">
+    <p class="post-kicker">404</p>
+    <h1 class="post-title">Page not found</h1>
+    <p class="post-subtitle">Sorry, the page you are looking for does not exist or has been moved.</p>
   </div>
-</header>
 
-<div class="container the-post-content">
-  <div class="section">
-    <h1>Page not found</h1>
-    <p>
-      Sorry, the page you are looking for does not exist or has been moved.
-      Go back to the <a href="/">homepage</a> or pick one of the latest posts:
-    </p>
-
+  <div class="post-prose post-404">
+    <p>Go back to the <a href="/">homepage</a> or pick one of the latest posts:</p>
     <ul>
-      
-      
-      <li><p><a href="/2025/02/19/configure-multiple-ssh-keys-git">Managing Multiple GitHub Accounts with SSH</a></p></li>
-      
-      <li><p><a href="/2025/01/07/preference-alignment">LLM Preference Alignment</a></p></li>
-      
-      <li><p><a href="/2024/12/05/gpu-normalization">Image Normalization: Comparing CPU vs GPU Performance in PyTorch</a></p></li>
-      
-      <li><p><a href="/2024/10/20/aiohttp-vs-httpx">Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python</a></p></li>
-      
-      <li><p><a href="/2024/08/25/mot-tracking-metrics">Understanding Object Tracking Metrics</a></p></li>
-      
+      <li><a href="/2025/02/19/configure-multiple-ssh-keys-git">Managing Multiple GitHub Accounts with SSH</a></li>
+      <li><a href="/2025/01/07/preference-alignment">LLM Preference Alignment</a></li>
+      <li><a href="/2024/12/05/gpu-normalization">Image Normalization: Comparing CPU vs GPU Performance in PyTorch</a></li>
+      <li><a href="/2024/10/20/aiohttp-vs-httpx">Httpx vs Aiohttp: Handling High-Concurrency Requests in Async Python</a></li>
+      <li><a href="/2024/08/25/mot-tracking-metrics">Understanding Object Tracking Metrics</a></li>
     </ul>
   </div>
 </div>
@@ -183,11 +168,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
 
 </body>
 

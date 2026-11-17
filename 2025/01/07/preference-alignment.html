@@ -72,32 +72,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -193,7 +175,7 @@
   },
   "keywords": ["LLM","Language-Model","RLHF","Reinforcement-Learning","DPO","PPO","ORPO"],
   "articleSection": "Deep Learning",
-  "wordCount": 2189,
+  "wordCount": 2167,
   "inLanguage": "en"
 }
 </script>
@@ -226,46 +208,46 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">LLM Preference Alignment</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Deep Learning · Machine Learning · Natural Language Processing · AI · Technology</p>
+      <h1 class="post-title">LLM Preference Alignment</h1>
+      <p class="post-subtitle">Understanding PPO, DPO, and ORPO</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2025-01-07T00:00:00+00:00">January 7, 2025</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2000; --hero-h: 1204">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-b0fdc3b2b.jpg" alt="LLM Preference Alignment" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-480-ab1a63182.webp 480w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-640-ab1a63182.webp 640w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-ab1a63182.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1000-ab1a63182.webp 1000w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1200-ab1a63182.webp 1200w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1500-ab1a63182.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-2000-ab1a63182.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2000 / 1204))" width="2000" height="1204">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">January 07, 2025 </span>
-      <h1 class="the-post-title">LLM Preference Alignment</h1>
-      <p class="the-post-subtitle">Understanding PPO, DPO, and ORPO</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-b0fdc3b2b.jpg" alt="LLM Preference Alignment" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-480-ab1a63182.webp 480w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-640-ab1a63182.webp 640w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-800-ab1a63182.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1000-ab1a63182.webp 1000w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1200-ab1a63182.webp 1200w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-1500-ab1a63182.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/thumbnail-2000-ab1a63182.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1204">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p>I am trying to keep myself updated with the LLM literature and recently found an <a href="https://github.com/huggingface/smol-course" target="_blank" rel="noopener noreferrer">interesting course</a> from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.</p>
-
-<h2 id="table-of-contents">Table of contents</h2>
-
-<ol>
-  <li><a href="#what-is-preference-alignment">What is preference alignment?</a></li>
-  <li><a href="#ppo">PPO: Proximal Policy Optimization</a></li>
-  <li><a href="#dpo">DPO: Direct Preference Optimization</a></li>
-  <li><a href="#orpo">ORPO: Monolithic Preference Optimization without Reference Model</a></li>
-</ol>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p>I am trying to keep myself updated with the LLM literature and recently found an <a href="https://github.com/huggingface/smol-course" target="_blank" rel="noopener noreferrer">interesting course</a> from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.</p>
 
 <h2 id="what-is-preference-alignment">What is preference alignment?</h2>
 
@@ -312,9 +294,9 @@
 
 <p>In the context of LLMs, the agent is the model, the state is the input prompt, and the action is the generated response. We need a reward model to evaluate the quality of these responses. While we could use human feedback for this, having humans intervene in the training loop is impractical. Instead, we can train a model to provide feedback on the responses as a human would. This model is called a reward model.</p>
 
-<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+<div class="post-center-image" style="max-width: 600px;">
     <a href="/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-800-c070626ba.png" alt="Diagram showing the pipeline to train a reward model" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-400-9b39a61ea.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-800-9b39a61ea.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-1500-9b39a61ea.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-2000-9b39a61ea.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="2080" height="1571" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-800-c070626ba.png" alt="Diagram showing the pipeline to train a reward model" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-400-9b39a61ea.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-800-9b39a61ea.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-1500-9b39a61ea.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model-2000-9b39a61ea.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="2080" height="1571" />
 </a>
 
 </div>
@@ -325,7 +307,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-800-7ce1b478e.jpg" alt="Diagram showing the PPO pipeline" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-400-d2d1003d2.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-800-d2d1003d2.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-1500-d2d1003d2.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-2000-d2d1003d2.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="6596" height="2425" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-800-7ce1b478e.jpg" alt="Diagram showing the PPO pipeline" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-400-d2d1003d2.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-800-d2d1003d2.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-1500-d2d1003d2.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/ppo-2000-d2d1003d2.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="6596" height="2425" />
 </a>
 
 </div>
@@ -398,7 +380,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-800-b4f948944.jpg" alt="Diagram showing the PPO pipeline" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-400-6a8b2805e.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-800-6a8b2805e.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-1500-6a8b2805e.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-2000-6a8b2805e.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="6121" height="2613" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-800-b4f948944.jpg" alt="Diagram showing the PPO pipeline" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-400-6a8b2805e.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-800-6a8b2805e.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-1500-6a8b2805e.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/dpo-2000-6a8b2805e.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="6121" height="2613" />
 </a>
 
 </div>
@@ -417,9 +399,9 @@
 
 <p>This loss basically tries to make the log-likelihood of the output tokens as high as possible given the input prompt. The diagram below shows a intuitive representation of this process:</p>
 
-<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+<div class="post-center-image" style="max-width: 600px;">
     <a href="/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-800-48b250240.jpg" alt="Diagram showing how a LLM works" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-400-4608d60d7.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-800-4608d60d7.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-1500-4608d60d7.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-2000-4608d60d7.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="5100" height="3136" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-800-48b250240.jpg" alt="Diagram showing how a LLM works" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-400-4608d60d7.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-800-4608d60d7.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-1500-4608d60d7.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram-2000-4608d60d7.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="5100" height="3136" />
 </a>
 
 </div>
@@ -430,7 +412,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure-584-3155cd35c.png" alt="Figure from ORPO paper showing log probabilities for chosen and rejected responses" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure-400-e6c108089.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure-584-e6c108089.webp 584w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="584" height="380" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure-584-3155cd35c.png" alt="Figure from ORPO paper showing log probabilities for chosen and rejected responses" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure-400-e6c108089.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo_figure-584-e6c108089.webp 584w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="584" height="380" />
 </a>
 
 </div>
@@ -453,7 +435,7 @@
 
 <div class="post-center-image">
     <a href="/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-800-7d9a8c5ce.jpg" alt="ORPO diagram" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-400-81f9cddb7.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-800-81f9cddb7.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-1500-81f9cddb7.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-2000-81f9cddb7.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="8135" height="1966" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-800-7d9a8c5ce.jpg" alt="ORPO diagram" srcset="/generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-400-81f9cddb7.webp 400w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-800-81f9cddb7.webp 800w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-1500-81f9cddb7.webp 1500w, /generated/assets/images/fullsize/posts/2025-01-07-preference-alignment/orpo-2000-81f9cddb7.webp 2000w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="8135" height="1966" />
 </a>
 
 </div>
@@ -474,18 +456,37 @@
   <li>[<a href="https://huggingface.co/blog/rlhf" target="_blank" rel="noopener noreferrer">7</a>] HF blog post on RLHF</li>
 </ul>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>LLM</li><li>Language-Model</li><li>RLHF</li><li>Reinforcement-Learning</li><li>DPO</li><li>PPO</li><li>ORPO</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2024/12/05/gpu-normalization"><span class="post-pn-k">← Previous</span><span class="post-pn-t">Image Normalization: Comparing CPU vs GPU Performance in PyTorch</span></a>
+        <a class="is-next" href="/2025/02/19/configure-multiple-ssh-keys-git"><span class="post-pn-k">Next →</span><span class="post-pn-t">Managing Multiple GitHub Accounts with SSH</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -507,8 +508,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
     <script>
@@ -525,14 +530,6 @@
 </script>
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

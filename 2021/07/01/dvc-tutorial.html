@@ -68,32 +68,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -222,37 +204,46 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">Version control your dataset with DVC</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Machine Learning · Data Engineering</p>
+      <h1 class="post-title">Version control your dataset with DVC</h1>
+      <p class="post-subtitle">Use DVC and Git for tracking changes on your machine learning dataset</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2021-07-01T00:00:00+00:00">July 1, 2021</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2000; --hero-h: 1045">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-f41518dda.jpg" alt="Version control your dataset with DVC" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-480-cb272ff13.webp 480w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-640-cb272ff13.webp 640w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cb272ff13.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1000-cb272ff13.webp 1000w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1200-cb272ff13.webp 1200w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1500-cb272ff13.webp 1500w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-2000-cb272ff13.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2000 / 1045))" width="2000" height="1045">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">July 01, 2021 </span>
-      <h1 class="the-post-title">Version control your dataset with DVC</h1>
-      <p class="the-post-subtitle">Use DVC and Git for tracking changes on your machine learning dataset</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-f41518dda.jpg" alt="Version control your dataset with DVC" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-480-cb272ff13.webp 480w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-640-cb272ff13.webp 640w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-800-cb272ff13.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1000-cb272ff13.webp 1000w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1200-cb272ff13.webp 1200w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-1500-cb272ff13.webp 1500w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/thumbnail-2000-cb272ff13.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1045">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p><a href="https://dvc.org/" target="_blank" rel="noopener noreferrer">Data Version Control (DVC)</a> is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.</p>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p><a href="https://dvc.org/" target="_blank" rel="noopener noreferrer">Data Version Control (DVC)</a> is one of the most amazing projects in recent years. Before using it, we used to have trouble reproducing our models and experiments. We store our images and annotations in high-volume network attached storage where multiple people work every day, so there was no proper way to modify images or annotations while maintaining a correct and reproducible change history. You can imagine how often someone accidentally deletes an image, modifies some annotations, or infinitely more random problems that ended in trouble for properly reproducing our experiments.</p>
 
 <p>In this post I will try to show how to configure DVC and how it can help us to maintain version of our datasets that can be easily integrated with Github.</p>
 
@@ -289,170 +280,170 @@
 
 <p>Let’s setup DVC for our experiment. If you check their <a href="https://dvc.org/doc/install/linux#installation-on-linux" target="_blank" rel="noopener noreferrer">installation guide</a>, you will realize that depending on the type of remote storage you plan to use, it might be necessary to install additional deps. For this tutorial we are going to use Google Drive because it is probably the most accesible to everyone. I always use Conda environment for Python package management, do the following for creating a new environment and installing dvc on it:</p>
 
-<pre><code class="language-bash">conda  create -n coco_sample python=3.8 -y
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda  create <span class="nt">-n</span> coco_sample <span class="nv">python</span><span class="o">=</span>3.8 <span class="nt">-y</span>
 conda activate coco_sample
-pip install dvc[gdrive]
-</code></pre>
+pip <span class="nb">install </span>dvc[gdrive]
+</code></pre></div></div>
 
 <h3 id="get-the-data">Get the data</h3>
 
 <p>We are going to use a <a href="https://course.fast.ai/datasets#coco" target="_blank" rel="noopener noreferrer">subset of the COCO dataset created by fast.ai</a>. The fast.ai subset contains all images that contain one of five selected categories, restricting objects to just those five categories; the categories are: chair couch tv remote book vase. You can download and extract it using the following commands:</p>
 
-<pre><code class="language-bash">wget https://s3.amazonaws.com/fast-ai-coco/coco_sample.tgz -P data
-tar zxvf data/coco_sample.tgz -C data
-rm  data/coco_sample.tgz
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://s3.amazonaws.com/fast-ai-coco/coco_sample.tgz <span class="nt">-P</span> data
+<span class="nb">tar </span>zxvf data/coco_sample.tgz <span class="nt">-C</span> data
+<span class="nb">rm  </span>data/coco_sample.tgz
+</code></pre></div></div>
 
-<p>You should now have all images in <code>data/coco_sample/train_sample</code> and their corresponding annotations in <code>data/coco_sample/annotations/train_sample.json</code></p>
+<p>You should now have all images in <code class="language-plaintext highlighter-rouge">data/coco_sample/train_sample</code> and their corresponding annotations in <code class="language-plaintext highlighter-rouge">data/coco_sample/annotations/train_sample.json</code></p>
 
 <h3 id="visualize-our-data">Visualize our data</h3>
 
 <p>It is always good to take a look at the data to get an idea of what kind of images we are dealing with. We are going to use our tool <a href="https://github.com/Gradiant/pyodi" target="_blank" rel="noopener noreferrer">pyodi</a>, which allows us to retrieve annotations from a COCO formatted file and paint then over the corresponding image. We can install it using pip and run the paint-annotations script pointing to our data and annotations folder:</p>
 
-<pre><code class="language-bash">pip install pyodi
-pyodi paint-annotations data/coco_sample/annotations/train_sample.json data/coco_sample/train_sample output/painted_images --first_n 10
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>pyodi
+pyodi paint-annotations data/coco_sample/annotations/train_sample.json data/coco_sample/train_sample output/painted_images <span class="nt">--first_n</span> 10
+</code></pre></div></div>
 
-<p>This will paint the first 10 images of the dataset and save them into <code>output/painted_images</code> folder.</p>
+<p>This will paint the first 10 images of the dataset and save them into <code class="language-plaintext highlighter-rouge">output/painted_images</code> folder.</p>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-666-8250e9564.jpg" alt="Coco image with painted detections" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-400-6775c1de5.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-666-6775c1de5.webp 666w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="666" height="500" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-666-8250e9564.jpg" alt="Coco image with painted detections" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-400-6775c1de5.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/painted_coco_sample-666-6775c1de5.webp 666w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="666" height="500" />
 </a>
 
 </div>
 
 <h2 id="version-the-data">Version the data</h2>
 
-<p>If we follow <a href="https://dvc.org/doc/start" target="_blank" rel="noopener noreferrer">DVC get started page</a>, we need to initialize the project running <code>dvc init</code> so let’s run that first and commit those internal files to github.com</p>
+<p>If we follow <a href="https://dvc.org/doc/start" target="_blank" rel="noopener noreferrer">DVC get started page</a>, we need to initialize the project running <code class="language-plaintext highlighter-rouge">dvc init</code> so let’s run that first and commit those internal files to github.com</p>
 
-<pre><code class="language-bash">git init
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
 dvc init
-git commit -m "Initialize DVC"
-</code></pre>
+git commit <span class="nt">-m</span> <span class="s2">"Initialize DVC"</span>
+</code></pre></div></div>
 
 <p>Let’s now add our data and annotations to DVC.</p>
 
-<pre><code class="language-bash">dvc add data
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc add data
+</code></pre></div></div>
 
-<p>This may take a while since it needs to compute hashes for all files in our data directory. Two files are generated, the <code>.gitignore</code> that will inform git that it must ignore the <code>data</code>/ directory and <code>data.dvc</code>, a small text file in a human-readable format used by dvc to track changes that we can upload to git. Let’s add can add this files and commit the new changes.</p>
+<p>This may take a while since it needs to compute hashes for all files in our data directory. Two files are generated, the <code class="language-plaintext highlighter-rouge">.gitignore</code> that will inform git that it must ignore the <code class="language-plaintext highlighter-rouge">data</code>/ directory and <code class="language-plaintext highlighter-rouge">data.dvc</code>, a small text file in a human-readable format used by dvc to track changes that we can upload to git. Let’s add can add this files and commit the new changes.</p>
 
-<pre><code class="language-bash">git add .gitignore data.dvc 
-git commit -m "Added data to dvc"
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .gitignore data.dvc 
+git commit <span class="nt">-m</span> <span class="s2">"Added data to dvc"</span>
+</code></pre></div></div>
 
-<p>Last step will be to configure our Google Drive remote. For this, I created a new folder in my personal gdrive called <code>dvc_data</code> so you should do the same in your own gdrive. After that I will add that folder as a dvc remote and I will need to grant DVC the necessary permissions to access my gdrive account. This can be easily done after running <code>dvc push</code> following the link that promts when running the command. Have in mind that the push step may take a while to complete depending on your internet connection.</p>
+<p>Last step will be to configure our Google Drive remote. For this, I created a new folder in my personal gdrive called <code class="language-plaintext highlighter-rouge">dvc_data</code> so you should do the same in your own gdrive. After that I will add that folder as a dvc remote and I will need to grant DVC the necessary permissions to access my gdrive account. This can be easily done after running <code class="language-plaintext highlighter-rouge">dvc push</code> following the link that promts when running the command. Have in mind that the push step may take a while to complete depending on your internet connection.</p>
 
-<pre><code class="language-bash">dvc remote add -d gdrive-remote gdrive://root/dvc_data
-git commit .dvc/config -m "Configure local remote" # Commit changes to git
-dvc push # Upload data to gdrive
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc remote add <span class="nt">-d</span> gdrive-remote gdrive://root/dvc_data
+git commit .dvc/config <span class="nt">-m</span> <span class="s2">"Configure local remote"</span> <span class="c"># Commit changes to git</span>
+dvc push <span class="c"># Upload data to gdrive</span>
+</code></pre></div></div>
 
 <p>We are now tracking our images and annotations with DVC and have pushed it to our google drive remote storage.</p>
 
 <h2 id="split-the-data">Split the data</h2>
 
-<p>We have a file <code>train_sample.json</code> that contains all our annotations. We need to split this file in training and validation subsets so we can properly train our model in a near future. We are going to use pyodi’s <a href="https://gradiant.github.io/pyodi/reference/apps/coco-split/" target="_blank" rel="noopener noreferrer">coco random-split</a> app for this task, since it is very easy to execute.
+<p>We have a file <code class="language-plaintext highlighter-rouge">train_sample.json</code> that contains all our annotations. We need to split this file in training and validation subsets so we can properly train our model in a near future. We are going to use pyodi’s <a href="https://gradiant.github.io/pyodi/reference/apps/coco-split/" target="_blank" rel="noopener noreferrer">coco random-split</a> app for this task, since it is very easy to execute.
 Let’s reserve a 20% of the total data for validation:</p>
 
-<pre><code class="language-bash">pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split --val-percentage 0.2
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split <span class="nt">--val-percentage</span> 0.2
+</code></pre></div></div>
 
-<p>This creates two new files <code>split_train.json</code>and <code>split_val.json</code>. Let’s add them to dvc, that will magically recognize that we have only added two new files, and commit changes to git:</p>
+<p>This creates two new files <code class="language-plaintext highlighter-rouge">split_train.json</code>and <code class="language-plaintext highlighter-rouge">split_val.json</code>. Let’s add them to dvc, that will magically recognize that we have only added two new files, and commit changes to git:</p>
 
-<pre><code class="language-bash">dvc add data/
-git commit data.dvc -m "Add dataset splits"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dvc add data/
+git commit data.dvc <span class="nt">-m</span> <span class="s2">"Add dataset splits"</span>
 dvc push
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="tag-our-data-with-versions">Tag our data with versions</h2>
 
 <p>You must bear in mind that if we now move through our git history, we can also retrieve the state of our data in that commit or specific moment thanks to DVC. Anyway, I always like to tag the versions of my dataset so that I can easily understand what the state was at all times. Let’s do this now and tag the initial version of our dataset and push our changes to github.</p>
 
-<pre><code class="language-bash">git tag -a "v1.0" -m "Initial version, fast.ai COCO subset. 0.2 validation split"
-git push --tags
-</code></pre>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git tag <span class="nt">-a</span> <span class="s2">"v1.0"</span> <span class="nt">-m</span> <span class="s2">"Initial version, fast.ai COCO subset. 0.2 validation split"</span>
+git push <span class="nt">--tags</span>
+</code></pre></div></div>
 
 <p>Let’s imagine that for any reason we need to create a new version of our dataset saving only ten percent of our data as validation. We could simply run pyodi, override our actual annotations and push the new changes without fear to loose any data. Let’s try that:</p>
 
-<pre><code class="language-bash">pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split --val-percentage 0.1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyodi coco random-split data/coco_sample/annotations/train_sample.json data/coco_sample/annotations/split <span class="nt">--val-percentage</span> 0.1
 dvc add data/
-git commit data.dvc -m "New split with 0.1 validation"
+git commit data.dvc <span class="nt">-m</span> <span class="s2">"New split with 0.1 validation"</span>
 dvc push
-git tag -a "v2.0" -m "0.2 Validation split"
-git push --tags
-</code></pre>
+git tag <span class="nt">-a</span> <span class="s2">"v2.0"</span> <span class="nt">-m</span> <span class="s2">"0.2 Validation split"</span>
+git push <span class="nt">--tags</span>
+</code></pre></div></div>
 
 <p>That’s it we now have two version of our dataset. If we want to move to our previous version we can simply run:</p>
 
-<pre><code class="language-bash">git checkout v1.0
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v1.0
 dvc checkout
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="continuous-integration-for-data">Continuous Integration for data</h2>
 
 <p>We have used DVC for track and save data the same way we do with code. So we can also add some test to our data to make sure that we do not commit any error that can harm our training. Since we have used Google Drive as a remote storage for our data, we can configure our CI pipeline to download our data from there and run our tests.</p>
 
-<p>First of all we need to store our gdrive credentials as a Github secret. You can go to you repository settings in Github and create a new secret named <code>GDRIVE_CREDENTIALS_DATA</code>, and paste there the contents of your <code>.dvc/tmp/gdrive-user-credentials.json</code>. This file should have been automatically created after you give DVC permissions to your Google Drive account. You can read more about this in <a href="https://dvc.org/doc/user-guide/setup-google-drive-remote#authorization" target="_blank" rel="noopener noreferrer">DVC documentation</a>.</p>
+<p>First of all we need to store our gdrive credentials as a Github secret. You can go to you repository settings in Github and create a new secret named <code class="language-plaintext highlighter-rouge">GDRIVE_CREDENTIALS_DATA</code>, and paste there the contents of your <code class="language-plaintext highlighter-rouge">.dvc/tmp/gdrive-user-credentials.json</code>. This file should have been automatically created after you give DVC permissions to your Google Drive account. You can read more about this in <a href="https://dvc.org/doc/user-guide/setup-google-drive-remote#authorization" target="_blank" rel="noopener noreferrer">DVC documentation</a>.</p>
 
 <p>Let’s create an example test in charge of checking that our annotations follow COCO format guidelines. We can use pydantic for data validation defining how annotation should be using python type annotations. We now for example that categories or our dataset can only take six different values and bounding boxes must be a list of four integers. Pydantic allows us to define this rules in a very efficient an flexible manner.</p>
 
-<p>Create a new file <code>tests/test_annotations.py</code> and paste the following content:</p>
+<p>Create a new file <code class="language-plaintext highlighter-rouge">tests/test_annotations.py</code> and paste the following content:</p>
 
-<pre><code class="language-python">import json
-from pathlib import Path
-import pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="n">pytest</span>
 
-from typing import get_args, List, Literal
-from pydantic import BaseModel, conint, confloat, conlist
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span> <span class="n">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span><span class="p">,</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
 
-CATEGORY_NAMES = Literal["chair", "couch", "tv", "remote", "book", "vase"] 
+<span class="n">CATEGORY_NAMES</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="sh">"</span><span class="s">chair</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">couch</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tv</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">remote</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">book</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">vase</span><span class="sh">"</span><span class="p">]</span> 
 
-class COCOCategory(BaseModel):
-    id: int
-    name: CATEGORY_NAMES
-
-
-class COCOImage(BaseModel):
-    id: int
-    file_name: str
+<span class="k">class</span> <span class="nc">COCOCategory</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">CATEGORY_NAMES</span>
 
 
-class COCOAnnotation(BaseModel):
-    image_id: int
-    bbox: conlist(int, min_items=4, max_items=4)
-    category_id: int
+<span class="k">class</span> <span class="nc">COCOImage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span>
 
 
-class COCODetectionDataset(BaseModel):
-    images: List[COCOImage]
-    annotations: List[COCOAnnotation]
-    categories: List[COCOCategory]
+<span class="k">class</span> <span class="nc">COCOAnnotation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">image_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="nf">conlist</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">category_id</span><span class="p">:</span> <span class="nb">int</span>
 
 
-@pytest.mark.parametrize("split", ["train", "val"])
-def test_coco_format(split):
+<span class="k">class</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOImage</span><span class="p">]</span>
+    <span class="n">annotations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOAnnotation</span><span class="p">]</span>
+    <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">COCOCategory</span><span class="p">]</span>
 
-    annotations_file = f"data/coco_sample/annotations/split_{split}.json"
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="sh">"</span><span class="s">split</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="sh">"</span><span class="s">train</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">val</span><span class="sh">"</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_coco_format</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
+
+    <span class="n">annotations_file</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">data/coco_sample/annotations/split_</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s">.json</span><span class="sh">"</span>
     
-    with open(annotations_file, "r") as f:
-        dataset = COCODetectionDataset(**json.load(f))
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">annotations_file</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nc">COCODetectionDataset</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
 
-    # Check image ids are unique
-    image_ids = [img.id for img in dataset.images]
-    image_ids_set = set(image_ids)
-    assert len(image_ids) == len(image_ids_set)
+    <span class="c1"># Check image ids are unique
+</span>    <span class="n">image_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">images</span><span class="p">]</span>
+    <span class="n">image_ids_set</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nf">len</span><span class="p">(</span><span class="n">image_ids</span><span class="p">)</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">image_ids_set</span><span class="p">)</span>
 
-    # Check annotation ids are unique
-    categories = [cat.id for cat in dataset.categories]
-    categories_set = set(categories)
-    assert len(categories) == len(categories_set)
+    <span class="c1"># Check annotation ids are unique
+</span>    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat</span><span class="p">.</span><span class="nb">id</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">categories</span><span class="p">]</span>
+    <span class="n">categories_set</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nf">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">categories_set</span><span class="p">)</span>
 
-    # Check each annotation corresponds with existent image
-    for annotation in dataset.annotations:
-        assert annotation.image_id in image_ids_set
-</code></pre>
+    <span class="c1"># Check each annotation corresponds with existent image
+</span>    <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">annotations</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">annotation</span><span class="p">.</span><span class="n">image_id</span> <span class="ow">in</span> <span class="n">image_ids_set</span>
+</code></pre></div></div>
 
 <p>Note we added a test that will ensure that:</p>
 
@@ -463,44 +454,44 @@ def test_coco_format(split):
   <li>All annotations are associated with an existent image id</li>
 </ul>
 
-<p>We have the test so we need to define a workflow that automatically runs this when we push some changes to our main branch. Create a new file <code>.github/workflows/ci.yaml</code> and paste the following code:</p>
+<p>We have the test so we need to define a workflow that automatically runs this when we push some changes to our main branch. Create a new file <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yaml</code> and paste the following code:</p>
 
-<pre><code class="language-yaml">name: Continuous Integration
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
 
-on:
-  push:
-    branches: [main]
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: iterative/setup-dvc@v1 
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">iterative/setup-dvc@v1</span> 
 
-      - name: Get annotations from dvc remote
-        run: dvc pull data/coco_sample/annotations 
-        env:
-          GDRIVE_CREDENTIALS_DATA: $
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Get annotations from dvc remote</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">dvc pull data/coco_sample/annotations</span> 
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">GDRIVE_CREDENTIALS_DATA</span><span class="pi">:</span> <span class="s">$</span>
 
-      - name: Run tests
-        run: |
-          pip install pytest pydantic
-          pytest tests
-</code></pre>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">pip install pytest pydantic</span>
+          <span class="s">pytest tests</span>
+</code></pre></div></div>
 
-<p>This script is very intuitive. First we checkout our repo and setup DVC. After that we pull just the annotation files using using the command <code>dvc pull data/coco_sample/annotations</code>. Think that if we run <code>dvc pull</code> without extra argument we would have to wait before all images are downloaded and we do not need them for this type of test.</p>
+<p>This script is very intuitive. First we checkout our repo and setup DVC. After that we pull just the annotation files using using the command <code class="language-plaintext highlighter-rouge">dvc pull data/coco_sample/annotations</code>. Think that if we run <code class="language-plaintext highlighter-rouge">dvc pull</code> without extra argument we would have to wait before all images are downloaded and we do not need them for this type of test.</p>
 
 <p>If we add, commit and push all this changes to Github we can see how our workflow triggers and runs the associated job:</p>
 
-<pre><code class="language-bash">git add .github tests
-git commit -m "Add tests"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .github tests
+git commit <span class="nt">-m</span> <span class="s2">"Add tests"</span>
 git push
-</code></pre>
+</code></pre></div></div>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-800-4fd35c01c.jpg" alt="Github CI results caption" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-400-58e8b520e.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-800-58e8b520e.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-917-58e8b520e.webp 917w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="917" height="472" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-800-4fd35c01c.jpg" alt="Github CI results caption" srcset="/generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-400-58e8b520e.webp 400w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-800-58e8b520e.webp 800w, /generated/assets/images/fullsize/posts/2021-07-01-dvc-tutorial/ci-917-58e8b520e.webp 917w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="917" height="472" />
 </a>
 
 </div>
@@ -525,18 +516,37 @@ git push
 
 <p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>DVC</li><li>Data Version Control</li><li>Machine Learning</li><li>Git</li><li>CI/CD</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2021/04/23/cache-docker"><span class="post-pn-k">← Previous</span><span class="post-pn-t">Reduce Actions time with Docker and Github Cache</span></a>
+        <a class="is-next" href="/2021/07/19/new-docker-cache-is-out"><span class="post-pn-k">Next →</span><span class="post-pn-t">Export to Github Cache with Docker Buildx</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -558,19 +568,15 @@ git push
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

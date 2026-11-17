@@ -72,32 +72,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -193,7 +175,7 @@
   },
   "keywords": ["Object Tracking","Computer Vision","SORT","DeepSORT","ByteTrack","BoT-SORT","SMILEtrack"],
   "articleSection": "Computer Vision",
-  "wordCount": 1472,
+  "wordCount": 1473,
   "inLanguage": "en"
 }
 </script>
@@ -226,37 +208,46 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">Multi-Object Tracking by Detection: A Comprehensive Guide</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Computer Vision · Machine Learning</p>
+      <h1 class="post-title">Multi-Object Tracking by Detection: A Comprehensive Guide</h1>
+      <p class="post-subtitle">Exploring the Advancements and Accuracy in Multi-Object Tracking Technologies</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2023-11-08T00:00:00+00:00">November 8, 2023</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2000; --hero-h: 1375">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3a1d1f71c.png" alt="Multi-Object Tracking by Detection: A Comprehensive Guide" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-480-3f77be17b.webp 480w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-640-3f77be17b.webp 640w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3f77be17b.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1000-3f77be17b.webp 1000w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1200-3f77be17b.webp 1200w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1500-3f77be17b.webp 1500w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-2000-3f77be17b.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2000 / 1375))" width="2000" height="1375">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">November 08, 2023 </span>
-      <h1 class="the-post-title">Multi-Object Tracking by Detection: A Comprehensive Guide</h1>
-      <p class="the-post-subtitle">Exploring the Advancements and Accuracy in Multi-Object Tracking Technologies</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3a1d1f71c.png" alt="Multi-Object Tracking by Detection: A Comprehensive Guide" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-480-3f77be17b.webp 480w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-640-3f77be17b.webp 640w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-800-3f77be17b.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1000-3f77be17b.webp 1000w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1200-3f77be17b.webp 1200w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-1500-3f77be17b.webp 1500w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/thumbnail-2000-3f77be17b.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1375">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <h2 id="table-of-contents">Table of Contents</h2>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose">
+          <h2 id="methods-at-a-glance">Methods at a glance</h2>
 
 <div class="table-wrapper">
 
@@ -265,7 +256,7 @@
       <tr>
         <th> </th>
         <th>Year</th>
-        <th>Appearence Features</th>
+        <th>Appearance Features</th>
         <th>Camera Compensation</th>
         <th>HOTA MOT20</th>
         <th>Extra data</th>
@@ -383,11 +374,11 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 
 <p>The cascade association step would look like this:</p>
 
-<pre><code class="language-python">for track_age in range(1, maximum_age):
-    tracks_to_associate = get_tracks_with_age(tracks, track_age)
-    associate(tracks_to_associate, detections)
-    remove_associated_detections(detections)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">track_age</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">maximum_age</span><span class="p">):</span>
+    <span class="n">tracks_to_associate</span> <span class="o">=</span> <span class="nf">get_tracks_with_age</span><span class="p">(</span><span class="n">tracks</span><span class="p">,</span> <span class="n">track_age</span><span class="p">)</span>
+    <span class="nf">associate</span><span class="p">(</span><span class="n">tracks_to_associate</span><span class="p">,</span> <span class="n">detections</span><span class="p">)</span>
+    <span class="nf">remove_associated_detections</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="bytetrack">ByteTrack</h2>
 
@@ -427,7 +418,7 @@ I have included the SORT and DeepSORT papers in the list, despite being older me
 
     <div class="post-center-image">
      <a href="/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc.png">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-1152-ed5e82503.webp 1152w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="1152" height="1296" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-3538f10c9.png" alt="Camera movement example" srcset="/generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-400-ed5e82503.webp 400w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-800-ed5e82503.webp 800w, /generated/assets/images/fullsize/posts/2023-11-08-tracking-by-detection-overview/cmc-1152-ed5e82503.webp 1152w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="1152" height="1296" />
 </a>
 
  </div>
@@ -487,18 +478,37 @@ There is camera motion correction in the code but not in the paper!!!!
   <li>[<a href="https://arxiv.org/pdf/2211.08824.pdf" target="_blank" rel="noopener noreferrer">5</a>] Wang, Y. H. (2022). SMILEtrack: SiMIlarity LEarning for Multiple Object Tracking. arXiv preprint arXiv:2211.08824.</li>
 </ul>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>Object Tracking</li><li>Computer Vision</li><li>SORT</li><li>DeepSORT</li><li>ByteTrack</li><li>BoT-SORT</li><li>SMILEtrack</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="https://statsbomb.com/articles/football/creating-better-data-ai-homography-estimation/" target="_blank" rel="noopener"><span class="post-pn-k">← Previous</span><span class="post-pn-t">Creating Better Data: AI & Homography Estimation</span></a>
+        <a class="is-next" href="/2023/11/22/deploy-mlflow-terraform"><span class="post-pn-k">Next →</span><span class="post-pn-t">MLFlow Deployment on AWS with Terraform</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -520,8 +530,12 @@ There is camera motion correction in the code but not in the paper!!!!
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
     <script>
@@ -538,14 +552,6 @@ There is camera motion correction in the code but not in the paper!!!!
 </script>
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 

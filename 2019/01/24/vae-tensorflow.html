@@ -66,32 +66,14 @@
   <link rel="stylesheet" href=/libs/custom/my_css.css>
   <link rel="stylesheet" href=/libs/external/fonts/fonts.css>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet"
-    href=/libs/external/fontello-bb2d1770/css/fontello.css>
+  
 
   
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href=/libs/custom/syntax.css as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href=/libs/custom/syntax.css></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href=/libs/external/lightbox/lightbox.css as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href=/libs/external/lightbox/lightbox.css></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   
 
 
@@ -220,37 +202,46 @@
 <body>
 
   <main>
-  <header class="the-post-header">
-    <div class="container">
-      <a href="/">
-        <h3>Miguel Mendez</h3>
-      </a>
-      <div>
-        <a  href=/index.html#posts>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post" data-post>
+
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="/">Miguel Mendez</a>
+      <span class="post-bar-title" aria-hidden="true">VAEs! Generating images with Tensorflow</span>
+      <a href="/#posts">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      <p class="post-kicker">Machine Learning · Deep Learning</p>
+      <h1 class="post-title">VAEs! Generating images with Tensorflow</h1>
+      <p class="post-subtitle">Learn how to code a Variational Autoencoder</p>
+      <div class="post-byline">
+        <img alt="" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-120-a123ac644.webp 120w" sizes="40px" width="330" height="330">
+
+        <span><b>Miguel Mendez</b> · <time datetime="2019-01-24T00:00:00+00:00">January 24, 2019</time></span>
       </div>
+    </header>
+    <div class="post-hero has-ratio" style="--hero-w: 2000; --hero-h: 1333">
+      <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-e60febdc5.jpg" alt="VAEs! Generating images with Tensorflow" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-480-645497867.webp 480w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-640-645497867.webp 640w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-645497867.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1000-645497867.webp 1000w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1200-645497867.webp 1200w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1500-645497867.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-2000-645497867.webp 2000w" sizes="min(1040px, calc(100vw - 48px), calc(62vh * 2000 / 1333))" width="2000" height="1333">
+
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">January 24, 2019 </span>
-      <h1 class="the-post-title">VAEs! Generating images with Tensorflow</h1>
-      <p class="the-post-subtitle">Learn how to code a Variational Autoencoder</p>
-    </div>
-  </div>
-
-  <div class="the-post-title-image">
-    <img fetchpriority="high" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-e60febdc5.jpg" alt="VAEs! Generating images with Tensorflow" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-480-645497867.webp 480w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-640-645497867.webp 640w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-800-645497867.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1000-645497867.webp 1000w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1200-645497867.webp 1200w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-1500-645497867.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/thumbnail-2000-645497867.webp 2000w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1333">
-
-  </div>
-</div>
-
-<div class="container the-post-content">
-
-  <p>In <a href="/2019/01/19/vae-theory">my previous post</a> I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!</p>
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        <div class="post-prose has-dropcap">
+          <p>In <a href="/2019/01/19/vae-theory">my previous post</a> I covered the theory behind Variational Autoencoders. It’s time now to get our hands dirty and develop some code that can lead us to a better comprehension of this technique. I decided to use Tensorflow since I want to improve my skills with it and adapt to the last changes that are being pushed towards the 2.0 version. Let’s code!</p>
 
 <p><strong>Note</strong>: All code in here can be found on my <a href="https://github.com/mmeendez8/Autoencoder" target="_blank" rel="noopener noreferrer">Github</a> account.</p>
 
@@ -269,7 +260,7 @@
 
 <script src="https://gist.github.com/mmeendez8/8949b080739804b8703feb9aff72bf7d.js"></script>
 
-<p>In here we download the dataset using Keras. After this we create tensors that will be filled with the Numpy vectors of the training set. The map function will convert the image from <code>uint8</code> to <code>floats</code>. The dataset API allows us to define a batch size and to prefetch this batches, it uses a thread and an internal buffer to prefetch elements from the input dataset ahead of the time they are requested. Last three lines are used to create an iterator, so we can move through the different batches of our data and reshape them. Pretty simple!</p>
+<p>In here we download the dataset using Keras. After this we create tensors that will be filled with the Numpy vectors of the training set. The map function will convert the image from <code class="language-plaintext highlighter-rouge">uint8</code> to <code class="language-plaintext highlighter-rouge">floats</code>. The dataset API allows us to define a batch size and to prefetch this batches, it uses a thread and an internal buffer to prefetch elements from the input dataset ahead of the time they are requested. Last three lines are used to create an iterator, so we can move through the different batches of our data and reshape them. Pretty simple!</p>
 
 <p>If this is the first time you use this API I recommend you to test how is this working with this simple example that shows the first image of each batch.</p>
 
@@ -281,7 +272,7 @@
 
 <p>We must now “code our encoder”. Since we are dealing with images, we are going to use some convolutional layers which will help us to maintain the spatial relations between pixels. I got the some of the ideas of how to structure the network from this <a href="https://towardsdatascience.com/teaching-a-variational-autoencoder-vae-to-draw-mnist-characters-978675c95776" target="_blank" rel="noopener noreferrer">great Felix Mohr’s post</a></p>
 
-<p>My intention is to gradually reduce the dimensionality of our input. The images are <code>28x28</code> pixels, so if we add a convolutional layer with a stride of 2 and some extra padding too, we can reduce the image dimension to the half (<a href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks" target="_blank" rel="noopener noreferrer">review some CNN theory here</a>). With two of these layers concatenated the final dimensions will be <code>7x7</code> (<code>x64</code> if have into account the number of filters I am applying). After this I use another convolutional layer with stride 1 and ‘same’ padding which will maintain the vector size through the conv operations.</p>
+<p>My intention is to gradually reduce the dimensionality of our input. The images are <code class="language-plaintext highlighter-rouge">28x28</code> pixels, so if we add a convolutional layer with a stride of 2 and some extra padding too, we can reduce the image dimension to the half (<a href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks" target="_blank" rel="noopener noreferrer">review some CNN theory here</a>). With two of these layers concatenated the final dimensions will be <code class="language-plaintext highlighter-rouge">7x7</code> (<code class="language-plaintext highlighter-rouge">x64</code> if have into account the number of filters I am applying). After this I use another convolutional layer with stride 1 and ‘same’ padding which will maintain the vector size through the conv operations.</p>
 
 <p>The <strong>mean</strong> and <strong>standard deviation</strong> of our Gaussian will be computed through two dense layers. We must note that the standard deviation of a Normal distribution is always positive, so I added a softplus function that will take care of this restriction (other works also apply a diagonal constraint on these weights). The epsilon value will be sampled from an unit normal distribution and then we will obtain our \(z\) value using the <em>reparametrization trick</em> (<a href="https://medium.com/@miguelmndez_30551/vaes-i-generating-images-with-tensorflow-f81b2f1c63b0" target="_blank" rel="noopener noreferrer">see my previous post</a>)</p>
 
@@ -291,7 +282,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-e71e24b94.jpg" alt="Tensorboard graph view" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-400-dab2e0ffa.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-dab2e0ffa.webp 719w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="719" height="793" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-e71e24b94.jpg" alt="Tensorboard graph view" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-400-dab2e0ffa.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/tensorboard-719-dab2e0ffa.webp 719w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="719" height="793" />
 </a>
 
 </div>
@@ -302,11 +293,11 @@
 
 <script src="https://gist.github.com/mmeendez8/ea9e71ad05d2f79f448b34f1a8b5be6c.js"></script>
 
-<p>Note that <code>FLAGS.inputs_decoder</code> references the number of neurons in our dense layers which will determine the size of the image before the transpose convolution layers. In this case I will use the same structure as in the encoder, so the number of neurons will be 49 and the input image size to the first tranposed conv layer will be <code>7x7</code>. It’s also interesting to point that the last layer uses a <a href="https://en.wikipedia.org/wiki/Sigmoid_function" target="_blank" rel="noopener noreferrer">sigmoid</a> activation, <strong>so we force our outputs to be between 0 and 1</strong>.</p>
+<p>Note that <code class="language-plaintext highlighter-rouge">FLAGS.inputs_decoder</code> references the number of neurons in our dense layers which will determine the size of the image before the transpose convolution layers. In this case I will use the same structure as in the encoder, so the number of neurons will be 49 and the input image size to the first tranposed conv layer will be <code class="language-plaintext highlighter-rouge">7x7</code>. It’s also interesting to point that the last layer uses a <a href="https://en.wikipedia.org/wiki/Sigmoid_function" target="_blank" rel="noopener noreferrer">sigmoid</a> activation, <strong>so we force our outputs to be between 0 and 1</strong>.</p>
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-64a395de0.jpg" alt="Sigmoid function plot" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-8331251bb.webp 320w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="320" height="213" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-64a395de0.jpg" alt="Sigmoid function plot" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/sigmoid-320-8331251bb.webp 320w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="320" height="213" />
 </a>
 
 </div>
@@ -331,13 +322,13 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-59c688a41.jpg" alt="Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-400-f9ce5a4c9.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-f9ce5a4c9.webp 540w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="540" height="480" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-59c688a41.jpg" alt="Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-400-f9ce5a4c9.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist-540-f9ce5a4c9.webp 540w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="540" height="480" />
 </a>
 
 </div>
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-d1f17c253.jpg" alt="Fashion Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-400-93c6d0307.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-93c6d0307.webp 540w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="540" height="480" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-d1f17c253.jpg" alt="Fashion Mnist recovery" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-400-93c6d0307.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist-540-93c6d0307.webp 540w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="540" height="480" />
 </a>
 
 </div>
@@ -367,7 +358,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-039d710fb.jpg" alt="Latent space without KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-400-9fc1af072.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-9fc1af072.webp 640w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="640" height="480" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-039d710fb.jpg" alt="Latent space without KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-400-9fc1af072.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-wt-kl-640-9fc1af072.webp 640w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="640" height="480" />
 </a>
 
 </div>
@@ -375,7 +366,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-a81727186.jpg" alt="Latent space with KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-400-2dc270081.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-2dc270081.webp 640w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="640" height="480" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-a81727186.jpg" alt="Latent space with KL reg" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-400-2dc270081.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/latent-with-kl-640-2dc270081.webp 640w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="640" height="480" />
 </a>
 
 </div>
@@ -389,7 +380,7 @@
 
 <div class="post-center-image">
 <a href="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid.jpg">
-  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-d5faf1424.jpg" alt="Two dimensional grid of points" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-400-920980fc6.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-920980fc6.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-1500-920980fc6.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-1861-920980fc6.webp 1861w" sizes="(max-width: 767px) calc(100vw - 48px), 720px" width="1861" height="959" />
+  <img loading="lazy" src="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-d5faf1424.jpg" alt="Two dimensional grid of points" srcset="/generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-400-920980fc6.webp 400w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-800-920980fc6.webp 800w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-1500-920980fc6.webp 1500w, /generated/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/grid-1861-920980fc6.webp 1861w" sizes="(max-width: 767px) calc(100vw - 48px), 680px" width="1861" height="959" />
 </a>
 
 </div>
@@ -398,16 +389,16 @@
 
 <script src="https://gist.github.com/mmeendez8/aa5b73d6d64cf5e1ceba31472a1ebf64.js"></script>
 
-<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif" alt="" /></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif" alt="Animated grid of MNIST digits decoded from a 2D grid of latent points, sharpening as training progresses" /></p>
 
 <p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_latent_evolution.gif" alt="Comparsion between grid space generated images and latent space distribution" /></p>
 <p class="image-caption"><em>Comparsion between grid space generated images and latent space distribution</em></p>
 
 <p>What about the fashion dataset? Results are even more fun! Look how the different garment are positioned by ‘similarity’ in the space. Also the grid generated images look super real!</p>
 
-<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif" alt="" /></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif" alt="Animated grid of Fashion-MNIST garments decoded from a 2D grid of latent points, sharpening as training progresses" /></p>
 
-<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif" alt="" /></p>
+<p class="image-caption"><img src="/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif" alt="Animated scatter plot of Fashion-MNIST samples in the 2D latent space, coloured by garment class, as training progresses" /></p>
 
 <p>After 50 epochs of training and using the grid technique and the fashion MNIST dataset we achieve these results:</p>
 
@@ -439,18 +430,37 @@
 
 <p><em>Any ideas for future posts or is there something you would like to comment? Please feel free to reach out via <a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener noreferrer">Twitter</a> or <a href="https://github.com/mmeendez8" target="_blank" rel="noopener noreferrer">Github</a></em></p>
 
-  
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-end">
+      <ul class="post-tags" aria-label="Tags"><li>Deep Learning</li><li>Tensorflow</li><li>Variational Autoencoders</li><li>Machine Learning</li>
+      </ul>
+
+      <aside class="post-author" aria-label="About the author">
+        <img alt="" loading="lazy" decoding="async" src="/generated/assets/images/fullsize/profile-pics/avatar-330-e69463569.jpg" srcset="/generated/assets/images/fullsize/profile-pics/avatar-80-a123ac644.webp 80w, /generated/assets/images/fullsize/profile-pics/avatar-160-a123ac644.webp 160w, /generated/assets/images/fullsize/profile-pics/avatar-240-a123ac644.webp 240w" sizes="72px" width="330" height="330">
+
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">Miguel Mendez</p>
+          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <ul class="post-author-links">
+            <li><a href="https://github.com/mmeendez8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/miguel-mendez/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/mmeendez8" target="_blank" rel="noopener">X</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+      <nav class="post-pn" aria-label="More posts">
+        <a href="/2019/01/19/vae-theory"><span class="post-pn-k">← Previous</span><span class="post-pn-t">The theory behind Variational Autoencoders</span></a>
+        <a class="is-next" href="/2019/02/06/vae-fifa"><span class="post-pn-k">Next →</span><span class="post-pn-t">Generating FIFA 19 players with VAEs and Tensorflow</span></a>
+      </nav>
+    </footer>
+  </article>
 </div>
 
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
-</div>
   </main>
 
   <footer class="site-footer">
@@ -472,8 +482,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   
   <script type="text/javascript" src=/libs/external/lightbox/lightbox.js defer></script>
+  <script src=/libs/custom/post.js defer></script>
   
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   
     <script>
@@ -490,14 +504,6 @@
 </script>
   
 
-  <!-- Highlight.js -->
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-    });
-</script>
-  
 
 </body>
 
