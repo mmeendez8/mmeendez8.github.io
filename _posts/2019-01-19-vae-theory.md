@@ -106,7 +106,7 @@ Decoder will sample z from $$q​_θ​​(z\|x)$$. The problem here is that bac
 where $$ϵ$$ is drawn from a standard normal. Why is this helping us? Think that now we are dealing with fixed values for $$μ$$ and $$σ$$, we are moving all the stochasticity to the epsilon term so the derivatives can flow through the deterministic nodes! (Note that in image below $$ϕ$$ corresponds with our $$θ$$ term)
 
 {:refdef: class="image-caption"}
-![Image obtained from [Kingma’s talk](http://dpkingma.com/wordpress/wp-content/uploads/2015/12/talk_nips_workshop_2015.pdf){:target="_blank"}{:rel="noopener noreferrer"}](https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png)*
+![Diagram of the reparameterization trick: the random node is moved to an external noise term so gradients can flow through the encoder, from Kingma's NIPS 2015 workshop talk](https://cdn-images-1.medium.com/max/2000/1*Igg9ihUjWhC-EmaCC3wUlg.png)
 {: refdef}
 
 {:refdef: class="image-caption"}

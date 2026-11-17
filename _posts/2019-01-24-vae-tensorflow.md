@@ -151,7 +151,7 @@ Each of this points can be passed to the decoder which will return us a valid im
 <script src="https://gist.github.com/mmeendez8/aa5b73d6d64cf5e1ceba31472a1ebf64.js"></script>
 
 {:refdef: class="image-caption"}
-![](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif)
+![Animated grid of MNIST digits decoded from a 2D grid of latent points, sharpening as training progresses](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/mnist_evolution.gif)
 {: refdef}
 
 {:refdef: class="image-caption"}
@@ -164,11 +164,11 @@ Each of this points can be passed to the decoder which will return us a valid im
 What about the fashion dataset? Results are even more fun! Look how the different garment are positioned by ‘similarity’ in the space. Also the grid generated images look super real!
 
 {:refdef: class="image-caption"}
-![](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif)
+![Animated grid of Fashion-MNIST garments decoded from a 2D grid of latent points, sharpening as training progresses](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_evolution.gif)
 {: refdef}
 
 {:refdef: class="image-caption"}
-![](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif)
+![Animated scatter plot of Fashion-MNIST samples in the 2D latent space, coloured by garment class, as training progresses](/assets/images/fullsize/posts/2019-01-24-vae-tensorflow/fashion_mnist_latent_evolution.gif)
 {: refdef}
 
 After 50 epochs of training and using the grid technique and the fashion MNIST dataset we achieve these results:

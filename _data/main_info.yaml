@@ -20,3 +20,5 @@ twitter_url: https://twitter.com/mmeendez8
 rss: "/feed.xml"
 google_analytics_id: "G-LMHYVFNF1J"
 posts_to_show: 6
+# One-line bio for the author card at the end of posts
+bio_short: "Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data."

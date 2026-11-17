@@ -170,7 +170,7 @@ The loss computation incorporates the Hungarian algorithm alongside a combinatio
 
 Exploring the literature around video instance segmentation (VIS) has been a fun experience. Transformers are now showing up in most of the research in this area. It is quite fascinating to observe ongoing efforts aimed at reducing the complexities associated with video processing, such as minimizing the number of parameters needed to merge time-related features effectively. The influence of the DETR paper on all the methods discussed is also noteworthy.
 
-I will keep updating this post with new and relevant research findings. Feel free to share your thoughts in the comments below or suggest any papers you would like me to explore next.
+I will keep updating this post with new and relevant research findings. Feel free to share your thoughts or suggest any papers you would like me to explore next on [X](https://twitter.com/mmeendez8){:target="_blank"}{:rel="noopener noreferrer"} or [LinkedIn](https://www.linkedin.com/in/miguel-mendez/){:target="_blank"}{:rel="noopener noreferrer"}.
 
 ## References
 

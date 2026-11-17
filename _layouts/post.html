@@ -1,46 +1,123 @@
 ---
 layout: default
 ---
+{%- comment -%}
+  Editorial post layout: sticky bar with reading progress, centred header and
+  hero, a 728px reading column and a numbered "On this page" index in the
+  left margin (built by libs/custom/post.js from the h2s; a collapsible card
+  below 1200px). Styles: "Post pages" and "Code" in my_css.css.
+{%- endcomment -%}
+<div class="post" data-post>
 
-<header class="the-post-header">
-    <div class="container">
-      <a href="{{ site.baseurl }}/">
-        <h3>{{ site.data.main_info.name }}</h3>
-      </a>
-      <div>
-        <a  href={{ "/index.html#posts" | prepend: site.baseurl }}>
-         <h3 class="posts-link">Posts</h3>
-        </a>
+  <div class="post-progress" aria-hidden="true"></div>
+
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="{{ '/' | relative_url }}">{{ site.data.main_info.name }}</a>
+      <span class="post-bar-title" aria-hidden="true">{{ page.title }}</span>
+      <a href="{{ '/#posts' | relative_url }}">All posts</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="post-head">
+      {%- if page.categories.size > 0 %}
+      <p class="post-kicker">{{ page.categories | join: " · " }}</p>
+      {%- endif %}
+      <h1 class="post-title">{{ page.title }}</h1>
+      {%- if page.subtitle %}
+      <p class="post-subtitle">{{ page.subtitle }}</p>
+      {%- endif %}
+      <div class="post-byline">
+        {% picture byline /assets/images/fullsize/profile-pics/avatar.jpg %}
+        <span><b>{{ page.author | default: site.data.main_info.name }}</b> · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></span>
+      </div>
+    </header>
+
+    {%- comment -%}
+      The hero keeps the thumbnail's own ratio and is capped at 62vh, so its
+      rendered width depends on that ratio. Read width/height from the
+      picture tag's output: CSS uses them to reserve the exact box before the
+      image loads, and `sizes` gets the real rendered width so browsers don't
+      download a file sized for 1040px when the hero shows narrower.
+    {%- endcomment -%}
+    {%- capture hero %}{% picture thumbnail {{ page.image }} --alt {{ page.title }} %}{% endcapture -%}
+    {%- assign hero_w = 0 -%}{%- assign hero_h = 0 -%}
+    {%- if hero contains ' width="' and hero contains ' height="' -%}
+      {%- assign hero_w = hero | split: ' width="' | last | split: '"' | first | plus: 0 -%}
+      {%- assign hero_h = hero | split: ' height="' | last | split: '"' | first | plus: 0 -%}
+    {%- endif -%}
+    {%- if hero_w > 0 and hero_h > 0 and hero contains ' sizes="' -%}
+      {%- comment -%} swap whatever sizes the plugin wrote, whatever its value {%- endcomment -%}
+      {%- assign hero_head = hero | split: ' sizes="' | first -%}
+      {%- assign hero_tail = hero | split: ' sizes="' | last | split: '"' -%}
+      {%- assign hero_rest = hero_tail | shift | join: '"' -%}
+      {%- capture hero %}{{ hero_head }} sizes="min(1040px, calc(100vw - 48px), calc(62vh * {{ hero_w }} / {{ hero_h }}))"{{ hero_rest }}{% endcapture -%}
+    {%- endif %}
+    <div class="post-hero{% if hero_w > 0 and hero_h > 0 %} has-ratio" style="--hero-w: {{ hero_w }}; --hero-h: {{ hero_h }}{% endif %}">
+      {{ hero }}
+    </div>
+
+    <div class="post-body">
+      <nav class="post-toc" aria-label="On this page" hidden>
+        <p class="post-toc-k">On this page</p>
+        <ol></ol>
+      </nav>
+      <div class="post-main">
+        <details class="post-toc-mobile" hidden>
+          <summary>On this page</summary>
+          <ol></ol>
+        </details>
+        {%- comment -%} drop cap only when the post opens with a paragraph
+          that starts with text or a link (not a heading, table, note or image) {%- endcomment -%}
+        {%- assign opening = content | strip -%}
+        {%- assign dropcap = false -%}
+        {%- assign open3 = opening | slice: 0, 3 -%}
+        {%- assign open4 = opening | slice: 3, 1 -%}
+        {%- assign open6 = opening | slice: 0, 6 -%}
+        {%- if open3 == '<p>' -%}
+          {%- if open4 != '<' or open6 == '<p><a ' -%}{%- assign dropcap = true -%}{%- endif -%}
+        {%- endif %}
+        <div class="post-prose{% if dropcap %} has-dropcap{% endif %}">
+          {{ content }}
+        </div>
       </div>
     </div>
-</header>
 
-<div class="the-post-title-placeholder">
-  <div class="offset">
-    <div class="the-post-title-text">
-      <span class="the-post-date">{{ page.date | date: '%B %d, %Y' }} </span>
-      <h1 class="the-post-title">{{ page.title }}</h1>
-      <p class="the-post-subtitle">{{ page.subtitle }}</p>
-    </div>
-  </div>
+    <footer class="post-end">
+      {%- if page.tags.size > 0 %}
+      <ul class="post-tags" aria-label="Tags">
+        {%- for tag in page.tags %}<li>{{ tag }}</li>{% endfor %}
+      </ul>
+      {%- endif %}
 
-  <div class="the-post-title-image">
-    {% picture thumbnail {{ page.image}} --alt {{ page.title }} %}
-  </div>
-</div>
+      <aside class="post-author" aria-label="About the author">
+        {% picture avatar /assets/images/fullsize/profile-pics/avatar.jpg %}
+        <div>
+          <p class="post-author-k">Written by</p>
+          <p class="post-author-name">{{ site.data.main_info.name }}</p>
+          <p class="post-author-bio">{{ site.data.main_info.bio_short }}</p>
+          <ul class="post-author-links">
+            <li><a href="{{ site.data.main_info.github }}" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="{{ site.data.main_info.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="{{ site.data.main_info.twitter_url }}" target="_blank" rel="noopener">X</a></li>
+            <li><a href="{{ site.data.main_info.rss | relative_url }}">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
 
-<div class="container the-post-content">
-
-  {{ content }}
-  
-</div>
-
-<div class="comments">
-  <script src="https://utteranc.es/client.js"
-        repo="mmeendez8/mmeendez8.github.io"
-        issue-term="url"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-  </script>
+      {%- if page.previous or page.next %}
+      <nav class="post-pn" aria-label="More posts">
+        {%- if page.previous %}
+        {%- assign prev = page.previous %}
+        <a href="{{ prev.external-url | default: prev.url | relative_url }}"{% if prev.external-url %} target="_blank" rel="noopener"{% endif %}><span class="post-pn-k">← Previous</span><span class="post-pn-t">{{ prev.title }}</span></a>
+        {%- endif %}
+        {%- if page.next %}
+        {%- assign next = page.next %}
+        <a class="is-next" href="{{ next.external-url | default: next.url | relative_url }}"{% if next.external-url %} target="_blank" rel="noopener"{% endif %}><span class="post-pn-k">Next →</span><span class="post-pn-t">{{ next.title }}</span></a>
+        {%- endif %}
+      </nav>
+      {%- endif %}
+    </footer>
+  </article>
 </div>

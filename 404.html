@@ -7,32 +7,27 @@ sitemap: false
 noindex: true
 ---
 
-<header class="the-post-header">
-  <div class="container">
-    <a href="{{ site.baseurl }}/">
-      <h3>{{ site.data.main_info.name }}</h3>
-    </a>
-    <div>
-      <a href="{{ '/#posts' | prepend: site.baseurl }}">
-        <h3 class="posts-link">Posts</h3>
-      </a>
+<div>
+  <nav class="post-bar" aria-label="Site">
+    <div class="post-bar-inner">
+      <a class="post-bar-brand" href="{{ '/' | relative_url }}">{{ site.data.main_info.name }}</a>
+      <a href="{{ '/#posts' | relative_url }}">All posts</a>
     </div>
+  </nav>
+
+  <div class="post-head">
+    <p class="post-kicker">404</p>
+    <h1 class="post-title">Page not found</h1>
+    <p class="post-subtitle">Sorry, the page you are looking for does not exist or has been moved.</p>
   </div>
-</header>
 
-<div class="container the-post-content">
-  <div class="section">
-    <h1>Page not found</h1>
-    <p>
-      Sorry, the page you are looking for does not exist or has been moved.
-      Go back to the <a href="{{ site.baseurl }}/">homepage</a> or pick one of the latest posts:
-    </p>
-
+  <div class="post-prose post-404">
+    <p>Go back to the <a href="{{ '/' | relative_url }}">homepage</a> or pick one of the latest posts:</p>
     <ul>
-      {% assign latest_posts = site.posts | where_exp: "post", "post.external-url == nil" %}
-      {% for post in latest_posts limit: 5 %}
-      <li><p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p></li>
-      {% endfor %}
+      {%- assign latest_posts = site.posts | where_exp: "post", "post.external-url == nil" %}
+      {%- for post in latest_posts limit: 5 %}
+      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+      {%- endfor %}
     </ul>
   </div>
 </div>

@@ -49,10 +49,30 @@ presets:
     widths: [480, 640, 800, 1000, 1200, 1500, 2000]
     dimension_attributes: true
     attributes:
-      img: 'fetchpriority="high"' 
+      img: 'fetchpriority="high"'
+    # Hero spans the 1040px column minus the 2.4rem gutters
     sizes:
-      mobile: 100vw
-    size: 50vw
+      mobile: calc(100vw - 48px)
+    size: min(1040px, calc(100vw - 48px))
+
+  # Author avatar in the post byline (40px, above the fold)
+  byline:
+    formats: [webp]
+    widths: [80, 120]
+    dimension_attributes: true
+    # decorative: the name is written right next to it
+    attributes:
+      img: 'alt="" decoding="async"'
+    size: 40px
+
+  # Author card at the end of posts (72px)
+  avatar:
+    formats: [webp]
+    widths: [80, 160, 240]
+    dimension_attributes: true
+    attributes:
+      img: 'alt="" loading="lazy" decoding="async"'
+    size: 72px
 
   pimage:
     formats: [webp]
@@ -61,10 +81,10 @@ presets:
     attributes:
       img: 'loading="lazy"' 
     noscript: true
-    # Post content column: .the-post-content is max 768px minus 2.4rem padding
-    # on each side, so images never render wider than 720px.
+    # Post content column: .post-prose is max 728px minus 2.4rem padding on
+    # each side, so images never render wider than 680px.
     sizes:
       mobile: calc(100vw - 48px)
-    size: 720px
+    size: 680px
     link_source: true
     nomarkdown: false

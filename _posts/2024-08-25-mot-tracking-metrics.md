@@ -62,7 +62,7 @@ $$ \text{DetA} = \frac{\text{TP}}{\text{TP} + \text{FP} + \text{FN}} $$
 
 The Association Accuracy (AssA), on the other hand, evaluates how accurately a tracker maintains object identities across frames. It focuses on the temporal consistency of ID assignments, measuring how well the tracker links detections of the same object over time. See, for example, the image below, extracted from HOTA [[1]](#references): 
 
-<div class="post-center-image" style="max-width: 300px; margin: 0 auto;">
+<div class="post-center-image" style="max-width: 300px;">
     {% picture pimage /assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/hota_assa_example.png --alt AssA example from HOTA paper %}
 </div>
 
@@ -127,7 +127,7 @@ Where:
 
 The global assignment is computed using the Hungarian algorithm. It picks the best combination between prediction and ground truth that maximizes IDF1 for the whole video. It is easier to understand this by observing the image introduced in HOTA paper:
 
-<div class="post-center-image" style="max-width: 800px; margin: 0 auto;">
+<div class="post-center-image" style="max-width: 800px;">
     {% picture pimage /assets/images/fullsize/posts/2024-08-25-mot-tracking-metrics/idf1.png --alt IDF1 metric diagram %}
 </div>
 

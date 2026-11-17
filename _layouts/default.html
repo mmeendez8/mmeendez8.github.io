@@ -57,39 +57,24 @@
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Regular.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "/libs/external/fonts/Graphik-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "/libs/external/fonts/Tiempos-Headline-Semibold.woff2" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
-  {% unless page.layout == "post" %}
+  {% if page.icons %}
   <link rel="preload" href="{{ "/libs/external/fontello-bb2d1770/font/fontello.woff2?82615072" | prepend: site.baseurl }}" as="font" type="font/woff2" crossorigin>
-  {% endunless %}
+  {% endif %}
 
   <link rel="stylesheet" href={{ "/libs/custom/my_css.css" | prepend: site.baseurl }}>
   <link rel="stylesheet" href={{ "/libs/external/fonts/fonts.css" | prepend: site.baseurl }}>
 
-  <!-- Fontello
+  <!-- Fontello: icon font, only on pages that set `icons: true` (the homepage)
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  {% if page.icons %}
   <link rel="stylesheet"
     href={{ "/libs/external/fontello-bb2d1770/css/fontello.css" | prepend: site.baseurl }}>
+  {% endif %}
 
   {% if page.layout == "post" %}
-  <!-- hack for non critical css https://web.dev/defer-non-critical-css/ -->
-  <link rel="preload" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href={{ "/libs/custom/syntax.css" | prepend: site.baseurl }}></noscript>
-  
-  <!-- non critical lighthouse css -->
+  <!-- non critical lightbox css https://web.dev/defer-non-critical-css/ -->
   <link rel="preload" href={{ "/libs/external/lightbox/lightbox.css" | prepend: site.baseurl }} as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href={{ "/libs/external/lightbox/lightbox.css" | prepend: site.baseurl }}></noscript>
-
-  <!-- Hihglight.js
-  <!-- Preload CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"></noscript>
-  
-  <!-- Load only necessary languages (example: javascript and python) -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
   {% endif %}
 
 
@@ -139,17 +124,17 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   {% if page.layout == "post" %}
   <script type="text/javascript" src={{ "/libs/external/lightbox/lightbox.js" | prepend: site.baseurl }} defer></script>
+  <script src={{ "/libs/custom/post.js" | prepend: site.baseurl }} defer></script>
   {% endif %}
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   {% if page.mathjax == "y" %}
     {% include mathjax.html %}
   {% endif %}
 
-  <!-- Highlight.js -->
-  {% if page.layout == "post" %}
-  {% include code_highlight.html %}
-  {% endif %}
 
 </body>
 

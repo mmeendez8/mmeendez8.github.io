@@ -13,13 +13,6 @@ categories: [Deep Learning, Machine Learning, Natural Language Processing, AI, T
 
 I am trying to keep myself updated with the LLM literature and recently found an [interesting course](https://github.com/huggingface/smol-course){:target="_blank"}{:rel="noopener noreferrer"} from HuggingFace that covers a practical introduction to LLM alignment. It is very useful because the course is designed so you can run everything on your machine with minimal hardware requirements. After checking some of the content, I started going into a loop of papers, blog posts, and documentation. So, I decided to start writing this post to use as notes in the future. I hope anyone else finds it useful too.
 
-## Table of contents
-
-1. [What is preference alignment?](#what-is-preference-alignment)
-2. [PPO: Proximal Policy Optimization](#ppo)
-3. [DPO: Direct Preference Optimization](#dpo)
-4. [ORPO: Monolithic Preference Optimization without Reference Model](#orpo)
-
 ## What is preference alignment?
 
 Training a large language model (LLM) can involve several steps:
@@ -49,7 +42,7 @@ Let's explore the different methods we can use to align our models!
 
 In the context of LLMs, the agent is the model, the state is the input prompt, and the action is the generated response. We need a reward model to evaluate the quality of these responses. While we could use human feedback for this, having humans intervene in the training loop is impractical. Instead, we can train a model to provide feedback on the responses as a human would. This model is called a reward model.
 
-<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+<div class="post-center-image" style="max-width: 600px;">
     {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/reward-model.png --alt Diagram showing the pipeline to train a reward model %}
 </div>
 
@@ -153,7 +146,7 @@ $$ \log P_{\theta}(y|x) = \frac{1}{m} \sum_{t=1}^{m} \log P_{\theta}(y_t|x, y_{<
 
 This loss basically tries to make the log-likelihood of the output tokens as high as possible given the input prompt. The diagram below shows a intuitive representation of this process:
 
-<div class="post-center-image" style="max-width: 600px; margin: 0 auto;">
+<div class="post-center-image" style="max-width: 600px;">
     {% picture pimage /assets/images/fullsize/posts/2025-01-07-preference-alignment/llm_diagram.jpg --alt Diagram showing how a LLM works %}
 </div>
 

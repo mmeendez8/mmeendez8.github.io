@@ -47,12 +47,19 @@ h5,.h5{
 /*  ================ Common Elements  ================ */
 
 html {
-  scroll-behavior: smooth;
   font-size: 62.5%;
 }
 
+/* Smooth scrolling only once the page has loaded (class set in
+   default.html): otherwise opening a URL with a #fragment, like the post
+   bar's "All posts" link to /#posts, glides down from the top for over a
+   second instead of landing on the section. */
+html.is-loaded {
+  scroll-behavior: smooth;
+}
+
 @media screen and (prefers-reduced-motion: reduce) {
-	html {
+	html.is-loaded {
 		scroll-behavior: auto;
 	}
 }
@@ -1529,241 +1536,808 @@ table thead {
 
 
 /*  ================ Post pages  ================ */
+/* _layouts/post.html: sticky bar with reading progress, centred editorial
+   header + hero, then a 728px reading column. On wide screens a numbered
+   "On this page" index sits in the left margin; each section's rule fills as
+   it is read (libs/custom/post.js). Below 1200px the index becomes a
+   collapsible card above the text. */
 
-.the-post-header{
+.post-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
   width: 100%;
-  height: 6rem;
-  display: -webkit-box;
-  display: flex;
-  justify-content: space-around;
-  -webkit-box-align: center;
-  align-items: center;
-  z-index: 100;
-  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%);
-  background-color: #fff;
+  height: 3px;
+  background: #5b63fe;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--read, 0));
 }
 
-@media (min-width: 768px) {
-  .the-post-header{
-      height: 8rem;
-    }
+.post-bar {
+  position: sticky;
+  top: 0;
+  z-index: 150;
+  background: rgba(255,255,255,.85);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid #ececf1;
 }
 
-.the-post-header .container{
-  display: -webkit-box;
+.post-bar-inner {
+  max-width: 1160px;
+  height: 5.6rem;
+  margin: 0 auto;
+  padding: 0 2.4rem;
   display: flex;
-  -webkit-box-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
   justify-content: space-between;
+  gap: 1.6rem;
 }
 
-.posts-link{
-  color: #030303
-}
+.post-bar a { color: #030303; font-size: 1.5rem; white-space: nowrap; }
+.post-bar a:hover { color: #5b63fe; }
+.post-bar a:focus-visible { outline: 2px solid #5b63fe; outline-offset: 3px; border-radius: 2px; }
+.post-bar-brand { font-family: "Tiempos Headline", Georgia, serif; font-size: 1.8rem !important; }
 
-.the-post-title-placeholder{
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  display: flex;
-  flex-direction: column;
-  min-height: 459px;
-  margin-bottom: 4.5rem;
-}
-
-@media (min-width: 768px) {
-  .the-post-title-placeholder{
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    flex-direction: row;
-    margin-bottom: 7rem;
-  } 
-}
-
-.MathJax_Display {
-  max-width: 100% !important;
-}
-.the-post-title{
-  font-size: 3.2rem;
-  font-weight: 400; /* see .pcard-title: the file is already semibold */
-  line-height: 1.2;
-  font-family: Tiempos Headline,Arial,sans-serif;
-  color: #030303;
-  margin-bottom: 1.2rem;
-}
-
-@media (min-width: 768px) {
-  .the-post-title{
-    font-size: 4.4rem;
-  }
-}
-
-.the-post-date{
-  display: block;
-  margin-bottom: 1rem;
-  color:#5c68ff
-}
-
-.the-post-subtitle{
-  font-size: 1.8rem;
-  line-height: 1.5;
+/* the post title fades into the bar once the reader passes the header */
+.post-bar-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: 1.4rem;
   color: #767676;
-  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity .25s;
 }
 
-@media (min-width: 768px) {
-  .the-post-subtitle{
-    font-size: 2rem;
-  }
+.is-scrolled .post-bar-title { opacity: 1; }
+
+@media (max-width: 767px) {
+  .post-bar-title { display: none; }
 }
 
-.the-post-image{
-  vertical-align: middle;
+/* ---------- header ---------- */
+
+.post-head {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 6.4rem 2.4rem 0;
+  box-sizing: content-box;
   text-align: center;
 }
 
-.offset{
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  flex-direction: column;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  width:100%;
+@media (min-width: 768px) {
+  .post-head { padding-top: 9.6rem; }
 }
 
-.the-post-title-text{
-  max-width: 500px;
-  padding: 2.4rem;
+.post-kicker {
+  margin: 0 0 2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #5b63fe;
 }
 
-@media (min-width: 992px) {
-  .the-post-title-text{
-    margin-left: auto;
-    padding: 2.4rem 4rem 2.4rem 2.4rem;
-  }
-}
-
-.the-post-title-image{
-  overflow: hidden;
-  line-height: 0;
-  width: 100%;
-}
-
-/* 768px minus the 2.4rem side padding leaves a 720px column, about 75-80
-   characters per line at 19px. */
-.the-post-content{
-  font-size: 17px;
+/* The Tiempos file is already the semibold cut but registered as 400, so
+   anything above 400 would fake-bold it (see .pcard-title). */
+.post-title {
+  margin: 0 0 2rem;
+  font-family: "Tiempos Headline", Georgia, serif;
+  font-weight: 400;
+  font-size: 3.6rem;
+  line-height: 1.1;
+  letter-spacing: -.02em;
   color: #030303;
-  line-height: 1.7;
-  max-width: 768px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 @media (min-width: 768px) {
-  .the-post-content{
-    font-size: 19px;
-  }
+  .post-title { font-size: 5.6rem; }
 }
 
-/* Headings get more space above than below, so they visibly start a new
-   section instead of hugging the end of the previous one. */
-.the-post-content h2 {
+.post-subtitle {
+  max-width: 620px;
+  margin: 0 auto 3.2rem;
+  font-size: 1.9rem;
+  line-height: 1.5;
+  color: #5f5f6b;
+}
+
+@media (min-width: 768px) {
+  .post-subtitle { font-size: 2.2rem; }
+}
+
+.post-byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 1.45rem;
+  color: #767676;
+}
+
+.post-byline img {
   display: block;
-  font-size: 2.6rem;
-  margin: 2em 0 .6em;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.the-post-content h3 {
-  font-size: 2.1rem;
-  margin: 1.8em 0 .5em;
+.post-byline b { font-weight: 600; color: #030303; }
+
+.post-hero {
+  max-width: 1040px;
+  margin: 5.6rem auto 6.4rem;
+  padding: 0 2.4rem;
+  box-sizing: content-box;
 }
 
-@media (min-width: 768px) {
-  .the-post-content h2 {
-    font-size: 3rem;
-  }
+/* Thumbnails range from 4:3 to ~2:1, so the hero keeps each image's own
+   ratio (no crop) and caps its height; narrower images are centred. The
+   width/height attributes from the picture tag reserve the space. */
+.post-hero picture { display: block; }
 
-  .the-post-content h3 {
-    font-size: 2.3rem;
-  }
-}
-
-.the-post-content > :first-child {
-  margin-top: 0;
-}
-
-.the-post-content li + li {
-  margin-top: .4em;
-}
-
-.the-post-container{
+/* --hero-w / --hero-h come from the image's real size (post.html), so the
+   box is reserved before the image loads: as wide as the column, unless
+   that would make it taller than 62vh. */
+.post-hero img {
+  display: block;
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 2.4rem;
-  padding-right: 2.4rem;
-  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 1.2rem;
+}
+
+.post-hero.has-ratio img {
+  width: min(100%, calc(62vh * var(--hero-w) / var(--hero-h)));
+  aspect-ratio: var(--hero-w) / var(--hero-h);
+}
+
+/* ---------- body grid + index ---------- */
+
+.post-toc { display: none; }
+
+@media (min-width: 1200px) {
+  .post-body {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 728px) 1fr;
+    column-gap: 3.2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 2.4rem;
+    box-sizing: border-box;
+  }
+
+  .post-main { grid-column: 2; grid-row: 1; min-width: 0; }
+
+  .post-toc:not([hidden]) {
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
+    position: sticky;
+    top: 9rem;
+    width: 100%;
+    max-width: 24rem;
+    max-height: calc(100vh - 12rem);
+    overflow: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-.8rem);
+    transition: opacity .35s, transform .35s, visibility 0s .35s;
+  }
+
+  .is-reading .post-toc { opacity: 1; visibility: visible; transform: none; transition: opacity .35s, transform .35s; }
+}
+
+.post-toc-k {
+  margin: 0 0 1.4rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #030303;
+}
+
+.post-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: toc;
+}
+
+.post-toc li { counter-increment: toc; }
+
+/* --p (0..1, set by post.js) is how much of the section has been read */
+.post-toc a {
+  --p: 0;
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  padding: .7rem 0 .7rem 1.4rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: #767676;
+  background:
+    linear-gradient(#5b63fe, #5b63fe) left top / 2px calc(var(--p) * 100%) no-repeat,
+    linear-gradient(#ececf1, #ececf1) left top / 2px 100% no-repeat;
+}
+
+.post-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font: 1.15rem/1.9 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #b5b5c0;
+}
+
+.post-toc a:hover,
+.post-toc a.active { color: #030303; }
+.post-toc a.active::before { color: #5b63fe; }
+.post-toc a.done { --p: 1; }
+.post-toc a:focus-visible { outline: 2px solid #5b63fe; outline-offset: 2px; border-radius: 2px; }
+
+.post-toc-mobile { display: none; }
+
+@media (max-width: 1199px) {
+  .post-toc-mobile:not([hidden]) {
+    display: block;
+    max-width: 680px;
+    margin: 0 auto 3.6rem;
+    padding: 1.4rem 1.8rem;
+    box-sizing: border-box;
+    border: 1px solid #ececf1;
+    border-radius: 1.2rem;
+    font-size: 1.5rem;
+  }
+
+  .post-toc-mobile summary {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .post-toc-mobile summary::-webkit-details-marker { display: none; }
+  .post-toc-mobile summary::after { content: "+"; font-weight: 400; color: #5b63fe; }
+  .post-toc-mobile[open] summary::after { content: "–"; }
+  .post-toc-mobile ol { margin: 1.2rem 0 0; padding-left: 2rem; }
+  .post-toc-mobile li { margin: .4rem 0; }
+  .post-toc-mobile li::marker { color: #a3a3b0; }
+  .post-toc-mobile a { color: #33334a; }
+}
+
+@media (max-width: 776px) {
+  .post-toc-mobile:not([hidden]) { margin-left: 2.4rem; margin-right: 2.4rem; }
+}
+
+/* ---------- prose ---------- */
+
+.post-prose {
+  max-width: 728px;
+  margin: 0 auto;
+  padding: 0 2.4rem;
+  box-sizing: border-box;
+  font-size: 17px;
+  line-height: 1.72;
+  color: #1c1c22;
 }
 
 @media (min-width: 768px) {
-  .the-post-container{
-    padding: 7.2rem 0;
-    font-size: 19px;
-  }
+  .post-prose { font-size: 18.5px; }
 }
+
+.post-prose a:not(.post-anchor) {
+  text-decoration: underline;
+  text-decoration-color: rgba(91,99,254,.35);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .2em;
+  transition: text-decoration-color .2s, color .2s;
+}
+
+.post-prose a:hover { color: #3b42d9; text-decoration-color: currentColor; }
+
+.post-prose h2,
+.post-prose h3 {
+  position: relative;
+  display: block;
+  scroll-margin-top: 8rem;
+  letter-spacing: -.01em;
+  color: #030303;
+}
+
+.post-prose h2 {
+  font-family: "Tiempos Headline", Georgia, serif;
+  font-weight: 400;
+  font-size: 2.8rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .post-prose h2 { font-size: 3.4rem; }
+}
+
+.post-prose h3 { font-size: 2.1rem; line-height: 1.3; }
+
+/* "#" link that appears on heading hover (post.js) */
+.post-anchor {
+  position: absolute;
+  left: -1.1em;
+  font-weight: 400;
+  color: #c8c2ff;
+  opacity: 0;
+  transition: opacity .15s;
+}
+
+.post-prose :is(h2, h3):hover .post-anchor { opacity: 1; }
+
+@media (max-width: 767px) {
+  .post-anchor { display: none; }
+}
+
+/* flow-root: a short opener grows to contain the cap instead of letting
+   it hang into the next paragraph */
+.post-prose.has-dropcap > p:first-of-type { display: flow-root; }
+
+.post-prose.has-dropcap > p:first-of-type::first-letter {
+  float: left;
+  margin: .08em .1em 0 0;
+  font-family: "Tiempos Headline", Georgia, serif;
+  font-size: 4.4em;
+  line-height: .85;
+  color: #030303;
+}
+
+.post-prose ul,
+.post-prose ol { padding-left: 1.3em; color: inherit; }
+.post-prose li::marker { color: #5b63fe; }
+
+.post-prose blockquote {
+  padding: 1.4rem 2rem;
+  border-left: 3px solid #5b63fe;
+  border-radius: 0 .8rem .8rem 0;
+  background: #f6f6fd;
+  color: #33334a;
+}
+
+/* Tables: open and editorial rather than a boxed spreadsheet. Sentence-case
+   header on a dark rule, hairlines between rows, edges flush with the text.
+   post.js wraps every table in .table-wrapper (scrolls on narrow screens,
+   with the same edge shadows as code), right-aligns number columns
+   (.is-num), centres yes/no columns (.is-mark, ✅/❌ become .mark) and
+   marks empty cells (.is-empty). */
+.post-prose .table-wrapper {
+  overflow-x: auto;
+  background:
+    linear-gradient(to right, #fff 30%, rgba(255,255,255,0)) left center / 4rem 100% no-repeat local,
+    linear-gradient(to left, #fff 30%, rgba(255,255,255,0)) right center / 4rem 100% no-repeat local,
+    linear-gradient(to right, rgba(36,36,58,.10), rgba(36,36,58,0)) left center / 1.2rem 100% no-repeat scroll,
+    linear-gradient(to left, rgba(36,36,58,.10), rgba(36,36,58,0)) right center / 1.2rem 100% no-repeat scroll;
+}
+
+.post-prose table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  font-size: 15.5px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+.post-prose thead { border: 0; }
+
+.post-prose th,
+.post-prose td {
+  padding: 1.1rem 1.6rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.post-prose :is(th, td):first-child { padding-left: 0; }
+.post-prose :is(th, td):last-child { padding-right: 0; }
+
+.post-prose th {
+  padding-top: 0;
+  border-bottom: 1px solid #1c1c22;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #1c1c22;
+  vertical-align: bottom;
+}
+
+.post-prose td {
+  border-bottom: 1px solid #ececf1;
+  color: #3a3a4c;
+}
+
+.post-prose td:first-child { font-weight: 500; color: #030303; }
+.post-prose td a { text-decoration-color: rgba(91,99,254,.25) !important; }
+.post-prose td strong { font-weight: 600; color: #4f57e8; }
+
+.post-prose :is(th, td).is-num { text-align: right; white-space: nowrap; }
+.post-prose :is(th, td).is-mark { text-align: center; }
+.post-prose td.is-empty::before { content: "—"; color: #c3c3cc; }
+.post-prose td.is-na { color: #a3a3b0; }
+
+/* captions written inside the wrapper, after the table (older posts) */
+.post-prose .table-wrapper > table + p {
+  margin-top: var(--cap);
+  font-size: 14.5px;
+  line-height: 1.5;
+  text-align: center;
+  color: #767676;
+}
+
+.post-prose .mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.post-prose .mark.is-yes { background: #e3f4ea; color: #0f7a46; }
+.post-prose .mark.is-no { background: #f1f1f6; color: #9a9aab; }
+.post-prose .mark-note { margin-left: .4rem; font-size: 13px; color: #767676; }
+
+@media (max-width: 767px) {
+  .post-prose table { font-size: 14.5px; }
+  .post-prose th, .post-prose td { padding: 1rem 1.2rem; }
+}
+.post-prose picture img { border-radius: .8rem; }
 
 .image-caption {
-  text-align: center;
-  font-size: 16px;
+  font-size: 14.5px;
   line-height: 1.5;
+  text-align: center;
   color: #767676;
-  margin-top: .6em;
 }
 
-.share-button {
-  text-align: center;
-  height: 60px;
-  margin-bottom: 2rem;
+/* ---------- vertical rhythm ----------
+   Blocks drop their own margins and only get a top margin from what they
+   are and what precedes them:
+     text    → text    : --flow
+     anything→ h2 / h3 : --h2 / --h3 (section breaks)
+     heading → anything: --after-h (the heading belongs to what follows)
+     anything↔ figure  : --fig (images, code, tables, math, embeds)
+     figure  → caption : --cap
+   :where() keeps the figure rules at zero specificity so heading rules win. */
+
+.post-prose {
+  --flow: 1.15em;
+  --fig: 1.9em;
+  --h2: 2.6em;
+  --h3: 1.9em;
+  --after-h: .75em;
+  --cap: .7em;
+}
+
+.post-prose > *,
+.post-prose li > *,
+.post-prose blockquote > * { margin-top: 0; margin-bottom: 0; }
+
+.post-prose > * + * { margin-top: var(--flow); }
+
+.post-prose > * + :where(.post-center-image, div.highlighter-rouge, pre, .table-wrapper, table, blockquote, mjx-container, iframe, center, .app-container, p:has(> picture, > img, > a > picture, > a > img), div:has(> .twitter-tweet)),
+.post-prose > :where(.post-center-image, div.highlighter-rouge, pre, .table-wrapper, table, blockquote, mjx-container, iframe, center, .app-container, p:has(> picture, > img, > a > picture, > a > img), div:has(> .twitter-tweet), .image-caption) + * { margin-top: var(--fig); }
+
+.post-prose > :where(.post-center-image, center, iframe, .table-wrapper, mjx-container, div.highlighter-rouge, pre, p:has(> picture, > img, > a > picture, > a > img)) + .image-caption { margin-top: var(--cap); }
+/* a caption split over two paragraphs */
+.post-prose > .image-caption:not(:has(img)) + .image-caption:not(:has(img)) { margin-top: .3em; }
+
+/* old posts put the image itself inside the caption paragraph */
+.post-prose > .image-caption:has(img) { margin-top: var(--fig); }
+.post-prose > :where(.image-caption:has(img), p:has(> picture, > img, > a > picture, > a > img)) + .image-caption:not(:has(img)) { margin-top: var(--cap); }
+.post-prose .image-caption img { display: block; margin: 0 auto .7em; }
+
+.post-prose > * + h2 { margin-top: var(--h2); }
+.post-prose > * + h3 { margin-top: var(--h3); }
+.post-prose > :is(h2, h3) + * { margin-top: var(--after-h); }
+.post-prose > :is(h2, h3) + :where(.post-center-image, div.highlighter-rouge, pre, .table-wrapper, table, blockquote, mjx-container, iframe, center, .image-caption:has(img)) { margin-top: 1.1em; }
+.post-prose > h2 + h3 { margin-top: .9em; }
+.post-prose > :first-child { margin-top: 0; }
+
+.post-prose > script { display: none; }
+.post-prose > script + * { margin-top: var(--fig); }
+
+.post-prose li + li,
+.post-prose li > * + *,
+.post-prose li > :is(ul, ol) { margin-top: .45em; }
+.post-prose blockquote > * + * { margin-top: var(--flow); }
+
+/* figures: no inline gap under images, no stray margins from embeds */
+.post-prose .post-center-image { margin-left: auto; margin-right: auto; text-align: center; }
+.post-prose .post-center-image :is(a, picture) { display: block; line-height: 0; }
+.post-prose .post-center-image img { display: block; margin: 0 auto; }
+.post-prose .table-wrapper > * { margin: 0; }
+.post-prose mjx-container[display="true"] { margin-bottom: 0 !important; }
+.post-prose p > mjx-container[display="true"] { margin: var(--fig) 0 !important; }
+.post-prose :is(.twitter-tweet, .twitter-tweet-rendered) { margin: 0 auto !important; }
+
+/* ---------- post end ---------- */
+
+.post-end {
+  max-width: 680px;
+  margin: 6.4rem auto 9.6rem;
+  padding: 0 2.4rem;
+  box-sizing: content-box;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  margin: 0 0 4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.post-tags li {
+  padding: .5rem 1.1rem;
+  border-radius: 99rem;
+  background: #f1f1f6;
+  font-size: 1.3rem;
+  color: #444;
+}
+
+.post-author {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin: 0 0 4rem;
+  padding: 2.4rem;
+  border-radius: 1.2rem;
+  background: #f7f7fb;
+}
+
+.post-author img {
+  display: block;
+  width: 7.2rem;
+  height: 7.2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #e3e3ec;
+}
+
+.post-author-k {
+  margin: 0 0 .2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #5b63fe;
+}
+
+.post-author-name {
+  margin: 0 0 .6rem;
+  font-family: "Tiempos Headline", Georgia, serif;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  color: #030303;
+}
+
+.post-author-bio {
+  margin: 0 0 1.2rem;
+  font-size: 1.5rem;
+  line-height: 1.55;
+  color: #5f5f6b;
+}
+
+.post-author-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.4rem;
+}
+
+/* underline draws in from the left on hover, like the footer links */
+.post-author-links a {
+  padding-bottom: 1px;
+  color: #030303;
+  background: linear-gradient(#5b63fe, #5b63fe) left bottom / 0 1px no-repeat;
+  transition: background-size .25s, color .2s;
+}
+
+.post-author-links a:hover,
+.post-author-links a:focus-visible { color: #5b63fe; background-size: 100% 1px; }
+
+@media (max-width: 479px) {
+  .post-author { grid-template-columns: 1fr; gap: 1.4rem; }
+}
+
+.post-pn {
+  display: grid;
+  gap: 1.6rem;
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .post-pn { grid-template-columns: 1fr 1fr; }
+}
+
+.post-pn a {
+  display: block;
+  padding: 1.8rem 2rem;
+  border: 1px solid #ececf1;
+  border-radius: 1rem;
+  color: #030303;
+  transition: border-color .2s, transform .2s;
+}
+
+.post-pn a:hover,
+.post-pn a:focus-visible { border-color: #5b63fe; color: #030303; transform: translateY(-2px); }
+.post-pn a:focus-visible { outline: 2px solid #5b63fe; outline-offset: 3px; }
+.post-pn-k { display: block; margin-bottom: .6rem; font-size: 1.2rem; color: #767676; }
+.post-pn-t { font-family: "Tiempos Headline", Georgia, serif; font-size: 1.8rem; line-height: 1.3; }
+.post-pn .is-next { grid-column: -2; text-align: right; }
+
+.post-end > :last-child { margin-bottom: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .post-progress, .post-toc, .post-pn a { transition: none; }
 }
 
 /*  ================ Code  ================ */
+/* Highlighted at build time by Rouge (kramdown); colours below use the site
+   palette. post.js adds a header with the language (or a `data-title` set
+   with {: data-title="Dockerfile"} after the fence) and a copy button. */
+
+:root {
+  --code-bg: #f7f7fb;
+  --code-line: #e6e6ef;
+  --code-fg: #24243a;
+}
 
 code {
-  padding: .2rem .5rem;
-  margin: 0 .2rem;
-  font-size: 80%;
-  white-space: nowrap;
-  background: #f6f8faff;
-  border-radius: 3px; }
-pre > code {
-  display: block;
-  padding: 1rem 1.5rem;
-  white-space: pre; 
-  overflow-x: auto;}
+  padding: .15em .4em;
+  border-radius: .4rem;
+  background: #f1f1f6;
+  font-size: .84em;
+  color: #3b3f9e;
+}
 
 code, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
 }
 
 /* on phones, let long inline code (file paths, URLs) wrap instead of widening the page */
 @media (max-width: 767px) {
-  :not(pre) > code {
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
+  :not(pre) > code { overflow-wrap: anywhere; }
 }
 
-/*  ================ Comments  ================ */
-
-.comments {
-  margin: 100px 0 40px 0;
+div.highlighter-rouge,
+.post-prose > pre {
+  position: relative;
+  border: 1px solid var(--code-line);
+  border-radius: 1rem;
+  background: var(--code-bg);
+  overflow: hidden;
 }
+
+div.highlighter-rouge .highlight { margin: 0; background: none; }
+
+/* Scroll shadows: when a line is longer than the block, a soft edge shows
+   there is more to the right (and to the left once scrolled). The "local"
+   layers cover the shadows at each end of the content. */
+div.highlighter-rouge pre,
+.post-prose > pre {
+  margin: 0;
+  padding: 1.6rem 2rem;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--code-fg);
+  tab-size: 4;
+  background:
+    linear-gradient(to right, var(--code-bg) 30%, rgba(247,247,251,0)) left center / 4rem 100% no-repeat local,
+    linear-gradient(to left, var(--code-bg) 30%, rgba(247,247,251,0)) right center / 4rem 100% no-repeat local,
+    linear-gradient(to right, rgba(36,36,58,.12), rgba(36,36,58,0)) left center / 1.4rem 100% no-repeat scroll,
+    linear-gradient(to left, rgba(36,36,58,.12), rgba(36,36,58,0)) right center / 1.4rem 100% no-repeat scroll,
+    var(--code-bg);
+}
+
+@media (max-width: 767px) {
+  div.highlighter-rouge pre,
+  .post-prose > pre { padding: 1.4rem 1.6rem; font-size: 13px; }
+}
+
+pre code {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: inherit;
+  color: inherit;
+  white-space: pre;
+}
+
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: .7rem .8rem .7rem 2rem;
+  border-bottom: 1px solid var(--code-line);
+  font: 500 1.2rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #77778c;
+}
+
+.code-copy {
+  margin-left: auto;
+  padding: .4rem .8rem;
+  border: 1px solid transparent;
+  border-radius: .5rem;
+  background: none;
+  font: inherit;
+  color: #77778c;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+
+.code-copy:hover { color: #030303; border-color: var(--code-line); background: #fff; }
+.code-copy:focus-visible { outline: 2px solid #5b63fe; outline-offset: 1px; }
+.code-copy.is-done { color: #0f7a46; }
+
+/* blocks with no label: the copy button floats in the corner */
+.code-head.is-bare {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+}
+
+.code-head.is-bare .code-copy { background: var(--code-bg); }
+
+@media (hover: hover) {
+  .code-head.is-bare { opacity: 0; transition: opacity .15s; }
+  :is(div.highlighter-rouge, pre):hover > .code-head.is-bare,
+  .code-head.is-bare:focus-within { opacity: 1; }
+}
+
+/* Rouge tokens */
+.highlight .c, .highlight .c1, .highlight .cm, .highlight .cs, .highlight .cd,
+.highlight .ch, .highlight .cpf { color: #77778c; font-style: italic; }
+.highlight .cp { color: #77778c; }
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr,
+.highlight .kv, .highlight .ow { color: #4f57e8; }
+.highlight .kt, .highlight .nc, .highlight .nn, .highlight .ne,
+.highlight .nb, .highlight .bp, .highlight .na, .highlight .nt { color: #0369a1; }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc,
+.highlight .sd, .highlight .sh, .highlight .sx, .highlight .sr, .highlight .ss,
+.highlight .dl { color: #0f7a46; }
+.highlight .se, .highlight .si { color: #0b6e3e; font-weight: 600; }
+.highlight .m, .highlight .mi, .highlight .mf, .highlight .mh, .highlight .mo,
+.highlight .mb, .highlight .il, .highlight .kc, .highlight .no { color: #b45309; }
+.highlight .nf, .highlight .fm, .highlight .nd { color: #9333ea; }
+.highlight .nv, .highlight .vi, .highlight .vg, .highlight .vc { color: #a3367a; }
+.highlight .o, .highlight .p { color: #5f5f73; }
+.highlight .gp { color: #a3a3b0; -webkit-user-select: none; user-select: none; }
+.highlight .go { color: #5f5f73; }
+.highlight .gh, .highlight .gu { color: #4f57e8; font-weight: 600; }
+.highlight .gi { color: #0f7a46; background: #e7f6ee; }
+.highlight .gd { color: #b42318; background: #fdecea; }
+.highlight .ge { font-style: italic; }
+.highlight .gs { font-weight: 600; }
+.highlight .err { color: inherit; background: none; }
 
 /*  ================ Mathjax  ================ */
 /* https://akshat.blog/posts/mathjax-scrollable-box-display-mode/ */
@@ -1775,3 +2349,7 @@ mjx-container[display] {
   max-width: 100%;
   min-width: 0 !important;
 }
+
+/*  ================ 404  ================ */
+
+.post-404 { margin-top: 4.8rem; margin-bottom: 9.6rem; }
