@@ -47,12 +47,19 @@ h5,.h5{
 /*  ================ Common Elements  ================ */
 
 html {
-  scroll-behavior: smooth;
   font-size: 62.5%;
 }
 
+/* Smooth scrolling only once the page has loaded (class set in
+   default.html): otherwise opening a URL with a #fragment, like the post
+   bar's "All posts" link to /#posts, glides down from the top for over a
+   second instead of landing on the section. */
+html.is-loaded {
+  scroll-behavior: smooth;
+}
+
 @media screen and (prefers-reduced-motion: reduce) {
-	html {
+	html.is-loaded {
 		scroll-behavior: auto;
 	}
 }

@@ -127,6 +127,9 @@
   <script src={{ "/libs/custom/post.js" | prepend: site.baseurl }} defer></script>
   {% endif %}
   
+  <!-- smooth in-page scrolling, but not for the initial #fragment jump (my_css.css) -->
+  <script>addEventListener("load", function () { setTimeout(function () { document.documentElement.classList.add("is-loaded"); }, 0); });</script>
+
   <!-- Mathjax -->
   {% if page.mathjax == "y" %}
     {% include mathjax.html %}
