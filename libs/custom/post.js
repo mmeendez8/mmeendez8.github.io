@@ -59,32 +59,34 @@ document.addEventListener("DOMContentLoaded", function () {
             span.textContent = label;
             head.appendChild(span);
         }
-        if (navigator.clipboard) {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "code-copy";
-            btn.textContent = "Copy";
-            btn.setAttribute("aria-label", "Copy code to clipboard");
-            btn.addEventListener("click", function () {
-                navigator.clipboard.writeText(copyText(code, lang)).then(function () {
-                    btn.textContent = "Copied";
-                    btn.classList.add("is-done");
-                    setTimeout(function () {
-                        btn.textContent = "Copy";
-                        btn.classList.remove("is-done");
-                    }, 1400);
-                }, function () {
-                    btn.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? "Press ⌘C" : "Press Ctrl+C";
-                    const range = document.createRange();
-                    range.selectNodeContents(code);
-                    const sel = window.getSelection();
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                    setTimeout(function () { btn.textContent = "Copy"; }, 2400);
-                });
-            });
-            head.appendChild(btn);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "code-copy";
+        btn.textContent = "Copy";
+        btn.setAttribute("aria-label", "Copy code to clipboard");
+        // No clipboard access (plain http, permission denied): select the
+        // code so the reader can copy it with the keyboard.
+        function selectCode() {
+            const range = document.createRange();
+            range.selectNodeContents(code);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            btn.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? "Press \u2318C" : "Press Ctrl+C";
+            setTimeout(function () { btn.textContent = "Copy"; }, 2400);
         }
+        btn.addEventListener("click", function () {
+            if (!navigator.clipboard) { selectCode(); return; }
+            navigator.clipboard.writeText(copyText(code, lang)).then(function () {
+                btn.textContent = "Copied";
+                btn.classList.add("is-done");
+                setTimeout(function () {
+                    btn.textContent = "Copy";
+                    btn.classList.remove("is-done");
+                }, 1400);
+            }, selectCode);
+        });
+        head.appendChild(btn);
         block.prepend(head);
     });
 
