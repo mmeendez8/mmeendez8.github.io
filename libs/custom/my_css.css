@@ -1707,11 +1707,12 @@ table thead {
     max-height: calc(100vh - 12rem);
     overflow: auto;
     opacity: 0;
+    visibility: hidden;
     transform: translateX(-.8rem);
-    transition: opacity .35s, transform .35s;
+    transition: opacity .35s, transform .35s, visibility 0s .35s;
   }
 
-  .is-reading .post-toc { opacity: 1; transform: none; }
+  .is-reading .post-toc { opacity: 1; visibility: visible; transform: none; transition: opacity .35s, transform .35s; }
 }
 
 .post-toc-k {
@@ -2198,7 +2199,7 @@ code, pre {
   :not(pre) > code { overflow-wrap: anywhere; }
 }
 
-.highlighter-rouge,
+div.highlighter-rouge,
 .post-prose > pre {
   position: relative;
   border: 1px solid var(--code-line);
@@ -2207,12 +2208,12 @@ code, pre {
   overflow: hidden;
 }
 
-.highlighter-rouge .highlight { margin: 0; background: none; }
+div.highlighter-rouge .highlight { margin: 0; background: none; }
 
 /* Scroll shadows: when a line is longer than the block, a soft edge shows
    there is more to the right (and to the left once scrolled). The "local"
    layers cover the shadows at each end of the content. */
-.highlighter-rouge pre,
+div.highlighter-rouge pre,
 .post-prose > pre {
   margin: 0;
   padding: 1.6rem 2rem;

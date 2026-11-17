@@ -60,8 +60,9 @@ presets:
     formats: [webp]
     widths: [80, 120]
     dimension_attributes: true
+    # decorative: the name is written right next to it
     attributes:
-      img: 'decoding="async"'
+      img: 'alt="" decoding="async"'
     size: 40px
 
   # Author card at the end of posts (72px)
@@ -70,7 +71,7 @@ presets:
     widths: [80, 160, 240]
     dimension_attributes: true
     attributes:
-      img: 'loading="lazy" decoding="async"'
+      img: 'alt="" loading="lazy" decoding="async"'
     size: 72px
 
   pimage:

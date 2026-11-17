@@ -29,7 +29,7 @@ layout: default
       <p class="post-subtitle">{{ page.subtitle }}</p>
       {%- endif %}
       <div class="post-byline">
-        {% picture byline /assets/images/fullsize/profile-pics/avatar.jpg --alt {{ site.data.main_info.name }} %}
+        {% picture byline /assets/images/fullsize/profile-pics/avatar.jpg %}
         <span><b>{{ page.author | default: site.data.main_info.name }}</b> · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></span>
       </div>
     </header>
@@ -62,11 +62,11 @@ layout: default
       {%- endif %}
 
       <aside class="post-author" aria-label="About the author">
-        {% picture avatar /assets/images/fullsize/profile-pics/avatar.jpg --alt {{ site.data.main_info.name }} %}
+        {% picture avatar /assets/images/fullsize/profile-pics/avatar.jpg %}
         <div>
           <p class="post-author-k">Written by</p>
           <p class="post-author-name">{{ site.data.main_info.name }}</p>
-          <p class="post-author-bio">Senior ML Engineer at Hudl. I build production computer vision systems that turn football broadcasts into tracking data.</p>
+          <p class="post-author-bio">{{ site.data.main_info.bio_short }}</p>
           <ul class="post-author-links">
             <li><a href="{{ site.data.main_info.github }}" target="_blank" rel="noopener">GitHub</a></li>
             <li><a href="{{ site.data.main_info.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>

@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const root = document.querySelector("[data-post]");
     const prose = root && root.querySelector(".post-prose");
     if (!prose) return;
+    const progress = root.querySelector(".post-progress");
 
     // ---- heading anchors
     prose.querySelectorAll("h2[id], h3[id]").forEach(function (h) {
@@ -32,8 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const lines = text.split("\n");
         const hasPrompt = lines.some(function (l) { return /^\s*\$ /.test(l); });
         if (!hasPrompt) return text;
+        let continued = false;
         return lines
-            .filter(function (l) { return lang !== "console" || /^\s*\$ /.test(l); })
+            .filter(function (l) {
+                const keep = lang !== "console" || /^\s*\$ /.test(l) || continued;
+                continued = keep && /\\\s*$/.test(l);
+                return keep;
+            })
             .map(function (l) { return l.replace(/^(\s*)\$ /, "$1"); })
             .join("\n");
     }
@@ -67,6 +73,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         btn.textContent = "Copy";
                         btn.classList.remove("is-done");
                     }, 1400);
+                }, function () {
+                    btn.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? "Press ⌘C" : "Press Ctrl+C";
+                    const range = document.createRange();
+                    range.selectNodeContents(code);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                    setTimeout(function () { btn.textContent = "Copy"; }, 2400);
                 });
             });
             head.appendChild(btn);
@@ -105,22 +119,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!cell) return;
                 if (cls) cell.classList.add(cls);
                 if (isMark && cell.tagName === "TD") {
-                    const t = cell.textContent.trim();
-                    if (!t) return;
-                    const yes = t.indexOf(YES) === 0;
-                    const note = t.slice((yes ? YES : NO).length).trim();
-                    cell.textContent = "";
-                    const m = document.createElement("span");
-                    m.className = "mark " + (yes ? "is-yes" : "is-no");
-                    m.textContent = yes ? "\u2713" : "\u2715";
-                    m.setAttribute("role", "img");
-                    m.setAttribute("aria-label", yes ? "Yes" : "No");
-                    cell.appendChild(m);
-                    if (note) {
-                        const n = document.createElement("span");
-                        n.className = "mark-note";
-                        n.textContent = note;
-                        cell.appendChild(n);
+                    const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+                    let node;
+                    while ((node = walker.nextNode())) {
+                        const i = node.data.search(/\u2705|\u274C/);
+                        if (i === -1) continue;
+                        const yes = node.data.charAt(i) === YES;
+                        const m = document.createElement("span");
+                        m.className = "mark " + (yes ? "is-yes" : "is-no");
+                        m.textContent = yes ? "\u2713" : "\u2715";
+                        m.setAttribute("role", "img");
+                        m.setAttribute("aria-label", yes ? "Yes" : "No");
+                        const rest = node.splitText(i);
+                        rest.data = rest.data.slice(1);
+                        rest.parentNode.insertBefore(m, rest);
+                        // whatever follows the mark (e.g. "(?)") becomes a muted note
+                        if (rest.data.trim()) {
+                            const n = document.createElement("span");
+                            n.className = "mark-note";
+                            n.textContent = rest.data.trim();
+                            rest.replaceWith(n);
+                        }
+                        break;
                     }
                 }
             });
@@ -164,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const r = prose.getBoundingClientRect();
         const total = r.height - window.innerHeight * 0.6;
         const read = Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
-        root.style.setProperty("--read", read.toFixed(4));
+        if (progress) progress.style.setProperty("--read", read.toFixed(4));
         root.classList.toggle("is-scrolled", r.top < 0);
         root.classList.toggle("is-reading", r.top < window.innerHeight * 0.5);
 
